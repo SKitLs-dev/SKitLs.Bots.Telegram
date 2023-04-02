@@ -1,4 +1,4 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.MessageUpdates;
+﻿using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.Interactions.Prototype;
 using SKitLs.Bots.Telegram.Management.Managers.Prototype;
 using SKitLs.Bots.Telegram.Stateful.Model;

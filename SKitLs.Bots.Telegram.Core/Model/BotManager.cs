@@ -3,6 +3,8 @@ using SKitLs.Bots.Telegram.Core.external.Localizations;
 using SKitLs.Bots.Telegram.Core.external.LocalizedLoggers;
 using SKitLs.Bots.Telegram.Core.Model.Builders;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Model;
+using SKitLs.Bots.Telegram.Core.Prototypes;
 using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
@@ -53,6 +55,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// Logger used for debugging and informing developer/host.
         /// </summary>
         public ILocalizedLogger LocalLogger { get; internal set; }
+        public IDelieveryService DelieveryService { get; set; }
 
         internal BotManager(string token, ILocalizator localizator)
         {
@@ -148,8 +151,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
                     throw new BotManagerExcpetion(TgApp.DebugSettings.Nfy_ChatIdNotHandled, "ChatIdNotHandled");
                 }
 
-                await _handler.HandleUpdateAsync(
-                    new CastedChatUpdate(update, Bot, chatId.Value, senderChatType.Value, LocalLogger));
+                await _handler.HandleUpdateAsync(new CastedUpdate(update, senderChatType.Value, chatId.Value));
             }
             catch (Exception exception)
             {

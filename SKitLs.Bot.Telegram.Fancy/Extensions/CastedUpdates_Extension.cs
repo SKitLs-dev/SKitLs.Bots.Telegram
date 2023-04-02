@@ -1,5 +1,6 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.Delievery;
+﻿using SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Model;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.Core.Prototypes;
 using SKitLs.Bots.Telegram.Fancy.Model;
 using Telegram.Bot;

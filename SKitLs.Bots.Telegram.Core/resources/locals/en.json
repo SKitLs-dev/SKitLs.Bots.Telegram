@@ -3,5 +3,6 @@
 
   "exception.ChatIdNotHandled": "Start listening for @{0}",
   "exception.ChatNotHandled": "Start listening for @{0}",
-  "exception.ChatTypeNotSupported": "Start listening for @{0}"
+  "exception.ChatTypeNotSupported": "Start listening for @{0}",
+  "exception.UpdateCasting": "Error in casting update: {0} (id: {1})"
 }

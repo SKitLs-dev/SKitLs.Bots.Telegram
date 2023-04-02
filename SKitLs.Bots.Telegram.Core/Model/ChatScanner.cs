@@ -1,5 +1,7 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonim;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.Core.Prototypes;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -39,33 +41,21 @@ namespace SKitLs.Bots.Telegram.Core.Model
         ///// </summary>
         //public IdNotPresentedAsync? IdNotPresentedError { get; set; }
 
-        /// <summary>
-        /// Обработчик входящих сообщений. По умолчанию <see cref="DefaultSignedMessageUpdateHandler"/>.
-        /// </summary>
-        public ISignedMessageUpdateHandler? MessageHandler { get; set; }
-        /// <summary>
-        /// Обработчик изменённых сообщений. По умолчанию <see cref="DefaultSignedMessageUpdateHandler"/>.
-        /// </summary>
-        public ISignedMessageUpdateHandler? EditedMessageHandler { get; set; }
-        /// <summary>
-        /// Обработчик опубликованных постов в канале. По умолчанию <see cref="DefaultMessageUpdateHandler"/>.
-        /// </summary>
-        public IAnonMessageUpdateHandler? ChannelPostHandler { get; set; }
-        /// <summary>
-        /// Обработчик изменённых постов в канале. По умолчанию <see cref="DefaultMessageUpdateHandler"/>.
-        /// </summary>
-        public IAnonMessageUpdateHandler? EditedChannelPostHandler { get; set; }
-        public ICallbackUpdateHandler? CallbackHandler { get; set; }
+        public IUpdateHandlerBase<SignedCallbackUpdate>? CallbackHandler { get; set; }
+        public IUpdateHandlerBase<SignedMessageUpdate>? MessageHandler { get; set; }
+        public IUpdateHandlerBase<SignedMessageUpdate>? EditedMessageHandler { get; set; }
+        public IUpdateHandlerBase<AnonimMessageUpdate>? ChannelPostHandler { get; set; }
+        public IUpdateHandlerBase<AnonimMessageUpdate>? EditedChannelPostHandler { get; set; }
 
-        public IUpdateHandlerBase? ChatJoinRequestHandler { get; set; }
-        public IUpdateHandlerBase? ChatMemberHandler { get; set; }
-        public IUpdateHandlerBase? ChosenInlineResultHandler { get; set; }
-        public IUpdateHandlerBase? InlineQueryHandler { get; set; }
-        public IUpdateHandlerBase? MyChatMemberHandler { get; set; }
-        public IUpdateHandlerBase? PollHandler { get; set; }
-        public IUpdateHandlerBase? PollAnswerHandler { get; set; }
-        public IUpdateHandlerBase? PreCheckoutQueryHandler { get; set; }
-        public IUpdateHandlerBase? ShippingQueryHandler { get; set; }
+        public IUpdateHandlerBase<CastedUpdate>? ChatJoinRequestHandler { get; set; }
+        public IUpdateHandlerBase<CastedUpdate>? ChatMemberHandler { get; set; }
+        public IUpdateHandlerBase<CastedUpdate>? ChosenInlineResultHandler { get; set; }
+        public IUpdateHandlerBase<CastedUpdate>? InlineQueryHandler { get; set; }
+        public IUpdateHandlerBase<CastedUpdate>? MyChatMemberHandler { get; set; }
+        public IUpdateHandlerBase<CastedUpdate>? PollHandler { get; set; }
+        public IUpdateHandlerBase<CastedUpdate>? PollAnswerHandler { get; set; }
+        public IUpdateHandlerBase<CastedUpdate>? PreCheckoutQueryHandler { get; set; }
+        public IUpdateHandlerBase<CastedUpdate>? ShippingQueryHandler { get; set; }
 
         /// <summary>
         /// Конструктор по умолчанию.
@@ -80,13 +70,13 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// пересобранное обновление на один из обработчиков в зависимости от типа обновления.
         /// </summary>
         /// <param name="update">Входящее обновление</param>
-        public async Task HandleUpdateAsync(CastedChatUpdate update)
+        public async Task HandleUpdateAsync(CastedUpdate update)
         {
             IBotUser? sender = null;
             long? id = GetSenderId(update.OriginalSource);
             if (id != null)
             {
-                if (UsersManager != null)
+                if (UsersManager is not null)
                 {
                     if (await UsersManager.IsUserRegistered(id.Value))
                         sender = await UsersManager.GetUserById(id.Value);
@@ -127,7 +117,9 @@ namespace SKitLs.Bots.Telegram.Core.Model
             };
 
             if (suitHandler is not null)
+            {
                 await suitHandler.HandleUpdateAsync(update, sender);
+            }
             if (sender is not null && UsersManager is not null && UsersManager.SignedEventHandled is not null)
                 await UsersManager.SignedEventHandled.Invoke(sender);
         }

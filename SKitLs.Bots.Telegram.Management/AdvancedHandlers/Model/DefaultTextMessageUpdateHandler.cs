@@ -1,6 +1,7 @@
 ﻿using SKitLs.Bots.Telegram.Core.Exceptions;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.MessageUpdates;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Model;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.Core.Prototypes;
 using SKitLs.Bots.Telegram.Management.AdvancedHandlers.Prototype;
 using SKitLs.Bots.Telegram.Management.Managers.Model;

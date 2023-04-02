@@ -1,4 +1,4 @@
-﻿namespace SKitLs.Bots.Telegram.Core.Model.Delievery
+﻿namespace SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Model
 {
     public enum SendStatusCode
     {

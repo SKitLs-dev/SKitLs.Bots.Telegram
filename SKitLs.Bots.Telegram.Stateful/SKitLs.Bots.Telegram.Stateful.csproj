@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Prototype\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SKitLs.Bots.Telegram.Interactions\SKitLs.Bots.Telegram.Interactions.csproj" />
+    <ProjectReference Include="..\SKitLs.Bots.Telegram.Management\SKitLs.Bots.Telegram.Management.csproj" />
+  </ItemGroup>
+
+</Project>

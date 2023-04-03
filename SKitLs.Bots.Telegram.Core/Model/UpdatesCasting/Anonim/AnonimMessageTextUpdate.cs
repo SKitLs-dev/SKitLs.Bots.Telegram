@@ -7,12 +7,14 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonim
     {
         public string Text { get; set; }
 
-        public AnonimMessageTextUpdate(SignedMessageUpdate update) : base(update)
+        public AnonimMessageTextUpdate(AnonimMessageUpdate update) : base(update)
         {
             if (Message.Text is null)
                 throw new UpdateCastingException("Anonim Text Message", update.OriginalSource.Id);
             
             Text = Message.Text;
         }
+        public AnonimMessageTextUpdate(SignedMessageUpdate update) : this((AnonimMessageUpdate)update)
+        { }
     }
 }

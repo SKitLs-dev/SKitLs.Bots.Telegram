@@ -21,7 +21,7 @@ namespace SKitLs.Bots.Telegram.Stateful.Management
             List<IBotTextInput> inputs = new();
             foreach (InputStateSection stateSection in Inputs)
                 foreach (IBotTextInput input in stateSection)
-                    if (input.ShouldBeExecutedOn(update))
+                    if (input.PredicateExecution(update))
                         inputs.Add(input);
             IBotTextInput? executer = inputs.OrderBy(x => x.ExecutionWeight).ToList().FirstOrDefault();
             

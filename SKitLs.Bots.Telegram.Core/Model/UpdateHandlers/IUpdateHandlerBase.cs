@@ -5,6 +5,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers
 {
     public interface IUpdateHandlerBase
     {
+        public BotManager Owner { get; }
         public Task HandleUpdateAsync(CastedUpdate update, IBotUser? sender);
     }
     public interface IUpdateHandlerBase<TUpdate> : IUpdateHandlerBase where TUpdate : ICastedUpdate

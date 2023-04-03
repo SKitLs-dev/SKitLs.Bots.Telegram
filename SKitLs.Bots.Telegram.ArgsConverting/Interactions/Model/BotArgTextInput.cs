@@ -2,17 +2,18 @@
 
 namespace SKitLs.Bots.Telegram.Interactions.Model
 {
-    public class BotArgTextInput : InteractionArgBase, IBotTextInput
+    public class BotArgTextInput<TArgument> : InteractionArgBase, IBotTextInput
     {
+        public TArgument Arguments { get; set; }
         public int ExecutionWeight { get; set; }
-        public SignedTextUpdatePredicate ShouldBeExecutedOn { get; set; }
+        public SignedTextUpdatePredicate PredicateExecution { get; set; }
         public SignedTextUpdate Executer { get; set; }
 
         public BotArgTextInput(SignedTextUpdatePredicate predication, SignedTextUpdate execution,
             string? @base = null, int weight = 0) : base(@base)
         {
             ExecutionWeight = weight;
-            ShouldBeExecutedOn = predication;
+            PredicateExecution = predication;
             Executer = execution;
         }
 

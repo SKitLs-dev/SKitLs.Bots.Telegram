@@ -8,7 +8,7 @@ namespace SKitLs.Bots.Telegram.Interactions.Prototype
     public interface IBotTextInput : IBotInteraction
     {
         public int ExecutionWeight { get; }
-        public SignedTextUpdatePredicate ShouldBeExecutedOn { get; }
+        public SignedTextUpdatePredicate PredicateExecution { get; }
         public SignedTextUpdate Executer { get; }
     }
 }

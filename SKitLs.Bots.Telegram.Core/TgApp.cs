@@ -1,5 +1,7 @@
 ﻿using SKitLs.Bots.Telegram.Core.external.Localizations;
 using SKitLs.Bots.Telegram.Core.resources.Settings;
+// не using а б
+// import java
 
 namespace SKitLs.Bots.Telegram.Core
 {
@@ -13,7 +15,7 @@ namespace SKitLs.Bots.Telegram.Core
         /// </summary>
         public static BotSettings Settings { get; private set; }
         /// <summary>
-        /// Bot's debugging settings
+        /// Bot's debugging settings хочешь я сотру что слева хохохо
         /// </summary>
         public static DebugSettings DebugSettings { get; private set; }
 
@@ -28,3 +30,7 @@ namespace SKitLs.Bots.Telegram.Core
         }
     }
 }
+// ты гей
+// ты еще раз гей
+// а это новый комент
+

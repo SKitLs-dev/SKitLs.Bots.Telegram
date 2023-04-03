@@ -6,6 +6,7 @@ namespace SKitLs.Bots.Telegram.Interactions.Prototype
 
     public interface IBotCallback : IBotInteraction
     {
+        //
         public BotCallbackAction Action { get; }
         public string Label { get; }
     }

@@ -1,4 +1,7 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonim;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.Core.Prototypes;
 using Telegram.Bot.Types.Enums;
 
@@ -73,7 +76,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Builders
         /// Изменяет <see cref="TypedChatUpdateHandler.MessageHandler"/>
         /// </summary>
         /// <param name="handler">Новый обработчик</param>
-        public ChatDesigner UseMessageHandler(ISignedMessageUpdateHandler? handler)
+        public ChatDesigner UseMessageHandler(IUpdateHandlerBase<SignedMessageUpdate>? handler)
         {
             _updateHandler.MessageHandler = handler;
             return this;
@@ -82,7 +85,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Builders
         /// Изменяет <see cref="ChatScanner.EditedMessageHandler"/>
         /// </summary>
         /// <param name="handler">Новый обработчик</param>
-        public ChatDesigner UseEditedMessageHandler(ISignedMessageUpdateHandler? handler)
+        public ChatDesigner UseEditedMessageHandler(IUpdateHandlerBase<SignedMessageUpdate>? handler)
         {
             _updateHandler.EditedMessageHandler = handler;
             return this;
@@ -91,7 +94,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Builders
         /// Изменяет <see cref="ChatScanner.ChannelPostHandler"/>
         /// </summary>
         /// <param name="handler">Новый обработчик</param>
-        public ChatDesigner UseChannelPostHandler(IAnonMessageUpdateHandler? handler)
+        public ChatDesigner UseChannelPostHandler(IUpdateHandlerBase<AnonimMessageUpdate>? handler)
         {
             _updateHandler.ChannelPostHandler = handler;
             return this;
@@ -100,7 +103,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Builders
         /// Изменяет <see cref="ChatScanner.EditedChannelPostHandler"/>
         /// </summary>
         /// <param name="handler">Новый обработчик</param>
-        public ChatDesigner UseEditedChannelPostHandler(IAnonMessageUpdateHandler? handler)
+        public ChatDesigner UseEditedChannelPostHandler(IUpdateHandlerBase<AnonimMessageUpdate>? handler)
         {
             _updateHandler.EditedChannelPostHandler = handler;
             return this;
@@ -109,53 +112,53 @@ namespace SKitLs.Bots.Telegram.Core.Model.Builders
         /// Изменяет <see cref="TypedChatUpdateHandler.CallbackManager"/>
         /// </summary>
         /// <param name="handler">Новый менеджер</param>
-        public ChatDesigner UseCallbackHandler(ICallbackUpdateHandler? handler)
+        public ChatDesigner UseCallbackHandler(IUpdateHandlerBase<SignedCallbackUpdate>? handler)
         {
             _updateHandler.CallbackHandler = handler;
             return this;
         }
 
-        public ChatDesigner UseChatJoinRequestHandler(IUpdateHandlerBase? handler)
+        public ChatDesigner UseChatJoinRequestHandler(IUpdateHandlerBase<CastedUpdate>? handler)
         {
             _updateHandler.ChatJoinRequestHandler = handler;
             return this;
         }
-        public ChatDesigner UseChatMemberHandler(IUpdateHandlerBase? handler)
+        public ChatDesigner UseChatMemberHandler(IUpdateHandlerBase<CastedUpdate>? handler)
         {
             _updateHandler.ChatMemberHandler = handler;
             return this;
         }
-        public ChatDesigner UseChosenInlineResultHandler(IUpdateHandlerBase? handler)
+        public ChatDesigner UseChosenInlineResultHandler(IUpdateHandlerBase<CastedUpdate>? handler)
         {
             _updateHandler.ChosenInlineResultHandler = handler;
             return this;
         }
-        public ChatDesigner UseInlineQueryHandler(IUpdateHandlerBase? handler)
+        public ChatDesigner UseInlineQueryHandler(IUpdateHandlerBase<CastedUpdate>? handler)
         {
             _updateHandler.InlineQueryHandler = handler;
             return this;
         }
-        public ChatDesigner UseMyChatMemberHandler(IUpdateHandlerBase? handler)
+        public ChatDesigner UseMyChatMemberHandler(IUpdateHandlerBase<CastedUpdate>? handler)
         {
             _updateHandler.MyChatMemberHandler = handler;
             return this;
         }
-        public ChatDesigner UsePollHandler(IUpdateHandlerBase? handler)
+        public ChatDesigner UsePollHandler(IUpdateHandlerBase<CastedUpdate>? handler)
         {
             _updateHandler.PollHandler = handler;
             return this;
         }
-        public ChatDesigner UsePollAnswerHandler(IUpdateHandlerBase? handler)
+        public ChatDesigner UsePollAnswerHandler(IUpdateHandlerBase<CastedUpdate>? handler)
         {
             _updateHandler.PollAnswerHandler = handler;
             return this;
         }
-        public ChatDesigner UsePreCheckoutQueryHandler(IUpdateHandlerBase? handler)
+        public ChatDesigner UsePreCheckoutQueryHandler(IUpdateHandlerBase<CastedUpdate>? handler)
         {
             _updateHandler.PreCheckoutQueryHandler = handler;
             return this;
         }
-        public ChatDesigner UseShippingQueryHandler(IUpdateHandlerBase? handler)
+        public ChatDesigner UseShippingQueryHandler(IUpdateHandlerBase<CastedUpdate>? handler)
         {
             _updateHandler.ShippingQueryHandler = handler;
             return this;

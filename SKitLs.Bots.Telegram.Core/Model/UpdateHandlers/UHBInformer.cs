@@ -1,26 +1,34 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Model;
+﻿using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Prototypes;
 
 namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers
 {
-    public class UHBInformer : IUpdateHandlerBase
+    public class UHBInformer : IUpdateHandlerBase<CastedUpdate>
     {
-        public string UpdateName { get; private set; }
-        public bool UseLogger { get; private set; }
-        public bool InformInChat { get; private set; }
+        public BotManager Owner { get; private set; }
 
-        public UHBInformer(string updateName, bool log = false, bool inform = false)
+        public string UpdateName { get; private set; }
+        public bool UseLogger { get; set; }
+        public bool InformInChat { get; set; }
+
+        public UHBInformer(BotManager owner, string updateName, bool log = false, bool inform = false)
         {
+            Owner = owner;
             UpdateName = updateName;
             UseLogger = log;
             InformInChat = inform;
         }
 
-        public async Task HandleUpdateAsync(CastedChatUpdate update, IBotUser? sender)
+        public async Task HandleUpdateAsync(CastedUpdate update, IBotUser? sender)
+            => await HandleUpdateAsync(BuildUpdate(update, sender));
+
+        public CastedUpdate BuildUpdate(CastedUpdate update, IBotUser? sender) => update;
+
+        public async Task HandleUpdateAsync(CastedUpdate update)
         {
             string mes = $"Handled update: {UpdateName}";
-            if (UseLogger) { update.Logger.Log(mes); }
-            if (InformInChat) await update.SendMessageTriggerToChatAsync(mes);
+            if (UseLogger) { Owner.LocalLogger.Log(mes); }
+            //if (InformInChat) await Owner.DelieveryService.SendMessageTriggerToChatAsync(mes);
         }
     }
 }

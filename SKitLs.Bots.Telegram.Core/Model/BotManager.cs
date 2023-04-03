@@ -3,7 +3,6 @@ using SKitLs.Bots.Telegram.Core.external.Localizations;
 using SKitLs.Bots.Telegram.Core.external.LocalizedLoggers;
 using SKitLs.Bots.Telegram.Core.Model.Builders;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Model;
 using SKitLs.Bots.Telegram.Core.Prototypes;
 using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;

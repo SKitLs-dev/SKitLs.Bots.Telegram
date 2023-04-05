@@ -1,22 +1,28 @@
 ﻿using SKitLs.Bots.Telegram.Core.Exceptions;
+using SKitLs.Bots.Telegram.Core.Model;
 using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.Core.Prototypes;
+using SKitLs.Bots.Telegram.Management.AdvancedHandlers.Defaults;
 using Telegram.Bot.Types.Enums;
 
-namespace SKitLs.Bots.Telegram.Management.AdvancedHandlers.Model
+namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.AdvancedHandlers.Defaults
 {
-    public class DefaultSignedMessageUpdateHandler : IUpdateHandlerBase<SignedMessageUpdate> 
+    public class DefaultSignedMessageUpdateHandler : IUpdateHandlerBase<SignedMessageUpdate>
     {
-        public IUpdateHandlerBase<SignedMessageTextUpdate> TextMessageUpdateHandler { get; set; }
+        public BotManager Owner { get; private set; }
+
+        public IUpdateHandlerBase<SignedMessageTextUpdate>? TextMessageUpdateHandler { get; set; }
+
         // PhotoMessage
         // MediaMessage
         // etc
 
-        public DefaultSignedMessageUpdateHandler()
+        public DefaultSignedMessageUpdateHandler(BotManager owner)
         {
-            TextMessageUpdateHandler = new DefaultSignedMessageTextUpdateHandler();
+            Owner = owner;
+            TextMessageUpdateHandler = new DefaultSignedMessageTextUpdateHandler(owner);
         }
 
         public async Task HandleUpdateAsync(CastedUpdate update, IBotUser? sender)
@@ -26,7 +32,8 @@ namespace SKitLs.Bots.Telegram.Management.AdvancedHandlers.Model
         {
             if (sender is null)
                 throw new NullSenderException();
-            return new SignedMessageUpdate(update, sender);
+
+            return new(update, sender);
         }
         public async Task HandleUpdateAsync(SignedMessageUpdate update)
         {

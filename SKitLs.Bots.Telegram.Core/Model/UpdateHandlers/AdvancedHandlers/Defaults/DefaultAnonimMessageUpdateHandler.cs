@@ -1,18 +1,23 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers;
+﻿using SKitLs.Bots.Telegram.Core.Model;
+using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonim;
 using SKitLs.Bots.Telegram.Core.Prototypes;
+using SKitLs.Bots.Telegram.Management.AdvancedHandlers.Defaults;
 using Telegram.Bot.Types.Enums;
 
-namespace SKitLs.Bots.Telegram.Management.AdvancedHandlers.Model
+namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.AdvancedHandlers.Defaults
 {
     public class DefaultAnonimMessageUpdateHandler : IUpdateHandlerBase<AnonimMessageUpdate>
     {
+        public BotManager Owner { get; private set; }
+
         public IUpdateHandlerBase<AnonimMessageTextUpdate>? TextMessageUpdateHandler { get; set; }
 
-        public DefaultAnonimMessageUpdateHandler()
+        public DefaultAnonimMessageUpdateHandler(BotManager owner)
         {
-            TextMessageUpdateHandler = new DefaultAnonimMessageTextUpdateHandler();
+            Owner = owner;
+            TextMessageUpdateHandler = new DefaultAnonimMessageTextUpdateHandler(owner);
         }
 
         public async Task HandleUpdateAsync(CastedUpdate update, IBotUser? sender)

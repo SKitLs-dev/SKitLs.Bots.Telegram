@@ -1,6 +1,6 @@
 ﻿using SKitLs.Bots.Telegram.Interactions.Prototype;
 
-namespace SKitLs.Bots.Telegram.Interactions.Model
+namespace SKitLs.Bots.Telegram.ArgsInteraction.Interactions.Model
 {
     public class BotArgTextInput<TArgument> : InteractionArgBase, IBotTextInput
     {

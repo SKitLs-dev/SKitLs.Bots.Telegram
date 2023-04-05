@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKitLs.Bots.Telegram.ArgsConverting.Argumenting
+namespace SKitLs.Bots.Telegram.ArgsInteraction.Argumenting
 {
     public class ConvertResultList : IEnumerable<ConvertResult>, IReadOnlyList<ConvertResult>
     {

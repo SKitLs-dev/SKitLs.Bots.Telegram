@@ -1,7 +1,7 @@
-﻿using SKitLs.Bots.Telegram.ArgsConverting.Argumenting;
+﻿using SKitLs.Bots.Telegram.ArgsInteraction.Argumenting;
 using System.Reflection;
 
-namespace SKitLs.Bots.Telegram.Interactions.Model
+namespace SKitLs.Bots.Telegram.ArgsInteraction.Interactions.Model
 {
     public class InteractionArgBase
     {

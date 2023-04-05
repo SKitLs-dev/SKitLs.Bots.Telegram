@@ -1,4 +1,4 @@
-﻿namespace SKitLs.Bots.Telegram.Fancy.Model
+﻿namespace SKitLs.Bots.Telegram.AdvancedMessages.Model
 {
     public abstract class OutputMessageText : OutputMessage
     {

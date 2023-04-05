@@ -1,7 +1,7 @@
 ﻿using SKitLs.Bots.Telegram.Core.Prototypes;
 using SKitLs.Bots.Telegram.Interactions.Prototype;
 
-namespace SKitLs.Bots.Telegram.Interactions.Model
+namespace SKitLs.Bots.Telegram.ArgsInteraction.Interactions.Model
 {
     public class BotArgCallback : BotArgInteraction, IBotCallback
     {

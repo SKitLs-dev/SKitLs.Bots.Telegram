@@ -3,7 +3,7 @@ using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using TEnums = Telegram.Bot.Types.Enums;
 
-namespace SKitLs.Bots.Telegram.Fancy.Model
+namespace SKitLs.Bots.Telegram.AdvancedMessages.Model
 {
     public abstract class OutputMessage : IOutputMessage
     {

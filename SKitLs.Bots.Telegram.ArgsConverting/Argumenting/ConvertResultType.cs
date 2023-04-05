@@ -1,4 +1,4 @@
-﻿namespace SKitLs.Bots.Telegram.ArgsConverting.Argumenting
+﻿namespace SKitLs.Bots.Telegram.ArgsInteraction.Argumenting
 {
     /// <summary>
     /// Тип результата конвертации.

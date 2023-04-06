@@ -1,32 +1,17 @@
-﻿using SKitLs.Bots.Telegram.Interactions.Prototype;
+﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting;
+using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model;
+using SKitLs.Bots.Telegram.ArgedInteractions.Interactions;
+using SKitLs.Bots.Telegram.Core.Model.Interactions;
+using SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 
 namespace SKitLs.Bots.Telegram.ArgsInteraction.Interactions.Model
 {
-    public class BotArgTextInput<TArgument> : InteractionArgBase, IBotTextInput
+    public class BotArgTextInput<TArg> : DefaultTextInput, IArgedAction<TArg, SignedMessageTextUpdate>
     {
-        public TArgument Arguments { get; set; }
-        public int ExecutionWeight { get; set; }
-        public SignedTextUpdatePredicate PredicateExecution { get; set; }
-        public SignedTextUpdate Executer { get; set; }
+        public BotArgTextInput(string @base, BotInteraction<SignedMessageTextUpdate> action) : base(@base, action) { }
 
-        public BotArgTextInput(SignedTextUpdatePredicate predication, SignedTextUpdate execution,
-            string? @base = null, int weight = 0) : base(@base)
-        {
-            ExecutionWeight = weight;
-            PredicateExecution = predication;
-            Executer = execution;
-        }
-
-        public BotArgTextInput WithArgsTypes(char? argsSplitter, params Type[] types)
-        {
-            if (argsSplitter == null && types.Length > 1)
-                throw new ArgumentNullException(nameof(argsSplitter));
-
-            ArgsSplitter = argsSplitter;
-            foreach (var argType in types)
-                ArgsType.Add(argType);
-
-            return this;
-        }
+        public ConvertResult<TArg> DeserializeArgs(SignedMessageTextUpdate update, IArgsSerilalizerService extractor)
+            => extractor.Extract<TArg>(update.Text);
     }
 }

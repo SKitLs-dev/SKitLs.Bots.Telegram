@@ -1,4 +1,7 @@
-﻿namespace SKitLs.Bots.Telegram.ArgsInteraction.Argumenting
+﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting;
+using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model;
+
+namespace SKitLs.Bots.Telegram.ArgsInteraction.Argumenting
 {
     /// <summary>
     /// Класс, обеспечивающий конвертацию текстовых аргументов в заданные шаблонами типы. 
@@ -7,41 +10,35 @@
     /// Правила конвертации задаются экземплярами класса <seealso cref="ConvertRule{Out}"/>.
     /// </para>
     /// </summary>
-    public class ArgsConverter
+    public class ArgsSerilalizerService : IArgsSerilalizerService
     {
-        private static readonly ArgsConverter _instance = new();
         /// <summary>
-        /// Единая сущность конвертера
-        /// </summary>
-        public static ArgsConverter Instance => _instance;
-
-        /// <summary>
-        /// Правила конвертаций (<see cref="ConvertResult{Out}"/>)
+        /// Правила конвертаций (<see cref="ConvertResult{TOut}"/>)
         /// </summary>
         private List<ConvertRule> Rules { get; set; }
 
         /// <summary>
         /// Метод для получения правила конвертации по заданному типу.
         /// </summary>
-        /// <typeparam name="Out">Целевой тип конвертации</typeparam>
+        /// <typeparam name="TOut">Целевой тип конвертации</typeparam>
         /// <returns>Правило конвертации строки в заданный тип.</returns>
-        public ConvertRule<Out>? GetByResType<Out>()
-            => (ConvertRule<Out>?)System.Convert.ChangeType(
-                Rules.Find(rule => rule.OutType == typeof(Out)),
-                typeof(ConvertRule<Out>), null);
+        public ConvertRule<TOut>? GetByResType<TOut>()
+            => (ConvertRule<TOut>?)System.Convert.ChangeType(
+                Rules.Find(rule => rule.OutType == typeof(TOut)),
+                typeof(ConvertRule<TOut>), null);
 
         /// <summary>
         /// Метод для определения наличия правила для перевода строки в заданный тип.
         /// </summary>
         /// <typeparam name="Out">Целевой тип конвертации</typeparam>
         /// <returns><c>True</c>, если правило определено. Иначе <c>False</c>.</returns>
-        public bool IsDefined<Out>() => GetByResType<Out>() != null;
+        public bool IsDefined<TOut>() => GetByResType<TOut>() != null;
 
         /// <summary>
         /// Конструктор для создания конвертера, автоматический добавляющий правила конвертации в типы
         /// <see cref="int"/>, <see cref="long"/>, <see cref="float"/>, <see cref="double"/>
         /// </summary>
-        public ArgsConverter()
+        public ArgsSerilalizerService()
         {
             Rules = new()
             {
@@ -49,59 +46,59 @@
                 (input) =>
                 {
                     if (string.IsNullOrEmpty(input))
-                        return ConvertResult.NullInput<int>();
+                        return ConvertResult<int>.NullInput();
                     else if (!int.TryParse(input, out int res))
-                        return ConvertResult.Incorrect<int>();
+                        return ConvertResult<int>.Incorrect();
                     else
-                        return ConvertResult.OK<int>(res);
+                        return ConvertResult<int>.OK(res);
                 }),
                 new ConvertRule<long>(
                 (input) =>
                 {
                     if (string.IsNullOrEmpty(input))
-                        return ConvertResult.NullInput<long>();
+                        return ConvertResult<long>.NullInput();
                     else if (!long.TryParse(input, out long res))
-                        return ConvertResult.Incorrect<long>();
+                        return ConvertResult<long>.Incorrect();
                     else
-                        return ConvertResult.OK<long>(res);
+                        return ConvertResult<long>.OK(res);
                 }),
                 new ConvertRule<float>(
                 (input) =>
                 {
                     if (string.IsNullOrEmpty(input))
-                        return ConvertResult.NullInput<float>();
+                        return ConvertResult<float>.NullInput();
                     else if (!float.TryParse(input, out float res))
-                        return ConvertResult.Incorrect<float>();
+                        return ConvertResult<float>.Incorrect();
                     else
-                        return ConvertResult.OK<float>(res);
+                        return ConvertResult<float>.OK(res);
                 }),
                 new ConvertRule<double>(
                 (input) =>
                 {
                     if (string.IsNullOrEmpty(input))
-                        return ConvertResult.NullInput<double>();
+                        return ConvertResult<double>.NullInput();
                     else if (!double.TryParse(input, out double res))
-                        return ConvertResult.Incorrect<double>();
+                        return ConvertResult<double>.Incorrect();
                     else
-                        return ConvertResult.OK<double>(res);
+                        return ConvertResult<double>.OK(res);
                 }),
                 new ConvertRule<bool>(
                 (input) =>
                 {
                     if (string.IsNullOrEmpty(input))
-                        return ConvertResult.NullInput<bool>();
+                        return ConvertResult<bool>.NullInput();
                     else if (!bool.TryParse(input, out bool res))
-                        return ConvertResult.Incorrect<bool>();
+                        return ConvertResult<bool>.Incorrect();
                     else
-                        return ConvertResult.OK<bool>(res);
+                        return ConvertResult<bool>.OK(res);
                 }),
                 new ConvertRule<string>(
                 (input) =>
                 {
                     if (string.IsNullOrEmpty(input))
-                        return ConvertResult.NullInput<string>();
+                        return ConvertResult<string>.NullInput();
                     else
-                        return ConvertResult.OK<string>(input);
+                        return ConvertResult<string>.OK(input);
                 })
             };
         }
@@ -114,9 +111,9 @@
         /// <param name="rule">Правило для добавления</param>
         /// <param name="override">Метка переопределения</param>
         /// <exception cref="InvalidOperationException">Попытка добавления существующего правила без переопределения</exception>
-        public void AddRule<Out>(ConvertRule<Out> rule, bool @override = false)
+        public void AddRule<TOut>(ConvertRule<TOut> rule, bool @override = false)
         {
-            ConvertRule<Out>? existing = GetByResType<Out>();
+            ConvertRule<TOut>? existing = GetByResType<TOut>();
             if (existing != null)
             {
                 if (@override)
@@ -143,7 +140,7 @@
         /// <typeparam name="Out">Целевой тип конвертации</typeparam>
         /// <param name="input">Входная строка</param>
         /// <returns>Результат конвертации</returns>
-        public ConvertResult Convert<Out>(string input)
-            => GetByResType<Out>()?.Converter(input) ?? ConvertResult.NotDefined<Out>();
+        public ConvertResult<TOut> Extract<TOut>(string input)
+            => GetByResType<TOut>()?.Converter(input) ?? ConvertResult<TOut>.NotDefined();
     }
 }

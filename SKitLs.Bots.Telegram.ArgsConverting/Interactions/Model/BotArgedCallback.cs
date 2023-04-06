@@ -7,11 +7,11 @@ using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 
 namespace SKitLs.Bots.Telegram.ArgsInteraction.Interactions.Model
 {
-    public class BotArgCommand<TArg> : DefaultCommand, IArgedAction<TArg, SignedMessageTextUpdate>
+    public class BotArgedCallback<TArg> : DefaultCallback, IArgedAction<TArg, SignedCallbackUpdate>
     {
-        public BotArgCommand(string @base, BotInteraction<SignedMessageTextUpdate> action) : base(@base, action) { }
+        public BotArgedCallback(string @base, string label, BotInteraction<SignedCallbackUpdate> action) : base(@base, label, action) { }
 
-        public ConvertResult<TArg> DeserializeArgs(SignedMessageTextUpdate update, IArgsSerilalizerService extractor)
-            => extractor.Extract<TArg>(update.Text);
+        public ConvertResult<TArg> DeserializeArgs(SignedCallbackUpdate update, IArgsSerilalizerService extractor)
+            => extractor.Extract<TArg>(update.Data);
     }
 }

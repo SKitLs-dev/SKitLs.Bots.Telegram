@@ -1,6 +1,5 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
-using System.Runtime.CompilerServices;
 
 namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
 {
@@ -17,16 +16,8 @@ namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
             Label = label;
         }
 
-        public DefaultCallback ExtendLabel(string label)
-        {
-            Label += " " + label;
-            return this;
-        }
-
-        public bool ShouldBeExecutedOn(SignedCallbackUpdate update)
-        {
-            throw new NotImplementedException();
-        }
+        public virtual bool ShouldBeExecutedOn(SignedCallbackUpdate update)
+            => ActionBase == update.Data;
 
         public bool Equals(IBotAction<ICastedUpdate>? other)
         {

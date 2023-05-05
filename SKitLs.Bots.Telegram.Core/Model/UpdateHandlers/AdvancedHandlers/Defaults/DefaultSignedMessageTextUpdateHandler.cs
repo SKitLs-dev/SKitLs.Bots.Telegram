@@ -1,7 +1,7 @@
 ﻿using SKitLs.Bots.Telegram.Core.Exceptions;
-using SKitLs.Bots.Telegram.Core.Model;
+using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.Management;
-using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers;
+using SKitLs.Bots.Telegram.Core.Model.Management.Defaults;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.Core.Prototypes;
@@ -12,14 +12,14 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.AdvancedHandlers.Defaul
     {
         public BotManager Owner { get; private set; }
         public Func<string, bool> IsCommand { get; set; }
-        public IActionManager<IBotCommand, SignedMessageTextUpdate> CommandsManager { get; set; }
-        public IActionManager<IBotTextInput, SignedMessageTextUpdate> TextInputManager { get; set; }
+        public IActionManager<IBotAction<SignedMessageTextUpdate>, SignedMessageTextUpdate> CommandsManager { get; set; }
+        public IActionManager<IBotAction<SignedMessageTextUpdate>, SignedMessageTextUpdate> TextInputManager { get; set; }
 
         public DefaultSignedMessageTextUpdateHandler(BotManager owner)
         {
             Owner = owner;
-            CommandsManager = new DefaultCommandsManager();
-            TextInputManager = new DefaultTextInputManager();
+            CommandsManager = new DefaultActionManager<SignedMessageTextUpdate>(owner);
+            TextInputManager = new DefaultActionManager<SignedMessageTextUpdate>(owner);
             IsCommand = (input) => input.StartsWith('/');
         }
 

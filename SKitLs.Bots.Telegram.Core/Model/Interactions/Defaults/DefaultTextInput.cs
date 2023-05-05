@@ -18,10 +18,8 @@ namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
             Action = action;
         }
 
-        public bool ShouldBeExecutedOn(SignedMessageTextUpdate update)
-        {
-            throw new NotImplementedException();
-        }
+        public virtual bool ShouldBeExecutedOn(SignedMessageTextUpdate update)
+            => ActionBase == update.Text;
 
         public bool Equals(IBotAction<ICastedUpdate>? other)
         {

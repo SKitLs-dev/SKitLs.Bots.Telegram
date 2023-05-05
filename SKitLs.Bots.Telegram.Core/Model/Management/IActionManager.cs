@@ -5,6 +5,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Management
 {
     public interface IActionManager<TAction, TUpdate> where TAction : IBotAction<TUpdate> where TUpdate : CastedUpdate
     {
+        public BotManager Owner { get; }
         public List<TAction> Actions { get; }
         public Task ManageUpdateAsync(TUpdate update);
     }

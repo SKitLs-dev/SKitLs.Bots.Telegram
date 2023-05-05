@@ -1,10 +1,8 @@
-﻿using SKitLs.Bots.Telegram.Core.Exceptions;
-using SKitLs.Bots.Telegram.Core.Model;
+﻿using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.Management;
-using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers;
+using SKitLs.Bots.Telegram.Core.Model.Management.Defaults;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonim;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.Core.Prototypes;
 
 namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.AdvancedHandlers.Defaults
@@ -14,30 +12,21 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.AdvancedHandlers.Defaul
         public BotManager Owner { get; private set; }
 
         public Func<string, bool> IsCommand { get; set; }
-        public IActionManager<IBotCommand, SignedMessageTextUpdate> CommandsManager { get; set; }
-        public IActionManager<IBotTextInput, SignedMessageTextUpdate> TextInputManager { get; set; }
+        public IActionManager<IBotAction<AnonimMessageTextUpdate>, AnonimMessageTextUpdate> CommandsManager { get; set; }
+        public IActionManager<IBotAction<AnonimMessageTextUpdate>, AnonimMessageTextUpdate> TextInputManager { get; set; }
 
         public DefaultAnonimMessageTextUpdateHandler(BotManager owner)
         {
             Owner = owner;
-            CommandsManager = new DefaultCommandsManager();
-            TextInputManager = new DefaultTextInputManager();
+            CommandsManager = new DefaultActionManager<AnonimMessageTextUpdate>(owner);
+            TextInputManager = new DefaultActionManager<AnonimMessageTextUpdate>(owner);
             IsCommand = (input) => input.StartsWith('/');
         }
 
-
-        public AnonimMessageTextUpdate BuildUpdate(CastedUpdate update, IBotUser? sender)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task HandleUpdateAsync(CastedUpdate update, IBotUser? sender)
-        {
-            if (sender is null)
-                throw new NullSenderException();
-
-            await HandleUpdateAsync(new SignedMessageTextUpdate(new SignedMessageUpdate(update, sender)));
-        }
+            => await HandleUpdateAsync(BuildUpdate(update, sender));
+        public AnonimMessageTextUpdate BuildUpdate(CastedUpdate update, IBotUser? sender) => new(new AnonimMessageUpdate(update));
+        
         public async Task HandleUpdateAsync(AnonimMessageTextUpdate update)
         {
             if (IsCommand(update.Text))

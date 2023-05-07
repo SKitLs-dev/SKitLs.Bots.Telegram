@@ -1,6 +1,4 @@
-﻿using SKitLs.Bots.Telegram.ArgsInteraction.Argumenting;
-
-namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model
+﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model
 {
     /// <summary>
     /// Тип результата конвертации.
@@ -28,7 +26,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model
         /// </summary>
         NotPresented,
         /// <summary>
-        /// Правила сущности конвертера <see cref="ArgsSerilalizerService.Rules"/> не содержали определений для конвертации 
+        /// Правила сущности конвертера <see cref="DefaultArgsSerilalizerService.Rules"/> не содержали определений для конвертации 
         /// входной строки в заданный тип.
         /// </summary>
         NotDefinied

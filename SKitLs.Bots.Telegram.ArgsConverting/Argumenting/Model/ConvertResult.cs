@@ -1,6 +1,4 @@
-﻿using SKitLs.Bots.Telegram.ArgsInteraction.Argumenting;
-
-namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model
+﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model
 {
     /// <summary>
     /// Класс-оболочка для результатов конвертации
@@ -131,7 +129,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model
 
         /// <summary>
         /// Создаёт результат конвертации с ошибкой типа <see cref="ConvertResultType.NotDefinied"/> в случае, 
-        /// если список правил <see cref="ArgsSerilalizerService.Rules"/> не содержит определения конвертации входной строки 
+        /// если список правил <see cref="DefaultArgsSerilalizerService.Rules"/> не содержит определения конвертации входной строки 
         /// в заданный тип.
         /// </summary>
         /// <typeparam name="TOut">Целевой тип конвертации</typeparam>

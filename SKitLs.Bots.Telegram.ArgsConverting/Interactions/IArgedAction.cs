@@ -7,6 +7,8 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Interactions
 {
     public interface IArgedAction<TArg, TUpdate> : IBotAction<TUpdate> where TUpdate : ICastedUpdate
     {
+        public char SplitToken { get; set; }
+
         public ConvertResult<TArg> DeserializeArgs(TUpdate update, IArgsSerilalizerService extractor);
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Attributing
+﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Prototype
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class BotActionArgumentAttribute : Attribute

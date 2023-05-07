@@ -5,14 +5,18 @@ using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 
 namespace SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Model
 {
+    [Obsolete("Will be removed in a future build", true)]
     public class ArgedAction<TArg, TUpdate> : IArgedAction<TArg, TUpdate> where TUpdate : ICastedUpdate
     {
         public string ActionBase { get; private set; }
+        public char SplitToken { get; set; }
         public BotInteraction<TUpdate> Action { get; private set; }
 
-        public ArgedAction(string actionBase, BotInteraction<TUpdate> action)
+        public ArgedAction(string actionBase, BotInteraction<TUpdate> action, char splitToken = ';')
         {
             ActionBase = actionBase;
+            SplitToken = splitToken;
+
             Action = action;
         }
 

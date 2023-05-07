@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SKitLs.Bots.Telegram.ArgsConverting\SKitLs.Bots.Telegram.ArgedInteractions.csproj" />
+    <ProjectReference Include="..\SKitLs.Bots.Telegram.Core\SKitLs.Bots.Telegram.Core.csproj" />
+  </ItemGroup>
+
 </Project>

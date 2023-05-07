@@ -7,14 +7,18 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.AdvancedHandlers.Defaul
 {
     public class DefaultAnonimMessageUpdateHandler : IUpdateHandlerBase<AnonimMessageUpdate>
     {
-        public BotManager Owner { get; private set; }
+        public BotManager Owner { get; private set; } = null!; 
 
         public IUpdateHandlerBase<AnonimMessageTextUpdate>? TextMessageUpdateHandler { get; set; }
 
-        public DefaultAnonimMessageUpdateHandler(BotManager owner)
+        public DefaultAnonimMessageUpdateHandler()
         {
-            Owner = owner;
-            TextMessageUpdateHandler = new DefaultAnonimMessageTextUpdateHandler(owner);
+            TextMessageUpdateHandler = new DefaultAnonimMessageTextUpdateHandler();
+        }
+        public void Compile(BotManager manager)
+        {
+            Owner = manager;
+            TextMessageUpdateHandler?.Compile(manager);
         }
 
         public async Task HandleUpdateAsync(CastedUpdate update, IBotUser? sender)

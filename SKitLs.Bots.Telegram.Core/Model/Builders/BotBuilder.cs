@@ -94,6 +94,10 @@
         /// Возвращает собранного менеджера бота
         /// </summary>
         /// <returns></returns>
-        public BotManager Build() => _botManager;
+        public BotManager Build()
+        {
+
+            _botManager;
+        }
     }
 }

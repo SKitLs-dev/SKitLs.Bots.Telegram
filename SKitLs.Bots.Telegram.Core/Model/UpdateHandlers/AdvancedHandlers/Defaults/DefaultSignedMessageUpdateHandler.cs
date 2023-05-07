@@ -8,7 +8,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.AdvancedHandlers.Defaul
 {
     public class DefaultSignedMessageUpdateHandler : IUpdateHandlerBase<SignedMessageUpdate>
     {
-        public BotManager Owner { get; private set; }
+        public BotManager Owner { get; private set; } = null!;
 
         public IUpdateHandlerBase<SignedMessageTextUpdate>? TextMessageUpdateHandler { get; set; }
 
@@ -16,10 +16,15 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.AdvancedHandlers.Defaul
         // MediaMessage
         // etc
 
-        public DefaultSignedMessageUpdateHandler(BotManager owner)
+        public DefaultSignedMessageUpdateHandler()
         {
-            Owner = owner;
-            TextMessageUpdateHandler = new DefaultSignedMessageTextUpdateHandler(owner);
+            TextMessageUpdateHandler = new DefaultSignedMessageTextUpdateHandler();
+        }
+
+        public void Compile(BotManager manager)
+        {
+            Owner = manager;
+            TextMessageUpdateHandler?.Compile(manager);
         }
 
         public async Task HandleUpdateAsync(CastedUpdate update, IBotUser? sender)

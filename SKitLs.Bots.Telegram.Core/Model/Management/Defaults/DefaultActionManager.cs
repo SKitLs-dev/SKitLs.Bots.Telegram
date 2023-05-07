@@ -5,13 +5,16 @@ namespace SKitLs.Bots.Telegram.Core.Model.Management.Defaults
 {
     public class DefaultActionManager<TUpdate> : IActionManager<IBotAction<TUpdate>, TUpdate> where TUpdate : CastedUpdate
     {
-        public BotManager Owner { get; set; }
+        public BotManager Owner { get; set; } = null!;
         public List<IBotAction<TUpdate>> Actions { get; private set; }
 
-        public DefaultActionManager(BotManager owner)
+        public DefaultActionManager()
         {
-            Owner = owner;
             Actions = new();
+        }
+        public void Compile(BotManager manager)
+        {
+            Owner = manager;
         }
 
         public async Task ManageUpdateAsync(TUpdate update)

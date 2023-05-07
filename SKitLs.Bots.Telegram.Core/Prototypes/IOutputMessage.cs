@@ -5,7 +5,9 @@ namespace SKitLs.Bots.Telegram.Core.Prototypes
 {
     public interface IOutputMessage
     {
-        public ParseMode? ParseMode { get; set; }
-        public IReplyMarkup? Markup { get; set; }
+        public ParseMode? ParseMode { get; }
+        public IReplyMarkup? Markup { get; }
+
+        public string GetMessageText();
     }
 }

@@ -21,18 +21,22 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <summary>
         /// Bot's reactions in Private Chats
         /// </summary>
+        [BotCompilable]
         internal ChatScanner? PrivateChatUpdateHandler { get; set; }
         /// <summary>
         /// Bot's reactions in Group Chats
         /// </summary>
+        [BotCompilable]
         internal ChatScanner? GroupChatUpdateHandler { get; set; }
         /// <summary>
         /// Bot's reactions in Supergroup Chats
         /// </summary>
+        [BotCompilable]
         internal ChatScanner? SupergroupChatUpdateHandler { get; set; }
         /// <summary>
         /// Bot's reactions in Channel Chats
         /// </summary>
+        [BotCompilable]
         internal ChatScanner? ChannelChatUpdateHandler { get; set; }
 
         /// <summary>
@@ -54,14 +58,18 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// Logger used for debugging and informing developer/host.
         /// </summary>
         public ILocalizedLogger LocalLogger { get; internal set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        [BotCompilable]
         public IDelieveryService DelieveryService { get; set; }
 
         internal BotManager(string token, ILocalizator localizator)
         {
             Token = token;
-
             Bot = new TelegramBotClient(token);
 
+            DelieveryService = new DefaultDelieveryService();
             LocalLogger = new DefaultLocalizedLogger(localizator);
         }
 

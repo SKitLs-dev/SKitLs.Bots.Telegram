@@ -1,10 +1,7 @@
-﻿using Telegram.Bot.Types.ReplyMarkups;
-
-namespace SKitLs.Bots.Telegram.Core.Prototypes
+﻿namespace SKitLs.Bots.Telegram.Core.Prototypes
 {
-    public interface IOutputEdit
+    public interface IOutputEdit : IOutputMessage
     {
-        public int EditMessageId { get; set; }
-        public InlineKeyboardMarkup? InlineMarkup { get; }
+        public int EditMessageId { get; }
     }
 }

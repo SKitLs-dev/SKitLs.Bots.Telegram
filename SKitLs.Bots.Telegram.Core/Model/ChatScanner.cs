@@ -117,7 +117,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
             };
 
             if (suitHandler is not null)
-            {x
+            {
                 await suitHandler.HandleUpdateAsync(update, sender);
             }
             if (sender is not null && UsersManager is not null && UsersManager.SignedEventHandled is not null)

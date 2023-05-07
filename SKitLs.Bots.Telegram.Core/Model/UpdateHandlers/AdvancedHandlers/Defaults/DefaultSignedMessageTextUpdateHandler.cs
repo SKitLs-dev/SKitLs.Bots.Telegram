@@ -10,17 +10,23 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.AdvancedHandlers.Defaul
 {
     public class DefaultSignedMessageTextUpdateHandler : IUpdateHandlerBase<SignedMessageTextUpdate>
     {
-        public BotManager Owner { get; private set; }
+        public BotManager Owner { get; private set; } = null!;
         public Func<string, bool> IsCommand { get; set; }
         public IActionManager<IBotAction<SignedMessageTextUpdate>, SignedMessageTextUpdate> CommandsManager { get; set; }
         public IActionManager<IBotAction<SignedMessageTextUpdate>, SignedMessageTextUpdate> TextInputManager { get; set; }
 
-        public DefaultSignedMessageTextUpdateHandler(BotManager owner)
+        public DefaultSignedMessageTextUpdateHandler()
         {
-            Owner = owner;
-            CommandsManager = new DefaultActionManager<SignedMessageTextUpdate>(owner);
-            TextInputManager = new DefaultActionManager<SignedMessageTextUpdate>(owner);
+            CommandsManager = new DefaultActionManager<SignedMessageTextUpdate>();
+            TextInputManager = new DefaultActionManager<SignedMessageTextUpdate>();
             IsCommand = (input) => input.StartsWith('/');
+        }
+
+        public void Compile(BotManager manager)
+        {
+            Owner = manager;
+            CommandsManager.Compile(manager);
+            TextInputManager.Compile(manager);
         }
 
         public async Task HandleUpdateAsync(CastedUpdate update, IBotUser? sender)

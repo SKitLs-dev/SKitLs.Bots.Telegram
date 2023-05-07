@@ -52,6 +52,33 @@ namespace SKitLs.Bots.Telegram.Core.Model.DelieverySystem
             return res;
         }
 
+
+        public async Task<DelieveryResponse> SendMessageToChatAsync(IOutputMessage message, long chatId, CancellationTokenSource? cts = null)
+        {
+            cts ??= new();
+            try
+            {
+                await Bot.SendTextMessageAsync(
+                    chatId: chatId,
+                    text: message.GetMessageText(),
+                    parseMode: message.ParseMode,
+                    // Entity   entites
+                    // bool     disableWebPagePreview
+                    // bool     disableNotification
+                    // bool     protectContent
+                    // [ long     replyToMessageId
+                    // bool     allowSendingWithoutReply ]
+                    replyMarkup: message.Markup,
+                    cancellationToken: cts.Token);
+                return DelieveryResponse.OK();
+            }
+            catch (Exception e)
+            {
+                cts.Cancel();
+                return DelieveryResponse.Forbidden(e);
+            }
+        }
+
         public async Task<DelieveryResponse> SendMessageToChatAsync(string message, long chatId, CancellationTokenSource? cts = null)
         {
             cts ??= new();
@@ -60,29 +87,27 @@ namespace SKitLs.Bots.Telegram.Core.Model.DelieverySystem
                 await Bot.SendTextMessageAsync(
                     chatId: chatId,
                     text: message,
+                    parseMode: ParseMode.Markdown,
+                    // Entity   entites
+                    // bool     disableWebPagePreview
+                    // bool     disableNotification
+                    // bool     protectContent
+                    // [ long     replyToMessageId
+                    // bool     allowSendingWithoutReply ]
                     cancellationToken: cts.Token);
                 return DelieveryResponse.OK();
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 cts.Cancel();
-                return DelieveryResponse.Forbidden();
+                return DelieveryResponse.Forbidden(e);
             }
         }
 
-        public Task<DelieveryResponse> SendMessageToChatAsync(IOutputMessage message, long chatId, CancellationTokenSource? cts = null)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<DelieveryResponse> ReplyToSender(string message, ISignedUpdate update, CancellationTokenSource? cts = null)
-        {
-            throw new NotImplementedException();
-        }
+            => SendMessageToChatAsync(message, update.Sender.TelegramId, cts);
 
         public Task<DelieveryResponse> ReplyToSender(IOutputMessage message, ISignedUpdate update, CancellationTokenSource? cts = null)
-        {
-            throw new NotImplementedException();
-        }
+            => SendMessageToChatAsync(message, update.Sender.TelegramId, cts);
     }
 }

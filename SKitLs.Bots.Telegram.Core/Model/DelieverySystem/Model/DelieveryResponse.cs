@@ -5,6 +5,7 @@
         public SendStatusCode StatusCode { get; set; }
         public bool Success => StatusCode == SendStatusCode.OK;
         public string Message { get; set; }
+        public Exception? Exception { get; set; }
 
         private DelieveryResponse(string message)
         {
@@ -18,8 +19,11 @@
         }
 
         public static DelieveryResponse OK() => new("OK");
-        public static DelieveryResponse Forbidden()
-            => new("Пользователь запретил боту писать ему", SendStatusCode.Forbidden);
+        public static DelieveryResponse Forbidden(Exception e)
+            => new("Пользователь запретил боту писать ему", SendStatusCode.Forbidden)
+            {
+                Exception = e
+            };
         public static DelieveryResponse NoEditMessageId()
             => new("ID сообщения для редактирования не было определено", SendStatusCode.NoEditMessageId);
         public static DelieveryResponse UnknownMessageType()

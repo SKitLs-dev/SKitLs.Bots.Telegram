@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Prototype\" />
+    <ProjectReference Include="..\SKitLs.Bots.Telegram.Interactions\SKitLs.Bots.Telegram.Interactions.csproj" />
+    <ProjectReference Include="..\SKitLs.Bots.Telegram.Management\SKitLs.Bots.Telegram.Management.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SKitLs.Bots.Telegram.Interactions\SKitLs.Bots.Telegram.Interactions.csproj" />
-    <ProjectReference Include="..\SKitLs.Bots.Telegram.Management\SKitLs.Bots.Telegram.Management.csproj" />
+    <Folder Include="Defaults\" />
   </ItemGroup>
 
 </Project>

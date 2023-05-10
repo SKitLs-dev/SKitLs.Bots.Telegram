@@ -43,7 +43,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
                 data.Add(new()
                 {
                     InlineKeyboardButton.WithCallbackData("<< Назад",
-                        DefaultMenuManager.BuildMenuCallback(owner, previous))
+                        DefaultMenuManager.BuildBackCallback(previous))
                 });
             return new(data);
         }

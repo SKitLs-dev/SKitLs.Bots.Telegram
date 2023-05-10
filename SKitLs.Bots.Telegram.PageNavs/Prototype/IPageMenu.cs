@@ -10,6 +10,6 @@ namespace SKitLs.Bots.Telegram.PageNavs.Prototype
         public bool Remove(IPageWrap page);
         public void ExitTo(IPageWrap? page);
 
-        public InlineKeyboardMarkup Build(IPageWrap previous, IPageWrap owner);
+        public InlineKeyboardMarkup Build(IPageWrap? previous, IPageWrap owner);
     }
 }

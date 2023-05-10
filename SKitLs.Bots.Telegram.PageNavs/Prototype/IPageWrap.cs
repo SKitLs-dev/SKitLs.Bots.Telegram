@@ -1,4 +1,4 @@
-﻿using SKitLs.Bots.Telegram.Core.Prototypes;
+﻿using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 
 namespace SKitLs.Bots.Telegram.PageNavs.Prototype
 {
@@ -7,7 +7,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Prototype
         public string PageID { get; }
         public IOutputMessage Source { get; }
 
-        public IOutputMessage BuildMessage(IPageWrap previous);
+        public IOutputMessage BuildMessage(IPageWrap? previous);
         public string GetLabel();
     }
 }

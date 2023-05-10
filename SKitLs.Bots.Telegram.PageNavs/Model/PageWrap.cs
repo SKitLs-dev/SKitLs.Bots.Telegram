@@ -1,7 +1,5 @@
-﻿using SKitLs.Bots.Telegram.Core.Prototypes;
+﻿using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using SKitLs.Bots.Telegram.PageNavs.Prototype;
-using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 
 namespace SKitLs.Bots.Telegram.PageNavs.Model
 {
@@ -11,11 +9,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
 
         public IOutputMessage Source { get; set; }
         public int EditMessageId { get; set; }
-        public ParseMode? ParseMode { get; set; }
-
         public IPageMenu? Menu { get; set; }
-        private IReplyMarkup _markup;
-        public IReplyMarkup? Markup => _markup;
 
         public string Label { get; set; }
 
@@ -28,10 +22,11 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         }
 
         public string GetLabel() => Label;
-        public IOutputMessage BuildMessage(IPageWrap previos)
+        public IOutputMessage BuildMessage(IPageWrap? previous)
         {
-            Source.Markup = Menu.Build(previos, this);
-            return Source;
+            var mes = (IOutputMessage)Source.Clone();
+            mes.Markup = Menu?.Build(previous, this);
+            return mes;
         }
     }
 }

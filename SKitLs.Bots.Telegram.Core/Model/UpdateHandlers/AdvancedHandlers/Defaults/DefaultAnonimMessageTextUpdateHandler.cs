@@ -1,4 +1,5 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.Interactions;
+﻿using SKitLs.Bots.Telegram.Core.Exceptions;
+using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.Management;
 using SKitLs.Bots.Telegram.Core.Model.Management.Defaults;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
@@ -9,7 +10,13 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.AdvancedHandlers.Defaul
 {
     public class DefaultAnonimMessageTextUpdateHandler : IUpdateHandlerBase<AnonimMessageTextUpdate>
     {
-        public BotManager Owner { get; private set; } = null!;
+        private BotManager? _owner;
+        public BotManager Owner
+        {
+            get => _owner ?? throw new NullOwnerException();
+            set => _owner = value;
+        }
+        public Action<object, BotManager>? OnCompilation => null;
 
         public Func<string, bool> IsCommand { get; set; }
         public IActionManager<IBotAction<AnonimMessageTextUpdate>, AnonimMessageTextUpdate> CommandsManager { get; set; }
@@ -20,12 +27,6 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.AdvancedHandlers.Defaul
             CommandsManager = new DefaultActionManager<AnonimMessageTextUpdate>();
             TextInputManager = new DefaultActionManager<AnonimMessageTextUpdate>();
             IsCommand = (input) => input.StartsWith('/');
-        }
-        public void Compile(BotManager manager)
-        {
-            Owner = manager;
-            CommandsManager.Compile(manager);
-            TextInputManager.Compile(manager);
         }
 
         public async Task HandleUpdateAsync(CastedUpdate update, IBotUser? sender)

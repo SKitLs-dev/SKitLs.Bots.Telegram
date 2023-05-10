@@ -8,6 +8,7 @@
         #region Bot Manager
         public bool ShouldPrintUpdates { get; set; } = true;
         public bool ShouldPrintExceptions { get; set; } = true;
+        public bool ShouldPrintExceptionTrace { get; set; } = false;
 
         public bool Nfy_ChatNotHandled { get; set; } = true;
         public bool Nfy_ChatIdNotHandled { get; set; } = true;

@@ -1,6 +1,7 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Model;
+﻿using SKitLs.Bots.Telegram.Core.Exceptions;
+using SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Model;
+using SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Protoype;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
-using SKitLs.Bots.Telegram.Core.Prototypes;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using TEnums = Telegram.Bot.Types.Enums;
@@ -9,13 +10,15 @@ namespace SKitLs.Bots.Telegram.Core.Model.DelieverySystem
 {
     public class DefaultDelieveryService : IDelieveryService
     {
-        public BotManager Owner { get; set; }
+        private BotManager? _owner;
+        public BotManager Owner
+        {
+            get => _owner ?? throw new NullOwnerException();
+            set => _owner = value;
+        }
+        public Action<object, BotManager>? OnCompilation => null;
         private ITelegramBotClient Bot => Owner.Bot;
 
-        public DefaultDelieveryService(BotManager owner)
-        {
-            Owner = owner;
-        }
         public bool IsParseSafe(ParseMode mode, string part) => mode switch
         {
             TEnums.ParseMode.Markdown => IsMarkdownSafe(part),
@@ -52,8 +55,13 @@ namespace SKitLs.Bots.Telegram.Core.Model.DelieverySystem
             return res;
         }
 
-
-        public async Task<DelieveryResponse> SendMessageToChatAsync(IOutputMessage message, long chatId, CancellationTokenSource? cts = null)
+        public async Task<DelieveryResponse> ReplyToSender(string message, ISignedUpdate update, CancellationTokenSource? cts = null)
+            => await SendMessageToChatAsync(message, update.Sender.TelegramId, cts);
+        public async Task<DelieveryResponse> ReplyToSender(IBuildableMessage message, ISignedUpdate update, CancellationTokenSource? cts = null)
+            => await SendMessageToChatAsync(message, update.Sender.TelegramId, cts);
+        public async Task<DelieveryResponse> SendMessageToChatAsync(string message, long chatId, CancellationTokenSource? cts = null)
+            => await SendMessageToChatAsync(new BuildableMessage(message), chatId, cts);
+        public async Task<DelieveryResponse> SendMessageToChatAsync(IBuildableMessage message, long chatId, CancellationTokenSource? cts = null)
         {
             cts ??= new();
             try
@@ -61,39 +69,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.DelieverySystem
                 await Bot.SendTextMessageAsync(
                     chatId: chatId,
                     text: message.GetMessageText(),
-                    parseMode: message.ParseMode,
-                    // Entity   entites
-                    // bool     disableWebPagePreview
-                    // bool     disableNotification
-                    // bool     protectContent
-                    // [ long     replyToMessageId
-                    // bool     allowSendingWithoutReply ]
-                    replyMarkup: message.Markup,
-                    cancellationToken: cts.Token);
-                return DelieveryResponse.OK();
-            }
-            catch (Exception e)
-            {
-                cts.Cancel();
-                return DelieveryResponse.Forbidden(e);
-            }
-        }
-
-        public async Task<DelieveryResponse> SendMessageToChatAsync(string message, long chatId, CancellationTokenSource? cts = null)
-        {
-            cts ??= new();
-            try
-            {
-                await Bot.SendTextMessageAsync(
-                    chatId: chatId,
-                    text: message,
                     parseMode: ParseMode.Markdown,
-                    // Entity   entites
-                    // bool     disableWebPagePreview
-                    // bool     disableNotification
-                    // bool     protectContent
-                    // [ long     replyToMessageId
-                    // bool     allowSendingWithoutReply ]
                     cancellationToken: cts.Token);
                 return DelieveryResponse.OK();
             }
@@ -103,11 +79,5 @@ namespace SKitLs.Bots.Telegram.Core.Model.DelieverySystem
                 return DelieveryResponse.Forbidden(e);
             }
         }
-
-        public Task<DelieveryResponse> ReplyToSender(string message, ISignedUpdate update, CancellationTokenSource? cts = null)
-            => SendMessageToChatAsync(message, update.Sender.TelegramId, cts);
-
-        public Task<DelieveryResponse> ReplyToSender(IOutputMessage message, ISignedUpdate update, CancellationTokenSource? cts = null)
-            => SendMessageToChatAsync(message, update.Sender.TelegramId, cts);
     }
 }

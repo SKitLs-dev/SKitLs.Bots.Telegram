@@ -5,21 +5,27 @@ using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.Core.Prototypes;
 using Telegram.Bot.Types.Enums;
 
+// TODO
 namespace SKitLs.Bots.Telegram.Core.Model.Builders
 {
     /// <summary>
-    /// Класс-конструктор для определения поведения бота в определённом типе чата.
-    /// Типы чатов <see cref="ChatType"/>
+    /// Chat Handler creating proccess enter point. <see cref="ChatScanner"/> class wizard constructor.
+    /// Each chat handles update in a certain chat type <see cref="ChatType"/>.
     /// </summary>
     public class ChatDesigner
     {
+        /// <summary>
+        /// Constructing instance.
+        /// </summary>
         private readonly ChatScanner _updateHandler;
+        /// <summary>
+        /// Creates a new instance of the wizard constructor.
+        /// </summary>
         private ChatDesigner() => _updateHandler = new ChatScanner();
         /// <summary>
-        /// Создание нового конструктора поведения
+        /// Creates a new instance of the wizard constructor.
         /// </summary>
-        /// <returns></returns>
-        public static ChatDesigner NewChatDesigner() => new();
+        public static ChatDesigner NewDesigner() => new();
 
         /// <summary>
         /// Устанавливает для чата <see cref="TypedChatUpdateHandler.UsersManager"/>, осуществляющего

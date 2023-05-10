@@ -1,4 +1,6 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers;
+﻿using SKitLs.Bots.Telegram.Core.Exceptions;
+using SKitLs.Bots.Telegram.Core.Model.Builders;
+using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonim;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
@@ -6,6 +8,7 @@ using SKitLs.Bots.Telegram.Core.Prototypes;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
+// TODO
 namespace SKitLs.Bots.Telegram.Core.Model
 {
     /// <summary>
@@ -14,8 +17,18 @@ namespace SKitLs.Bots.Telegram.Core.Model
     /// Determines how bot should react on different triggers in defined chat type.
     /// Released in <see cref="BotManager"/>.
     /// </summary>
-    internal class ChatScanner
+    public class ChatScanner : IOwnerCompilable
     {
+        public string? DebugName { get; set; }
+
+        private BotManager? _owner;
+        public BotManager Owner
+        {
+            get => _owner ?? throw new NullOwnerException();
+            set => _owner = value;
+        }
+        public Action<object, BotManager>? OnCompilation => null;
+
         /// <summary>
         /// Менеджер, осуществояющий управление авторизованными пользователями и связью с БД.
         /// Внешняя подключаемая служба.
@@ -150,5 +163,9 @@ namespace SKitLs.Bots.Telegram.Core.Model
                 return update.MyChatMember.From?.Id;
             else return null;
         }
+
+        public override string? ToString() => DebugName is not null
+            ? $"{DebugName} ({Owner.DebugName})"
+            : base.ToString();
     }
 }

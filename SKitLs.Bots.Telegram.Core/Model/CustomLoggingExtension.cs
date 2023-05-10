@@ -1,20 +1,25 @@
-﻿using SKitLs.Bots.Telegram.Core.external.Loggers;
+﻿using SKitLs.Bots.Telegram.Core.Exceptions;
+using SKitLs.Bots.Telegram.Core.external.LocalizedLoggers;
+using SKitLs.Bots.Telegram.Core.external.Loggers;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
 namespace SKitLs.Bots.Telegram.Core.Model
 {
-    public static class CustomLogging
+    public static class CustomLoggingExtension
     {
         private static string NoTitle => "NoTitle";
         private static string NoUserTag => "NoTag";
         private static int MaxMessageContentLength => 16;
 
-        public static void Log(this ILogger logger, Exception exception)
+        public static void Log(this ILocalizedLogger logger, Exception exception)
         {
             string errorMes = exception switch
             {
+                SKTgException sktg => $"SKitLs.Bots.Telegram Error:" +
+                $"\n> {logger.Localizator.ResolveString(logger.Owner.Settings.DebugLanguage, sktg.LocalKey, sktg.Format)}" +
+                $"{(logger.Owner.DebugSettings.ShouldPrintExceptionTrace ? $"\n{sktg.StackTrace}" : string.Empty)}",
                 ApiRequestException apiRequestException
                     => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n" +
                     $"{apiRequestException.Message}",
@@ -23,7 +28,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
             };
             logger.Error(errorMes);
         }
-        public static void Log(this ILogger logger, Update update, bool warn = false)
+        public static void Log(this ILocalizedLogger logger, Update update, bool warn = false)
         {
             string sender = " - From: ";
             string content = " - Content: ";

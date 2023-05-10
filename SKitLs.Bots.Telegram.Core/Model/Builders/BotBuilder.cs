@@ -1,103 +1,99 @@
-﻿namespace SKitLs.Bots.Telegram.Core.Model.Builders
+﻿using SKitLs.Bots.Telegram.Core.Model.DelieverySystem;
+
+namespace SKitLs.Bots.Telegram.Core.Model.Builders
 {
     /// <summary>
-    /// Bot creating enter point. <see cref="BotManager"/> class wizard constructor.
+    /// Bot creating proccess enter point. <see cref="BotManager"/> class wizard constructor.
     /// </summary>
     public class BotBuilder
     {
+        /// <summary>
+        /// Constructing instance.
+        /// </summary>
         private readonly BotManager _botManager;
 
-        private BotBuilder(string token) => _botManager = new(token, TgApp.Localizator);
+        /// <summary>
+        /// Creates a new instance of the wizard constructor.
+        /// </summary>
+        /// <param name="token">Telegram bot's token</param>
+        private BotBuilder(string token) => _botManager = new(token);
+        /// <summary>
+        /// Creates a new instance of the wizard constructor.
+        /// </summary>
+        /// <param name="token">Telegram bot's token</param>
         public static BotBuilder NewBuilder(string token) => new(token);
 
-        //// TODO
-        //#region Converter Assets
-        ///// <summary>
-        ///// Очищает список предустановленных правил конвертаций
-        ///// </summary>
-        ///// <returns></returns>
-        //public BotBuilder ClearConverterRules()
-        //{
-        //    ArgsConverter.Instance.Clear();
-        //    return this;
-        //}
-        ///// <summary>
-        ///// Добавляет новое правило конвертации входящего текстового сообщения в пользовательский класс
-        ///// </summary>
-        ///// <typeparam name="TResult">Целевой тип конвертации</typeparam>
-        ///// <param name="convertRule">Правило конвертации</param>
-        //public BotBuilder AddConvertRule<TResult>(ConvertRule<TResult> convertRule)
-        //{
-        //    ArgsConverter.Instance.AddRule(convertRule);
-        //    return this;
-        //}
-        //#endregion
-
-        public BotBuilder EnablePrivates()
+        /// <summary>
+        /// Enables private chats' handling. Uses vanilla <see cref="ChatScanner"/> by default.
+        /// </summary>
+        /// <param name="builder">Customized <see cref="ChatScanner"/> desiner. Can be null to use default.</param>
+        public BotBuilder EnablePrivates(ChatDesigner? builder = null)
         {
-            _botManager.PrivateChatUpdateHandler = new ChatScanner();
+            _botManager.PrivateChatUpdateHandler = builder?.Build() ?? new();
+            _botManager.PrivateChatUpdateHandler.DebugName = nameof(_botManager.PrivateChatUpdateHandler);
             return this;
         }
         /// <summary>
-        /// Включает в менеджер бота правила обработки обновлений из личных чатов
+        /// Enables groups' handling. Uses vanilla <see cref="ChatScanner"/> by default.
         /// </summary>
-        /// <param name="builder">Конструктор с собранными правилами</param>
-        public BotBuilder EnablePrivatesWith(ChatDesigner builder)
+        /// <param name="builder">Customized <see cref="ChatScanner"/> desiner. Can be null to use default.</param>
+        public BotBuilder EnableGroupWith(ChatDesigner? builder = null)
         {
-            _botManager.PrivateChatUpdateHandler = builder.Build();
-            return this;
-        }
-        public BotBuilder EnableGroups()
-        {
-            _botManager.GroupChatUpdateHandler = new ChatScanner();
+            _botManager.GroupChatUpdateHandler = builder?.Build() ?? new();
+            _botManager.GroupChatUpdateHandler.DebugName = nameof(_botManager.GroupChatUpdateHandler);
             return this;
         }
         /// <summary>
-        /// Включает в менеджер бота правила обработки обновлений из бесед
+        /// Enables supergroups' handling. Uses vanilla <see cref="ChatScanner"/> by default.
         /// </summary>
-        /// <param name="builder">Конструктор с собранными правилами</param>
-        public BotBuilder EnableGroupWith(ChatDesigner builder)
+        /// <param name="builder">Customized <see cref="ChatScanner"/> desiner. Can be null to use default.</param>
+        public BotBuilder EnableSupergroupsWith(ChatDesigner? builder = null)
         {
-            _botManager.GroupChatUpdateHandler = builder.Build();
-            return this;
-        }
-        public BotBuilder EnableSupergroups()
-        {
-            _botManager.SupergroupChatUpdateHandler = new ChatScanner();
+            _botManager.SupergroupChatUpdateHandler = builder?.Build() ?? new();
+            _botManager.SupergroupChatUpdateHandler.DebugName = nameof(_botManager.SupergroupChatUpdateHandler);
             return this;
         }
         /// <summary>
-        /// Включает в менеджер бота правила обработки обновлений из супер-бесед
+        /// Enables channels' handling. Uses vanilla <see cref="ChatScanner"/> by default.
         /// </summary>
-        /// <param name="builder">Конструктор с собранными правилами</param>
-        public BotBuilder EnableSupergroupsWith(ChatDesigner builder)
+        /// <param name="builder">Customized <see cref="ChatScanner"/> desiner. Can be null to use default.</param>
+        public BotBuilder EnableChannelsWith(ChatDesigner? builder = null)
         {
-            _botManager.SupergroupChatUpdateHandler = builder.Build();
-            return this;
-        }
-        public BotBuilder EnableChannels()
-        {
-            _botManager.ChannelChatUpdateHandler = new ChatScanner();
-            return this;
-        }
-        /// <summary>
-        /// Включает в менеджер бота правила обработки обновлений из каналов
-        /// </summary>
-        /// <param name="builder">Конструктор с собранными правилами</param>
-        public BotBuilder EnableChannelsWith(ChatDesigner builder)
-        {
-            _botManager.ChannelChatUpdateHandler = builder.Build();
+            _botManager.ChannelChatUpdateHandler = builder?.Build() ?? new();
+            _botManager.ChannelChatUpdateHandler.DebugName = nameof(_botManager.ChannelChatUpdateHandler);
             return this;
         }
 
         /// <summary>
-        /// Возвращает собранного менеджера бота
+        /// Uses custom <see cref="IDelieveryService"/> for messages sending.
         /// </summary>
-        /// <returns></returns>
-        public BotManager Build()
+        /// <param name="delievery">Custom service to be implemented</param>
+        public BotBuilder CustomDelievery(IDelieveryService delievery)
         {
+            _botManager.DelieveryService = delievery;
+            return this;
+        }
 
-            _botManager;
+        /// <summary>
+        /// Adds a new service of a type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">Interface type of a service</typeparam>
+        /// <param name="service">Service to be stored</param>
+        public BotBuilder AddService<T>(T service) where T : notnull
+        {
+            _botManager.AddService(service);
+            return this;
+        }
+
+        /// <summary>
+        /// Compiles created instance and returns the built one.
+        /// </summary>
+        /// <param name="debugName">Custom debug name (<see cref="BotManager.DebugName"/>)</param>
+        public BotManager Build(string? debugName = null)
+        {
+            _botManager.DebugName = debugName;
+            _botManager.ReflectiveCompile();
+            return _botManager;
         }
     }
 }

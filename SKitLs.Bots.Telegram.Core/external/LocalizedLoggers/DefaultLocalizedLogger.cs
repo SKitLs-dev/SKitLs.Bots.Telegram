@@ -1,10 +1,20 @@
-﻿using SKitLs.Bots.Telegram.Core.external.Localizations;
+﻿using SKitLs.Bots.Telegram.Core.Exceptions;
+using SKitLs.Bots.Telegram.Core.external.Localizations;
 using SKitLs.Bots.Telegram.Core.external.Loggers;
+using SKitLs.Bots.Telegram.Core.Model;
 
 namespace SKitLs.Bots.Telegram.Core.external.LocalizedLoggers
 {
     public class DefaultLocalizedLogger : DefaultConsoleLogger, ILocalizedLogger
     {
+        private BotManager? _owner;
+        public BotManager Owner
+        {
+            get => _owner ?? throw new NullOwnerException();
+            set => _owner = value;
+        }
+        public Action<object, BotManager>? OnCompilation => null;
+
         public LangKey DefaultLanguage { get; set; }
         public ILocalizator Localizator { get; private set; }
 

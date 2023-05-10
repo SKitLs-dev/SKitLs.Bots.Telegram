@@ -1,4 +1,5 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+﻿using SKitLs.Bots.Telegram.Core.Exceptions;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonim;
 using SKitLs.Bots.Telegram.Core.Prototypes;
 using Telegram.Bot.Types.Enums;
@@ -7,18 +8,19 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.AdvancedHandlers.Defaul
 {
     public class DefaultAnonimMessageUpdateHandler : IUpdateHandlerBase<AnonimMessageUpdate>
     {
-        public BotManager Owner { get; private set; } = null!; 
+        private BotManager? _owner;
+        public BotManager Owner
+        {
+            get => _owner ?? throw new NullOwnerException();
+            set => _owner = value;
+        }
+        public Action<object, BotManager>? OnCompilation => null;
 
         public IUpdateHandlerBase<AnonimMessageTextUpdate>? TextMessageUpdateHandler { get; set; }
 
         public DefaultAnonimMessageUpdateHandler()
         {
             TextMessageUpdateHandler = new DefaultAnonimMessageTextUpdateHandler();
-        }
-        public void Compile(BotManager manager)
-        {
-            Owner = manager;
-            TextMessageUpdateHandler?.Compile(manager);
         }
 
         public async Task HandleUpdateAsync(CastedUpdate update, IBotUser? sender)

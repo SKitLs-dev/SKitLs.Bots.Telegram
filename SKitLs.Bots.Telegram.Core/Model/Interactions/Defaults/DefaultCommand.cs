@@ -16,7 +16,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
         }
 
         public virtual bool ShouldBeExecutedOn(SignedMessageTextUpdate update)
-            => ActionBase == update.Text;
+            => $"/{ActionBase}" == update.Text;
 
         public bool Equals(IBotAction<ICastedUpdate>? other)
         {

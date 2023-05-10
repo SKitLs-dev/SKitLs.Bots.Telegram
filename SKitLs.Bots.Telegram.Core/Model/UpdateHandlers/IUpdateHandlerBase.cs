@@ -1,13 +1,11 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+﻿using SKitLs.Bots.Telegram.Core.Model.Builders;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Prototypes;
 
 namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers
 {
-    public interface IUpdateHandlerBase
+    public interface IUpdateHandlerBase : IOwnerCompilable
     {
-        public BotManager Owner { get; }
-        public void Compile(BotManager manager);
-
         public Task HandleUpdateAsync(CastedUpdate update, IBotUser? sender);
     }
     public interface IUpdateHandlerBase<TUpdate> : IUpdateHandlerBase where TUpdate : ICastedUpdate

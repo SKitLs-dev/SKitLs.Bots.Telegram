@@ -1,21 +1,20 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.Interactions;
+﻿using SKitLs.Bots.Telegram.Core.Exceptions;
+using SKitLs.Bots.Telegram.Core.Model.Builders;
+using SKitLs.Bots.Telegram.Core.Model.Interactions;
+using SKitLs.Bots.Telegram.Core.Model.Management.Integration;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 
 namespace SKitLs.Bots.Telegram.Core.Model.Management.Defaults
 {
     public class DefaultActionManager<TUpdate> : IActionManager<IBotAction<TUpdate>, TUpdate> where TUpdate : CastedUpdate
     {
-        public BotManager Owner { get; set; } = null!;
-        public List<IBotAction<TUpdate>> Actions { get; private set; }
-
-        public DefaultActionManager()
+        private BotManager? _owner;
+        public BotManager Owner
         {
-            Actions = new();
+            get => _owner ?? throw new NullOwnerException();
+            set => _owner = value;
         }
-        public void Compile(BotManager manager)
-        {
-            Owner = manager;
-        }
+        public List<IBotAction<TUpdate>> Actions { get; private set; } = new();
 
         public async Task ManageUpdateAsync(TUpdate update)
         {
@@ -23,5 +22,18 @@ namespace SKitLs.Bots.Telegram.Core.Model.Management.Defaults
                 if (callback.ShouldBeExecutedOn(update))
                     await callback.Action(callback, update);
         }
+
+        public Action<object, BotManager>? OnCompilation => OnCompilationAction;
+        public void OnCompilationAction(object sender, BotManager owner)
+        {
+            preCompileActions.ForEach(x =>
+            {
+                x.Owner = owner;
+                x.GetActionsList().ForEach(act => Actions.Add(act));
+            });
+        }
+
+        private readonly List<ITgActorList<TUpdate>> preCompileActions = new();
+        public void Apply(ITgActorList<TUpdate> actions) => preCompileActions.Add(actions);
     }
 }

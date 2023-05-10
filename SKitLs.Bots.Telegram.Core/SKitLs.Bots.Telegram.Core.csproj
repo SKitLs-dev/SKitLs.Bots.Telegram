@@ -14,8 +14,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Telegram.Bot" Version="18.0.0" />
-    <PackageReference Include="Telegram.Bot.Extensions.Polling" Version="1.0.2" />
+    <None Remove="resources\locals\en.json" />
+    <None Remove="resources\locals\ru.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="resources\locals\en.json" />
+    <Resource Include="resources\locals\ru.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Telegram.Bot" Version="19.0.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿using SKitLs.Bots.Telegram.Core.Prototypes;
+﻿using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -20,9 +20,9 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model
             return this;
         }
 
-        public string GetMessageText()
-        {
-            throw new NotImplementedException();
-        }
+        public virtual string GetMessageText() => ToString() ?? GetType().Name;
+
+        // TODO
+        public abstract object Clone();
     }
 }

@@ -20,8 +20,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{40B461B5-A891-4D3A-BB7D-B9D43A4A7FDB}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		Argumenting.inf.txt = Argumenting.inf.txt
 		Leveling.inf.txt = Leveling.inf.txt
 		Overview.inf.txt = Overview.inf.txt
+		Paging.inf.txt = Paging.inf.txt
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SKitLs.Bots.Telegram.PageNavs", "SKitLs.Bots.Telegram.PageNavs\SKitLs.Bots.Telegram.PageNavs.csproj", "{17E98CC2-14A2-4FC6-BEFB-3AEA53891BE5}"

@@ -6,10 +6,16 @@
     /// <typeparam name="Out">Целевой тип конвертации</typeparam>
     public class ConvertResult<TOut>
     {
+        private TOut? _value;
         /// <summary>
         /// Значение результата конвертации.
         /// </summary>
-        public TOut? Value { get; set; }
+        public TOut Value
+        {
+            get => _value ?? throw new Exception();
+            set => _value = value;
+        }
+
         public Type ValueType { get; set; }
         /// <summary>
         /// Тип результата конвертации.
@@ -36,7 +42,7 @@
         public static ConvertResult<TOut> OK(TOut value)
             => new(typeof(TOut), "OK")
             {
-                Value = value,
+                _value = value,
                 ResultType = ConvertResultType.Ok,
             };
 
@@ -51,7 +57,7 @@
         public static ConvertResult<TOut> OK(TOut value, string caption)
             => new(typeof(TOut), caption)
             {
-                Value = value,
+                _value = value,
                 ResultType = ConvertResultType.Ok,
             };
 
@@ -64,7 +70,7 @@
         public static ConvertResult<TOut> NullInput()
             => new(typeof(TOut), "Введённые данные отсутствовали")
             {
-                Value = default,
+                _value = default,
                 ResultType = ConvertResultType.NullInput,
             };
 
@@ -77,7 +83,7 @@
         public static ConvertResult<TOut> Incorrect()
             => new(typeof(TOut), "Введённые данные имели неверный формат")
             {
-                Value = default,
+                _value = default,
                 ResultType = ConvertResultType.Incorrect,
             };
 
@@ -96,7 +102,7 @@
         public static ConvertResult<TOut> Incorrect(string definition, bool @override = false)
             => new(typeof(TOut), @override ? definition : "Введённые данные имели неверный формат: " + definition)
             {
-                Value = default,
+                _value = default,
                 ResultType = ConvertResultType.Incorrect
             };
 
@@ -109,7 +115,7 @@
         public static ConvertResult<TOut> NotPresented()
             => new(typeof(TOut), "Входные данные не были представлены в метаданных")
             {
-                Value = default,
+                _value = default,
                 ResultType = ConvertResultType.NotPresented
             };
 
@@ -123,7 +129,7 @@
         public static ConvertResult<TOut> NotPresented(string definition)
             => new(typeof(TOut), definition)
             {
-                Value = default,
+                _value = default,
                 ResultType = ConvertResultType.NotPresented,
             };
 
@@ -137,7 +143,7 @@
         internal static ConvertResult<TOut> NotDefined()
             => new(typeof(TOut), $"Converter rule for type {typeof(TOut)} is not defined")
             {
-                Value = default,
+                _value = default,
                 ResultType = ConvertResultType.NotDefinied,
             };
     }

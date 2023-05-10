@@ -182,9 +182,9 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting
                 throw new ConvertNullInputException();
             List<string> args = input.Split(splitToken).ToList();
 
-            ConvertRule<TOut>? rule = ResolveTypeRule<TOut>();
-            if (rule is null)
-                throw new Exception();
+            //ConvertRule<TOut>? rule = ResolveTypeRule<TOut>();
+            //if (rule is null)
+            //    throw new Exception();
 
             TOut arsHolder = new();
             var propsLinks = typeof(TOut).GetProperties()
@@ -195,12 +195,12 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting
             {
                 PropertyInfo prop = propsLinks[i];
                 Type propType = prop.PropertyType;
-                var cvrtRule = (ConvertRule<TOut>)Convert.ChangeType(
+                dynamic cvrtRule = Convert.ChangeType(
                     GetType().GetMethod(nameof(ResolveTypeRule))!
                     .MakeGenericMethod(propType).Invoke(this, null),
                     typeof(ConvertRule<>).MakeGenericType(propType))!;
 
-                prop.SetValue(arsHolder, cvrtRule.Converter(args[(int)i]));
+                prop.SetValue(arsHolder, cvrtRule.Converter(args[(int)i]).Value);
             }
 
             return ConvertResult<TOut>.OK(arsHolder);

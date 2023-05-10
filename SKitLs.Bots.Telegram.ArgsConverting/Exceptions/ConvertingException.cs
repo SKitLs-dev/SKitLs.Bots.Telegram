@@ -1,4 +1,11 @@
-﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Exceptions
+﻿using SKitLs.Bots.Telegram.Core.Exceptions;
+
+namespace SKitLs.Bots.Telegram.ArgedInteractions.Exceptions
 {
-    public class ConvertingException : Exception { }
+    public class ConvertingException : SKTgException
+    {
+        public ConvertingException() : base(true, "exceptions")
+        {
+        }
+    }
 }

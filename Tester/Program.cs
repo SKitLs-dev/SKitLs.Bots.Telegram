@@ -1,5 +1,7 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.Builders;
+﻿using SKitLs.Bots.Telegram.Core.Model;
+using SKitLs.Bots.Telegram.Core.Model.Builders;
 using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 
 namespace Tester
 {
@@ -24,15 +26,16 @@ namespace Tester
 
         static async Task Main(string[] args)
         {
-            ChatDesigner privates = ChatDesigner.NewChatDesigner();
-            privates.UseMessageHandler(new UHBInformer("Message", true, true));
+            ChatDesigner privates = ChatDesigner.NewDesigner();
+            privates.UseMessageHandler(new UHBInformer<SignedMessageUpdate>("Message", true, true));
 
-            // Customers Panel
-            // Couches Panel
+            //// Customers Panel
+            //// Couches Panel
 
-            BotBuilder builder = new("1884746031:AAF_JtOS882Uz33IXlNtpyyQUoLTGSkvP9I");
-            builder.EnablePrivatesWith(privates);
-            await builder.Build().Listen();
+            BotBuilder builder = BotBuilder.NewBuilder("1884746031:AAF_JtOS882Uz33IXlNtpyyQUoLTGSkvP9I");
+            builder.EnablePrivates(privates);
+            //await builder.Build().Listen();
+            builder.Build();
         }
     }
 }

@@ -3,9 +3,9 @@
     [AttributeUsage(AttributeTargets.Property)]
     public class BotActionArgumentAttribute : Attribute
     {
-        public uint ArgIndex { get; set; }
+        public int ArgIndex { get; set; }
 
-        public BotActionArgumentAttribute(uint argIndex)
+        public BotActionArgumentAttribute(int argIndex)
         {
             ArgIndex = argIndex;
         }

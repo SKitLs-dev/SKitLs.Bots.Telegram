@@ -1,8 +1,7 @@
 ﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Prototype
 {
-    [Obsolete]
-    public interface IArgObject
+    public interface IArgPackable
     {
-        public string Serialize();
+        public string GetPacked();
     }
 }

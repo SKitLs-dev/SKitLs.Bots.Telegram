@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include=".obsolete\ArgedAction.cs" />
+    <Compile Include=".obsolete\BotArgInteraction.cs" />
+    <Compile Include=".obsolete\InteractionArgBase.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Interactions\Prototype\" />
   </ItemGroup>
 

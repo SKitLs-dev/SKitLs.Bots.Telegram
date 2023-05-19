@@ -6,6 +6,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
     public class PageWrap : IPageWrap
     {
         public string PageID { get; set; }
+        public bool LockId { get; set; } = false;
 
         public IOutputMessage Source { get; set; }
         public int EditMessageId { get; set; }
@@ -15,18 +16,28 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
 
         public PageWrap(string pageId, string label, IOutputMessage message)
         {
-            PageID = pageId;
+            PageID = pageId.ToLower();
             Label = label;
             Source = message;
-            //Body = $"SKitLs Menu {pageId}";
         }
 
         public string GetLabel() => Label;
         public IOutputMessage BuildMessage(IPageWrap? previous)
         {
             var mes = (IOutputMessage)Source.Clone();
-            mes.Markup = Menu?.Build(previous, this);
+            mes.Menu = Menu?.Build(previous, this);
             return mes;
         }
+        public bool TryUpdatePageID(string text, bool append = false)
+        {
+            if (LockId) return false;
+
+            PageID = append
+            ? $"{PageID}{text}"
+            : $"{text}{PageID}";
+            return true;
+        }
+
+        public override string ToString() => PageID;
     }
 }

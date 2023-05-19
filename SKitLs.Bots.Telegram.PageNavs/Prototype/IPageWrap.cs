@@ -8,6 +8,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Prototype
         public IOutputMessage Source { get; }
 
         public IOutputMessage BuildMessage(IPageWrap? previous);
+        public bool TryUpdatePageID(string text, bool append = false);
         public string GetLabel();
     }
 }

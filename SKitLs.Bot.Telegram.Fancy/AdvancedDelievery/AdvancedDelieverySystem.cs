@@ -72,6 +72,11 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.AdvancedDelievery
 
         private async Task<DelieveryResponse> SendBuildableAsync(IBuildableMessage message, long chatId, CancellationTokenSource cts)
         {
+            // TODO
+            if (false) // Should be format && not format
+            {
+                Owner.LocalLogger.Warn("");
+            }
             try
             {
                 await Bot.SendTextMessageAsync(
@@ -101,7 +106,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.AdvancedDelievery
                     // bool     protectContent
                     // [ long     replyToMessageId
                     // bool     allowSendingWithoutReply ]
-                    replyMarkup: message.Markup,
+                    replyMarkup: message.Menu?.GetMarkup(),
                     cancellationToken: cts.Token);
                 return DelieveryResponse.OK();
             }
@@ -138,7 +143,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.AdvancedDelievery
         private async Task<DelieveryResponse> EditOutputAsync(IOutputMessage message, long chatId, int mesId, CancellationTokenSource cts)
         {
             // TODO
-            if (message.Markup is not InlineKeyboardMarkup inline) throw new NotImplementedException();
+            if (message.Menu is not InlineKeyboardMarkup inline) throw new NotImplementedException();
             try
             {
                 await Bot.EditMessageTextAsync(

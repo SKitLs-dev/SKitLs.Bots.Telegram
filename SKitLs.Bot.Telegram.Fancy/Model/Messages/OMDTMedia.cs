@@ -1,4 +1,4 @@
-﻿namespace SKitLs.Bots.Telegram.AdvancedMessages.Model
+﻿namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages
 {
     public enum MediaType
     {
@@ -13,12 +13,12 @@
         public double Longtitude { get; set; }
         public double Latitude { get; set; }
 
-        public OMDTMedia() { }
+        //public OMDTMedia() { }
         public OMDTMedia(string? message) : base(message) { }
 
         public bool IsValid => Type switch
         {
-            MediaType.Text => Sections.Count != 0,
+            //MediaType.Text => Sections.Count != 0,
             MediaType.Photo => MediaTempFile != null,
             _ => true,
         };

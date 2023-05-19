@@ -1,6 +1,4 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Model;
-using SKitLs.Bots.Telegram.Core.Prototypes;
-using Telegram.Bot;
+﻿using SKitLs.Bots.Telegram.Core.Prototypes;
 
 namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting
 {

@@ -1,20 +1,24 @@
 ﻿using SKitLs.Bots.Telegram.Core.Exceptions;
-using SKitLs.Bots.Telegram.Core.Model.Builders;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.Management.Integration;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+using System.Collections.ObjectModel;
 
 namespace SKitLs.Bots.Telegram.Core.Model.Management.Defaults
 {
-    public class DefaultActionManager<TUpdate> : IActionManager<IBotAction<TUpdate>, TUpdate> where TUpdate : CastedUpdate
+    public class DefaultActionManager<TUpdate> : ILinearActionManager<TUpdate> where TUpdate : ICastedUpdate
     {
+        public string? DebugName { get; set; }
+
         private BotManager? _owner;
         public BotManager Owner
         {
             get => _owner ?? throw new NullOwnerException();
             set => _owner = value;
         }
-        public List<IBotAction<TUpdate>> Actions { get; private set; } = new();
+        public Action<object, BotManager>? OnCompilation => null;
+
+        public ICollection<IBotAction<TUpdate>> Actions { get; private set; } = new Collection<IBotAction<TUpdate>>();
 
         public async Task ManageUpdateAsync(TUpdate update)
         {
@@ -23,17 +27,16 @@ namespace SKitLs.Bots.Telegram.Core.Model.Management.Defaults
                     await callback.Action(callback, update);
         }
 
-        public Action<object, BotManager>? OnCompilation => OnCompilationAction;
-        public void OnCompilationAction(object sender, BotManager owner)
-        {
-            preCompileActions.ForEach(x =>
-            {
-                x.Owner = owner;
-                x.GetActionsList().ForEach(act => Actions.Add(act));
-            });
-        }
+        // TODO
+        public void AddSafely(IBotAction<TUpdate> action) => Actions.Add(
+            Actions.Contains(action)
+            ? throw new Exception()
+            : action);
+        public void AddRangeSafely(ICollection<IBotAction<TUpdate>> actions) => actions
+            .ToList()
+            .ForEach(act => AddSafely(act));
+        public void Apply(IIntegratable<TUpdate> integration) => AddRangeSafely(integration.GetActionsList());
 
-        private readonly List<ITgActorList<TUpdate>> preCompileActions = new();
-        public void Apply(ITgActorList<TUpdate> actions) => preCompileActions.Add(actions);
+        public override string? ToString() => DebugName ?? base.ToString();
     }
 }

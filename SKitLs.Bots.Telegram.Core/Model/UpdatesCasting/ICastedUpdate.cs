@@ -5,6 +5,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting
 {
     public interface ICastedUpdate
     {
+        public BotManager Owner { get; }
         public Update OriginalSource { get; }
         public UpdateType Type => OriginalSource.Type;
 

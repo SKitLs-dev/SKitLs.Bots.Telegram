@@ -8,8 +8,8 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonim
     {
         public Message Message { get; set; }
 
-        public AnonimMessageUpdate(Update source, ChatType chatType, long chatId)
-            : base(source, chatType, chatId)
+        public AnonimMessageUpdate(BotManager owner, Update source, ChatType chatType, long chatId)
+            : base(owner, source, chatType, chatId)
         {
             if (source.Message is null)
                 throw new UpdateCastingException("Anonim Message", source.Id);
@@ -17,7 +17,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonim
             Message = source.Message;
         }
         public AnonimMessageUpdate(CastedUpdate update)
-            : this(update.OriginalSource, update.ChatType, update.ChatId)
+            : this(update.Owner, update.OriginalSource, update.ChatType, update.ChatId)
         { }
     }
 }

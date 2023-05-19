@@ -19,8 +19,8 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.AdvancedHandlers.Defaul
         public Action<object, BotManager>? OnCompilation => null;
 
         public Func<string, bool> IsCommand { get; set; }
-        public IActionManager<IBotAction<SignedMessageTextUpdate>, SignedMessageTextUpdate> CommandsManager { get; set; }
-        public IActionManager<IBotAction<SignedMessageTextUpdate>, SignedMessageTextUpdate> TextInputManager { get; set; }
+        public IActionManager<SignedMessageTextUpdate> CommandsManager { get; set; }
+        public IActionManager<SignedMessageTextUpdate> TextInputManager { get; set; }
 
         public DefaultSignedMessageTextUpdateHandler()
         {

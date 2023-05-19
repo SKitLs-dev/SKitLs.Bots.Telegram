@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SKitLs.Bots.Telegram.PageNavs", "SKitLs.Bots.Telegram.PageNavs\SKitLs.Bots.Telegram.PageNavs.csproj", "{17E98CC2-14A2-4FC6-BEFB-3AEA53891BE5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SKitLs.Bots.Telegram.BotProcesses", "SKitLs.Bots.Telegram.BotProcesses\SKitLs.Bots.Telegram.BotProcesses.csproj", "{CD7FC7AF-0D0D-45D1-8229-8A0F59A67537}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{17E98CC2-14A2-4FC6-BEFB-3AEA53891BE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17E98CC2-14A2-4FC6-BEFB-3AEA53891BE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17E98CC2-14A2-4FC6-BEFB-3AEA53891BE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD7FC7AF-0D0D-45D1-8229-8A0F59A67537}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD7FC7AF-0D0D-45D1-8229-8A0F59A67537}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD7FC7AF-0D0D-45D1-8229-8A0F59A67537}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD7FC7AF-0D0D-45D1-8229-8A0F59A67537}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,9 +3,8 @@ using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 
 namespace SKitLs.Bots.Telegram.Core.Model.Management.Integration
 {
-    public interface ITgActorList<TUpdate> where TUpdate : ICastedUpdate
+    public interface IIntegratable<TUpdate> where TUpdate : ICastedUpdate
     {
-        public BotManager Owner { set; }
-        public List<IBotAction<TUpdate>> GetActionsList();
+        public ICollection<IBotAction<TUpdate>> GetActionsList();
     }
 }

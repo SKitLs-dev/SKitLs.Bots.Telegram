@@ -1,14 +1,14 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model.Builders;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
-using SKitLs.Bots.Telegram.Core.Model.Management.Integration;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+using SKitLs.Bots.Telegram.Core.Prototypes;
 
 namespace SKitLs.Bots.Telegram.Core.Model.Management
 {
-    public interface IActionManager<TAction, TUpdate> : IOwnerCompilable where TAction : IBotAction<TUpdate> where TUpdate : CastedUpdate
+    public interface IActionManager<TUpdate> : IDebugNamed, IOwnerCompilable where TUpdate : ICastedUpdate
     {
-        public List<TAction> Actions { get; }
+        public void AddSafely(IBotAction<TUpdate> action);
+        public void AddRangeSafely(ICollection<IBotAction<TUpdate>> action);
         public Task ManageUpdateAsync(TUpdate update);
-        public void Apply(ITgActorList<TUpdate> actions);
     }
 }

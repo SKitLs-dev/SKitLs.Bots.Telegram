@@ -11,8 +11,8 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed
         public int TriggerMessageId { get; set; }
         public IBotUser Sender { get; set; }
 
-        public SignedMessageUpdate(Update source, ChatType chatType, long chatId, IBotUser sender)
-            : base(source, chatType, chatId)
+        public SignedMessageUpdate(BotManager owner, Update source, ChatType chatType, long chatId, IBotUser sender)
+            : base(owner, source, chatType, chatId)
         {
             if (source.Message is null)
                 throw new UpdateCastingException("Signed Message", source.Id);
@@ -22,7 +22,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed
             Sender = sender;
         }
         public SignedMessageUpdate(CastedUpdate update, IBotUser sender)
-            : this(update.OriginalSource, update.ChatType, update.ChatId, sender)
+            : this(update.Owner, update.OriginalSource, update.ChatType, update.ChatId, sender)
         { }
     }
 }

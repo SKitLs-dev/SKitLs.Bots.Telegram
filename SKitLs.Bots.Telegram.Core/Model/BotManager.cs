@@ -5,6 +5,7 @@ using SKitLs.Bots.Telegram.Core.Model.Builders;
 using SKitLs.Bots.Telegram.Core.Model.DelieverySystem;
 using SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Protoype;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+using SKitLs.Bots.Telegram.Core.Prototypes;
 using SKitLs.Bots.Telegram.Core.resources.Settings;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
@@ -106,10 +107,10 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <typeparam name="T">Interface type of a service</typeparam>
         /// <returns>Service of the requested type.</returns>
         /// <exception cref="ServiceNotDefinedException">Thrown when <typeparamref name="T"/> is not defined.</exception>
-        public object ResolveService<T>() where T : notnull
+        public T ResolveService<T>() where T : notnull
         {
             if (!Services.ContainsKey(typeof(T))) throw new ServiceNotDefinedException(typeof(T));
-            return Services[typeof(T)];
+            return (T)Services[typeof(T)];
         }
         #endregion
 
@@ -131,7 +132,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// Summoned during <see cref="BotManager"/> building.
         /// <para>See also: <seealso cref="BotBuilder.Build(string?)"/></para>
         /// </summary>
-        public void ReflectiveCompile()
+        internal void ReflectiveCompile()
         {
             GetType()
                 .GetProperties()
@@ -143,9 +144,9 @@ namespace SKitLs.Bots.Telegram.Core.Model
                     (cmpVal as IOwnerCompilable)!.ReflectiveCompile(cmpVal, this);
                 });
 
-            Services.Where(x => x.Value is IOwnerCompilable)
+            Services.Values.Where(x => x is IOwnerCompilable)
                 .ToList()
-                .ForEach(service => (service.Value as IOwnerCompilable)!.ReflectiveCompile(service, this));
+                .ForEach(service => (service as IOwnerCompilable)!.ReflectiveCompile(service, this));
         }
 
         /// <summary>
@@ -217,28 +218,20 @@ namespace SKitLs.Bots.Telegram.Core.Model
         {
             if (DebugSettings.ShouldPrintUpdates) LocalLogger.Log(update);
 
-            try
+            long chatId = ChatIdByUpdate_Safe(update);
+            ChatType senderChatType = ChatTypeByUpdate_Safe(update);
+            ChatScanner? _handler = senderChatType switch
             {
-                long chatId = ChatIdByUpdate_Safe(update);
-                ChatType senderChatType = ChatTypeByUpdate_Safe(update);
-                ChatScanner? _handler = senderChatType switch
-                {
-                    ChatType.Private => PrivateChatUpdateHandler,
-                    ChatType.Group => GroupChatUpdateHandler,
-                    ChatType.Supergroup => SupergroupChatUpdateHandler,
-                    ChatType.Channel => ChannelChatUpdateHandler,
-                    _ => null,
-                };
+                ChatType.Private => PrivateChatUpdateHandler,
+                ChatType.Group => GroupChatUpdateHandler,
+                ChatType.Supergroup => SupergroupChatUpdateHandler,
+                ChatType.Channel => ChannelChatUpdateHandler,
+                _ => null,
+            };
 
-                if (_handler is null) throw new BotManagerExcpetion(DebugSettings.Nfy_ChatTypeNotSupported, "ChatTypeNotSupported", Enum.GetName(typeof(ChatType), senderChatType));
+            if (_handler is null) throw new BotManagerExcpetion(DebugSettings.Nfy_ChatTypeNotSupported, "ChatTypeNotSupported", Enum.GetName(typeof(ChatType), senderChatType));
 
-                await _handler.HandleUpdateAsync(new CastedUpdate(update, senderChatType, chatId));
-            }
-            catch (Exception exception)
-            {
-                if (DebugSettings.ShouldPrintExceptions)
-                    LocalLogger.Log(exception);
-            }
+            await _handler.HandleUpdateAsync(new CastedUpdate(this, update, senderChatType, chatId));
         }
 
         /// <summary>

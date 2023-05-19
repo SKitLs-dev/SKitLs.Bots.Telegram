@@ -1,4 +1,5 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model.DelieverySystem;
+using SKitLs.Bots.Telegram.Core.Prototypes;
 
 namespace SKitLs.Bots.Telegram.Core.Model.Builders
 {

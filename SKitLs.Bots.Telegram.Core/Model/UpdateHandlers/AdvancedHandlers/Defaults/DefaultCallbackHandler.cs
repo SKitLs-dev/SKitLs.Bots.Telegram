@@ -18,7 +18,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.AdvancedHandlers.Defaul
         }
         public Action<object, BotManager>? OnCompilation => null;
 
-        public IActionManager<IBotAction<SignedCallbackUpdate>, SignedCallbackUpdate> CallbackManager { get; set; }
+        public IActionManager<SignedCallbackUpdate> CallbackManager { get; set; }
 
         public DefaultCallbackHandler()
         {

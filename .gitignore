@@ -4,7 +4,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
 # Internal Info Files
-*inf.*
+*.inf*
 Tester
 
 # User-specific files

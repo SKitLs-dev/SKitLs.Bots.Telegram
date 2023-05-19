@@ -87,7 +87,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         {
             IBotUser? sender = null;
             long? id = GetSenderId(update.OriginalSource);
-            if (id != null)
+            if (id is not null)
             {
                 if (UsersManager is not null)
                 {

@@ -19,8 +19,8 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.AdvancedHandlers.Defaul
         public Action<object, BotManager>? OnCompilation => null;
 
         public Func<string, bool> IsCommand { get; set; }
-        public IActionManager<IBotAction<AnonimMessageTextUpdate>, AnonimMessageTextUpdate> CommandsManager { get; set; }
-        public IActionManager<IBotAction<AnonimMessageTextUpdate>, AnonimMessageTextUpdate> TextInputManager { get; set; }
+        public IActionManager<AnonimMessageTextUpdate> CommandsManager { get; set; }
+        public IActionManager<AnonimMessageTextUpdate> TextInputManager { get; set; }
 
         public DefaultAnonimMessageTextUpdateHandler()
         {

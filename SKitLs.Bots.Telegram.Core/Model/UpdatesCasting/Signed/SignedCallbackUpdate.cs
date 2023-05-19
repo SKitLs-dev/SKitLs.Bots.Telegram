@@ -13,8 +13,8 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed
         public IBotUser Sender { get; set; }
         public string Data { get; set; }
 
-        public SignedCallbackUpdate(Update source, long chatId, ChatType chatType, IBotUser sender)
-            : base(source, chatType, chatId)
+        public SignedCallbackUpdate(BotManager owner, Update source, long chatId, ChatType chatType, IBotUser sender)
+            : base(owner, source, chatType, chatId)
         {
             if (source.CallbackQuery is null
                 || source.CallbackQuery.Data is null
@@ -29,7 +29,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed
         }
 
         public SignedCallbackUpdate(CastedUpdate update, IBotUser sender)
-            : this(update.OriginalSource, update.ChatId, update.ChatType, sender)
+            : this(update.Owner, update.OriginalSource, update.ChatId, update.ChatType, sender)
         { }
     }
 }

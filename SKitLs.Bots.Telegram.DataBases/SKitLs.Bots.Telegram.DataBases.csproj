@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SKitLs.Bots.Telegram.Core\SKitLs.Bots.Telegram.Core.csproj" />
+    <ProjectReference Include="..\SKitLs.Bots.Telegram.PageNavs\SKitLs.Bots.Telegram.PageNavs.csproj" />
+    <ProjectReference Include="..\SKitLs.Bots.Telegram.Stateful\SKitLs.Bots.Telegram.Stateful.csproj" />
   </ItemGroup>
 
 </Project>

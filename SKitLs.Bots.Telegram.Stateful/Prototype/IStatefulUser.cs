@@ -2,8 +2,8 @@
 
 namespace SKitLs.Bots.Telegram.Stateful.Prototype
 {
-    public interface ISatefulUser : IBotUser
+    public interface IStatefulUser : IBotUser
     {
-        public int StateID { get; }
+        public IUserState State { get; set; }
     }
 }

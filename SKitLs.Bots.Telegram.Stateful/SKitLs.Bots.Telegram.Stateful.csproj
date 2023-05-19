@@ -7,12 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SKitLs.Bot.Telegram.Fancy\SKitLs.Bots.Telegram.AdvancedMessages.csproj" />
     <ProjectReference Include="..\SKitLs.Bots.Telegram.Interactions\SKitLs.Bots.Telegram.Interactions.csproj" />
     <ProjectReference Include="..\SKitLs.Bots.Telegram.Management\SKitLs.Bots.Telegram.Management.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Defaults\" />
   </ItemGroup>
 
 </Project>

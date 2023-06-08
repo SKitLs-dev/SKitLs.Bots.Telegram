@@ -10,14 +10,11 @@ namespace SKitLs.Bots.Telegram.Core.Prototypes
     {
         public long Id => TelegramId;
         public long TelegramId { get; set; }
-        public int PermissionLevel { get; private set; }
         public string DisplayName { get; set; }
-        public int StateId => 0;
 
-        public DefaultBotUser(long id, int permissionLevel = -1)
+        public DefaultBotUser(long id)
         {
             TelegramId = id;
-            PermissionLevel = permissionLevel;
             DisplayName = "name";
         }
 

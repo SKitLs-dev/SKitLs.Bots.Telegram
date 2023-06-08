@@ -1,7 +1,8 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model.DelieverySystem;
-using SKitLs.Bots.Telegram.Core.Prototypes;
+using SKitLs.Bots.Telegram.Core.resources.Settings;
+using Telegram.Bot.Types.Enums;
 
-namespace SKitLs.Bots.Telegram.Core.Model.Builders
+namespace SKitLs.Bots.Telegram.Core.Model.Building
 {
     /// <summary>
     /// Bot creating proccess enter point. <see cref="BotManager"/> class wizard constructor.
@@ -9,15 +10,26 @@ namespace SKitLs.Bots.Telegram.Core.Model.Builders
     public class BotBuilder
     {
         /// <summary>
+        /// Bot's debug settings.
+        /// </summary>
+        public static DebugAssets DebugAssets { get; private set; }
+
+        static BotBuilder() => DebugAssets = new();
+
+        /// <summary>
         /// Constructing instance.
         /// </summary>
         private readonly BotManager _botManager;
-
         /// <summary>
         /// Creates a new instance of the wizard constructor.
         /// </summary>
         /// <param name="token">Telegram bot's token</param>
-        private BotBuilder(string token) => _botManager = new(token);
+        private BotBuilder(string token, DebugAssets? assests = null)
+        {
+            if (assests is not null)
+                DebugAssets = assests;
+            _botManager = new(token);
+        }
         /// <summary>
         /// Creates a new instance of the wizard constructor.
         /// </summary>
@@ -31,6 +43,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Builders
         public BotBuilder EnablePrivates(ChatDesigner? builder = null)
         {
             _botManager.PrivateChatUpdateHandler = builder?.Build() ?? new();
+            _botManager.PrivateChatUpdateHandler.ChatType = ChatType.Private;
             _botManager.PrivateChatUpdateHandler.DebugName = nameof(_botManager.PrivateChatUpdateHandler);
             return this;
         }
@@ -41,6 +54,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Builders
         public BotBuilder EnableGroupWith(ChatDesigner? builder = null)
         {
             _botManager.GroupChatUpdateHandler = builder?.Build() ?? new();
+            _botManager.GroupChatUpdateHandler.ChatType = ChatType.Private;
             _botManager.GroupChatUpdateHandler.DebugName = nameof(_botManager.GroupChatUpdateHandler);
             return this;
         }
@@ -51,6 +65,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Builders
         public BotBuilder EnableSupergroupsWith(ChatDesigner? builder = null)
         {
             _botManager.SupergroupChatUpdateHandler = builder?.Build() ?? new();
+            _botManager.SupergroupChatUpdateHandler.ChatType = ChatType.Private;
             _botManager.SupergroupChatUpdateHandler.DebugName = nameof(_botManager.SupergroupChatUpdateHandler);
             return this;
         }
@@ -61,12 +76,13 @@ namespace SKitLs.Bots.Telegram.Core.Model.Builders
         public BotBuilder EnableChannelsWith(ChatDesigner? builder = null)
         {
             _botManager.ChannelChatUpdateHandler = builder?.Build() ?? new();
+            _botManager.ChannelChatUpdateHandler.ChatType = ChatType.Private;
             _botManager.ChannelChatUpdateHandler.DebugName = nameof(_botManager.ChannelChatUpdateHandler);
             return this;
         }
 
         /// <summary>
-        /// Uses custom <see cref="IDelieveryService"/> for messages sending.
+        /// Sets custom <see cref="IDelieveryService"/> for messages sending.
         /// </summary>
         /// <param name="delievery">Custom service to be implemented</param>
         public BotBuilder CustomDelievery(IDelieveryService delievery)
@@ -94,6 +110,9 @@ namespace SKitLs.Bots.Telegram.Core.Model.Builders
         {
             _botManager.DebugName = debugName;
             _botManager.ReflectiveCompile();
+            _botManager.CollectActionsBasket();
+            _botManager.AddService(DebugAssets.Localizator);
+            _botManager.AddService(DebugAssets.LocalLogger);
             return _botManager;
         }
     }

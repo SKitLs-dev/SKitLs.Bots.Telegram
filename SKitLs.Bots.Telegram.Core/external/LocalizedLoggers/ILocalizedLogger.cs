@@ -1,10 +1,9 @@
 ﻿using SKitLs.Bots.Telegram.Core.external.Localizations;
 using SKitLs.Bots.Telegram.Core.external.Loggers;
-using SKitLs.Bots.Telegram.Core.Model.Builders;
 
 namespace SKitLs.Bots.Telegram.Core.external.LocalizedLoggers
 {
-    public interface ILocalizedLogger : ILogger, IOwnerCompilable
+    public interface ILocalizedLogger : ILogger
     {
         public LangKey DefaultLanguage { get; }
         public ILocalizator Localizator { get; }

@@ -37,16 +37,23 @@ namespace SKitLs.Bots.Telegram.Core.external.Localizations
         }
 
         public string ResolveString(LangKey lang, string key, params string?[] format)
+            => IResolveString(lang, key, format) ?? NotDef(lang, key, format);
+        private string? IResolveString(LangKey lang, string key, params string?[] format)
         {
-            if (!Localizations.ContainsKey(lang))
-            {
-                if (lang == LangKey.EN) return "String Data is not defined";
-                else return ResolveString(LangKey.EN, key, format);
-            }
-            
-            if (!Localizations[lang].ContainsKey(key)) return ResolveString(lang, NotDefinedKey, key);
-            
+            if (!(Localizations.ContainsKey(lang) && Localizations[lang].ContainsKey(key)))
+                return lang != LangKey.EN
+                    ? IResolveString(LangKey.EN, key, format)
+                    : null;
+
             return string.Format(Localizations[lang][key], format);
+        }
+        private string NotDef(LangKey lang, string key, params string?[] format)
+        {
+            var repl = IResolveString(LangKey.EN, NotDefinedKey, Enum.GetName(lang), key)
+                ?? "String Data is not defined. Format params: ";
+            foreach (var param in format)
+                repl += $"{param}, ";
+            return format.Length > 0 ? repl[..(repl.Length - 2)] + "." : repl + "None";
         }
     }
 }

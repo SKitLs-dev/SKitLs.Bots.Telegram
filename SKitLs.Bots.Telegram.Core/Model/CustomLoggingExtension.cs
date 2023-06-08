@@ -1,6 +1,6 @@
 ﻿using SKitLs.Bots.Telegram.Core.Exceptions;
 using SKitLs.Bots.Telegram.Core.external.LocalizedLoggers;
-using SKitLs.Bots.Telegram.Core.external.Loggers;
+using SKitLs.Bots.Telegram.Core.Model.Building;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -13,25 +13,49 @@ namespace SKitLs.Bots.Telegram.Core.Model
         private static string NoUserTag => "NoTag";
         private static int MaxMessageContentLength => 16;
 
+        private static string Local(ILocalizedLogger logger, string mesKey, params string?[] format)
+            => logger.Localizator.ResolveString(logger.DefaultLanguage, mesKey, format);
         public static void Log(this ILocalizedLogger logger, Exception exception)
         {
-            string errorMes = exception switch
+            string errorMes = "Exception was thrown: ";
+            string? warn = null;
+            if (exception is SKTgException sktg)
             {
-                SKTgException sktg => $"SKitLs.Bots.Telegram Error:" +
-                $"\n> {logger.Localizator.ResolveString(logger.Owner.Settings.DebugLanguage, sktg.LocalKey, sktg.Format)}" +
-                $"{(logger.Owner.DebugSettings.ShouldPrintExceptionTrace ? $"\n{sktg.StackTrace}" : string.Empty)}",
-                ApiRequestException apiRequestException
-                    => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n" +
-                    $"{apiRequestException.Message}",
-                _ => $"{exception.Message} ({exception.Source})" +
-                    $"\n{exception.StackTrace}",
-            };
+                errorMes += "SKitLs.Bots.Telegram Error\n";
+                errorMes += $"\n{Local(logger, sktg.CaptionLocalKey)}\n";
+                errorMes += $"{Local(logger, sktg.MessgeLocalKey, sktg.Format)}";
+
+                warn = sktg.OriginType switch
+                {
+                    SKTEOriginType.Internal => Local(logger, "system.InternalExcep"),
+                    SKTEOriginType.Inexternal => Local(logger, "system.InexternalExcep"),
+                    SKTEOriginType.External => Local(logger, "system.ExternalExcep"),
+                    _ => null,
+                };
+            }
+            else if (exception is ApiRequestException apiRequestException)
+            {
+                errorMes += "Telegram API Error\n";
+                errorMes += $"\n[{apiRequestException.ErrorCode}]\n" +
+                    $"{apiRequestException.Message}";
+            }
+            else
+            {
+                errorMes += "Native C# Error\n";
+                errorMes += $"\n{exception.Message} ({exception.Source})\n";
+            }
+
+            if (BotBuilder.DebugAssets.ShouldPrintExceptionTrace)
+                errorMes += $"\n{exception.StackTrace}";
+            
             logger.Error(errorMes);
+            if (warn is not null)
+                logger.Warn(warn);
         }
         public static void Log(this ILocalizedLogger logger, Update update, bool warn = false)
         {
-            string sender = " - From: ";
-            string content = " - Content: ";
+            string sender = string.Empty;
+            string content = string.Empty;
             if (update.Type == UpdateType.Message)
             {
                 sender += $"@{update.Message!.From?.Username ?? NoUserTag} ({update.Message!.Chat.Id})";
@@ -58,7 +82,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
             else if (update.Type == UpdateType.ChatMember)
             {
                 sender += $"{update.ChatMember!.Chat.Title ?? NoTitle} ({update.ChatMember.Chat.Id})";
-                content = "";
+                content = string.Empty;
             }
             else if (update.Type == UpdateType.ChosenInlineResult)
             {
@@ -91,15 +115,15 @@ namespace SKitLs.Bots.Telegram.Core.Model
             else if (update.Type == UpdateType.MyChatMember)
             {
                 sender += $"{update.MyChatMember!.Chat.Title ?? NoTitle} ({update.MyChatMember.Chat.Id})";
-                content = "";
+                content = string.Empty;
             }
             else
             {
-                sender = "";
-                content = "";
+                sender = string.Empty;
+                content = string.Empty;
             }
-            string text = $"[{DateTime.Now:G}] ({update.Id}) Received: {update.Type}{sender}{content}";
-
+            string text = Local(logger, "system.UpdateMessage", DateTime.Now.ToString("G"),
+                update.Id.ToString(), update.Type.ToString(), sender, content);
             if (warn) logger.Warn(text);
             else logger.Log(text);
         }

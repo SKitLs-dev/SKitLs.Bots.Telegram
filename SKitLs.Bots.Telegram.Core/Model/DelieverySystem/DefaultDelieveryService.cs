@@ -1,41 +1,53 @@
-﻿using SKitLs.Bots.Telegram.Core.Exceptions;
+﻿using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Model;
 using SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Protoype;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
-using TEnums = Telegram.Bot.Types.Enums;
 
 namespace SKitLs.Bots.Telegram.Core.Model.DelieverySystem
 {
+    /// <summary>
+    /// Default realization of <see cref="IDelieveryService"/> that works with string
+    /// and simiple <see cref="IBuildableMessage"/> messages.
+    /// </summary>
     public class DefaultDelieveryService : IDelieveryService
     {
         private BotManager? _owner;
         public BotManager Owner
         {
-            get => _owner ?? throw new NullOwnerException();
+            get => _owner ?? throw new NullOwnerException(GetType());
             set => _owner = value;
         }
         public Action<object, BotManager>? OnCompilation => null;
+        
+        /// <summary>
+        /// A shortcut for owner's bot client.
+        /// </summary>
         private ITelegramBotClient Bot => Owner.Bot;
 
-        public bool IsParseSafe(ParseMode mode, string part) => mode switch
+        public bool IsParseSafe(ParseMode parsemode, string text) => parsemode switch
         {
-            TEnums.ParseMode.Markdown => IsMarkdownSafe(part),
+            ParseMode.Markdown => IsMarkdownSafe(text),
             _ => true,
         };
-        public string MakeParseSafe(ParseMode mode, string part) => mode switch
+        public string MakeParseSafe(ParseMode parsemode, string text) => parsemode switch
         {
-            TEnums.ParseMode.Markdown => MakeMarkdownSafe(part),
-            _ => part,
+            ParseMode.Markdown => MakeMarkdownSafe(text),
+            _ => text,
         };
 
-        private bool IsMarkdownSafe(string part)
+        /// <summary>
+        /// Checks if <paramref name="text"/> string is valid in <see cref="ParseMode.Markdown"/>.
+        /// </summary>
+        /// <param name="text">Text to be checked</param>
+        /// <returns><see langword="true"/> if markup is valid; otherwise <see langword="false"/>.</returns>
+        private bool IsMarkdownSafe(string text)
         {
             int italic = 0;
             int bold = 0;
             int stroke = 0;
-            foreach (char c in part)
+            foreach (char c in text)
             {
                 if (c == '*')
                     bold++;
@@ -46,10 +58,16 @@ namespace SKitLs.Bots.Telegram.Core.Model.DelieverySystem
             }
             return italic % 2 == 0 && bold % 2 == 0 && stroke % 2 == 0;
         }
-        private string MakeMarkdownSafe(string part)
+        /// <summary>
+        /// Checks and updates <paramref name="text"/> to be valid in <see cref="ParseMode.Markdown"/>.
+        /// </summary>
+        /// <param name="text">Text to be checked</param>
+        /// <returns>Safe in <see cref="ParseMode.Markdown"/> text.</returns>
+        private string MakeMarkdownSafe(string text)
         {
-            string res = "";
-            foreach (char c in part)
+            if (IsMarkdownSafe(text)) return text;
+            string res = string.Empty;
+            foreach (char c in text)
                 if (c != '*' && c != '~' && c != '_')
                     res += c;
             return res;
@@ -66,12 +84,12 @@ namespace SKitLs.Bots.Telegram.Core.Model.DelieverySystem
             cts ??= new();
             try
             {
-                await Bot.SendTextMessageAsync(
+                var res = await Bot.SendTextMessageAsync(
                     chatId: chatId,
                     text: message.GetMessageText(),
                     parseMode: ParseMode.Markdown,
                     cancellationToken: cts.Token);
-                return DelieveryResponse.OK();
+                return DelieveryResponse.OK(res);
             }
             catch (Exception e)
             {

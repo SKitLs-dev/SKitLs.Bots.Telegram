@@ -1,4 +1,6 @@
-﻿namespace SKitLs.Bots.Telegram.Core.Model.Builders
+﻿using System.Reflection;
+
+namespace SKitLs.Bots.Telegram.Core.Model.Building
 {
     /// <summary>
     /// Specified interface that used in reflective bot compilation <see cref="BotManager.ReflectiveCompile"/>.
@@ -28,11 +30,16 @@
         {
             Owner = owner;
             OnCompilation?.Invoke(sender, owner);
-            foreach (var compl in sender.GetType().GetProperties().Where(x => x.GetValue(sender) is IOwnerCompilable))
-            {
-                var cmpVal = compl.GetValue(sender);
-                (cmpVal as IOwnerCompilable)!.ReflectiveCompile(cmpVal, owner);
-            }
+            sender.GetType().GetProperties()
+                .Where(x => x.GetCustomAttribute<OwnerCompilableIgnoreAttribute>() is null)
+                .Where(x => x.PropertyType.GetInterfaces().Contains(typeof(IOwnerCompilable)))
+                .ToList()
+                .ForEach(refCompile =>
+                {
+                    var cmpVal = refCompile.GetValue(sender);
+                    if (cmpVal is IOwnerCompilable oc)
+                        oc.ReflectiveCompile(cmpVal, owner);
+                });
         }
     }
 }

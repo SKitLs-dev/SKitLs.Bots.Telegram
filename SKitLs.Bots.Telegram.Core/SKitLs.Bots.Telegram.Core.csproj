@@ -14,13 +14,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="resources\locals\en.json" />
-    <None Remove="resources\locals\ru.json" />
+    <None Remove="resources\locals\en.core.json" />
+    <None Remove="resources\locals\ru.core.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="resources\locals\en.json" />
-    <Resource Include="resources\locals\ru.json" />
+    <Resource Include="resources\locals\en.core.json" />
+    <Resource Include="resources\locals\ru.core.json" />
   </ItemGroup>
 
   <ItemGroup>

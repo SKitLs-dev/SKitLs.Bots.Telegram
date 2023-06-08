@@ -1,35 +1,59 @@
-﻿using SKitLs.Bots.Telegram.Core.Exceptions;
+﻿using SKitLs.Bots.Telegram.Core.Exceptions.Internal;
 using SKitLs.Bots.Telegram.Core.Prototypes;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
 
 namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed
 {
+    /// <summary>
+    /// Casted update that represents default signed callback update.
+    /// </summary>
     public class SignedCallbackUpdate : CastedUpdate, ISignedUpdate
     {
-        public CallbackQuery Trigger { get; set; }
-        public Message Message { get; set; }
-        public int TriggerMessageId { get; set; }
-        public IBotUser Sender { get; set; }
-        public string Data { get; set; }
+        public IBotUser Sender { get; private set; }
+        /// <summary>
+        /// Callback query that has raised an update.
+        /// </summary>
+        public CallbackQuery Callback { get; private set; }
+        /// <summary>
+        /// Incoming message's callback data.
+        /// </summary>
+        public string Data { get; private set; }
+        /// <summary>
+        /// Message instance that has raised an update.
+        /// </summary>
+        public Message Message { get; private set; }
+        /// <summary>
+        /// Id of a message that have raised current update.
+        /// </summary>
+        public int TriggerMessageId => Message.MessageId;
 
-        public SignedCallbackUpdate(BotManager owner, Update source, long chatId, ChatType chatType, IBotUser sender)
-            : base(owner, source, chatType, chatId)
+        /// <summary>
+        /// Creates a new instance of an <see cref="SignedMessageUpdate"/>, using specific data.
+        /// </summary>
+        /// <param name="chatScanner">Chat Scanner that has raised casted update</param>
+        /// <param name="source">Original telegram update. Not casted, contains null values</param>
+        /// <param name="chatId">ID of a chat that has raised updated</param>
+        /// <param name="sender">Casted sender instance that has raised an update</param>
+        /// <exception cref="UpdateCastingException"></exception>
+        /// <exception cref="NullSenderException"></exception>
+        public SignedCallbackUpdate(ChatScanner chatScanner, Update source, long chatId, IBotUser sender)
+            : base(chatScanner, source, chatId)
         {
-            if (source.CallbackQuery is null
-                || source.CallbackQuery.Data is null
-                || source.CallbackQuery.Message is null)
-                throw new UpdateCastingException("Callback", source.Id);
-
-            Trigger = source.CallbackQuery;
-            Message = source.CallbackQuery.Message;
-            TriggerMessageId = source.CallbackQuery.Message.MessageId;
-            Data = source.CallbackQuery.Data;
-            Sender = sender;
+            Callback = source.CallbackQuery ?? throw new UpdateCastingException("Callback: Query", source.Id);
+            Message = source.CallbackQuery.Message ?? throw new UpdateCastingException("Callback: Message", source.Id);
+            Data = source.CallbackQuery.Data ?? throw new UpdateCastingException("Callback: Data", source.Id);
+            Sender = sender ?? throw new NullSenderException();
         }
 
-        public SignedCallbackUpdate(CastedUpdate update, IBotUser sender)
-            : this(update.Owner, update.OriginalSource, update.ChatId, update.ChatType, sender)
-        { }
+        /// <summary>
+        /// Creates a new instance of a <see cref="SignedMessageUpdate"/>,
+        /// coping data from other <see cref="ICastedUpdate"/> and signing it with
+        /// <paramref name="sender"/> instance.
+        /// </summary>
+        /// <param name="update">An instance to be copied</param>
+        /// <param name="sender">Casted sender instance that has raised an update</param>
+        /// <exception cref="UpdateCastingException"></exception>
+        /// <exception cref="NullSenderException"></exception>
+        public SignedCallbackUpdate(ICastedUpdate update, IBotUser sender) : this(update.ChatScanner, update.OriginalSource, update.ChatId, sender) { }
     }
 }

@@ -1,12 +1,15 @@
-﻿using SKitLs.Bots.Telegram.Core.Exceptions;
+﻿using SKitLs.Bots.Telegram.Core.Exceptions.External;
+using SKitLs.Bots.Telegram.Core.Exceptions.Internal;
 using SKitLs.Bots.Telegram.Core.external.Localizations;
 using SKitLs.Bots.Telegram.Core.external.LocalizedLoggers;
-using SKitLs.Bots.Telegram.Core.Model.Builders;
+using SKitLs.Bots.Telegram.Core.Model.Building;
 using SKitLs.Bots.Telegram.Core.Model.DelieverySystem;
 using SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Protoype;
+using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Prototypes;
 using SKitLs.Bots.Telegram.Core.resources.Settings;
+using System.Reflection;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
@@ -16,16 +19,18 @@ namespace SKitLs.Bots.Telegram.Core.Model
 {
     /// <summary>
     /// Main bot's manager. Recieves updates, handles and delegates them to sub-managers.
+    /// <para>
+    /// First architecture level.
+    /// Lower: <see cref="ChatScanner"/>.
+    /// </para>
     /// <para>Access this class by Wizard Builder <see cref="BotBuilder"/>.</para>
     /// </summary>
-    public class BotManager
+    public class BotManager : IDebugNamed
     {
         #region Properties
-        /// <summary>
-        /// Used for simplified dubugging proccess. Each BotManager can be named.
-        /// </summary>
         public string? DebugName { get; set; }
 
+        // TODO: use ChatType.GetValues() enum selector to make chats generic
         /// <summary>
         /// Bot's reactions in Private Chats.
         /// </summary>
@@ -33,15 +38,15 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <summary>
         /// Bot's reactions in Group Chats.
         /// </summary>
-        internal ChatScanner? GroupChatUpdateHandler { get; set; }
+        public ChatScanner? GroupChatUpdateHandler { get; internal set; }
         /// <summary>
         /// Bot's reactions in Supergroup Chats.
         /// </summary>
-        internal ChatScanner? SupergroupChatUpdateHandler { get; set; }
+        public ChatScanner? SupergroupChatUpdateHandler { get; internal set; }
         /// <summary>
         /// Bot's reactions in Channel Chats.
         /// </summary>
-        internal ChatScanner? ChannelChatUpdateHandler { get; set; }
+        public ChatScanner? ChannelChatUpdateHandler { get; internal set; }
 
         /// <summary>
         /// Telegram's bot token.
@@ -50,7 +55,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <summary>
         /// Shows either bot's token is declared.
         /// </summary>
-        public bool IsTokenDefined => Token != null;
+        public bool IsTokenDefined => Token is not null;
 
         /// <summary>
         /// External essential bot's instance.
@@ -63,34 +68,9 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// Bot's common settings.
         /// </summary>
         public BotSettings Settings { get; private set; }
-        /// <summary>
-        /// Bot's debug settings.
-        /// </summary>
-        public DebugSettings DebugSettings { get; private set; }
         #endregion
-
+        
         #region Services
-        /// <summary>
-        /// Bot interior localizator.
-        /// <para>
-        /// <see cref="DefaultLocalizator"/> by default.
-        /// </para>
-        /// </summary>
-        public ILocalizator Localizator { get; private set; }
-        /// <summary>
-        /// Logger used for debugging and informing developer/host.
-        /// <para>
-        /// <see cref="DefaultLocalizedLogger"/> by default.
-        /// </para>
-        /// </summary>
-        public ILocalizedLogger LocalLogger { get; private set; }
-        /// <summary>
-        /// Delievery Service used for sending messages <see cref="IBuildableMessage"/> to server.
-        /// <para>
-        /// <see cref="DefaultDelieveryService"/> by default.
-        /// </para>
-        /// </summary>
-        public IDelieveryService DelieveryService { get; set; }
         /// <summary>
         /// Simple IoC-Container for storing Singleton Services.
         /// </summary>
@@ -100,9 +80,14 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// </summary>
         /// <typeparam name="T">Interface type of a service</typeparam>
         /// <param name="service">Service to be stored</param>
-        public void AddService<T>(T service) where T : notnull => Services.Add(typeof(T), service);
+        public void AddService<T>(T service) where T : notnull
+        {
+            if (Services.ContainsKey(typeof(T)))
+                throw new DuplicationException(GetType(), typeof(T), $"{GetType().Name}.{nameof(AddService)}<T>()");
+            Services.Add(typeof(T), service);
+        }
         /// <summary>
-        /// Gets stored service of a type <typeparamref name="T"/>
+        /// Gets stored service of a type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">Interface type of a service</typeparam>
         /// <returns>Service of the requested type.</returns>
@@ -112,36 +97,75 @@ namespace SKitLs.Bots.Telegram.Core.Model
             if (!Services.ContainsKey(typeof(T))) throw new ServiceNotDefinedException(typeof(T));
             return (T)Services[typeof(T)];
         }
+
+        /// <summary>
+        /// Delievery Service used for sending messages <see cref="IBuildableMessage"/> to server.
+        /// <para>
+        /// <see cref="DefaultDelieveryService"/> by default.
+        /// </para>
+        /// </summary>
+        public IDelieveryService DelieveryService { get; internal set; }
+        /// <summary>
+        /// Localization service used for getting localized debugging strings.
+        /// <para>
+        /// <see cref="DefaultLocalizator"/> by default.
+        /// </para>
+        /// </summary>
+        [OwnerCompilableIgnore]
+        public ILocalizator Localizator => ResolveService<ILocalizator>();
+        /// <summary>
+        /// Logger service used for logging system messages.
+        /// <para>
+        /// <see cref="DefaultLocalizedLogger"/> by default.
+        /// </para>
+        /// </summary>
+        [OwnerCompilableIgnore]
+        public ILocalizedLogger LocalLogger => ResolveService<ILocalizedLogger>();
         #endregion
+
+        /// <summary>
+        /// Provides access to all declared <see cref="IBotAction"/>,
+        /// collected via <see cref="IActionsHolder"/> inteface.
+        /// </summary>
+        public List<IBotAction> ActionsBusket { get; internal set; }
+        /// <summary>
+        /// Tries to find certain <see cref="IBotAction"/> by its id. Otherwise throws an Exception.
+        /// </summary>
+        /// <param name="actionId"><see cref="IBotAction"/>'s id</param>
+        /// <returns>Declared <see cref="IBotAction"/> or <see cref="NotDefinedException"/> if doesn't exist.</returns>
+        /// <exception cref="NotDefinedException"></exception>
+        public IBotAction GetDeclaredAction(string actionId) => ActionsBusket
+            .Find(x => x.ActionId == actionId)
+            ?? throw new NotDefinedException(GetType(), typeof(IBotAction), actionId);
 
         internal BotManager(string token)
         {
-            DebugSettings = DebugSettings.Default();
+            ActionsBusket = new();
             Settings = new();
 
             Token = token;
             Bot = new TelegramBotClient(token);
-
-            Localizator = new DefaultLocalizator("resources/locals");
-            LocalLogger = new DefaultLocalizedLogger(Localizator);
             DelieveryService = new DefaultDelieveryService();
         }
 
         /// <summary>
-        /// Reflectively compiles all <see cref="IOwnerCompilable"/> in the <see cref="BotManager"/> interior.
-        /// Summoned during <see cref="BotManager"/> building.
-        /// <para>See also: <seealso cref="BotBuilder.Build(string?)"/></para>
+        /// Recursively and reflectively compiles all <see cref="IOwnerCompilable"/>, determined in the
+        /// <see cref="BotManager"/> interior, inc. <see cref="Services"/>.
+        /// <para>Summoned during <see cref="BotManager"/> building.
+        /// See: <seealso cref="BotBuilder.Build(string?)"/></para>
         /// </summary>
         internal void ReflectiveCompile()
         {
             GetType()
                 .GetProperties()
-                .Where(x => x.GetValue(this) is IOwnerCompilable)
+                .Where(x => x.GetCustomAttribute<OwnerCompilableIgnoreAttribute>() is null)
+                .Where(x => x.PropertyType.GetInterfaces().Contains(typeof(IOwnerCompilable)))
                 .ToList()
                 .ForEach(refCompile =>
                 {
                     var cmpVal = refCompile.GetValue(this);
-                    (cmpVal as IOwnerCompilable)!.ReflectiveCompile(cmpVal, this);
+                    if (cmpVal is IOwnerCompilable oc)
+                        oc.ReflectiveCompile(cmpVal, this);
                 });
 
             Services.Values.Where(x => x is IOwnerCompilable)
@@ -150,16 +174,36 @@ namespace SKitLs.Bots.Telegram.Core.Model
         }
 
         /// <summary>
+        /// Recursively and reflectively collects all declared <see cref="IBotAction"/>
+        /// via <see cref="IActionsHolder"/> inteface.
+        /// </summary>
+        internal void CollectActionsBasket()
+        {
+            var holders = new List<IActionsHolder>();
+            GetType().GetProperties()
+                .Where(x => x.PropertyType.GetInterfaces().Contains(typeof(IActionsHolder)))
+                .ToList()
+                .ForEach(holder => holders.Add((holder.GetValue(this) as IActionsHolder)!));
+            Services.Values.Where(x => x is IActionsHolder)
+                .ToList()
+                .ForEach(service => holders.Add((service as IActionsHolder)!));
+            holders.ForEach(x =>
+            {
+                if (x is not null)
+                    ActionsBusket.AddRange(x.GetActionsContent());
+            });
+        }
+
+        /// <summary>
         /// Launches <see cref="ITelegramBotClient"/> <see cref="Bot"/> by starting server polling.
         /// </summary>
-        /// <returns></returns>
         public async Task Listen()
         {
             var cts = new CancellationTokenSource();
             try
             {
                 var me = await Bot.GetMeAsync();
-                LocalLogger.LSuccess("system.StartUpMessage", format: me.Username);
+                BotBuilder.DebugAssets.LocalLogger.LSuccess("system.StartUpMessage", format: me.Username);
 
                 await Bot.ReceiveAsync(
                     new DefaultUpdateHandler(HandleUpdateAsync, HandleErrorAsync),
@@ -167,7 +211,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
             }
             catch (Exception exception)
             {
-                LocalLogger.Log(exception);
+                BotBuilder.DebugAssets.LocalLogger.Log(exception);
                 cts.Cancel();
             }
         }
@@ -197,29 +241,26 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <param name="client">Client that raised an exception</param>
         /// <param name="exception">Exception</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns></returns>
         private Task HandleErrorAsync(ITelegramBotClient client, Exception exception, CancellationToken cancellationToken)
         {
-            if (DebugSettings.ShouldPrintExceptions)
-            {
-                LocalLogger.Log(exception);
-            }
+            if (BotBuilder.DebugAssets.ShouldPrintExceptions)
+                BotBuilder.DebugAssets.LocalLogger.Log(exception);
+            else BotBuilder.DebugAssets.LocalLogger.Error("Exception was handled.");
             return Task.CompletedTask;
         }
 
         /// <summary>
         /// Unpacks and casts raw data, delegating raw server's <see cref="Update"/> to
-        /// sub-handlers in <see cref="CastedUpdate"/> representation.
+        /// sub-handlers in <see cref="ICastedUpdate"/> representation.
         /// </summary>
         /// <param name="update">Original server update</param>
-        /// <returns></returns>
         /// <exception cref="BotManagerExcpetion"></exception>
         private async Task SubDelegateUpdate(Update update)
         {
-            if (DebugSettings.ShouldPrintUpdates) LocalLogger.Log(update);
+            if (BotBuilder.DebugAssets.ShouldPrintUpdates) BotBuilder.DebugAssets.LocalLogger.Log(update);
 
-            long chatId = ChatIdByUpdate_Safe(update);
-            ChatType senderChatType = ChatTypeByUpdate_Safe(update);
+            long chatId = GetChatId(update);
+            ChatType senderChatType = GetChatType(update);
             ChatScanner? _handler = senderChatType switch
             {
                 ChatType.Private => PrivateChatUpdateHandler,
@@ -229,30 +270,31 @@ namespace SKitLs.Bots.Telegram.Core.Model
                 _ => null,
             };
 
-            if (_handler is null) throw new BotManagerExcpetion(DebugSettings.Nfy_ChatTypeNotSupported, "ChatTypeNotSupported", Enum.GetName(typeof(ChatType), senderChatType));
+            if (_handler is null)
+                throw new BotManagerExcpetion("bm.ChatTypeNotSupported", Enum.GetName(typeof(ChatType), senderChatType));
 
-            await _handler.HandleUpdateAsync(new CastedUpdate(this, update, senderChatType, chatId));
+            await _handler.HandleUpdateAsync(new CastedUpdate(_handler, update, chatId));
         }
 
         /// <summary>
-        /// Tries to extracts <see cref="ChatType"/> from a raw server update otherwise
-        /// throws <see cref="BotManagerExcpetion"/>.
+        /// Extracts <see cref="ChatType"/> from a raw server update or
+        /// throws <see cref="BotManagerExcpetion"/> otherwise.
         /// </summary>
         /// <param name="update">Original server update</param>
         /// <returns>Update's chat type.</returns>
-        public ChatType ChatTypeByUpdate_Safe(Update update)
+        public static ChatType GetChatType(Update update)
         {
-            ChatType? senderChatType = ChatTypeByUpdate(update);
+            ChatType? senderChatType = TryGetChatType(update);
             if (senderChatType is null)
-                throw new BotManagerExcpetion(DebugSettings.Nfy_ChatNotHandled, "ChatNotHandled");
+                throw new BotManagerExcpetion("bm.ChatNotHandled");
             return senderChatType.Value;
         }
         /// <summary>
-        /// Tries to extracts <see cref="ChatType"/> from a raw server update.
+        /// Tries to extract <see cref="ChatType"/> from a raw server update.
         /// </summary>
         /// <param name="update">Original server update</param>
         /// <returns>Update's chat type.</returns>
-        public static ChatType? ChatTypeByUpdate(Update update)
+        public static ChatType? TryGetChatType(Update update)
         {
             // Polls ??
             // Shipping query ??
@@ -281,24 +323,24 @@ namespace SKitLs.Bots.Telegram.Core.Model
         }
 
         /// <summary>
-        /// Tries to extracts chat's ID from a raw server update otherwise
-        /// throws <see cref="BotManagerExcpetion"/>.
+        /// Extracts chat's ID from a raw server update or
+        /// throws <see cref="BotManagerExcpetion"/> otherwise.
         /// </summary>
         /// <param name="update">Original server update</param>
         /// <returns>Update's chat ID.</returns>
-        public long ChatIdByUpdate_Safe(Update update)
+        public static long GetChatId(Update update)
         {
-            long? chatId = ChatIdByUpdate(update);
+            long? chatId = TryGetChatId(update);
             if (chatId is null)
-                throw new BotManagerExcpetion(DebugSettings.Nfy_ChatIdNotHandled, "ChatIdNotHandled");
+                throw new BotManagerExcpetion("bm.ChatIdNotHandled");
             return chatId.Value;
         }
         /// <summary>
-        /// Tries to extracts chat's ID from a raw server update.
+        /// Tries to extract chat's ID from a raw server update.
         /// </summary>
         /// <param name="update">Original server update</param>
         /// <returns>Update's chat ID.</returns>
-        public static long? ChatIdByUpdate(Update update)
+        public static long? TryGetChatId(Update update)
         {
             // Polls ??
             // Shipping query ??

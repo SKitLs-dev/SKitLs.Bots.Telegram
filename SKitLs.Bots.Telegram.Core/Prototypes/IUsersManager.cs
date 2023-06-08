@@ -1,4 +1,6 @@
-﻿namespace SKitLs.Bots.Telegram.Core.Prototypes
+﻿using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+
+namespace SKitLs.Bots.Telegram.Core.Prototypes
 {
     public delegate Task UserDataChanged(IBotUser user);
 
@@ -8,6 +10,6 @@
 
         public Task<bool> IsUserRegistered(long telegramId);
         public Task<IBotUser?> GetUserById(long telegramId);
-        public Task<IBotUser?> ProccessNewUser(long telegramId);
+        public Task<IBotUser?> ProccessNewUser(ICastedUpdate update);
     }
 }

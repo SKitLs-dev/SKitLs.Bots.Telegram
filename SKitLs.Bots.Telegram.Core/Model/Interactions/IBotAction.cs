@@ -1,14 +1,25 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
-
-namespace SKitLs.Bots.Telegram.Core.Model.Interactions
+﻿namespace SKitLs.Bots.Telegram.Core.Model.Interactions
 {
-    public delegate Task BotInteraction<TUpdate>(IBotAction<TUpdate> trigger, TUpdate update) where TUpdate : ICastedUpdate;
-
-    public interface IBotAction<TUpdate> : IEquatable<IBotAction<TUpdate>> where TUpdate : ICastedUpdate
+    /// <summary>
+    /// An interface that provides generic defenition for bot actions.
+    /// <para>
+    /// Fifth architecture level.
+    /// Upper: <see cref="Management.IActionManager{TUpdate}"/>.
+    /// </para>
+    /// </summary>
+    public interface IBotAction
     {
-        public string ActionBase { get; }
-        public BotInteraction<TUpdate> Action { get; }
+        /// <summary>
+        /// Unique action's ID.
+        /// </summary>
+        public string ActionId { get; }
 
-        public bool ShouldBeExecutedOn(TUpdate update);
+        /// <summary>
+        /// Gets serialized data that can be built with certain arguments.
+        /// Ready to use
+        /// </summary>
+        /// <param name="args">Arguments to be used</param>
+        /// <returns>Ready to use string data.</returns>
+        public string GetSerializedData(params string[] args);
     }
 }

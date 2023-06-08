@@ -3,7 +3,7 @@
     /// <summary>
     /// Type of sending message.
     /// </summary>
-    [Obsolete("Post-Check")]
+    [Obsolete("Will be implemented and redesigned in future versions.")]
     public enum SendType
     {
         /// <summary>

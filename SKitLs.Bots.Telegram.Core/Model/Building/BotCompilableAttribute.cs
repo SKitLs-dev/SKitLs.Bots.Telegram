@@ -1,4 +1,4 @@
-﻿namespace SKitLs.Bots.Telegram.Core.Model.Builders
+﻿namespace SKitLs.Bots.Telegram.Core.Model.Building
 {
     [Obsolete($"Replaced with {nameof(IOwnerCompilable)}", true)]
     [AttributeUsage(AttributeTargets.Property)]

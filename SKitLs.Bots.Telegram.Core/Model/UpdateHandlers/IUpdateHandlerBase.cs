@@ -1,16 +1,27 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.Builders;
+﻿using SKitLs.Bots.Telegram.Core.Model.Building;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Prototypes;
 
 namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers
 {
-    public interface IUpdateHandlerBase : IOwnerCompilable
+    /// <summary>
+    /// An interface that determines common mechanisms for updates handling.
+    /// <para>
+    /// Third architecture level.
+    /// Upper: <see cref="ChatScanner"/>.
+    /// Lower: <see cref="Management.IActionManager{TUpdate}"/>.
+    /// </para>
+    /// <para>
+    /// Supports: <see cref="IOwnerCompilable"/>, <see cref="IActionsHolder"/>
+    /// </para>
+    /// </summary>
+    public interface IUpdateHandlerBase : IOwnerCompilable, IActionsHolder
     {
-        public Task HandleUpdateAsync(CastedUpdate update, IBotUser? sender);
-    }
-    public interface IUpdateHandlerBase<TUpdate> : IUpdateHandlerBase where TUpdate : ICastedUpdate
-    {
-        public TUpdate BuildUpdate(CastedUpdate update, IBotUser? sender);
-        public Task HandleUpdateAsync(TUpdate update);
+        /// <summary>
+        /// Handles <see cref="ICastedUpdate"/> updated, gotten from <see cref="ChatScanner"/>.
+        /// </summary>
+        /// <param name="update">Update to handle</param>
+        /// <param name="sender">Sender to sign update</param>
+        public Task HandleUpdateAsync(ICastedUpdate update, IBotUser? sender);
     }
 }

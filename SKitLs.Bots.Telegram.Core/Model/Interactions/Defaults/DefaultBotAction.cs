@@ -4,32 +4,56 @@ namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
 {
     public abstract class DefaultBotAction<TUpdate> : IBotAction<TUpdate> where TUpdate : ICastedUpdate
     {
-        public virtual string ActionBase { get; private set; }
+        /// <summary>
+        /// String that determines action's unique name base.
+        /// Used to determine whether it should be executed on a certain update.
+        /// <para>
+        /// Example: for <c>/start</c> command <c>start</c> is an <see cref="ActionNameBase"/>.
+        /// </para>
+        /// </summary>
+        public virtual string ActionNameBase { get; private set; }
+        public virtual string ActionId => ActionNameBase;
         public BotInteraction<TUpdate> Action { get; protected set; }
 
+        /// <summary>
+        /// Creates a new instance of an abstract <see cref="DefaultBotAction{TUpdate}"/> with specific data.
+        /// </summary>
+        /// <param name="base">Action name base</param>
+        /// <param name="action">An action to be executed</param>
+        /// <exception cref="ArgumentNullException"></exception>
         public DefaultBotAction(string @base, BotInteraction<TUpdate> action)
         {
-            ActionBase = @base ?? throw new ArgumentNullException(nameof(@base));
+            ActionNameBase = @base ?? throw new ArgumentNullException(nameof(@base));
             Action = action ?? throw new ArgumentNullException(nameof(action));
         }
 
-        [Obsolete("Remeber to override Action property")]
+        /// <summary>
+        /// UNSAFE. Creates a new instance of an abstract <see cref="DefaultBotAction{TUpdate}"/>
+        /// with specific data. Use to avoid compiler errors when passing non-static methods
+        /// to base() constructor for an action.
+        /// <para>Do not forget to override <see cref="Action"/> property.</para>
+        /// </summary>
+        /// <param name="base">Action name base</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        [Obsolete("Do not forget to override Action property")]
         protected DefaultBotAction(string @base)
         {
-            ActionBase = @base ?? throw new ArgumentNullException(nameof(@base));
+            ActionNameBase = @base ?? throw new ArgumentNullException(nameof(@base));
             Action = null!;
         }
 
+        public string GetSerializedData(params string[] args) => ActionNameBase;
         public abstract bool ShouldBeExecutedOn(TUpdate update);
 
         public bool Equals(IBotAction<TUpdate>? other)
         {
             if (other is null) return false;
+            if (other is DefaultBotAction<TUpdate> defaultAction)
+                return ActionNameBase == defaultAction.ActionNameBase;
 
-            Type genericArg = other.GetType().GetGenericArguments()[0];
-            if (genericArg.IsEquivalentTo(GetType().GetGenericArguments()[0]))
-                return ActionBase == other.ActionBase;
             return false;
         }
+
+        public override string ToString() => $"[{GetType().Name}] {ActionId}";
     }
 }

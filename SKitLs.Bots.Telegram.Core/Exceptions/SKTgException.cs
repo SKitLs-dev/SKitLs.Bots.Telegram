@@ -1,18 +1,26 @@
 ﻿namespace SKitLs.Bots.Telegram.Core.Exceptions
 {
+    public enum SKTEOriginType
+    {
+        Internal = -10,
+        Inexternal = 0,
+        External = 10,
+    }
+
     public class SKTgException : Exception
     {
-        public bool ShouldBeNotified { get; private set; }
+        public SKTEOriginType OriginType { get; private set; }
 
         private static string LocalKeyPrefix => "exception";
         public string KeyBase { get; private set; }
-        public string LocalKey => $"{LocalKeyPrefix}.{KeyBase}";
+        public string CaptionLocalKey => $"{LocalKeyPrefix}Cap.{KeyBase}";
+        public string MessgeLocalKey => $"{LocalKeyPrefix}Mes.{KeyBase}";
 
-        public string?[] Format { get; set; }
+        public string?[] Format { get; protected set; }
 
-        public SKTgException(bool notify, string localKey, params string?[] format)
+        public SKTgException(string localKey, SKTEOriginType originType, params string?[] format)
         {
-            ShouldBeNotified = notify;
+            OriginType = originType;
             KeyBase = localKey;
             Format = format;
         }

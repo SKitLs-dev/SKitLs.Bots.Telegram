@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SKitLs.Bots.Telegram.Core.resources.Settings
+﻿namespace SKitLs.Bots.Telegram.Core.resources.Settings
 {
+    [Obsolete("TODO", true)]
     internal class TypedChatSettings
     {
     }

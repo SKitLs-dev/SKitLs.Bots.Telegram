@@ -5,5 +5,5 @@
     /// <see cref="IOwnerCompilable.ReflectiveCompile(object, BotManager)"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class OwnerCompilableIgnoreAttribute : Attribute { }
+    public class OwnerCompileIgnoreAttribute : Attribute { }
 }

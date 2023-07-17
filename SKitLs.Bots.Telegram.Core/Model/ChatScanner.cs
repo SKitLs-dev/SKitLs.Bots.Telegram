@@ -94,7 +94,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
 
         /// <summary>
         /// Incoming <see cref="ICastedUpdate"/> handler. Verifies or builds sender, casts update
-        /// and subdelegates it to one of specific subhandlers.
+        /// and subdelegates it to one of specific sub handlers.
         /// <para>
         /// Can be useful: <c><seealso cref="GetDeclaredHandlers"/></c>
         /// </para>
@@ -111,7 +111,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
                 if (await UsersManager.IsUserRegistered(id))
                     sender = await UsersManager.GetUserById(id);
                 else
-                    sender = await UsersManager.ProccessNewUser(update);
+                    sender = await UsersManager.RegisterNewUser(update);
             }
             else sender = GetDefaultBotUser(id);
 

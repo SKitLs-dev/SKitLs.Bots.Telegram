@@ -68,6 +68,16 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// Bot's common settings.
         /// </summary>
         public BotSettings Settings { get; private set; }
+        /// <summary>
+        /// Language that is used by <see cref="IDelieveryService"/> by default to send custom localized preset system messages to user.
+        /// Set up via <see cref="Settings"/>.
+        /// </summary>
+        public LangKey BotLanguage => Settings.BotLanguage;
+        /// <summary>
+        /// Language that is used by <see cref="LocalLogger"/> to print debug output.
+        /// Set up via <see cref="BotBuilder.DebugSettings"/>
+        /// </summary>
+        public LangKey DebugLanguage => BotBuilder.DebugSettings.DebugLanguage;
         #endregion
         
         #region Services
@@ -104,22 +114,36 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <see cref="DefaultDelieveryService"/> by default.
         /// </para>
         /// </summary>
-        public IDelieveryService DelieveryService { get; internal set; }
+        public IDelieveryService DeliveryService { get; internal set; }
         /// <summary>
         /// Localization service used for getting localized debugging strings.
         /// <para>
         /// <see cref="DefaultLocalizator"/> by default.
         /// </para>
         /// </summary>
-        [OwnerCompilableIgnore]
+        [OwnerCompileIgnore]
         public ILocalizator Localizator => ResolveService<ILocalizator>();
+        /// <summary>
+        /// Gets localized text from <see cref="Localizator"/> using its unique key and <see cref="BotLanguage"/>.
+        /// </summary>
+        /// <param name="key">String's unique key.</param>
+        /// <param name="format">The array of strings to format gotten one.</param>
+        /// <returns>Formatted localized text.</returns>
+        public string ResolveBotString(string key, params string?[] format) => Localizator.ResolveString(BotLanguage, key, format);
+        /// <summary>
+        /// Gets localized text from <see cref="Localizator"/> using its unique key and <see cref="DebugLanguage"/>.
+        /// </summary>
+        /// <param name="key">String's unique key.</param>
+        /// <param name="format">The array of strings to format gotten one.</param>
+        /// <returns>Formatted localized text.</returns>
+        public string ResolveDebugString(string key, params string?[] format) => Localizator.ResolveString(DebugLanguage, key, format);
         /// <summary>
         /// Logger service used for logging system messages.
         /// <para>
         /// <see cref="DefaultLocalizedLogger"/> by default.
         /// </para>
         /// </summary>
-        [OwnerCompilableIgnore]
+        [OwnerCompileIgnore]
         public ILocalizedLogger LocalLogger => ResolveService<ILocalizedLogger>();
         #endregion
 
@@ -145,7 +169,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
 
             Token = token;
             Bot = new TelegramBotClient(token);
-            DelieveryService = new DefaultDelieveryService();
+            DeliveryService = new DefaultDelieveryService();
         }
 
         /// <summary>
@@ -158,7 +182,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         {
             GetType()
                 .GetProperties()
-                .Where(x => x.GetCustomAttribute<OwnerCompilableIgnoreAttribute>() is null)
+                .Where(x => x.GetCustomAttribute<OwnerCompileIgnoreAttribute>() is null)
                 .Where(x => x.PropertyType.GetInterfaces().Contains(typeof(IOwnerCompilable)))
                 .ToList()
                 .ForEach(refCompile =>
@@ -203,7 +227,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
             try
             {
                 var me = await Bot.GetMeAsync();
-                BotBuilder.DebugAssets.LocalLogger.LSuccess("system.StartUpMessage", format: me.Username);
+                BotBuilder.DebugSettings.LocalLogger.LSuccess("system.StartUpMessage", format: me.Username);
 
                 await Bot.ReceiveAsync(
                     new DefaultUpdateHandler(HandleUpdateAsync, HandleErrorAsync),
@@ -211,7 +235,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
             }
             catch (Exception exception)
             {
-                BotBuilder.DebugAssets.LocalLogger.Log(exception);
+                BotBuilder.DebugSettings.LocalLogger.Log(exception);
                 cts.Cancel();
             }
         }
@@ -243,9 +267,9 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <param name="cancellationToken">Cancellation token</param>
         private Task HandleErrorAsync(ITelegramBotClient client, Exception exception, CancellationToken cancellationToken)
         {
-            if (BotBuilder.DebugAssets.ShouldPrintExceptions)
-                BotBuilder.DebugAssets.LocalLogger.Log(exception);
-            else BotBuilder.DebugAssets.LocalLogger.Error("Exception was handled.");
+            if (BotBuilder.DebugSettings.ShouldPrintExceptions)
+                BotBuilder.DebugSettings.LocalLogger.Log(exception);
+            else BotBuilder.DebugSettings.LocalLogger.Error("Exception was handled.");
             return Task.CompletedTask;
         }
 
@@ -257,7 +281,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <exception cref="BotManagerExcpetion"></exception>
         private async Task SubDelegateUpdate(Update update)
         {
-            if (BotBuilder.DebugAssets.ShouldPrintUpdates) BotBuilder.DebugAssets.LocalLogger.Log(update);
+            if (BotBuilder.DebugSettings.ShouldPrintUpdates) BotBuilder.DebugSettings.LocalLogger.Log(update);
 
             long chatId = GetChatId(update);
             ChatType senderChatType = GetChatType(update);

@@ -14,6 +14,14 @@ namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
         public string Label { get; private set; }
 
         /// <summary>
+        /// Creates a new instance of a <see cref="DefaultCallback"/> with specific data of <see cref="LabeledData"/>.
+        /// </summary>
+        /// <param name="data">Specific labeled data pair</param>
+        /// <param name="action">An action to be executed</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public DefaultCallback(LabeledData data, BotInteraction<SignedCallbackUpdate> action)
+            : this(data.Data, data.Label, action) { }
+        /// <summary>
         /// Creates a new instance of a <see cref="DefaultCallback"/> with specific data.
         /// </summary>
         /// <param name="base">Action name base</param>

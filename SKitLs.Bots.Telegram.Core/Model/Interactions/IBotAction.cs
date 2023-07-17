@@ -16,7 +16,7 @@
 
         /// <summary>
         /// Gets serialized data that can be built with certain arguments.
-        /// Ready to use
+        /// Ready-to-use.
         /// </summary>
         /// <param name="args">Arguments to be used</param>
         /// <returns>Ready to use string data.</returns>

@@ -45,7 +45,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
                 errorMes += $"\n{exception.Message} ({exception.Source})\n";
             }
 
-            if (BotBuilder.DebugAssets.ShouldPrintExceptionTrace)
+            if (BotBuilder.DebugSettings.ShouldPrintExceptionTrace)
                 errorMes += $"\n{exception.StackTrace}";
             
             logger.Error(errorMes);

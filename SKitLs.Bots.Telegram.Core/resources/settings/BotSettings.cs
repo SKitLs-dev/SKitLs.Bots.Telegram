@@ -1,5 +1,6 @@
 ﻿using SKitLs.Bots.Telegram.Core.external.Localizations;
 using SKitLs.Bots.Telegram.Core.Model;
+using SKitLs.Bots.Telegram.Core.Model.DelieverySystem;
 
 namespace SKitLs.Bots.Telegram.Core.resources.Settings
 {
@@ -8,6 +9,11 @@ namespace SKitLs.Bots.Telegram.Core.resources.Settings
     /// </summary>
     public partial class BotSettings
     {
+        /// <summary>
+        /// /// Language that is used by <see cref="IDelieveryService"/> by default to send custom system messages to user.
+        /// </summary>
+        public LangKey BotLanguage { get; set; }
+        
         /// <summary>
         /// Function that determines whether input line is a Bot Command.
         /// </summary>

@@ -7,7 +7,7 @@
   // Exceptions
   "system.ExternalExcep": "This exception is marked as External. It means that it occured beacuse of external actions and code. Please make sure your code is safe.",
   "system.InexternalExcep": "This exception can be both: Internal or External. Please make sure your code is safe. If you are sure it's ok make - pull request via github.",
-  "system.InternalExcep": "This exception is marked as Internal. It means that it occured because of internal lib problems. Please save info about exception context and share it via github.",
+  "system.InternalExcep": "This exception is marked as Internal. It means that it occured because of internal library problems. Please save info about exception context and share it via github.",
 
   // External
   "exceptionCap.Duplication": "Integration duplication",
@@ -16,6 +16,8 @@
   "exceptionMes.ItemNotDefined": "Item of a type {1} ({2}) is not defined in {0}.",
   "exceptionCap.LocalSystemMissmatch": "Missmatch in Local System",
   "exceptionMes.LocalSystemMissmatch": "Logger's Localizator doesn't match with 'localizator' param.",
+  "exceptionCap.NullOrEmptyId": "Null Id Exception",
+  "exceptionMes.NullOrEmptyId": "An error occured in {0} instance: an item of a type {1} has null or empty id.",
   "exceptionCap.ServiceNotDefined": "Service not defined",
   "exceptionMes.ServiceNotDefined": "Service of a type {0} is not defined. Try BotBuilder.AddService<T>().",
   "exceptionCap.UHBCasting": "Update casting error in UHBInformer",

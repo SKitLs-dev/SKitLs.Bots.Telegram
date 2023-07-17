@@ -7,7 +7,7 @@ namespace SKitLs.Bots.Telegram.Core.resources.Settings
     /// <summary>
     /// Represents a class with global debug assets.
     /// </summary>
-    public class DebugAssets
+    public class DebugSettings
     {
         /// <summary>
         /// Language that is used in debug output.
@@ -28,11 +28,11 @@ namespace SKitLs.Bots.Telegram.Core.resources.Settings
         /// </summary>
         public ILocalizedLogger LocalLogger { get; private set; }
         /// <summary>
-        /// Creates a new instance of <see cref="DebugAssets"/> with specific data.
+        /// Creates a new instance of <see cref="DebugSettings"/> with specific data.
         /// </summary>
         /// <param name="language">Language of debugging logger</param>
         /// <param name="path">Path to foler with localizations</param>
-        public DebugAssets(LangKey language = LangKey.EN, string path = "resources/locals")
+        public DebugSettings(LangKey language = LangKey.EN, string path = "resources/locals")
         {
             DebugLanguage = language;
             Localizator = new DefaultLocalizator(path);

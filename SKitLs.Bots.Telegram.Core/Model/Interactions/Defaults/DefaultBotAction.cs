@@ -1,8 +1,10 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
 {
-    public abstract class DefaultBotAction<TUpdate> : IBotAction<TUpdate> where TUpdate : ICastedUpdate
+    public abstract class DefaultBotAction<TUpdate> : IFormattable, IBotAction<TUpdate> where TUpdate : ICastedUpdate
     {
         /// <summary>
         /// String that determines action's unique name base.
@@ -54,6 +56,23 @@ namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
             return false;
         }
 
-        public override string ToString() => $"[{GetType().Name}] {ActionId}";
+        public override string ToString() => ToString("D");
+
+        public string ToString(string? format) => ToString(format, CultureInfo.CurrentCulture);
+        public string ToString(string? format, IFormatProvider? provider)
+        {
+            if (String.IsNullOrEmpty(format)) format = "D";
+            provider ??= CultureInfo.CurrentCulture;
+
+            switch (format.ToUpperInvariant())
+            {
+                case "D":
+                    return $"[{GetType().Name}] {ActionId}";
+                case "C":
+                    return $"/{ActionNameBase}";
+                default:
+                    throw new FormatException(String.Format("The {0} format string is not supported.", format));
+            }
+        }
     }
 }

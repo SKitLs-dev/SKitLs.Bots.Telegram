@@ -63,7 +63,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers
         {
             string mes = $"Handled update (by {nameof(UHBInformer<TUpdate>)}): {UpdateName}";
             if (UseLogger) { Owner.LocalLogger.Log(mes); }
-            if (InformInChat) await Owner.DelieveryService.SendMessageToChatAsync(mes, update.ChatId);
+            if (InformInChat) await Owner.DeliveryService.SendMessageToChatAsync(mes, update.ChatId);
         }
     }
 }

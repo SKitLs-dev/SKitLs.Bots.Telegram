@@ -12,9 +12,9 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// <summary>
         /// Bot's debug settings.
         /// </summary>
-        public static DebugAssets DebugAssets { get; private set; }
+        public static DebugSettings DebugSettings { get; private set; }
 
-        static BotBuilder() => DebugAssets = new();
+        static BotBuilder() => DebugSettings = new();
 
         /// <summary>
         /// Constructing instance.
@@ -24,10 +24,10 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// Creates a new instance of the wizard constructor.
         /// </summary>
         /// <param name="token">Telegram bot's token</param>
-        private BotBuilder(string token, DebugAssets? assests = null)
+        private BotBuilder(string token, DebugSettings? assests = null)
         {
             if (assests is not null)
-                DebugAssets = assests;
+                DebugSettings = assests;
             _botManager = new(token);
         }
         /// <summary>
@@ -87,7 +87,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// <param name="delievery">Custom service to be implemented</param>
         public BotBuilder CustomDelievery(IDelieveryService delievery)
         {
-            _botManager.DelieveryService = delievery;
+            _botManager.DeliveryService = delievery;
             return this;
         }
 
@@ -111,8 +111,8 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
             _botManager.DebugName = debugName;
             _botManager.ReflectiveCompile();
             _botManager.CollectActionsBasket();
-            _botManager.AddService(DebugAssets.Localizator);
-            _botManager.AddService(DebugAssets.LocalLogger);
+            _botManager.AddService(DebugSettings.Localizator);
+            _botManager.AddService(DebugSettings.LocalLogger);
             return _botManager;
         }
     }

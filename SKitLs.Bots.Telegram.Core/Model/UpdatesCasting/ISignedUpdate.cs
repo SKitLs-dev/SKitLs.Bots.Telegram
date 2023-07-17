@@ -5,7 +5,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting
     /// <summary>
     /// Represents a signed update. Determines update that contains specific <see cref="IBotUser"/> sender.
     /// </summary>
-    public interface ISignedUpdate
+    public interface ISignedUpdate : ICastedUpdate
     {
         /// <summary>
         /// Casted sender instance that has raised an update.

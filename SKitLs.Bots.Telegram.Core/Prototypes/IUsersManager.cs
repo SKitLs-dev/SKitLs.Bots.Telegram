@@ -10,6 +10,6 @@ namespace SKitLs.Bots.Telegram.Core.Prototypes
 
         public Task<bool> IsUserRegistered(long telegramId);
         public Task<IBotUser?> GetUserById(long telegramId);
-        public Task<IBotUser?> ProccessNewUser(ICastedUpdate update);
+        public Task<IBotUser?> RegisterNewUser(ICastedUpdate update);
     }
 }

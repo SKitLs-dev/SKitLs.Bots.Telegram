@@ -1,0 +1,14 @@
+﻿{
+  // Data display
+  "pn.display.BackButton": "<< Назад",
+  "pn.display.ExitButton": "Выйти",
+  "pn.display.SessionExpired": "Время сессии истекло."
+
+  // Exceptions
+
+  // External
+
+  // Inexternal
+
+  // Internal
+}

@@ -1,33 +1,92 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus;
 using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
+using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting;
+using SKitLs.Bots.Telegram.Core.Model.Interactions;
+using SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.PageNavs.Prototype;
-using Telegram.Bot.Types.ReplyMarkups;
+using SKitLs.Bots.Telegram.PageNavs.resources.settings;
 
 namespace SKitLs.Bots.Telegram.PageNavs.Model
 {
+    /// <summary>
+    /// Default realization of an <see cref="IPageNavMenu"/> interface that provides methods of creating page's menu,
+    /// with integrated navigation functinality.
+    /// </summary>
     public class PageNavMenu : IPageNavMenu
     {
+        /// <summary>
+        /// The amount of columns that should be printed in one row.
+        /// </summary>
         public int ColumnsCount { get; set; } = 1;
 
-        public List<IPageWrap> PagesLinks { get; private set; } = new();
+        /// <summary>
+        /// Determines whether a "Back" Button would be printed in the menu.
+        /// </summary>
         public bool EnableBackButton { get; set; } = true;
-        public IPageWrap? ExitButton { get; private set; }
-
-        public void PathTo(params IPageWrap[] pages) => pages.ToList().ForEach(p => PagesLinks.Add(p));
-        public bool Remove(IPageWrap page) => PagesLinks.Remove(page);
-        public void ExitTo(IPageWrap? page) => ExitButton = page;
-
-        public IMesMenu Build(IPageWrap? previous, IPageWrap owner)
+        /// <summary>
+        /// A list of pages that this page leads to.
+        /// </summary>
+        public List<IBotPage> PagesLinks { get; } = new();
+        public void PathTo(params IBotPage[] pages) => pages.ToList().ForEach(p => PagesLinks.Add(p));
+        /// <summary>
+        /// Tries to remove a certain page from menu's navigation links and returns the result of an attempt.
+        /// </summary>
+        /// <param name="page">Page to remove. Uses <see cref="IBotPage.PageId"/> for comparasion.</param>
+        /// <returns><see langword="true"/> if an item was found and removed. Otherwise <see langword="false"/>.</returns>
+        public bool TryRemove(IBotPage page)
         {
+            var existing = PagesLinks.Find(x => page.PageId == x.PageId);
+            return existing is not null && PagesLinks.Remove(existing);
+        }
+        /// <summary>
+        /// Optional. A special menu that an "Exit" Button leads to. Exiting process should
+        /// refreshe user's <see cref="PageSessionData"/>, setting root page to <c><see cref="ExitButtonLink"/></c> instance.
+        /// Can be set via <see cref="ExitTo(IBotPage?)"/>.
+        /// </summary>
+        public IBotPage? ExitButtonLink { get; private set; }
+        public void ExitTo(IBotPage? page) => ExitButtonLink = page;
+
+        /// <summary>
+        /// A list of callbacks that should be append to the navigation buttons array.
+        /// </summary>
+        public List<LabeledData> Actions { get; } = new();
+        public void AddAction(LabeledData actionData) => Actions.Add(actionData);
+        /// <summary>
+        /// Adds new non-navigation action with a certain <paramref name="actionData"/> to the inline menu.
+        /// Automatically gets callback's action base via its <see cref="IBotAction.GetSerializedData(string[])"/>.
+        /// </summary>
+        /// <param name="action">Callback to add.</param>
+        public void AddAction(DefaultCallback action) => Actions.Add(new(action.Label, action.GetSerializedData()));
+
+        /// <summary>
+        /// Converts an in instance of a <c><see cref="PageNavMenu"/> : <see cref="IPageMenu"/></c> to the specified
+        /// <see cref="PairedInlineMenu"/> that can be integrated to an instance of <see cref="IOutputMessage"/>.
+        /// <para>
+        /// To update default "Back" ad "Exit" buttons' labels use <c>"lang.pageNavs.json"</c> settings files.
+        /// To update localization keys use <see cref="PNSettings"/> class.
+        /// </para>
+        /// </summary>
+        /// <param name="previous">A page to which should lead "Back" Button.</param>
+        /// <param name="owner">Current page that owns menu.</param>
+        /// <param name="update">An incoming update.</param>
+        /// <returns>Built ready-to-use menu.</returns>
+        public IMesMenu Build(IBotPage? previous, IBotPage owner, ISignedUpdate update)
+        {
+            var mm = update.Owner.ResolveService<IMenuManager>();
+
             var res = new PairedInlineMenu()
             {
+                Serializer = update.Owner.ResolveService<IArgsSerilalizerService>(),
                 ColumnsCount = ColumnsCount,
             };
-            PagesLinks.ForEach(page => res.Add(
-                page.GetLabel() + " >", DefaultMenuManager.BuildMenuCallback(owner, page)));
+            PagesLinks.ForEach(page => res.Add(string.Format(IPageMenu.NavigationLabelMask, page.GetLabel(update)), mm.OpenPageCallabck, new(page)));
+            Actions.ForEach(act => res.Add(act));
 
             if (previous is not null)
-                res.Add("<< Назад", DefaultMenuManager.BuildBackCallback(previous), true);
+                res.Add(update.Owner.ResolveBotString(PNSettings.BackButtonLocalKey), mm.BackCallabck, true);
+            if (ExitButtonLink is not null)
+                res.Add(update.Owner.ResolveBotString(PNSettings.ExitButtonLocalKey), mm.OpenPageCallabck, new(ExitButtonLink, true), true);
 
             return res;
         }

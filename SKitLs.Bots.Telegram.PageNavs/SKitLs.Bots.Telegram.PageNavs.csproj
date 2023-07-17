@@ -12,4 +12,8 @@
     <ProjectReference Include="..\SKitLs.Bots.Telegram.Core\SKitLs.Bots.Telegram.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
+
 </Project>

@@ -1,7 +1,8 @@
 ﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Prototype;
 
-namespace SKitLs.Bots.Telegram.PageNavs.Extensions
+namespace SKitLs.Bots.Telegram.PageNavs.Obsolete
 {
+    [Obsolete("The previous iteration of data args. Will be removed in future versions. Use NavigationArgs instead.", true)]
     public class MenuNavigatorArg
     {
         /// <summary>

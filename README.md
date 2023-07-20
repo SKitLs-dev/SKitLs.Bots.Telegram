@@ -35,9 +35,13 @@ For more information check "Custom Updates" section in "Applications"
 
 ### Handling architecture
 **> SKitLs.Bots.Telegram.Core.Model**
+
 **> SKitLs.Bots.Telegram.Core.Model.UpdateHandlers**
+
 **> SKitLs.Bots.Telegram.Core.Model.Management**
+
 **> SKitLs.Bots.Telegram.Core.Model.Interactions**
+
 Overall there are five-level funnel of processing server updates.
 1. First step of this funnel is `BotManager` (`*.Model`).
    BotManager is main handler. It contains general information and designed as a bridge between Telegram.Bots and SKitLs.Bots.Telegram projects.

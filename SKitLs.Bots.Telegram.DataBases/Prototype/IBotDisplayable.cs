@@ -2,8 +2,9 @@
 {
     public interface IBotDisplayable
     {
-        public string BotArgId { get; }
+        public long BotArgId { get; }
 
+        public void UpdateId(long id);
         /// <summary>
         /// Used to display full object information
         /// </summary>

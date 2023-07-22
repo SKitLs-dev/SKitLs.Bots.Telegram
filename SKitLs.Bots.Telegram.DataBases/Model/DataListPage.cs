@@ -1,26 +1,25 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.PageNavs.Prototype;
 
 namespace SKitLs.Bots.Telegram.DataBases.Model
 {
-    public class DataListPage : IPageWrap
+    public class DataListPage : IBotPage
     {
-        public string PageID => throw new NotImplementedException();
+        public string PageId => "";
         public IOutputMessage Source => throw new NotImplementedException();
+        public IPageMenu? Menu => throw new NotImplementedException();
 
-        public IOutputMessage BuildMessage(IPageWrap? previous)
+        public IOutputMessage BuildMessage(IBotPage? previous, ISignedUpdate update)
         {
             throw new NotImplementedException();
         }
 
-        public string GetLabel()
+        public string GetLabel(ISignedUpdate upadte)
         {
             throw new NotImplementedException();
         }
 
-        public bool TryUpdatePageID(string text, bool append = false)
-        {
-            throw new NotImplementedException();
-        }
+        public string GetPacked() => PageId;
     }
 }

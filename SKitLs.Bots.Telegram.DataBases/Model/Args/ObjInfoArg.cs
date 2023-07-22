@@ -16,10 +16,10 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Args
         public int Count { get; set; } = 5;
 
         [BotActionArgument(3)]
-        public string ObjId { get; set; }
+        public long ObjId { get; set; }
 
         public ObjInfoArg() { }
-        public ObjInfoArg(PaginationInfo source, string objId)
+        public ObjInfoArg(PaginationInfo source, long objId)
         {
             DataSet = source.DataSet;
             StartIndex = source.StartIndex;
@@ -27,7 +27,7 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Args
             ObjId = objId;
         }
 
-        public IBotDisplayable GetObject() => DataSet.GetData(ObjId);
+        public IBotDisplayable GetObject() => DataSet.GetExisting(ObjId);
         public PaginationInfo GetPagination() => new(DataSet, StartIndex, Count);
     }
 }

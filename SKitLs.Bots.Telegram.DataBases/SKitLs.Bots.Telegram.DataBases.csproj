@@ -7,9 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SKitLs.Bots.Telegram.BotProcesses\SKitLs.Bots.Telegram.BotProcesses.csproj" />
     <ProjectReference Include="..\SKitLs.Bots.Telegram.Core\SKitLs.Bots.Telegram.Core.csproj" />
     <ProjectReference Include="..\SKitLs.Bots.Telegram.PageNavs\SKitLs.Bots.Telegram.PageNavs.csproj" />
     <ProjectReference Include="..\SKitLs.Bots.Telegram.Stateful\SKitLs.Bots.Telegram.Stateful.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Exceptions\External\" />
   </ItemGroup>
 
 </Project>

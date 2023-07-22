@@ -11,9 +11,12 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus
         public bool OneTimeKeyboard { get; set; } = true;
 
         public ReplyMenu() { }
-        public ReplyMenu(string reply) => Buttons.Add(reply);
+        public ReplyMenu(string reply) : this(new[] { reply }) { }
+        public ReplyMenu(params string[] replies) : this(replies.ToList()) { }
         public ReplyMenu(List<string> buttons) => Buttons = buttons;
         public void Add(string reply) => Buttons.Add(reply);
+        public void AddRange(params string[] replies) => Buttons.AddRange(replies.ToList());
+        public void AddRange(List<string> buttons) => Buttons.AddRange(buttons);
 
         public IReplyMarkup GetMarkup()
         {
@@ -38,6 +41,14 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus
                 ResizeKeyboard = ResizeKeyboard,
                 OneTimeKeyboard = OneTimeKeyboard,
             };
+        }
+
+        public static ReplyMenu operator+(ReplyMenu left, ReplyMenu right)
+        {
+            var btns = new List<string>();
+            btns.AddRange(left.Buttons);
+            btns.AddRange(right.Buttons);
+            return new ReplyMenu(btns);
         }
     }
 }

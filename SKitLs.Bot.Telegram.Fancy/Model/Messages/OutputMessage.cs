@@ -7,7 +7,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages
 {
-    public abstract class OutputMessage : IOutputMessage
+    public abstract class OutputMessage : IOutputMessage, IFormattableMessage
     {
         public int ReplyToMessageId { get; set; }
         public ParseMode? ParseMode { get; set; }
@@ -19,9 +19,10 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages
         public OutputMessage(IOutputMessage other)
         {
             ReplyToMessageId = other.ReplyToMessageId;
-            FormattedClone = other.FormattedClone;
             Menu = other.Menu;
             ParseMode = other.ParseMode;
+            if (other is IFormattableMessage formattable)
+                FormattedClone = formattable.FormattedClone;
         }
 
         public OutputMessage UseParseMode(ParseMode mode)
@@ -29,13 +30,12 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages
             ParseMode = mode;
             return this;
         }
-        public OutputMessage AddMenu(IMesMenu? markup)
+        public OutputMessage AddMenu(IMesMenu? menu)
         {
-            Menu = markup;
+            Menu = menu;
             return this;
         }
 
-        //public virtual string GetMessageText() => ToString() ?? GetType().Name;
         public abstract string GetMessageText();
 
         // TODO

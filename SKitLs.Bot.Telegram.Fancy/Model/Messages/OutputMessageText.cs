@@ -16,7 +16,6 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages
         }
 
         public override string GetMessageText() => Text;
-
         public override object Clone() => new OutputMessageText(this)
         {
             Text = (string)Text.Clone()

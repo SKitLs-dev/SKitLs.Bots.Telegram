@@ -1,12 +1,11 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
-using SKitLs.Bots.Telegram.Core.Exceptions;
+using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.Core.Model;
 using SKitLs.Bots.Telegram.Core.Model.DelieverySystem;
 using SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Model;
 using SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Protoype;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using Telegram.Bot;
-using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using TEnums = Telegram.Bot.Types.Enums;
@@ -18,7 +17,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.AdvancedDelievery
         private BotManager? _owner;
         public BotManager Owner
         {
-            get => _owner ?? throw new NullOwnerException();
+            get => _owner ?? throw new NullOwnerException(GetType());
             set => _owner = value;
         }
         public Action<object, BotManager>? OnCompilation => null;
@@ -79,12 +78,12 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.AdvancedDelievery
             }
             try
             {
-                await Bot.SendTextMessageAsync(
+                var res = await Bot.SendTextMessageAsync(
                     chatId: chatId,
                     text: message.GetMessageText(),
                     parseMode: ParseMode.Markdown,
                     cancellationToken: cts.Token);
-                return DelieveryResponse.OK();
+                return DelieveryResponse.OK(res);
             }
             catch (Exception e)
             {
@@ -96,7 +95,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.AdvancedDelievery
         {
             try
             {
-                await Bot.SendTextMessageAsync(
+                var res = await Bot.SendTextMessageAsync(
                     chatId: chatId,
                     text: message.GetMessageText(),
                     parseMode: message.ParseMode,
@@ -108,7 +107,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.AdvancedDelievery
                     // bool     allowSendingWithoutReply ]
                     replyMarkup: message.Menu?.GetMarkup(),
                     cancellationToken: cts.Token);
-                return DelieveryResponse.OK();
+                return DelieveryResponse.OK(res);
             }
             catch (Exception e)
             {
@@ -126,13 +125,13 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.AdvancedDelievery
         {
             try
             {
-                await Bot.EditMessageTextAsync(
+                var res = await Bot.EditMessageTextAsync(
                     chatId: chatId,
                     messageId: mesId,
                     text: message.GetMessageText(),
                     parseMode: ParseMode.Markdown,
                     cancellationToken: cts.Token);
-                return DelieveryResponse.OK();
+                return DelieveryResponse.OK(res);
             }
             catch (Exception e)
             {
@@ -143,17 +142,19 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.AdvancedDelievery
         private async Task<DelieveryResponse> EditOutputAsync(IOutputMessage message, long chatId, int mesId, CancellationTokenSource cts)
         {
             // TODO
-            if (message.Menu is not InlineKeyboardMarkup inline) throw new NotImplementedException();
+            var menu = message.Menu?.GetMarkup() as InlineKeyboardMarkup;
+            //if (menu is not null && menu is not InlineKeyboardMarkup inline)
+            //    throw new NotImplementedException();
             try
             {
-                await Bot.EditMessageTextAsync(
+                var res = await Bot.EditMessageTextAsync(
                     chatId: chatId,
                     messageId: mesId,
                     text: message.GetMessageText(),
                     parseMode: message.ParseMode,
-                    replyMarkup: inline,
+                    replyMarkup: menu,
                     cancellationToken: cts.Token);
-                return DelieveryResponse.OK();
+                return DelieveryResponse.OK(res);
             }
             catch (Exception e)
             {

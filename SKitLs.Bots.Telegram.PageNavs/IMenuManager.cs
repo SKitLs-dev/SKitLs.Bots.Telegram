@@ -128,6 +128,6 @@ namespace SKitLs.Bots.Telegram.PageNavs
         /// <param name="page">Page to push.</param>
         /// <param name="update">An incoming updated.</param>
         /// <param name="refresh">Determines whether pushing <paramref name="page"/> should be set as a new root one.</param>
-        public Task PushPageAsync(IBotPage page, ISignedUpdate update, bool refresh);
+        public Task PushPageAsync(IBotPage page, ISignedUpdate update, bool refresh = false);
     }
 }

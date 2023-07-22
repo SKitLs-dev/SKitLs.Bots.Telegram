@@ -257,6 +257,10 @@ public ILocalizator Localizator => ResolveService<ILocalizator>();
 ```
 
 ## Setup and usage
+This project is available as a NuGet package. To install it run:
+```
+dotnet add package SKitLs.Bots.Telegram.Core --version 1.4.1
+```
 
 To use project's facilities use `BotBuilder` and `ChatDesigner` classes. See [Functions and examples](#focus-functions-and-examples) for more info.
 

@@ -4,8 +4,6 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Exceptions
 {
     public class ConvertingException : SKTgException
     {
-        public ConvertingException() : base(true, "exceptions")
-        {
-        }
+        public ConvertingException() : base("exceptions", SKTEOriginType.External) { }
     }
 }

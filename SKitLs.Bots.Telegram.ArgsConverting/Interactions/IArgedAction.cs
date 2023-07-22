@@ -5,7 +5,7 @@ using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 
 namespace SKitLs.Bots.Telegram.ArgedInteractions.Interactions
 {
-    public delegate Task BotArgedInteraction<TArg, TUpdate>(IArgedAction<TArg, TUpdate> trigger, TArg args, TUpdate update) where TUpdate : ICastedUpdate;
+    public delegate Task BotArgedInteraction<TArg, TUpdate>(TArg args, TUpdate update) where TUpdate : ICastedUpdate;
 
     public interface IArgedAction<TArg, TUpdate> : IBotAction<TUpdate> where TUpdate : ICastedUpdate
     {

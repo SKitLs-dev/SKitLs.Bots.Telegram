@@ -136,8 +136,11 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting
             var propsLinks = typeof(TOut).GetProperties()
                 .Where(x => x.GetCustomAttribute<BotActionArgumentAttribute>() is not null)
                 .ToDictionary(x => x.GetCustomAttribute<BotActionArgumentAttribute>()!.ArgIndex);
-
+            
             string _excepMes = string.Empty;
+            if (args.Count != propsLinks.Count)
+                _excepMes += "Получено меньше информации, чем ожидалось.";
+
             for (int i = 0; i < propsLinks.Count; i++)
             {
                 PropertyInfo prop = propsLinks[i];

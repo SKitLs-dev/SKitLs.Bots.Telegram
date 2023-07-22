@@ -18,18 +18,17 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Model
             SplitToken = splitToken;
         }
 
-        public override bool ShouldBeExecutedOn(SignedMessageTextUpdate update) => ActionBase == update.Text[..update.Text.IndexOf(SplitToken)];
+        public override bool ShouldBeExecutedOn(SignedMessageTextUpdate update) => update.Text.Contains(SplitToken) && ActionNameBase == update.Text[..update.Text.IndexOf(SplitToken)];
         public ConvertResult<TArg> DeserializeArgs(SignedMessageTextUpdate update, IArgsSerilalizerService serilalizer)
             => serilalizer.Deserialize<TArg>(update.Text[(update.Text.IndexOf(SplitToken) + 1)..], SplitToken);
         public string SerializeArgs(TArg data, IArgsSerilalizerService serialize) => serialize.Serialize(data, SplitToken);
-        public string GetSerializedData(TArg data, IArgsSerilalizerService serialize) => ActionBase + SerializeArgs(data, serialize);
+        public string GetSerializedData(TArg data, IArgsSerilalizerService serialize) => ActionNameBase + SerializeArgs(data, serialize);
 
-        private async Task MiddleAction(IBotAction<SignedMessageTextUpdate> trigger, SignedMessageTextUpdate update)
+        private async Task MiddleAction(SignedMessageTextUpdate update)
         {
-            var argedAction = trigger as IArgedAction<TArg, SignedMessageTextUpdate> ?? throw new Exception();
             var argService = update.Owner.ResolveService<IArgsSerilalizerService>();
             var args = DeserializeArgs(update, argService).Value;
-            await ArgAction.Invoke(argedAction, args, update);
+            await ArgAction.Invoke(args, update);
         }
     }
 }

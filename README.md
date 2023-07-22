@@ -275,9 +275,12 @@ Create a new Console Project and paste this syntax directly into your Program cl
 static async Task Main(string[] args)
 {
    var privateMessages = new DefaultSignedMessageUpdateHandler();
-   privateMessages.TextMessageUpdateHandler = new DefaultSignedMessageTextUpdateHandler();
-   privateMessages.TextMessageUpdateHandler.CommandsManager = new DefaultActionManager<SignedMessageTextUpdate>();
-   privateMessages.TextMessageUpdateHandler.CommandsManager.AddSafely(StartCommand);
+   var privateTexts = new DefaultSignedMessageTextUpdateHandler
+   {
+       CommandsManager = new DefaultActionManager<SignedMessageTextUpdate>()
+   };
+   privateTexts.CommandsManager.AddSafely(StartCommand);
+   privateMessages.TextMessageUpdateHandler = privateTexts;
 
    ChatDesigner privates = ChatDesigner.NewDesigner()
       .UseMessageHandler(privateMessages);

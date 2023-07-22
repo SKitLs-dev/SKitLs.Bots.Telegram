@@ -35,6 +35,53 @@ If you are only interested in quick setup, check **"Quick Start"** and ![**"Setu
 # SKitLs.Bots.Telegram.Core
 An essential core module that contains main architecture and logic that handles and casts incoming updates. All the basics can be used and implemented in other modules to extend basic functinality.
 
+## Setup and usage
+This project is available as a NuGet package. To install it run:
+```
+dotnet add package SKitLs.Bots.Telegram.Core --version 1.4.1
+```
+
+To use project's facilities use `BotBuilder` and `ChatDesigner` classes. See [Functions and examples](#focus-functions-and-examples) for more info.
+
+## **\[Focus\]** Functions and examples
+BotManager - the heart of your bot - does not have public constructor. Use BotBuilder wizard constructor class instead.
+1. Just raise static `BotBuilder.NewBuilder()` function to create a new Builder and explore its functinality.
+2. Via BotBuilder you can design your BotManager for your needs, using closed, safe functions.
+3. After you have set up all interior you can get your constructed BotManager with a `BotBuilder.Build()` function.
+4. To activate your bot use `BotManager.Listen()` function.
+
+The same process in appliable for ChatScanners, used for processing updates from chats, via their wizard constructor class `ChatDesigner`.
+
+### Quick Start example
+Create a new Console Project and paste this syntax directly into your Program class:
+```C#
+static async Task Main(string[] args)
+{
+   var privateMessages = new DefaultSignedMessageUpdateHandler();
+   var privateTexts = new DefaultSignedMessageTextUpdateHandler
+   {
+       CommandsManager = new DefaultActionManager<SignedMessageTextUpdate>()
+   };
+   privateTexts.CommandsManager.AddSafely(StartCommand);
+   privateMessages.TextMessageUpdateHandler = privateTexts;
+
+   ChatDesigner privates = ChatDesigner.NewDesigner()
+      .UseMessageHandler(privateMessages);
+
+   await BotBuilder.NewBuilder("YOUR_TOKEN")
+      .EnablePrivates(privates)
+      .Build()
+      .Listen();
+}
+
+private static DefaultCommand StartCommand => new("start", Do_StartAsync);
+private static async Task Do_StartAsync(SignedMessageTextUpdate update)
+{
+   await update.Owner.DeliveryService.ReplyToSender("Hello, world!", update);
+}
+```
+From now and on your bot is ready for use.
+
 ## Features
 The idea of this module is to unify incoming telegram updates. Three main aspects of this module are: casted updates, handling architecture and services.
 
@@ -255,54 +302,6 @@ To prevent your `IOwnerCompilable` from automatic assigning for some reason, you
 [OwnerCompileIgnore]
 public ILocalizator Localizator => ResolveService<ILocalizator>();
 ```
-
-## Setup and usage
-This project is available as a NuGet package. To install it run:
-```
-dotnet add package SKitLs.Bots.Telegram.Core --version 1.4.1
-```
-
-To use project's facilities use `BotBuilder` and `ChatDesigner` classes. See [Functions and examples](#focus-functions-and-examples) for more info.
-
-## **\[Focus\]** Functions and examples
-BotManager - the heart of your bot - does not have public constructor. Use BotBuilder wizard constructor class instead.
-1. Just raise static `BotBuilder.NewBuilder()` function to create a new Builder and explore its functinality.
-2. Via BotBuilder you can design your BotManager for your needs, using closed, safe functions.
-3. After you have set up all interior you can get your constructed BotManager with a `BotBuilder.Build()` function.
-4. To activate your bot use `BotManager.Listen()` function.
-
-The same process in appliable for ChatScanners, used for processing updates from chats, via their wizard constructor class `ChatDesigner`.
-
-### Quick Start example
-Create a new Console Project and paste this syntax directly into your Program class:
-```C#
-static async Task Main(string[] args)
-{
-   var privateMessages = new DefaultSignedMessageUpdateHandler();
-   var privateTexts = new DefaultSignedMessageTextUpdateHandler
-   {
-       CommandsManager = new DefaultActionManager<SignedMessageTextUpdate>()
-   };
-   privateTexts.CommandsManager.AddSafely(StartCommand);
-   privateMessages.TextMessageUpdateHandler = privateTexts;
-
-   ChatDesigner privates = ChatDesigner.NewDesigner()
-      .UseMessageHandler(privateMessages);
-
-   await BotBuilder.NewBuilder("YOUR_TOKEN")
-      .EnablePrivates(privates)
-      .Build()
-      .Listen();
-}
-
-private static DefaultCommand StartCommand => new("start", Do_StartAsync);
-private static async Task Do_StartAsync(SignedMessageTextUpdate update)
-{
-   await update.Owner.DeliveryService.ReplyToSender("Hello, world!", update);
-}
-```
-
-From now and on your bot is ready for use.
 
 # SKitLs.Bots.Telegram.PageNavs
 

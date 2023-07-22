@@ -5,17 +5,17 @@ namespace SKitLs.Bots.Telegram.Stateful.Model
     public struct DefaultUserState : IUserState, IEquatable<DefaultUserState>, IComparable<DefaultUserState>
     {
         public int StateId { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = "Dynamic no named";
 
-        public DefaultUserState(int id, string name = "Dynamic no named")
+        public DefaultUserState(int id, string? name = null)
         {
             StateId = id;
-            Name = name;
+            if (name is not null) Name = name;
         }
 
         public override int GetHashCode() => StateId.GetHashCode() + Name.GetHashCode();
         public bool Equals(int other) => StateId == other;
-        public bool Equals(DefaultUserState other) => StateId == other;
+        public bool Equals(DefaultUserState other) => StateId == other.StateId;
         public override bool Equals(object? obj)
         {
             if (obj is DefaultUserState otherState)
@@ -26,7 +26,7 @@ namespace SKitLs.Bots.Telegram.Stateful.Model
             return base.Equals(obj);
         }
         public int CompareTo(int other) => StateId - other;
-        public int CompareTo(DefaultUserState other) => StateId - other;
+        public int CompareTo(DefaultUserState other) => StateId - other.StateId;
 
         public static bool operator ==(DefaultUserState left, DefaultUserState right) => left.Equals(right);
         public static bool operator !=(DefaultUserState left, DefaultUserState right) => !(left == right);

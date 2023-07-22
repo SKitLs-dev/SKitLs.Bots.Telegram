@@ -1,4 +1,4 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.Builders;
+﻿using SKitLs.Bots.Telegram.Core.Model.Building;
 using SKitLs.Bots.Telegram.Core.Model.Management;
 using SKitLs.Bots.Telegram.Core.Model.Management.Integration;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;

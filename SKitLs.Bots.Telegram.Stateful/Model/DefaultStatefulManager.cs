@@ -1,8 +1,7 @@
-﻿using SKitLs.Bots.Telegram.Core.Exceptions;
+﻿using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.Core.Model;
-using SKitLs.Bots.Telegram.Core.Model.Builders;
+using SKitLs.Bots.Telegram.Core.Model.Building;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
-using SKitLs.Bots.Telegram.Core.Model.Management.Integration;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Stateful.Prototype;
 using System.Collections.ObjectModel;
@@ -16,28 +15,35 @@ namespace SKitLs.Bots.Telegram.Stateful.Model
         private BotManager? _owner;
         public BotManager Owner
         {
-            get => _owner ?? throw new NullOwnerException();
+            get => _owner ?? throw new NullOwnerException(GetType());
             set => _owner = value;
         }
         public Action<object, BotManager>? OnCompilation => null;
 
-        public IList<IUserState> DeterminedStates => ((IStatefulActionManager<TUpdate>)this).DeterminedStates;
         public ICollection<IStateSection<TUpdate>> ActionSections { get; set; }
         public IStateSection<TUpdate> DefaultStateSection => ActionSections
             .ToList()
             .Find(x => x.EnabledAny) ?? throw new Exception();
+        public List<IBotAction> GetActionsContent()
+        {
+            var res = new List<IBotAction>();
+            ActionSections.ToList().ForEach(x => res.AddRange(x.GetActionsContent()));
+            return res;
+        }
 
-        public DefaultStatefulManager(string? debugName)
+        public DefaultStatefulManager(string? debugName = null)
         {
             DebugName = debugName;
-            ActionSections = new Collection<IStateSection<TUpdate>>();
+            ActionSections = new Collection<IStateSection<TUpdate>>
+            {
+                new DefaultStateSection<TUpdate>()
+            };
         }
 
         public void AddSafely(IBotAction<TUpdate> action) => DefaultStateSection.AddSafely(action);
         public void AddRangeSafely(ICollection<IBotAction<TUpdate>> actions) => actions
             .ToList()
             .ForEach(sec => AddSafely(sec));
-        public void Apply(IIntegratable<TUpdate> actions) => ((IStatefulActionManager<TUpdate>)this).Apply(actions);
 
         public void AddSectionSafely(IStateSection<TUpdate> section)
         {
@@ -87,7 +93,10 @@ namespace SKitLs.Bots.Telegram.Stateful.Model
             // TODO
             foreach (var action in enabled)
                 if (action.ShouldBeExecutedOn(update))
-                    await action.Action(action, update);
+                {
+                    await action.Action(update);
+                    break;
+                }
         }
 
         public override string? ToString() => DebugName ?? base.ToString();

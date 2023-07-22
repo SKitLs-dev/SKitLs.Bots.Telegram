@@ -258,7 +258,7 @@ public ILocalizator Localizator => ResolveService<ILocalizator>();
 
 ## Setup and usage
 
-To use project's facilities use `BotBuilder` and `ChatDesigner` classes. See [Functions and examples](#functions-and-examples) for more info.
+To use project's facilities use `BotBuilder` and `ChatDesigner` classes. See [Functions and examples](#focus-functions-and-examples) for more info.
 
 ## **\[Focus\]** Functions and examples
 BotManager - the heart of your bot - does not have public constructor. Use BotBuilder wizard constructor class instead.

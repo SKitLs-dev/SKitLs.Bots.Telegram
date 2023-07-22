@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Model\Defaults\Inputs\**" />
+    <EmbeddedResource Remove="Model\Defaults\Inputs\**" />
+    <None Remove="Model\Defaults\Inputs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SKitLs.Bots.Telegram.Core\SKitLs.Bots.Telegram.Core.csproj" />
+    <ProjectReference Include="..\SKitLs.Bots.Telegram.Stateful\SKitLs.Bots.Telegram.Stateful.csproj" />
+  </ItemGroup>
+
+</Project>

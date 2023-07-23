@@ -1,10 +1,29 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>1.4.1</AssemblyVersion>
+    <AssemblyVersion>1.4.3</AssemblyVersion>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>$(AssemblyName)</Title>
+    <Authors>Sargeras02</Authors>
+    <PackageProjectUrl>https://github.com/Sargeras02/SKitLs.Bots.Telegram.git</PackageProjectUrl>
+    <PackageIcon>libIcon.png</PackageIcon>
+    <PackageTags>Telegram, Bots, Management</PackageTags>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <PackageReleaseNotes>( ! ) Fixed ChatType bug for Groups, Supergroups and Channels
+
+(+) Exceptions' descriptions added
+(~) BotBuilder names updated</PackageReleaseNotes>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+    <Copyright>Copyright (C) Sargeras02 2023</Copyright>
+    <Description>An essential core module of SKitLs.Bots.Telegram solution that contains main architecture and logic that handles and casts incoming updates.
+All the basics can be used and implemented in other modules to extend basic functinality.
+
+For more information see GitHub page.</Description>
+    <Version>$(AssemblyVersion)</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,12 +38,26 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\libIcon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="resources\locals\en.core.json" />
     <Resource Include="resources\locals\ru.core.json" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Telegram.Bot" Version="19.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

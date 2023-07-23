@@ -1,13 +1,13 @@
 {
-  "local.KeyNotDefined": "Localized Key Is Not Defined. Lang: {0}; Key: {1}. Format params: ",
+  "local.KeyNotDefined": "Localized Key Is Not Defined. Lang: {0}; Key: {1}. Please, make sure the language package is downloaded and installed in {2}. Format params: ",
 
   "system.StartUpMessage": "Start listening for @{0}",
   "system.UpdateMessage": "[{0}] ({1}) Received: {2} - From: {3} - Content: {4}",
 
   // Exceptions
-  "system.ExternalExcep": "This exception is marked as External. It means that it occured beacuse of external actions and code. Please make sure your code is safe.",
-  "system.InexternalExcep": "This exception can be both: Internal or External. Please make sure your code is safe. If you are sure it's ok make - pull request via github.",
-  "system.InternalExcep": "This exception is marked as Internal. It means that it occured because of internal library problems. Please save info about exception context and share it via github.",
+  "system.ExternalExcep": "This exception is marked as External. It means that it occurred because of external actions and code. Please make sure your code is safe.",
+  "system.InexternalExcep": "This exception can be both: Internal or External. Please make sure your code is safe. If you are sure it's ok - add an issue via GitHub.",
+  "system.InternalExcep": "This exception is marked as Internal. It means that it occurred because of internal library problems. Please save info about exception context and share it via GitHub.",
 
   // External
   "exceptionCap.Duplication": "Integration duplication",

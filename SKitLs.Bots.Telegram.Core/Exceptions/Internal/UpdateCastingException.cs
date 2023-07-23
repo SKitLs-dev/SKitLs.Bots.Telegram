@@ -1,14 +1,28 @@
 ﻿namespace SKitLs.Bots.Telegram.Core.Exceptions.Internal
 {
+    /// <summary>
+    /// An exception which occurs when an update was not casted properly.
+    /// </summary>
     public class UpdateCastingException : SKTgException
     {
-        public long UpdateId { get; set; }
-        public string UpdateName { get; set; }
+        /// <summary>
+        /// An id of the update that has thrown exception.
+        /// </summary>
+        public long UpdateId { get; private set; }
+        /// <summary>
+        /// Short displayable message of the update that has raised an excepion.
+        /// </summary>
+        public string UpdateName { get; private set; }
 
-        public UpdateCastingException(string updateName, long updateId) : base("UpdateCasting", SKTEOriginType.Internal)
+        /// <summary>
+        /// Creates a new instance of <see cref="UpdateCastingException"/> with specified data.
+        /// </summary>
+        /// <param name="updateId">An id of the update that has thrown exception.</param>
+        /// <param name="updateName">Short displayable message of the update that has raised an excepion.</param>
+        public UpdateCastingException(long updateId, string updateName) : base("UpdateCasting", SKTEOriginType.Internal)
         {
-            UpdateName = updateName;
             UpdateId = updateId;
+            UpdateName = updateName;
         }
     }
 }

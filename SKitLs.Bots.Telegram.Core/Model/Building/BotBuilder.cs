@@ -51,10 +51,10 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// Enables groups' handling. Uses vanilla <see cref="ChatScanner"/> by default.
         /// </summary>
         /// <param name="builder">Customized <see cref="ChatScanner"/> desiner. Can be null to use default.</param>
-        public BotBuilder EnableGroupWith(ChatDesigner? builder = null)
+        public BotBuilder EnableGroups(ChatDesigner? builder = null)
         {
             _botManager.GroupChatUpdateHandler = builder?.Build() ?? new();
-            _botManager.GroupChatUpdateHandler.ChatType = ChatType.Private;
+            _botManager.GroupChatUpdateHandler.ChatType = ChatType.Group;
             _botManager.GroupChatUpdateHandler.DebugName = nameof(_botManager.GroupChatUpdateHandler);
             return this;
         }
@@ -62,10 +62,10 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// Enables supergroups' handling. Uses vanilla <see cref="ChatScanner"/> by default.
         /// </summary>
         /// <param name="builder">Customized <see cref="ChatScanner"/> desiner. Can be null to use default.</param>
-        public BotBuilder EnableSupergroupsWith(ChatDesigner? builder = null)
+        public BotBuilder EnableSupergroups(ChatDesigner? builder = null)
         {
             _botManager.SupergroupChatUpdateHandler = builder?.Build() ?? new();
-            _botManager.SupergroupChatUpdateHandler.ChatType = ChatType.Private;
+            _botManager.SupergroupChatUpdateHandler.ChatType = ChatType.Supergroup;
             _botManager.SupergroupChatUpdateHandler.DebugName = nameof(_botManager.SupergroupChatUpdateHandler);
             return this;
         }
@@ -73,10 +73,10 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// Enables channels' handling. Uses vanilla <see cref="ChatScanner"/> by default.
         /// </summary>
         /// <param name="builder">Customized <see cref="ChatScanner"/> desiner. Can be null to use default.</param>
-        public BotBuilder EnableChannelsWith(ChatDesigner? builder = null)
+        public BotBuilder EnableChannels(ChatDesigner? builder = null)
         {
             _botManager.ChannelChatUpdateHandler = builder?.Build() ?? new();
-            _botManager.ChannelChatUpdateHandler.ChatType = ChatType.Private;
+            _botManager.ChannelChatUpdateHandler.ChatType = ChatType.Channel;
             _botManager.ChannelChatUpdateHandler.DebugName = nameof(_botManager.ChannelChatUpdateHandler);
             return this;
         }

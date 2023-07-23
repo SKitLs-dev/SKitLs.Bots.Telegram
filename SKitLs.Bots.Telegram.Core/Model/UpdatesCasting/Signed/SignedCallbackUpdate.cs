@@ -39,9 +39,9 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed
         public SignedCallbackUpdate(ChatScanner chatScanner, Update source, long chatId, IBotUser sender)
             : base(chatScanner, source, chatId)
         {
-            Callback = source.CallbackQuery ?? throw new UpdateCastingException("Callback: Query", source.Id);
-            Message = source.CallbackQuery.Message ?? throw new UpdateCastingException("Callback: Message", source.Id);
-            Data = source.CallbackQuery.Data ?? throw new UpdateCastingException("Callback: Data", source.Id);
+            Callback = source.CallbackQuery ?? throw new UpdateCastingException(source.Id, "Callback: Query");
+            Message = source.CallbackQuery.Message ?? throw new UpdateCastingException(source.Id, "Callback: Message");
+            Data = source.CallbackQuery.Data ?? throw new UpdateCastingException(source.Id, "Callback: Data");
             Sender = sender ?? throw new NullSenderException();
         }
 

@@ -13,7 +13,7 @@ namespace SKitLs.Bots.Telegram.Core.external.Localizations
             LocalsPath = localsPath;
             Localizations = new();
             if (!Directory.Exists(LocalsPath)) Directory.CreateDirectory(LocalsPath);
-            var files = Directory.GetFiles(LocalsPath).Select(x => new FileInfo(x));
+            var files = Directory.GetFiles(LocalsPath).Select(x => new FileInfo(x)).Where(x => x.Extension == ".json");
             foreach (LangKey lang in Enum.GetValues(typeof(LangKey)))
             {
                 string? langName = Enum.GetName(typeof(LangKey), lang);
@@ -49,7 +49,7 @@ namespace SKitLs.Bots.Telegram.Core.external.Localizations
         }
         private string NotDef(LangKey lang, string key, params string?[] format)
         {
-            var repl = IResolveString(LangKey.EN, NotDefinedKey, Enum.GetName(lang), key)
+            var repl = IResolveString(LangKey.EN, NotDefinedKey, Enum.GetName(lang), key, LocalsPath)
                 ?? "String Data is not defined. Format params: ";
             foreach (var param in format)
                 repl += $"{param}, ";

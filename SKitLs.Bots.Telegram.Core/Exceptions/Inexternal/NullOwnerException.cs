@@ -13,6 +13,10 @@ namespace SKitLs.Bots.Telegram.Core.Exceptions.Inexternal
         /// </summary>
         public Type SenderType { get; private set; }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="NullOwnerException"/> with specified data.
+        /// </summary>
+        /// <param name="senderType">Type of a class that has thrown an exception.</param>
         public NullOwnerException(Type senderType) : base("NullOwner", SKTEOriginType.Inexternal, senderType.Name)
         {
             SenderType = senderType;

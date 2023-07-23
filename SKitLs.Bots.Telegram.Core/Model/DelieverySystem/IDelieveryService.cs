@@ -7,7 +7,7 @@ using Telegram.Bot.Types.Enums;
 namespace SKitLs.Bots.Telegram.Core.Model.DelieverySystem
 {
     /// <summary>
-    /// [TODO] An interface that provides ways of sending messages to users.
+    /// An interface that provides ways of sending messages to users.
     /// </summary>
     public interface IDelieveryService : IOwnerCompilable
     {

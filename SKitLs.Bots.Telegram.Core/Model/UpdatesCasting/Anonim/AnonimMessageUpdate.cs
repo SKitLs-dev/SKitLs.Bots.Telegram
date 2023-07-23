@@ -26,7 +26,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonim
         /// <param name="chatId">ID of a chat that has raised updated</param>
         /// <exception cref="UpdateCastingException"></exception>
         public AnonimMessageUpdate(ChatScanner chatScanner, Update source, long chatId) : base(chatScanner, source, chatId)
-            => Message = source.Message ?? throw new UpdateCastingException("Message Update", source.Id);
+            => Message = source.Message ?? throw new UpdateCastingException(source.Id, "Message Update");
 
         /// <summary>
         /// Creates a new instance of an <see cref="AnonimMessageUpdate"/>,

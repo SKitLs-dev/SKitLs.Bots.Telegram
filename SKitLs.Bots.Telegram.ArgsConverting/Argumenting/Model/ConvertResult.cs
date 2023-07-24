@@ -1,150 +1,94 @@
-﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model
+﻿using SKitLs.Bots.Telegram.Core.Exceptions.Internal;
+
+namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model
 {
     /// <summary>
-    /// Класс-оболочка для результатов конвертации
+    /// Represents a convertation result for <see cref="ConvertRule{TOut}"/>.
+    /// Contains resulting value or excpetion message.
     /// </summary>
     /// <typeparam name="Out">Целевой тип конвертации</typeparam>
     public class ConvertResult<TOut>
     {
         private TOut? _value;
         /// <summary>
-        /// Значение результата конвертации.
+        /// Represents the value that has been gotten in the result of <see cref="ConvertRule{TOut}"/> work.
+        /// Throws Null Exception if value <see langword="null"/>.
         /// </summary>
+        /// <exception cref="BotManagerExcpetion"></exception>
         public TOut Value
         {
-            get => _value ?? throw new Exception();
+            get => _value ?? throw new BotManagerExcpetion("ConvertNullValue");
             set => _value = value;
         }
 
-        public Type ValueType { get; set; }
         /// <summary>
-        /// Тип результата конвертации.
+        /// Represents a targeted result type.
         /// </summary>
-        public ConvertResultType ResultType { get; set; }
+        public Type ValueType => typeof(TOut);
         /// <summary>
-        /// Сообщение результата конвертации.
+        /// Represents convertation result type.
         /// </summary>
-        public string Message { get; set; }
+        public ConvertResultType ResultType { get; private set; }
+        /// <summary>
+        /// Contains a message that describes convertation result.
+        /// </summary>
+        public string ResultMessage { get; private set; }
 
-        public ConvertResult(Type valueType, string message)
+        /// <summary>
+        /// Creates a new instance of a type <see cref="ConvertResult"/> with a specified data.
+        /// </summary>
+        /// <param name="resultType">Convertation result type.</param>
+        /// <param name="message">A message that describes convertation result.</param>
+        public ConvertResult(ConvertResultType resultType, string? message = null)
         {
-            ValueType = valueType;
-            Message = message;
+            ResultType = resultType;
+            ResultMessage = message ?? nameof(resultType);
         }
+        /// <summary>
+        /// Creates a new instance of a type <see cref="ConvertResult"/> with a specified data.
+        /// </summary>
+        /// <param name="resultType">Convertation result type.</param>
+        /// <param name="message">Message that describes convertation result.</param>
+        /// <param name="value">Value that has been gotten in the result of convertation.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public ConvertResult(TOut value, ConvertResultType resultType = ConvertResultType.Ok, string? message = null)
+            : this(resultType, message) => Value = value ?? throw new ArgumentNullException(nameof(value));
 
         /// <summary>
-        /// Создаёт успешный (<see cref="ConvertResultType.Ok"/>) результат конвертации с заданным 
-        /// выходным значением.
+        /// A shortcut for creating <see cref="ConvertResultType.Ok"/> with <paramref name="value"/> result
+        /// and custom message <paramref name="message"/>.
         /// </summary>
-        /// <typeparam name="TOut">Целевой тип конвертации</typeparam>
-        /// <param name="value">Выходное значение</param>
-        /// <returns>Успешный результат конвертации.</returns>
-        public static ConvertResult<TOut> OK(TOut value)
-            => new(typeof(TOut), "OK")
-            {
-                _value = value,
-                ResultType = ConvertResultType.Ok,
-            };
+        /// <param name="value">Result value.</param>
+        /// <param name="message">Custom message.</param>
+        /// <returns><see cref="ConvertResult{TOut}"/> with <see cref="ConvertResultType.Ok"/> status.</returns>
+        public static ConvertResult<TOut> OK(TOut value, string? message = null) => new(value, message: message);
 
         /// <summary>
-        /// Создаёт успешный (<see cref="ConvertResultType.Ok"/>) результат конвертации с заданным 
-        /// выходным значением и пользовательским сообщением результата конвертации.
+        /// A shortcut for creating <see cref="ConvertResultType.NullInput"/> with custom message <paramref name="message"/>.
         /// </summary>
-        /// <typeparam name="TOut">Целевой тип конвертации</typeparam>
-        /// <param name="value">Выходное значение</param>
-        /// <param name="caption">Пользовательское сообщение результата конвертации</param>
-        /// <returns>Успешный результат конвертации.</returns>
-        public static ConvertResult<TOut> OK(TOut value, string caption)
-            => new(typeof(TOut), caption)
-            {
-                _value = value,
-                ResultType = ConvertResultType.Ok,
-            };
+        /// <param name="message">Custom message.</param>
+        /// <returns><see cref="ConvertResult{TOut}"/> with <see cref="ConvertResultType.NullInput"/> status.</returns>
+        public static ConvertResult<TOut> NullInput(string? message = null) => new(ConvertResultType.NullInput, message);
 
         /// <summary>
-        /// Создаёт результат конвертации с ошибкой типа <see cref="ConvertResultType.NullInput"/> в случае 
-        /// нулевого или пустого входного значения.
+        /// A shortcut for creating <see cref="ConvertResultType.Incorrect"/> with custom message <paramref name="message"/>.
         /// </summary>
-        /// <typeparam name="TOut">Целевой тип конвертации</typeparam>
-        /// <returns>Результат конвертации с ошибкой.</returns>
-        public static ConvertResult<TOut> NullInput()
-            => new(typeof(TOut), "Введённые данные отсутствовали")
-            {
-                _value = default,
-                ResultType = ConvertResultType.NullInput,
-            };
+        /// <param name="message">Custom message.</param>
+        /// <returns><see cref="ConvertResult{TOut}"/> with <see cref="ConvertResultType.Incorrect"/> status.</returns>
+        public static ConvertResult<TOut> Incorrect(string? message = null) => new(ConvertResultType.Incorrect, message);
 
         /// <summary>
-        /// Создаёт результат конвертации с ошибкой типа <see cref="ConvertResultType.Incorrect"/> и сообщением 
-        /// по умолчанию в случае ошибки преобразования конвертера.
+        /// A shortcut for creating <see cref="ConvertResultType.NotPresented"/> with custom message <paramref name="message"/>.
         /// </summary>
-        /// <typeparam name="TOut">Целевой тип конвертации</typeparam>
-        /// <returns>Результат конвертации с ошибкой.</returns>
-        public static ConvertResult<TOut> Incorrect()
-            => new(typeof(TOut), "Введённые данные имели неверный формат")
-            {
-                _value = default,
-                ResultType = ConvertResultType.Incorrect,
-            };
+        /// <param name="message">Custom message.</param>
+        /// <returns><see cref="ConvertResult{TOut}"/> with <see cref="ConvertResultType.NotPresented"/> status.</returns>
+        public static ConvertResult<TOut> NotPresented(string? message = null) => new(ConvertResultType.NotPresented, message);
 
         /// <summary>
-        /// Создаёт результат конвертации с ошибкой типа <see cref="ConvertResultType.Incorrect"/> и заданным 
-        /// сообщением в случае ошибки преобразования конвертера.
-        /// <para>
-        /// Для добавления описания к сообщению по умолчанию оставьте маркер перезаписи False. Для замещения 
-        /// слияния строк на только заданное описание включите маркер перезаписи.
-        /// </para>
+        /// A shortcut for creating <see cref="ConvertResultType.NotDefinied"/> with custom message <paramref name="message"/>.
         /// </summary>
-        /// <typeparam name="TOut">Целевой тип конвертации</typeparam>
-        /// <param name="definition">Описание ошибки</param>
-        /// <param name="override">Маркер перезаписи</param>
-        /// <returns>Результат конвертации с ошибкой.</returns>
-        public static ConvertResult<TOut> Incorrect(string definition, bool @override = false)
-            => new(typeof(TOut), @override ? definition : "Введённые данные имели неверный формат: " + definition)
-            {
-                _value = default,
-                ResultType = ConvertResultType.Incorrect
-            };
-
-        /// <summary>
-        /// Создаёт результат конвертации с ошибкой типа <see cref="ConvertResultType.NotPresented"/> и сообщением 
-        /// по умолчанию в случае ошибки преобразования конвертера.
-        /// </summary>
-        /// <typeparam name="TOut">Целевой тип конвертации</typeparam>
-        /// <returns>Результат конвертации с ошибкой.</returns>
-        public static ConvertResult<TOut> NotPresented()
-            => new(typeof(TOut), "Входные данные не были представлены в метаданных")
-            {
-                _value = default,
-                ResultType = ConvertResultType.NotPresented
-            };
-
-        /// <summary>
-        /// Создаёт результат конвертации с ошибкой типа <see cref="ConvertResultType.NotPresented"/> и заданным 
-        /// сообщением в случае ошибки преобразования конвертера.
-        /// </summary>
-        /// <typeparam name="TOut">Целевой тип конвертации</typeparam>
-        /// <param name="definition">Описание ошибки</param>
-        /// <returns>Результат конвертации с ошибкой.</returns>
-        public static ConvertResult<TOut> NotPresented(string definition)
-            => new(typeof(TOut), definition)
-            {
-                _value = default,
-                ResultType = ConvertResultType.NotPresented,
-            };
-
-        /// <summary>
-        /// Создаёт результат конвертации с ошибкой типа <see cref="ConvertResultType.NotDefinied"/> в случае, 
-        /// если список правил <see cref="DefaultArgsSerilalizerService.Rules"/> не содержит определения конвертации входной строки 
-        /// в заданный тип.
-        /// </summary>
-        /// <typeparam name="TOut">Целевой тип конвертации</typeparam>
-        /// <returns>Результат конвертации с ошибкой неопределённости.</returns>
-        internal static ConvertResult<TOut> NotDefined()
-            => new(typeof(TOut), $"Converter rule for type {typeof(TOut)} is not defined")
-            {
-                _value = default,
-                ResultType = ConvertResultType.NotDefinied,
-            };
+        /// <param name="message">Custom message.</param>
+        /// <returns><see cref="ConvertResult{TOut}"/> with <see cref="ConvertResultType.NotDefinied"/> status.</returns>
+        internal static ConvertResult<TOut> NotDefined(string? message = null) => new(ConvertResultType.NotDefinied, message);
     }
 }

@@ -1,19 +1,24 @@
 ﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model
 {
     /// <summary>
-    /// Абстрактный класс для создания инстурукций конвертации. Для создания инструкции используйте 
-    /// <see cref="ConvertResult{Out}"/>
+    /// An abstract class used for storing converting rules for objects.
+    /// Used as a base for <see cref="ConvertResult{Out}"/>
     /// </summary>
     public abstract class ConvertRule
     {
         /// <summary>
-        /// Целевой тип конвертации
+        /// Represents a targeted result type.
         /// </summary>
-        public Type OutType { get; set; }
+        public Type ResultType { get; private set; }
 
-        protected ConvertRule(Type outType)
+        /// <summary>
+        /// Creates a new instance of a <see cref="ConvertRule"/> with a specified data.
+        /// </summary>
+        /// <param name="resultType">Represents a targeted result type.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="resultType"/> is <see langword="null"/></exception>
+        protected ConvertRule(Type resultType)
         {
-            OutType = outType ?? throw new ArgumentNullException(nameof(outType));
+            ResultType = resultType ?? throw new ArgumentNullException(nameof(resultType));
         }
     }
 }

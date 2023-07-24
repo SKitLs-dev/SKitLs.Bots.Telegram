@@ -1,21 +1,21 @@
 ﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model
 {
-
     /// <summary>
-    /// Класс-инструкция для конвертации строки в заданный тип
+    /// Represents a specified converting rule, used for converting incoming <see cref="string"/> data
+    /// to custom object of a type <typeparamref name="TOut"/>.
     /// </summary>
-    /// <typeparam name="TOut">Целевой тип конвертации</typeparam>
-    public sealed class ConvertRule<TOut> : ConvertRule
+    /// <typeparam name="TOut">Targeted result type.</typeparam>
+    public sealed class ConvertRule<TOut> : ConvertRule where TOut : notnull
     {
         /// <summary>
-        /// Инструкция конвертации заданной входной строки в целевой тип конвертации.
+        /// An instruction of converting input <see cref="string"/> to <typeparamref name="TOut"/>.
         /// </summary>
-        public Func<string, ConvertResult<TOut>> Converter { get; set; }
+        public Func<string, ConvertResult<TOut>> Converter { get; private set; }
 
         /// <summary>
-        /// Конструктор класса-инструкции с целевым типом конвертации и инструкцией конвертации.
+        /// Creates a new instance of a <see cref="ConvertRule"/> with a specified data.
         /// </summary>
-        /// <param name="converter">Инструкция конвертации заданной входной строки в целевой тип конвертации</param>
+        /// <param name="converter">An instruction of converting input <see cref="string"/> to <typeparamref name="TOut"/>.</param>
         public ConvertRule(Func<string, ConvertResult<TOut>> converter) : base(typeof(TOut))
         {
             Converter = converter;

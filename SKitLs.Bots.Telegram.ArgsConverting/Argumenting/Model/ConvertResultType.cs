@@ -1,33 +1,29 @@
 ﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model
 {
     /// <summary>
-    /// Тип результата конвертации.
+    /// Represents a convertation status.
     /// </summary>
     public enum ConvertResultType
     {
         /// <summary>
-        /// Успешная конвертация
+        /// Represents a succeed convertation.
         /// </summary>
         Ok,
         /// <summary>
-        /// Входные данные отсутствовали (<see cref="string.IsNullOrEmpty(string?)"/>)
+        /// Represents null input status (for <see cref="string.IsNullOrEmpty(string?)"/> input).
         /// </summary>
         NullInput,
         /// <summary>
-        /// Входные данные частично успешно конвертированы. См. <see cref="ConvertResultList"/>
-        /// </summary>
-        Semicorrect,
-        /// <summary>
-        /// Входные данные имели неверный формат
+        /// Represents incorrect input status.
         /// </summary>
         Incorrect,
         /// <summary>
-        /// Данные входные данные не представлены в метаданных
+        /// Represents not presented status for cases when converting is being collected from some colletion.
         /// </summary>
         NotPresented,
         /// <summary>
-        /// Правила сущности конвертера <see cref="DefaultArgsSerilalizerService.Rules"/> не содержали определений для конвертации 
-        /// входной строки в заданный тип.
+        /// Represents not defined status for cases when appropriate <see cref="ConvertRule{TOut}"/>
+        /// was not presented in <see cref="IArgsSerilalizerService"/>.
         /// </summary>
         NotDefinied
     }

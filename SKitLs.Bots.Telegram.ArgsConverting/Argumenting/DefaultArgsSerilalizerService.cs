@@ -1,6 +1,10 @@
 ﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Prototype;
-using SKitLs.Bots.Telegram.ArgedInteractions.Exceptions;
+using SKitLs.Bots.Telegram.ArgedInteractions.Exceptions.External;
+using SKitLs.Bots.Telegram.ArgedInteractions.Exceptions.Inexternal;
+using SKitLs.Bots.Telegram.Core.Exceptions.External;
+using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
+using SKitLs.Bots.Telegram.Core.Model;
 using System.Reflection;
 
 namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting
@@ -14,27 +18,25 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting
     /// </summary>
     public class DefaultArgsSerilalizerService : IArgsSerilalizerService
     {
+        private BotManager? _owner;
+        public BotManager Owner
+        {
+            get => _owner ?? throw new NullOwnerException(GetType());
+            set => _owner = value;
+        }
+        public Action<object, BotManager>? OnCompilation => null;
+
         /// <summary>
         /// Gets or sets the list of <see cref="ConvertRule"/> objects, that holds
         /// converting rules for different types.
         /// </summary>
         private List<ConvertRule> Rules { get; set; }
 
-        public ConvertRule<TOut> ResolveTypeRule<TOut>()
-        {
-            ConvertRule? rule = Rules.Find(r => r.OutType == typeof(TOut));
-
-            if (rule is null)
-                throw new Exception();
-
-            if (rule is not ConvertRule<TOut>)
-                throw new Exception();
-
-            return (ConvertRule<TOut>)rule; //Convert.ChangeType(rule, typeof(ConvertRule<TOut>), null);
-        }
-        public ConvertRule<TOut>? FindRule<TOut>()
-            => (ConvertRule<TOut>?)Rules.Find(r => r.OutType == typeof(TOut));
-        public bool IsDefined<TOut>() => FindRule<TOut>() is not null;
+        public ConvertRule<TOut> ResolveTypeRule<TOut>() where TOut : notnull
+            => FindRule<TOut>() ?? throw new NotDefinedException(GetType(), typeof(ConvertRule<TOut>), typeof(TOut).Name);
+        public ConvertRule<TOut>? FindRule<TOut>() where TOut : notnull
+            => (ConvertRule<TOut>?)Rules.Find(r => r.ResultType == typeof(TOut));
+        public bool IsDefined<TOut>() where TOut : notnull => FindRule<TOut>() is not null;
 
         /// <summary>
         /// Default constructor with preset conversion rules for <see cref="int"/>, <see cref="long"/>,
@@ -105,7 +107,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting
             };
         }
 
-        public void AddRule<TOut>(ConvertRule<TOut> rule, bool @override = false)
+        public void AddRule<TOut>(ConvertRule<TOut> rule, bool @override = false) where TOut : notnull
         {
             ConvertRule<TOut>? existing = FindRule<TOut>();
             if (existing is not null)
@@ -115,7 +117,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting
                     Rules.Remove(existing);
                     Rules.Add(rule);
                 }
-                else throw new Exception();
+                else throw new DuplicationException(GetType(), typeof(ConvertRule<TOut>), typeof(TOut).Name);
             }
             else Rules.Add(rule);
         }
@@ -124,8 +126,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting
 
         public ConvertResult<TOut> Deserialize<TOut>(string input, char splitToken = ';') where TOut : notnull, new()
         {
-            if (input is null)
-                throw new ConvertNullInputException();
+            if (input is null) throw new ConvertNullInputException();
             List<string> args = input.Split(splitToken).ToList();
 
             //ConvertRule<TOut>? rule = ResolveTypeRule<TOut>();
@@ -139,7 +140,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting
             
             string _excepMes = string.Empty;
             if (args.Count != propsLinks.Count)
-                _excepMes += "Получено меньше информации, чем ожидалось.";
+                _excepMes += Owner.ResolveDebugString("ai.display.ArgumentsCountMissmatch");
 
             for (int i = 0; i < propsLinks.Count; i++)
             {
@@ -178,15 +179,17 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting
             return argLine;
         }
 
-        public ConvertResult<TOut> Unpack<TOut>(string input) where TOut : notnull
-        {
-            var rule = ResolveTypeRule<TOut>();
-            return rule.Converter(input);
-        }
+        public ConvertResult<TOut> Unpack<TOut>(string input) where TOut : notnull => ResolveTypeRule<TOut>().Converter(input);
 
-        public string Pack<TIn>(TIn input)
-        {
-            return (input is IArgPackable pkg ? pkg.GetPacked() : input?.ToString()) ?? throw new Exception();
-        }
+        /// <summary>
+        /// Converts an object of a type <typeparamref name="TIn"/> to a string that could be used as a representation of
+        /// this object. Uses default ToString() method until <typeparamref name="TIn"/> is not <see cref="IArgPackable"/>.
+        /// </summary>
+        /// <typeparam name="TIn">A type of an object that should be packed.</typeparam>
+        /// <param name="input"></param>
+        /// <returns>A string that could be used as a representation of <paramref name="input"/> object.</returns>
+        /// <exception cref="NullPackedException"></exception>
+        public string Pack<TIn>(TIn input) => (input is IArgPackable pkg ? pkg.GetPacked() : input?.ToString())
+            ?? throw new NullPackedException(typeof(TIn));
     }
 }

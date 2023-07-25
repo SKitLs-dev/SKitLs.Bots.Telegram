@@ -10,9 +10,9 @@ using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using TEnums = Telegram.Bot.Types.Enums;
 
-namespace SKitLs.Bots.Telegram.AdvancedMessages.AdvancedDelievery
+namespace SKitLs.Bots.Telegram.AdvancedMessages.AdvancedDelivery
 {
-    public class AdvancedDelieverySystem : IDelieveryService
+    public class AdvancedDeliverySystem : IDelieveryService
     {
         private BotManager? _owner;
         public BotManager Owner
@@ -99,7 +99,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.AdvancedDelievery
                     chatId: chatId,
                     text: message.GetMessageText(),
                     parseMode: message.ParseMode,
-                    // Entity   entites
+                    // Entity   entities
                     // bool     disableWebPagePreview
                     // bool     disableNotification
                     // bool     protectContent

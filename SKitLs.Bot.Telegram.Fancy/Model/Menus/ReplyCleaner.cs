@@ -3,7 +3,10 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus
 {
-    public class MenuCleaner : IMesMenu
+    /// <summary>
+    /// Specific anti-menu that helps to remove <see cref="ReplyMenu"/> (<see cref="ReplyKeyboardMarkup"/>)
+    /// </summary>
+    public class ReplyCleaner : IMesMenu
     {
         public IReplyMarkup GetMarkup() => new ReplyKeyboardRemove();
     }

@@ -8,6 +8,12 @@ using System.Collections.ObjectModel;
 
 namespace SKitLs.Bots.Telegram.Stateful.Model
 {
+    /// <summary>
+    /// Default realization of <see cref="IStatefulActionManager{TUpdate}"/>. Provides sectioned architecture
+    /// with deep iteration searcher and one-of-many
+    /// <see cref="IBotAction{TUpdate}.ShouldBeExecutedOn(TUpdate)"/> selector.
+    /// </summary>
+    /// <typeparam name="TUpdate">Specific casted update that this manager should work with.</typeparam>
     public class DefaultStatefulManager<TUpdate> : IStatefulActionManager<TUpdate>, IOwnerCompilable where TUpdate : ICastedUpdate, ISignedUpdate
     {
         public string? DebugName { get; set; }
@@ -31,6 +37,10 @@ namespace SKitLs.Bots.Telegram.Stateful.Model
             return res;
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="DefaultStatefulManager{TUpdate}"/> with specified data.
+        /// </summary>
+        /// <param name="debugName">Optional. Debug name.</param>
         public DefaultStatefulManager(string? debugName = null)
         {
             DebugName = debugName;

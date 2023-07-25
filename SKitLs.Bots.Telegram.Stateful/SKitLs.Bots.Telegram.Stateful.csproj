@@ -4,12 +4,38 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Description>Extension for SKitLs.Bots.Telegram.Core. Pay attention to GitHub.
+
+Allows to split logic into independent parts, managing them with specific states conditions.</Description>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>$(AssemblyName)</Title>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
+    <Version>$(AssemblyVersion)</Version>
+    <Authors>SKitLs, Sargeras02</Authors>
+    <Copyright>Copyright (C) Sargeras02 2023</Copyright>
+    <PackageProjectUrl>https://github.com/Sargeras02/SKitLs.Bots.Telegram.git</PackageProjectUrl>
+    <PackageIcon>libIcon_Sf.png</PackageIcon>
+    <PackageTags>Telegram, Bots, Management, States, Orlean</PackageTags>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SKitLs.Bot.Telegram.Fancy\SKitLs.Bots.Telegram.AdvancedMessages.csproj" />
-    <ProjectReference Include="..\SKitLs.Bots.Telegram.Interactions\SKitLs.Bots.Telegram.Interactions.csproj" />
-    <ProjectReference Include="..\SKitLs.Bots.Telegram.Management\SKitLs.Bots.Telegram.Management.csproj" />
+    <None Include="..\..\libIcon_Sf.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SKitLs.Bots.Telegram.AdvancedMessages" Version="1.0.0" />
+    <PackageReference Include="Telegram.Bot" Version="19.0.0" />
   </ItemGroup>
 
 </Project>

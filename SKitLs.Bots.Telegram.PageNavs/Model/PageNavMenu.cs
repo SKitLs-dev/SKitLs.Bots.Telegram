@@ -11,7 +11,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
 {
     /// <summary>
     /// Default realization of an <see cref="IPageNavMenu"/> interface that provides methods of creating page's menu,
-    /// with integrated navigation functinality.
+    /// with integrated navigation functionality.
     /// </summary>
     public class PageNavMenu : IPageNavMenu
     {
@@ -32,7 +32,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         /// <summary>
         /// Tries to remove a certain page from menu's navigation links and returns the result of an attempt.
         /// </summary>
-        /// <param name="page">Page to remove. Uses <see cref="IBotPage.PageId"/> for comparasion.</param>
+        /// <param name="page">Page to remove. Uses <see cref="IBotPage.PageId"/> for comparison.</param>
         /// <returns><see langword="true"/> if an item was found and removed. Otherwise <see langword="false"/>.</returns>
         public bool TryRemove(IBotPage page)
         {
@@ -41,7 +41,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         }
         /// <summary>
         /// Optional. A special menu that an "Exit" Button leads to. Exiting process should
-        /// refreshe user's <see cref="PageSessionData"/>, setting root page to <c><see cref="ExitButtonLink"/></c> instance.
+        /// refresh user's <see cref="PageSessionData"/>, setting root page to <c><see cref="ExitButtonLink"/></c> instance.
         /// Can be set via <see cref="ExitTo(IBotPage?)"/>.
         /// </summary>
         public IBotPage? ExitButtonLink { get; private set; }
@@ -80,13 +80,13 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
                 Serializer = update.Owner.ResolveService<IArgsSerilalizerService>(),
                 ColumnsCount = ColumnsCount,
             };
-            PagesLinks.ForEach(page => res.Add(string.Format(IPageMenu.NavigationLabelMask, page.GetLabel(update)), mm.OpenPageCallabck, new(page)));
+            PagesLinks.ForEach(page => res.Add(string.Format(IPageMenu.NavigationLabelMask, page.GetLabel(update)), mm.OpenPageCallback, new(page)));
             Actions.ForEach(act => res.Add(act));
 
             if (previous is not null)
-                res.Add(update.Owner.ResolveBotString(PNSettings.BackButtonLocalKey), mm.BackCallabck, true);
+                res.Add(update.Owner.ResolveBotString(PNSettings.BackButtonLocalKey), mm.BackCallback, true);
             if (ExitButtonLink is not null)
-                res.Add(update.Owner.ResolveBotString(PNSettings.ExitButtonLocalKey), mm.OpenPageCallabck, new(ExitButtonLink, true), true);
+                res.Add(update.Owner.ResolveBotString(PNSettings.ExitButtonLocalKey), mm.OpenPageCallback, new(ExitButtonLink, true), true);
 
             return res;
         }

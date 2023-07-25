@@ -1,5 +1,5 @@
-﻿using SKitLs.Bots.Telegram.ArgedInteractions.Extensions;
-using SKitLs.Bots.Telegram.ArgedInteractions.Interactions;
+﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Defaults;
+using SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Prototype;
 using SKitLs.Bots.Telegram.Core.Model;
 using SKitLs.Bots.Telegram.Core.Model.Building;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
@@ -33,11 +33,11 @@ namespace SKitLs.Bots.Telegram.PageNavs
     public interface IMenuManager : IOwnerCompilable, IDebugNamed, IApplicant<IActionManager<SignedCallbackUpdate>>
     {
         /// <summary>
-        /// A system callback name, used for <see cref="OpenPageCallabck"/>.
+        /// A system callback name, used for <see cref="OpenPageCallback"/>.
         /// </summary>
         public static string OpenCallBase => "OpenMenuPage";
         /// <summary>
-        /// A system callback name, used for <see cref="BackCallabck"/>.
+        /// A system callback name, used for <see cref="BackCallback"/>.
         /// </summary>
         public static string BackCallBase => "BackMenuPage";
 
@@ -45,11 +45,11 @@ namespace SKitLs.Bots.Telegram.PageNavs
         /// System callback that represents "Open Menu" request.
         /// Opens requested page and pushes it into user's session navigation list.
         /// <para>
-        /// Requires a <see cref="StringDbto"/> argument that determines a certain page's id (<c>pageId</c>),
+        /// Requires a <see cref="StringWrapper"/> argument that determines a certain page's id (<c>pageId</c>),
         /// that should be opened.
         /// </para>
         /// </summary>
-        public IArgedAction<NavigationArgs, SignedCallbackUpdate> OpenPageCallabck { get; }
+        public IArgedAction<NavigationArgs, SignedCallbackUpdate> OpenPageCallback { get; }
         /// <summary>
         /// System callback that represents "Back" request.
         /// Gets previous page from user's session data and opens it.
@@ -57,7 +57,7 @@ namespace SKitLs.Bots.Telegram.PageNavs
         /// Doesn't need any arguments to use.
         /// </para>
         /// </summary>
-        public IBotAction<SignedCallbackUpdate> BackCallabck { get; }
+        public IBotAction<SignedCallbackUpdate> BackCallback { get; }
 
         /// <summary>
         /// Pushes <paramref name="page"/> to a certain user's navigation data.

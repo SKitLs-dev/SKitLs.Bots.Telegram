@@ -1,6 +1,6 @@
 ﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Prototype;
-using SKitLs.Bots.Telegram.ArgedInteractions.Interactions;
+using SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Prototype;
 using SKitLs.Bots.Telegram.PageNavs.Prototype;
 
 namespace SKitLs.Bots.Telegram.PageNavs.Args

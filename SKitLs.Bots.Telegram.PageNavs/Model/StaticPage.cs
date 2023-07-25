@@ -1,4 +1,4 @@
-﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages;
+﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text;
 using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.PageNavs.Prototype;
@@ -12,7 +12,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
     {
         public string PageId { get; private set; }
         /// <summary>
-        /// A string that represents <see cref="StaticPage"/> on the navigation manu bar.
+        /// A string that represents <see cref="StaticPage"/> on the navigation menu bar.
         /// </summary>
         public string Label { get; private set; }
         public string GetLabel(ISignedUpdate update) => Label;

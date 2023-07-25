@@ -1,13 +1,14 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model;
-using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages;
+using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text;
 using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model;
-using SKitLs.Bots.Telegram.ArgedInteractions.Interactions;
 using SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Model;
+using SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Prototype;
 using SKitLs.Bots.Telegram.Core.Exceptions.External;
 using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.Core.Model;
+using SKitLs.Bots.Telegram.Core.Model.Building;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults;
 using SKitLs.Bots.Telegram.Core.Model.Management;
@@ -22,9 +23,9 @@ namespace SKitLs.Bots.Telegram.PageNavs
 {
     /// <summary>
     /// Default realization of the <see cref="IMenuManager"/> interface that provides methods of inline message navigation.
-    /// Realised via <see cref="PageSessionData"/>, that provides simple navigation data stack-storage for only one message.
-    /// Enables two ways of navigation: forward and backward by allowing to open a new page via <see cref="OpenPageCallabck"/>
-    /// or rollback to a previous one via <see cref="BackCallabck"/>.
+    /// Realized via <see cref="PageSessionData"/>, that provides simple navigation data stack-storage for only one message.
+    /// Enables two ways of navigation: forward and backward by allowing to open a new page via <see cref="OpenPageCallback"/>
+    /// or rollback to a previous one via <see cref="BackCallback"/>.
     /// <para>
     /// Allows to store menu pages' data, providing access to it, and handle special menu updates, released via callbacks.
     /// </para>
@@ -56,7 +57,7 @@ namespace SKitLs.Bots.Telegram.PageNavs
         /// <summary>
         /// Creates a new instance of a <see cref="DefaultMenuManager"/> with specified data.
         /// </summary>
-        /// <param name="debugName">Implemention of <see cref="IDebugNamed"/>.</param>
+        /// <param name="debugName">Implementation of <see cref="IDebugNamed"/>.</param>
         public DefaultMenuManager(string? debugName = null) => DebugName = debugName;
 
         #region Sessions and navigation data.
@@ -295,10 +296,10 @@ namespace SKitLs.Bots.Telegram.PageNavs
         public IBotPage? TryGetDefined(IBotPage page) => TryGetDefined(page.PageId);
         public IBotPage? TryGetDefined(string pageID) => DefinedPages.Find(x => x.PageId == pageID);
 
-        public IBotAction<SignedCallbackUpdate> BackCallabck => new DefaultCallback(IMenuManager.BackCallBase, "{back menu}", BackMenuAsync);
+        public IBotAction<SignedCallbackUpdate> BackCallback => new DefaultCallback(IMenuManager.BackCallBase, "{back menu}", BackMenuAsync);
         private async Task BackMenuAsync(SignedCallbackUpdate update)
         {
-            // Sesion invalid => Handle Expired
+            // Session invalid => Handle Expired
             if (!CheckSession(update))
             {
                 await HandleSessionExpiredAsync(update);
@@ -323,7 +324,7 @@ namespace SKitLs.Bots.Telegram.PageNavs
             await PushPageAsync(page, update);
         }
 
-        public IArgedAction<NavigationArgs, SignedCallbackUpdate> OpenPageCallabck => new BotArgedCallback<NavigationArgs>(IMenuManager.OpenCallBase, "{open menu}", OpenMenuAsync);
+        public IArgedAction<NavigationArgs, SignedCallbackUpdate> OpenPageCallback => new BotArgedCallback<NavigationArgs>(IMenuManager.OpenCallBase, "{open menu}", OpenMenuAsync);
         private async Task OpenMenuAsync(NavigationArgs args, SignedCallbackUpdate update)
             => await (CheckSession(update) ? PushPageAsync(args.Page, update, args.Refresh) : HandleSessionExpiredAsync(update));
 
@@ -363,20 +364,22 @@ namespace SKitLs.Bots.Telegram.PageNavs
         /// </summary>
         private void OnReflectiveCompile(object sender, BotManager owner)
         {
-            var pageRule = new ConvertRule<IBotPage>(pid => IsDefined(pid) ? ConvertResult<IBotPage>.OK(TryGetDefined(pid)!) : ConvertResult<IBotPage>.Incorrect($"Page with id {pid} is not defined."));
+            var pageRule = new ConvertRule<IBotPage>(pid => IsDefined(pid)
+                ? ConvertResult<IBotPage>.OK(TryGetDefined(pid)!)
+                : ConvertResult<IBotPage>.Incorrect($"Page with id {pid} is not defined."));
             owner.ResolveService<IArgsSerilalizerService>().AddRule(pageRule);
         }
         public void ApplyFor(IActionManager<SignedCallbackUpdate> callbackManager)
         {
-            callbackManager.AddSafely(OpenPageCallabck);
-            callbackManager.AddSafely(BackCallabck);
+            callbackManager.AddSafely(OpenPageCallback);
+            callbackManager.AddSafely(BackCallback);
         }
 
         /// <summary>
         /// Handles an error when <see cref="PageSessionData"/> stored in <see cref="Navigations"/> doesn't exist
         /// or throws unpredicted exception. Blocks <paramref name="update"/>'s message menu page
         /// by removing its inline menu and notifying sender that session has been expired.
-        /// <para>Notification content can be overriden via <see cref="BotManager.Localizator"/>
+        /// <para>Notification content can be overridden via <see cref="BotManager.Localizator"/>
         /// with <see cref="SessionExpiredKey"/> local key.</para>
         /// </summary>
         /// <param name="update">An update that has raised an exception.</param>

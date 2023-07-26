@@ -24,7 +24,18 @@ Due to the fact my work is still in progress, not every project contains descrip
 1. If you are intersted in quick setup, you can look through _*.Model_ namespace of a project.
 2. If you are intersted in extending and overriding functional, pay attention to _*.Prototype_ namespace.
 
-# SKitLs.Bots.Telegram.Core
+# Setup
+Each project supports localized debugging. Some of them requires specific language packages. You can find them in `locals` folder.
+
+After you have installed NuGet package, add `resources/locals` folders to your project and download appropriate language pack to this folder.
+
+`resources/locals` path is a default one, you can update locals path and/or debug language with a following code.
+```C#
+BotBuilder.DebugSettings.DebugLanguage = LangKey.EN;
+BotBuilder.DebugSettings.UpdateLocalsPath("resources/locals");
+```
+
+# SKitLs.Bots.Telegram.Core (Core)
 **Status: Released**
 
 An essential core module that contains main architecture and logic that handles and casts incoming updates. All the basics can be used and implemented in other modules to extend basic functinality.

@@ -1,0 +1,47 @@
+{
+  "local.KeyNotDefined": "Localized Key Is Not Defined. Lang: {0}; Key: {1}. Please, make sure the language package is downloaded and installed in {2}. Format params: ",
+
+  "system.StartUpMessage": "Start listening for @{0}",
+  "system.UpdateMessage": "[{0}] ({1}) Received: {2} - From: {3} - Content: {4}",
+
+  // Exceptions
+  "system.ExternalExcep": "This exception is marked as External. It means that it occurred because of external actions and code. Please make sure your code is safe.",
+  "system.InexternalExcep": "This exception can be both: Internal or External. Please make sure your code is safe. If you are sure it's ok - add an issue via GitHub.",
+  "system.InternalExcep": "This exception is marked as Internal. It means that it occurred because of internal library problems. Please save info about exception context and share it via GitHub.",
+
+  // External
+  "exceptionCap.Duplication": "Integration duplication",
+  "exceptionMes.Duplication": "Failed attempt in {0}: an item of a type {1} ({2}) already exists.",
+  "exceptionCap.ItemNotDefined": "Item not defined",
+  "exceptionMes.ItemNotDefined": "Item of a type {1} ({2}) is not defined in {0}.",
+  "exceptionCap.LocalSystemMissmatch": "Missmatch in Local System",
+  "exceptionMes.LocalSystemMissmatch": "Logger's Localizator doesn't match with 'localizator' param.",
+  "exceptionCap.NullOrEmptyId": "Null Id Exception",
+  "exceptionMes.NullOrEmptyId": "An error occured in {0} instance: an item of a type {1} has null or empty id.",
+  "exceptionCap.ServiceNotDefined": "Service not defined",
+  "exceptionMes.ServiceNotDefined": "Service of a type {0} is not defined. Try BotBuilder.AddService<T>().",
+  "exceptionCap.UHBCasting": "Update casting error in UHBInformer",
+  "exceptionMes.UHBCasting": "Unsafe class was used and raised an error. In casting update: {0} (id: {1}).",
+
+  // Inexternal
+  "exceptionCap.NullOwner": "Null Owner",
+  "exceptionMes.NullOwner": "Was not able to access an owner of a type {0}.",
+
+  // Internal
+  "exceptionCap.bm.ChatIdNotHandled": "[Bot Manager] - Chat's ID not handled",
+  "exceptionMes.bm.ChatIdNotHandled": "Was not able to get Chat ID from update.",
+  "exceptionCap.bm.ChatNotHandled": "[Bot Manager] - Chat's type not handled",
+  "exceptionMes.bm.ChatNotHandled": "Was not able to identify chat type by update.",
+  "exceptionCap.bm.ChatTypeNotSupported": "[Bot Manager] - Not supported chat type",
+  "exceptionMes.bm.ChatTypeNotSupported": "Chat type of {0} is not supported.",
+
+  "exceptionCap.cs.NullUpdateHandler": "[Chat Scanner] - Null update handler",
+  "exceptionMes.cs.NullUpdateHandler": "Handler for \"{1} Update\" is not implemented in {0}.",
+  "exceptionCap.cs.UserExtractError": "[Chat Scanner] - User extraction error",
+  "exceptionMes.cs.UserExtractError": "Was not able to extract user sender in {0} from update (id: {1}).",
+  "exceptionCap.cs.UserIdExtractError": "[Chat Scanner] - User's ID' extraction error",
+  "exceptionMes.cs.UserIdExtractError": "Was not able to extract user's ID in {0} from update (id: {1}).",
+
+  "exceptionCap.UpdateCasting": "Update casting error",
+  "exceptionMes.UpdateCasting": "Error in casting update: {0} (id: {1})."
+}

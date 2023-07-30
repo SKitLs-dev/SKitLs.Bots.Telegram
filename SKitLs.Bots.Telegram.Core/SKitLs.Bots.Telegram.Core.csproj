@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>1.5.0</AssemblyVersion>
+    <AssemblyVersion>1.5.1</AssemblyVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>$(AssemblyName)</Title>
     <Authors>Sargeras02, SKit-Labs</Authors>
@@ -12,22 +12,22 @@
     <PackageIcon>libIcon.png</PackageIcon>
     <PackageTags>Telegram, Bots, Management</PackageTags>
     <FileVersion>$(AssemblyVersion)</FileVersion>
-    <PackageReleaseNotes>( ! ) Loggers (*.external namespace) were moved to stand-alone library.
+    <PackageReleaseNotes>[1.5.0] + [1.5.1]
+
+( ! ) Loggers (*.external namespace) were moved to stand-alone library.
 See: SKitLs.Utils.
 
 (*) Debug Language bug fixed.
 
-(+) README added.
+(+) README Added. README Updated.
 
 (~) Descriptions and naming updated.</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <Copyright>Copyright (C) Sargeras02 2023</Copyright>
-    <Description>An essential core module of SKitLs.Bots.Telegram solution that contains main architecture and logic that handles and casts incoming updates.
-All the basics can be used and implemented in other modules to extend basic functinality.
-
-For more information see GitHub page.</Description>
+    <Description>The core module of the SKitLs.Bots.Telegram Framework.</Description>
     <Version>$(AssemblyVersion)</Version>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -60,6 +60,10 @@ For more information see GitHub page.</Description>
 
   <ItemGroup>
     <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>

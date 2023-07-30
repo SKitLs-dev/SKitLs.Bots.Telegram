@@ -1,6 +1,8 @@
 ﻿using SKitLs.Bots.Telegram.Core.Exceptions;
-using SKitLs.Bots.Telegram.Core.external.Localizations;
-using SKitLs.Bots.Telegram.Core.external.LocalizedLoggers;
+using SKitLs.Utils.Localizations.Model;
+using SKitLs.Utils.Localizations.Prototype;
+using SKitLs.Utils.LocalLoggers.Model;
+using SKitLs.Utils.LocalLoggers.Prototype;
 
 namespace SKitLs.Bots.Telegram.Core.resources.Settings
 {
@@ -36,9 +38,9 @@ namespace SKitLs.Bots.Telegram.Core.resources.Settings
         {
             DebugLanguage = language;
             Localizator = new DefaultLocalizator(path);
-            LocalLogger = new DefaultLocalizedLogger(Localizator)
+            LocalLogger = new LocalizedConsoleLogger(Localizator)
             {
-                DefaultLanguage = DebugLanguage
+                LoggerLanguage = DebugLanguage
             };
         }
 
@@ -65,7 +67,7 @@ namespace SKitLs.Bots.Telegram.Core.resources.Settings
         public void UpdateLocalsPath(string path)
         {
             Localizator = new DefaultLocalizator(path);
-            LocalLogger = new DefaultLocalizedLogger(Localizator);
+            LocalLogger = new LocalizedConsoleLogger(Localizator);
         }
         /// <summary>
         /// Sets custom debug localization. Note that <see cref="ILocalizedLogger.Localizator"/> should

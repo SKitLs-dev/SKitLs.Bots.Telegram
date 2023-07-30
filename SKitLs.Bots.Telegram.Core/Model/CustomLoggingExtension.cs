@@ -1,6 +1,6 @@
 ﻿using SKitLs.Bots.Telegram.Core.Exceptions;
-using SKitLs.Bots.Telegram.Core.external.LocalizedLoggers;
 using SKitLs.Bots.Telegram.Core.Model.Building;
+using SKitLs.Utils.LocalLoggers.Prototype;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -14,7 +14,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         private static int MaxMessageContentLength => 16;
 
         private static string Local(ILocalizedLogger logger, string mesKey, params string?[] format)
-            => logger.Localizator.ResolveString(logger.DefaultLanguage, mesKey, format);
+            => logger.Localizator.ResolveString(BotBuilder.DebugSettings.DebugLanguage, mesKey, format);
         public static void Log(this ILocalizedLogger logger, Exception exception)
         {
             string errorMes = "Exception was thrown: ";

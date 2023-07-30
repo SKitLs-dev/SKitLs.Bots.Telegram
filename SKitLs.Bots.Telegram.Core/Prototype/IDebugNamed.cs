@@ -1,4 +1,4 @@
-﻿namespace SKitLs.Bots.Telegram.Core.Prototypes
+﻿namespace SKitLs.Bots.Telegram.Core.Prototype
 {
     /// <summary>
     /// An interface that provides methods to simplify dubugging proccess.
@@ -6,7 +6,7 @@
     public interface IDebugNamed
     {
         /// <summary>
-        /// Used for simplified dubugging proccess.
+        /// Name, used for simplifying dubugging proccess.
         /// </summary>
         public string? DebugName { get; }
     }

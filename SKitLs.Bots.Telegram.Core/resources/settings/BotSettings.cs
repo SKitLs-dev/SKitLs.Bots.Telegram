@@ -1,6 +1,6 @@
-﻿using SKitLs.Bots.Telegram.Core.external.Localizations;
-using SKitLs.Bots.Telegram.Core.Model;
-using SKitLs.Bots.Telegram.Core.Model.DelieverySystem;
+﻿using SKitLs.Bots.Telegram.Core.Model;
+using SKitLs.Bots.Telegram.Core.Model.DeliverySystem;
+using SKitLs.Utils.Localizations.Prototype;
 
 namespace SKitLs.Bots.Telegram.Core.resources.Settings
 {

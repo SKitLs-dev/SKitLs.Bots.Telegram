@@ -1,4 +1,4 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.DelieverySystem;
+﻿using SKitLs.Bots.Telegram.Core.Model.DeliverySystem;
 using SKitLs.Bots.Telegram.Core.resources.Settings;
 using Telegram.Bot.Types.Enums;
 

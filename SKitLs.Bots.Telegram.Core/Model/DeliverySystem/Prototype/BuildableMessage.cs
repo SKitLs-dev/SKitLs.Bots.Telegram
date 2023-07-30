@@ -1,4 +1,4 @@
-﻿namespace SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Protoype
+﻿namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype
 {
     /// <summary>
     /// Default realization of <see cref="IBuildableMessage"/>. Provides simple 

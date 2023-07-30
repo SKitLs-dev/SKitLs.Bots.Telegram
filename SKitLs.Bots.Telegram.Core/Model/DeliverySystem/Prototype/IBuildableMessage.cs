@@ -1,4 +1,4 @@
-﻿namespace SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Protoype
+﻿namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype
 {
     /// <summary>
     /// An interface that provides ways of getting message's text.

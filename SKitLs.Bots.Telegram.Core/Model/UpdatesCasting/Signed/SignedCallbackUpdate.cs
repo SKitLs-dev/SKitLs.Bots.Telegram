@@ -1,5 +1,5 @@
 ﻿using SKitLs.Bots.Telegram.Core.Exceptions.Internal;
-using SKitLs.Bots.Telegram.Core.Prototypes;
+using SKitLs.Bots.Telegram.Core.Prototype;
 using Telegram.Bot.Types;
 
 namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed

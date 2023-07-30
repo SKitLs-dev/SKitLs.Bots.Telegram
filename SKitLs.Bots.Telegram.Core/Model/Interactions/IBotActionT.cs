@@ -3,7 +3,7 @@
 namespace SKitLs.Bots.Telegram.Core.Model.Interactions
 {
     /// <summary>
-    /// An interface that provides typed defenition for bot actions with
+    /// An interface that provides typed definition for bot actions with
     /// <typeparamref name="TUpdate"/> handling delegate via
     /// <see cref="BotInteraction{TUpdate}"/>.
     /// <para>
@@ -11,7 +11,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Interactions
     /// Upper: <see cref="Management.IActionManager{TUpdate}"/>.
     /// </para>
     /// </summary>
-    /// <typeparam name="TUpdate">Scecific casted update that this action should work with.</typeparam>
+    /// <typeparam name="TUpdate">Specific casted update that this action should work with.</typeparam>
     public interface IBotAction<TUpdate> : IBotAction, IEquatable<IBotAction<TUpdate>> where TUpdate : ICastedUpdate
     {
         /// <summary>

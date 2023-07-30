@@ -1,4 +1,5 @@
-﻿using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
+﻿using SKitLs.Bots.Telegram.Core.Exceptions;
+using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.Core.Exceptions.Internal;
 using SKitLs.Bots.Telegram.Core.Model.Building;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
@@ -6,7 +7,7 @@ using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonim;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
-using SKitLs.Bots.Telegram.Core.Prototypes;
+using SKitLs.Bots.Telegram.Core.Prototype;
 using Telegram.Bot.Types;
 using TEnum = Telegram.Bot.Types.Enums;
 
@@ -38,7 +39,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         public Action<object, BotManager>? OnCompilation => null;
         
         /// <summary>
-        /// Type of a chat that current scanner is binded to.
+        /// Type of a chat that current scanner is bind to.
         /// </summary>
         public TEnum.ChatType ChatType { get; internal set; }
         #endregion
@@ -47,7 +48,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <summary>
         /// Custom service used to manage authorized users. Can be released with vanilla roles and
         /// permissions schema. Used to connect internal mechanisms with external DataBases.
-        /// Doesn't have default realisation.
+        /// Doesn't have default realization.
         /// </summary>
         public IUsersManager? UsersManager { get; internal set; }
 
@@ -108,10 +109,10 @@ namespace SKitLs.Bots.Telegram.Core.Model
             long id = GetSenderId(update.OriginalSource);
             if (UsersManager is not null)
             {
-                if (await UsersManager.IsUserRegistered(id))
-                    sender = await UsersManager.GetUserById(id);
+                if (await UsersManager.IsUserRegisteredAsync(id))
+                    sender = await UsersManager.GetUserByIdAsync(id);
                 else
-                    sender = await UsersManager.RegisterNewUser(update);
+                    sender = await UsersManager.RegisterNewUserAsync(update);
             }
             else sender = GetDefaultBotUser(id);
 
@@ -138,12 +139,12 @@ namespace SKitLs.Bots.Telegram.Core.Model
             };
 
             if (suitHandler is null)
-                throw new BotManagerExcpetion("cs.NullUpdateHandler", ToString(), Enum.GetName(typeof(TEnum.UpdateType), update.Type));
+                throw new SKTgException("cs.NullUpdateHandler", SKTEOriginType.Inexternal, ToString(), Enum.GetName(typeof(TEnum.UpdateType), update.Type));
             
             await suitHandler.HandleUpdateAsync(update, sender);
             
-            if (sender is not null && UsersManager is not null && UsersManager.SignedEventHandled is not null)
-                await UsersManager.SignedEventHandled.Invoke(sender);
+            if (sender is not null && UsersManager is not null && UsersManager.SignedUpdateHandled is not null)
+                await UsersManager.SignedUpdateHandled.Invoke(sender);
         }
 
         /// <summary>

@@ -11,7 +11,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Management.Defaults
     /// with linear iteration searcher and one-of-many
     /// <see cref="IBotAction{TUpdate}.ShouldBeExecutedOn(TUpdate)"/> selector.
     /// </summary>
-    /// <typeparam name="TUpdate">Scecific casted update that this manager should work with.</typeparam>
+    /// <typeparam name="TUpdate">Specific casted update that this manager should work with.</typeparam>
     public class DefaultActionManager<TUpdate> : ILinearActionManager<TUpdate> where TUpdate : ICastedUpdate
     {
         public string? DebugName { get; set; }

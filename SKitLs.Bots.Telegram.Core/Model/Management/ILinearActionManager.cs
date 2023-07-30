@@ -2,7 +2,7 @@
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.Management.Integration;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
-using SKitLs.Bots.Telegram.Core.Prototypes;
+using SKitLs.Bots.Telegram.Core.Prototype;
 
 namespace SKitLs.Bots.Telegram.Core.Model.Management
 {
@@ -11,11 +11,11 @@ namespace SKitLs.Bots.Telegram.Core.Model.Management
     /// interactions. Stores interactions and delegates incoming updates to stored actions.
     /// Provides simple architecture with one storage collection.
     /// <para>
-    /// Fourth architecture level addon for <see cref="IActionManager{TUpdate}"/>
+    /// Fourth architecture level, addon for <see cref="IActionManager{TUpdate}"/>
     /// </para>
     /// <para>Inherits: <see cref="IOwnerCompilable"/>, <see cref="IActionsHolder"/></para>
     /// </summary>
-    /// <typeparam name="TUpdate">Scecific casted update that this manager should work with.</typeparam>
+    /// <typeparam name="TUpdate">Specific casted update that this manager should work with.</typeparam>
     public interface ILinearActionManager<TUpdate> : IActionManager<TUpdate> where TUpdate : ICastedUpdate
     {
         /// <summary>

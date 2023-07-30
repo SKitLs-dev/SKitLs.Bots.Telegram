@@ -1,4 +1,4 @@
-﻿namespace SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Model
+﻿namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Model
 {
     /// <summary>
     /// Type of sending message.

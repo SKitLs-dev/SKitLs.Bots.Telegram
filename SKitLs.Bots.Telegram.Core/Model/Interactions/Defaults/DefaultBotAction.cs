@@ -1,6 +1,5 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using System.Globalization;
-using System.Text.RegularExpressions;
 
 namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
 {
@@ -61,18 +60,15 @@ namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
         public string ToString(string? format) => ToString(format, CultureInfo.CurrentCulture);
         public string ToString(string? format, IFormatProvider? provider)
         {
-            if (String.IsNullOrEmpty(format)) format = "D";
-            provider ??= CultureInfo.CurrentCulture;
+            if (string.IsNullOrEmpty(format)) format = "D";
+            //provider ??= CultureInfo.CurrentCulture;
 
-            switch (format.ToUpperInvariant())
+            return format.ToUpperInvariant() switch
             {
-                case "D":
-                    return $"[{GetType().Name}] {ActionId}";
-                case "C":
-                    return $"/{ActionNameBase}";
-                default:
-                    throw new FormatException(String.Format("The {0} format string is not supported.", format));
-            }
+                "D" => $"[{GetType().Name}] {ActionId}",
+                "C" => $"/{ActionNameBase}",
+                _ => throw new FormatException(String.Format("The {0} format string is not supported.", format)),
+            };
         }
     }
 }

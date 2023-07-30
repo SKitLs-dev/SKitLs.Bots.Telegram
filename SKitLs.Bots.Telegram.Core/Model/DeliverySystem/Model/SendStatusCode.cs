@@ -1,7 +1,7 @@
-﻿namespace SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Model
+﻿namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Model
 {
     /// <summary>
-    /// Represents server status code of delievery response.
+    /// Represents server status code of delivery response.
     /// </summary>
     public enum SendStatusCode
     {

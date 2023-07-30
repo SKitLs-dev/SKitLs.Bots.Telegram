@@ -1,14 +1,14 @@
 ﻿using SKitLs.Bots.Telegram.Core.Exceptions.External;
 using SKitLs.Bots.Telegram.Core.Exceptions.Internal;
-using SKitLs.Bots.Telegram.Core.external.Localizations;
-using SKitLs.Bots.Telegram.Core.external.LocalizedLoggers;
 using SKitLs.Bots.Telegram.Core.Model.Building;
-using SKitLs.Bots.Telegram.Core.Model.DelieverySystem;
-using SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Protoype;
+using SKitLs.Bots.Telegram.Core.Model.DeliverySystem;
+using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
-using SKitLs.Bots.Telegram.Core.Prototypes;
+using SKitLs.Bots.Telegram.Core.Prototype;
 using SKitLs.Bots.Telegram.Core.resources.Settings;
+using SKitLs.Utils.Localizations.Prototype;
+using SKitLs.Utils.LocalLoggers.Prototype;
 using System.Reflection;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
@@ -18,7 +18,7 @@ using Telegram.Bot.Types.Enums;
 namespace SKitLs.Bots.Telegram.Core.Model
 {
     /// <summary>
-    /// Main bot's manager. Recieves updates, handles and delegates them to sub-managers.
+    /// Main bot's manager. Receives updates, handles and delegates them to sub-managers.
     /// <para>
     /// First architecture level.
     /// Lower: <see cref="ChatScanner"/>.
@@ -109,7 +109,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         }
 
         /// <summary>
-        /// Delievery Service used for sending messages <see cref="IBuildableMessage"/> to server.
+        /// Delivery Service used for sending messages <see cref="IBuildableMessage"/> to server.
         /// <para>
         /// <see cref="DefaultDelieveryService"/> by default.
         /// </para>
@@ -149,22 +149,22 @@ namespace SKitLs.Bots.Telegram.Core.Model
 
         /// <summary>
         /// Provides access to all declared <see cref="IBotAction"/>,
-        /// collected via <see cref="IActionsHolder"/> inteface.
+        /// collected via <see cref="IActionsHolder"/> interface.
         /// </summary>
-        public List<IBotAction> ActionsBusket { get; internal set; }
+        public List<IBotAction> ActionsBasket { get; internal set; }
         /// <summary>
         /// Tries to find certain <see cref="IBotAction"/> by its id. Otherwise throws an Exception.
         /// </summary>
         /// <param name="actionId"><see cref="IBotAction"/>'s id</param>
         /// <returns>Declared <see cref="IBotAction"/> or <see cref="NotDefinedException"/> if doesn't exist.</returns>
         /// <exception cref="NotDefinedException"></exception>
-        public IBotAction GetDeclaredAction(string actionId) => ActionsBusket
+        public IBotAction GetDeclaredAction(string actionId) => ActionsBasket
             .Find(x => x.ActionId == actionId)
             ?? throw new NotDefinedException(GetType(), typeof(IBotAction), actionId);
 
         internal BotManager(string token)
         {
-            ActionsBusket = new();
+            ActionsBasket = new();
             Settings = new();
 
             Token = token;
@@ -199,7 +199,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
 
         /// <summary>
         /// Recursively and reflectively collects all declared <see cref="IBotAction"/>
-        /// via <see cref="IActionsHolder"/> inteface.
+        /// via <see cref="IActionsHolder"/> interface.
         /// </summary>
         internal void CollectActionsBasket()
         {
@@ -214,7 +214,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
             holders.ForEach(x =>
             {
                 if (x is not null)
-                    ActionsBusket.AddRange(x.GetActionsContent());
+                    ActionsBasket.AddRange(x.GetActionsContent());
             });
         }
 
@@ -285,18 +285,15 @@ namespace SKitLs.Bots.Telegram.Core.Model
 
             long chatId = GetChatId(update);
             ChatType senderChatType = GetChatType(update);
-            ChatScanner? _handler = senderChatType switch
+            ChatScanner _handler = senderChatType switch
             {
                 ChatType.Private => PrivateChatUpdateHandler,
                 ChatType.Group => GroupChatUpdateHandler,
                 ChatType.Supergroup => SupergroupChatUpdateHandler,
                 ChatType.Channel => ChannelChatUpdateHandler,
                 _ => null,
-            };
-
-            if (_handler is null)
-                throw new BotManagerExcpetion("bm.ChatTypeNotSupported", Enum.GetName(typeof(ChatType), senderChatType));
-
+            } ?? throw new BotManagerExcpetion("bm.ChatTypeNotSupported", Enum.GetName(typeof(ChatType), senderChatType));
+            
             await _handler.HandleUpdateAsync(new CastedUpdate(_handler, update, chatId));
         }
 
@@ -306,13 +303,8 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// </summary>
         /// <param name="update">Original server update</param>
         /// <returns>Update's chat type.</returns>
-        public static ChatType GetChatType(Update update)
-        {
-            ChatType? senderChatType = TryGetChatType(update);
-            if (senderChatType is null)
-                throw new BotManagerExcpetion("bm.ChatNotHandled");
-            return senderChatType.Value;
-        }
+        public static ChatType GetChatType(Update update) => TryGetChatType(update)
+            ?? throw new BotManagerExcpetion("bm.ChatNotHandled");
         /// <summary>
         /// Tries to extract <see cref="ChatType"/> from a raw server update.
         /// </summary>
@@ -352,13 +344,8 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// </summary>
         /// <param name="update">Original server update</param>
         /// <returns>Update's chat ID.</returns>
-        public static long GetChatId(Update update)
-        {
-            long? chatId = TryGetChatId(update);
-            if (chatId is null)
-                throw new BotManagerExcpetion("bm.ChatIdNotHandled");
-            return chatId.Value;
-        }
+        public static long GetChatId(Update update) => TryGetChatId(update)
+            ?? throw new BotManagerExcpetion("bm.ChatIdNotHandled");
         /// <summary>
         /// Tries to extract chat's ID from a raw server update.
         /// </summary>

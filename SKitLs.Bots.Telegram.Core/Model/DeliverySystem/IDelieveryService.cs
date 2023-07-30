@@ -1,10 +1,10 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model.Building;
-using SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Model;
-using SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Protoype;
+using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Model;
+using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using Telegram.Bot.Types.Enums;
 
-namespace SKitLs.Bots.Telegram.Core.Model.DelieverySystem
+namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem
 {
     /// <summary>
     /// An interface that provides ways of sending messages to users.

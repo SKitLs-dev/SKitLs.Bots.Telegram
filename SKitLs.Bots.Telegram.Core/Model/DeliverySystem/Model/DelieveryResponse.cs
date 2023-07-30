@@ -1,6 +1,6 @@
 ﻿using Telegram.Bot.Types;
 
-namespace SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Model
+namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Model
 {
     /// <summary>
     /// Represents a response of a delievery service <see cref="IDelieveryService"/>.

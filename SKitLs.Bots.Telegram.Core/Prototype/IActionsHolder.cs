@@ -1,6 +1,6 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model.Interactions;
 
-namespace SKitLs.Bots.Telegram.Core.Prototypes
+namespace SKitLs.Bots.Telegram.Core.Prototype
 {
     /// <summary>
     /// An interface that provides ways of collecting all <see cref="IBotAction"/>s,

@@ -4,18 +4,22 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>1.4.3</AssemblyVersion>
+    <AssemblyVersion>1.5.0</AssemblyVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>$(AssemblyName)</Title>
-    <Authors>Sargeras02</Authors>
+    <Authors>Sargeras02, SKit-Labs</Authors>
     <PackageProjectUrl>https://github.com/Sargeras02/SKitLs.Bots.Telegram.git</PackageProjectUrl>
     <PackageIcon>libIcon.png</PackageIcon>
     <PackageTags>Telegram, Bots, Management</PackageTags>
     <FileVersion>$(AssemblyVersion)</FileVersion>
-    <PackageReleaseNotes>( ! ) Fixed ChatType bug for Groups, Supergroups and Channels
+    <PackageReleaseNotes>( ! ) Loggers (*.external namespace) were moved to stand-alone library.
+See: SKitLs.Utils.
 
-(+) Exceptions' descriptions added
-(~) BotBuilder names updated</PackageReleaseNotes>
+(*) Debug Language bug fixed.
+
+(+) README added.
+
+(~) Descriptions and naming updated.</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <Copyright>Copyright (C) Sargeras02 2023</Copyright>
@@ -50,6 +54,7 @@ For more information see GitHub page.</Description>
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="SKitLs.Utils.LocalLoggers" Version="1.2.7.1" />
     <PackageReference Include="Telegram.Bot" Version="19.0.0" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model
+﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model
 {
     /// <summary>
     /// An abstract class used for storing converting rules for objects.
@@ -9,7 +9,7 @@
         /// <summary>
         /// Represents a targeted result type.
         /// </summary>
-        public Type ResultType { get; private set; }
+        public Type ResultType { get; private init; }
 
         /// <summary>
         /// Creates a new instance of a <see cref="ConvertRule"/> with a specified data.

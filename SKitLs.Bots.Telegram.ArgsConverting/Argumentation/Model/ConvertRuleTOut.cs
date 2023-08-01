@@ -1,4 +1,4 @@
-﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model
+﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model
 {
     /// <summary>
     /// Represents a specified converting rule, used for converting incoming <see cref="string"/> data

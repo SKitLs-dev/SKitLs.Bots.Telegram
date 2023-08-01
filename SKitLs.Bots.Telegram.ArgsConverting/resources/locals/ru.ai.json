@@ -1,0 +1,17 @@
+{
+  "ai.display.ArgumentsCountMissMatch": "Сервис сериализации получил строку с меньшим количеством аргументов, чем ожидалось.",
+
+  // Exceptions
+
+  // External
+  "exceptionCap.ai.NullPacked": "Null-ошибка упаковки",
+  "exceptionMes.ai.NullPacked": "Элемент типа {0} вернул пустую или null-строку при попытке упаковки (Packing). Убедитесь, что метод ToString() действителен или IArgPackable интерфейс определён.",
+
+  // Inexternal
+  "exceptionCap.ai.ConvertNullInput": "Ошибка конвертации: Пустой Ввод",
+  "exceptionMes.ai.ConvertNullInput": "Сервис сериализации получил пустую строку. Это могло произойти из-за внутренней потери данных или же из-за пустого ввода.",
+  "exceptionCap.ai.ConvertNullValue": "Ошибка конвертации: Пустой Результат",
+  "exceptionMes.ai.ConvertNullValue": "Пыпытка получить значение десериализации провалена. Убедитесь, что результат десериализации - OK, прежде чем распаковывать значение."
+
+  // Internal
+}

@@ -1,8 +1,8 @@
-﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Prototype
+﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Prototype
 {
     /// <summary>
     /// Represents an interface that provides methods of declaring packable types.
-    /// Packable type can be processed by <see cref="DefaultArgsSerilalizerService"/> more correctly.
+    /// Packable type can be processed by <see cref="DefaultArgsSerializeService"/> more correctly.
     /// </summary>
     public interface IArgPackable
     {

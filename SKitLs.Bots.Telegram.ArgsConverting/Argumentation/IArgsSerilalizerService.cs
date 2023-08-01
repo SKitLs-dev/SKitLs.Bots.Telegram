@@ -1,7 +1,7 @@
-﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model;
+﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model;
 using SKitLs.Bots.Telegram.Core.Model.Building;
 
-namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting
+namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation
 {
     /// <summary>
     /// Determines serialization service interface that provides methods
@@ -10,7 +10,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting
     /// <seealso cref="ConvertRule{TOut}"/>, <seealso cref="ConvertResult{TOut}"/>
     /// </para>
     /// </summary>
-    public interface IArgsSerilalizerService : IOwnerCompilable
+    public interface IArgsSerializeService : IOwnerCompilable
     {
         /// <summary>
         /// Gets the conversion rule <see cref="ConvertResult{TOut}"/> for the specified
@@ -33,7 +33,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting
         /// output type <typeparamref name="TOut"/>.
         /// </summary>
         /// <typeparam name="TOut">Type of the requested converter.</typeparam>
-        /// <returns>True if requested rule is determined. Otherwise False.</returns>
+        /// <returns><see langword="true"/> if requested rule is determined. Otherwise <see langword="false"/>.</returns>
         public bool IsDefined<TOut>() where TOut : notnull => ResolveTypeRule<TOut>() is not null;
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting
         /// </summary>
         /// <typeparam name="TOut">Type of the converter.</typeparam>
         /// <param name="rule">Rule to be added.</param>
-        /// <param name="override">If already exists, should be overriden.</param>
+        /// <param name="override">Determines whether rule should be overridden, if one exists.</param>
         public void AddRule<TOut>(ConvertRule<TOut> rule, bool @override = false) where TOut : notnull;
 
         /// <summary>
@@ -58,19 +58,21 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting
         /// </summary>
         /// <typeparam name="TOut">Output type.</typeparam>
         /// <param name="input">Input argument string.</param>
+        /// <param name="splitToken">Represents a token that the data is separated with.</param>
         /// <returns>Conversion result.</returns>
         public ConvertResult<TOut> Deserialize<TOut>(string input, char splitToken) where TOut : notnull, new();
         /// <summary>
         /// Serializes the specified input object.
         /// </summary>
         /// <typeparam name="TIn"></typeparam>
-        /// <param name="input"></param>
-        /// <returns></returns>
+        /// <param name="input">Input argument string.</param>
+        /// <param name="splitToken">Represents a token that the data is separated with.</param>
+        /// <returns>A string that represents serialized <paramref name="input"/>.</returns>
         public string Serialize<TIn>(TIn input, char splitToken) where TIn : notnull;
 
         /// <summary>
         /// Creates a new object of a type <typeparamref name="TOut"/>, converting it from <paramref name="input"/> data
-        /// with help of appropirate <see cref="ConvertRule{TOut}"/>.
+        /// with help of appropriate <see cref="ConvertRule{TOut}"/>.
         /// </summary>
         /// <typeparam name="TOut">A type of an object that should be unpacked.</typeparam>
         /// <param name="input">String data that should be converted to an instance of a type <typeparamref name="TOut"/>.</param>
@@ -81,7 +83,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting
         /// this object.
         /// </summary>
         /// <typeparam name="TIn">A type of an object that should be packed.</typeparam>
-        /// <param name="input"></param>
+        /// <param name="input">.</param>
         /// <returns>A string that could be used as a representation of <paramref name="input"/> object.</returns>
         public string Pack<TIn>(TIn input);
     }

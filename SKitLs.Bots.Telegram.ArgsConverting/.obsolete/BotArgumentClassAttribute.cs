@@ -1,4 +1,4 @@
-﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Prototype
+﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Prototype
 {
     [AttributeUsage(AttributeTargets.Class), Obsolete("Will be removed in future versions", true)]
     public class BotArgumentClassAttribute : Attribute

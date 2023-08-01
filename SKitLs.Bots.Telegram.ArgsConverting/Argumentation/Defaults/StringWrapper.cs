@@ -1,12 +1,12 @@
 ﻿using SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Prototype;
 
-namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Defaults
+namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Defaults
 {
     /// <summary>
-    /// Special wrapper used for wrapping <see cref="string"/> data to integrate it into
-    /// <see cref="IArgedAction{TArg, TUpdate}"/> as serializable argument.
+    /// The <see cref="StringWrapper"/> class is a special wrapper used to encapsulate <see cref="string"/> data and
+    /// integrate it into the <see cref="IArgedAction{TArg, TUpdate}"/> interface as a serializable argument.
     /// <para>
-    /// Specified solution for an <see cref="ArgumentWrapper{T}"/>.
+    /// It is a specific solution designed as an implementation of the <see cref="ArgumentWrapper{T}"/> for strings.
     /// </para>
     /// </summary>
     public class StringWrapper : ArgumentWrapper<string>
@@ -21,7 +21,15 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Defaults
         /// <param name="value">Value of the holding data.</param>
         public StringWrapper(string value) : base(value) { }
 
+        /// <summary>
+        /// implicit operator for StringWrapper => string
+        /// </summary>
+        /// <param name="value"></param>
         public static implicit operator StringWrapper(string value) => new(value);
+        /// <summary>
+        /// implicit operator for string => StringWrapper
+        /// </summary>
+        /// <param name="source"></param>
         public static implicit operator string(StringWrapper source) => source.Value;
     }
 }

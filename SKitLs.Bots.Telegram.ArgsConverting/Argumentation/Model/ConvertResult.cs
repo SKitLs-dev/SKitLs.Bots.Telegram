@@ -1,12 +1,13 @@
-﻿using SKitLs.Bots.Telegram.Core.Exceptions.Internal;
+﻿using SKitLs.Bots.Telegram.ArgedInteractions.Exceptions;
+using SKitLs.Bots.Telegram.Core.Exceptions;
 
-namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model
+namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model
 {
     /// <summary>
-    /// Represents a convertation result for <see cref="ConvertRule{TOut}"/>.
-    /// Contains resulting value or excpetion message.
+    /// Represents a converting result for <see cref="ConvertRule{TOut}"/>.
+    /// Contains resulting value or exception message.
     /// </summary>
-    /// <typeparam name="Out">Целевой тип конвертации</typeparam>
+    /// <typeparam name="TOut">Target type of converting.</typeparam>
     public class ConvertResult<TOut>
     {
         private TOut? _value;
@@ -14,10 +15,10 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model
         /// Represents the value that has been gotten in the result of <see cref="ConvertRule{TOut}"/> work.
         /// Throws Null Exception if value <see langword="null"/>.
         /// </summary>
-        /// <exception cref="BotManagerExcpetion"></exception>
+        /// <exception cref="ArgedInterException"></exception>
         public TOut Value
         {
-            get => _value ?? throw new BotManagerExcpetion("ConvertNullValue");
+            get => _value ?? throw new ArgedInterException("ConvertNullValue", SKTEOriginType.Inexternal, this);
             set => _value = value;
         }
 
@@ -26,30 +27,30 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model
         /// </summary>
         public Type ValueType => typeof(TOut);
         /// <summary>
-        /// Represents convertation result type.
+        /// Represents converting result type.
         /// </summary>
-        public ConvertResultType ResultType { get; private set; }
+        public ConvertResultType ResultType { get; private init; }
         /// <summary>
-        /// Contains a message that describes convertation result.
+        /// Contains a message that describes converting result.
         /// </summary>
-        public string ResultMessage { get; private set; }
+        public string ResultMessage { get; private init; }
 
         /// <summary>
-        /// Creates a new instance of a type <see cref="ConvertResult"/> with a specified data.
+        /// Creates a new instance of a type <see cref="ConvertResult{TOut}"/> with a specified data.
         /// </summary>
-        /// <param name="resultType">Convertation result type.</param>
-        /// <param name="message">A message that describes convertation result.</param>
+        /// <param name="resultType">Converting result type.</param>
+        /// <param name="message">A message that describes converting result.</param>
         public ConvertResult(ConvertResultType resultType, string? message = null)
         {
             ResultType = resultType;
             ResultMessage = message ?? nameof(resultType);
         }
         /// <summary>
-        /// Creates a new instance of a type <see cref="ConvertResult"/> with a specified data.
+        /// Initializes a new instance of a type <see cref="ConvertResult{TOut}"/> with a specified data.
         /// </summary>
-        /// <param name="resultType">Convertation result type.</param>
-        /// <param name="message">Message that describes convertation result.</param>
-        /// <param name="value">Value that has been gotten in the result of convertation.</param>
+        /// <param name="resultType">Converting result type.</param>
+        /// <param name="message">Message that describes converting result.</param>
+        /// <param name="value">Value that has been gotten in the result of converting.</param>
         /// <exception cref="ArgumentNullException"></exception>
         public ConvertResult(TOut value, ConvertResultType resultType = ConvertResultType.Ok, string? message = null)
             : this(resultType, message) => Value = value ?? throw new ArgumentNullException(nameof(value));
@@ -85,10 +86,10 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model
         public static ConvertResult<TOut> NotPresented(string? message = null) => new(ConvertResultType.NotPresented, message);
 
         /// <summary>
-        /// A shortcut for creating <see cref="ConvertResultType.NotDefinied"/> with custom message <paramref name="message"/>.
+        /// A shortcut for creating <see cref="ConvertResultType.NotDefined"/> with custom message <paramref name="message"/>.
         /// </summary>
         /// <param name="message">Custom message.</param>
-        /// <returns><see cref="ConvertResult{TOut}"/> with <see cref="ConvertResultType.NotDefinied"/> status.</returns>
-        internal static ConvertResult<TOut> NotDefined(string? message = null) => new(ConvertResultType.NotDefinied, message);
+        /// <returns><see cref="ConvertResult{TOut}"/> with <see cref="ConvertResultType.NotDefined"/> status.</returns>
+        internal static ConvertResult<TOut> NotDefined(string? message = null) => new(ConvertResultType.NotDefined, message);
     }
 }

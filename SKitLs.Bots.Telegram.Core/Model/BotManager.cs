@@ -7,7 +7,9 @@ using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Prototype;
 using SKitLs.Bots.Telegram.Core.resources.Settings;
+using SKitLs.Utils.Localizations.Model;
 using SKitLs.Utils.Localizations.Prototype;
+using SKitLs.Utils.LocalLoggers.Model;
 using SKitLs.Utils.LocalLoggers.Prototype;
 using System.Reflection;
 using Telegram.Bot;
@@ -25,9 +27,12 @@ namespace SKitLs.Bots.Telegram.Core.Model
     /// </para>
     /// <para>Access this class by Wizard Builder <see cref="BotBuilder"/>.</para>
     /// </summary>
-    public class BotManager : IDebugNamed
+    public sealed class BotManager : IDebugNamed
     {
         #region Properties
+        /// <summary>
+        /// Name, used for simplifying debugging process.
+        /// </summary>
         public string? DebugName { get; set; }
 
         // TODO: use ChatType.GetValues() enum selector to make chats generic
@@ -69,7 +74,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// </summary>
         public BotSettings Settings { get; private set; }
         /// <summary>
-        /// Language that is used by <see cref="IDelieveryService"/> by default to send custom localized preset system messages to user.
+        /// Language that is used by <see cref="IDeliveryService"/> by default to send custom localized preset system messages to user.
         /// Set up via <see cref="Settings"/>.
         /// </summary>
         public LangKey BotLanguage => Settings.BotLanguage;
@@ -89,7 +94,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// Adds a new service of a type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">Interface type of a service</typeparam>
-        /// <param name="service">Service to be stored</param>
+        /// <param name="service">Service to be stored.</param>
         public void AddService<T>(T service) where T : notnull
         {
             if (Services.ContainsKey(typeof(T)))
@@ -104,17 +109,17 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <exception cref="ServiceNotDefinedException">Thrown when <typeparamref name="T"/> is not defined.</exception>
         public T ResolveService<T>() where T : notnull
         {
-            if (!Services.ContainsKey(typeof(T))) throw new ServiceNotDefinedException(typeof(T));
+            if (!Services.ContainsKey(typeof(T))) throw new ServiceNotDefinedException(this, typeof(T));
             return (T)Services[typeof(T)];
         }
-
+        
         /// <summary>
         /// Delivery Service used for sending messages <see cref="IBuildableMessage"/> to server.
         /// <para>
-        /// <see cref="DefaultDelieveryService"/> by default.
+        /// <see cref="DefaultDeliveryService"/> by default.
         /// </para>
         /// </summary>
-        public IDelieveryService DeliveryService { get; internal set; }
+        public IDeliveryService DeliveryService { get; internal set; }
         /// <summary>
         /// Localization service used for getting localized debugging strings.
         /// <para>
@@ -140,13 +145,13 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <summary>
         /// Logger service used for logging system messages.
         /// <para>
-        /// <see cref="DefaultLocalizedLogger"/> by default.
+        /// <see cref="LocalizedConsoleLogger"/> by default.
         /// </para>
         /// </summary>
         [OwnerCompileIgnore]
         public ILocalizedLogger LocalLogger => ResolveService<ILocalizedLogger>();
         #endregion
-
+        
         /// <summary>
         /// Provides access to all declared <see cref="IBotAction"/>,
         /// collected via <see cref="IActionsHolder"/> interface.
@@ -155,7 +160,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <summary>
         /// Tries to find certain <see cref="IBotAction"/> by its id. Otherwise throws an Exception.
         /// </summary>
-        /// <param name="actionId"><see cref="IBotAction"/>'s id</param>
+        /// <param name="actionId"><see cref="IBotAction"/>'s id.</param>
         /// <returns>Declared <see cref="IBotAction"/> or <see cref="NotDefinedException"/> if doesn't exist.</returns>
         /// <exception cref="NotDefinedException"></exception>
         public IBotAction GetDeclaredAction(string actionId) => ActionsBasket
@@ -169,7 +174,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
 
             Token = token;
             Bot = new TelegramBotClient(token);
-            DeliveryService = new DefaultDelieveryService();
+            DeliveryService = new DefaultDeliveryService();
         }
 
         /// <summary>
@@ -243,9 +248,9 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <summary>
         /// Обрабатывает обновления, полученные от бота
         /// </summary>
-        /// <param name="client"></param>
-        /// <param name="update">Обновление</param>
-        /// <param name="cancellationToken">Токен отмены</param>
+        /// <param name="client">.</param>
+        /// <param name="update">Обновление.</param>
+        /// <param name="cancellationToken">Токен отмены.</param>
         /// <returns></returns>
         private async Task HandleUpdateAsync(ITelegramBotClient client, Update update, CancellationToken cancellationToken)
         {
@@ -262,9 +267,9 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <summary>
         /// Handles bot exception.
         /// </summary>
-        /// <param name="client">Client that raised an exception</param>
-        /// <param name="exception">Exception</param>
-        /// <param name="cancellationToken">Cancellation token</param>
+        /// <param name="client">Client that raised an exception.</param>
+        /// <param name="exception">Exception.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         private Task HandleErrorAsync(ITelegramBotClient client, Exception exception, CancellationToken cancellationToken)
         {
             if (BotBuilder.DebugSettings.ShouldPrintExceptions)
@@ -277,14 +282,14 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// Unpacks and casts raw data, delegating raw server's <see cref="Update"/> to
         /// sub-handlers in <see cref="ICastedUpdate"/> representation.
         /// </summary>
-        /// <param name="update">Original server update</param>
-        /// <exception cref="BotManagerExcpetion"></exception>
+        /// <param name="update">Original server update.</param>
+        /// <exception cref="BotManagerException"></exception>
         private async Task SubDelegateUpdate(Update update)
         {
             if (BotBuilder.DebugSettings.ShouldPrintUpdates) BotBuilder.DebugSettings.LocalLogger.Log(update);
 
-            long chatId = GetChatId(update);
-            ChatType senderChatType = GetChatType(update);
+            long chatId = GetChatId(update, this);
+            ChatType senderChatType = GetChatType(update, this);
             ChatScanner _handler = senderChatType switch
             {
                 ChatType.Private => PrivateChatUpdateHandler,
@@ -292,23 +297,24 @@ namespace SKitLs.Bots.Telegram.Core.Model
                 ChatType.Supergroup => SupergroupChatUpdateHandler,
                 ChatType.Channel => ChannelChatUpdateHandler,
                 _ => null,
-            } ?? throw new BotManagerExcpetion("bm.ChatTypeNotSupported", Enum.GetName(typeof(ChatType), senderChatType));
+            } ?? throw new BotManagerException("bm.ChatTypeNotSupported", this, Enum.GetName(typeof(ChatType), senderChatType));
             
             await _handler.HandleUpdateAsync(new CastedUpdate(_handler, update, chatId));
         }
 
         /// <summary>
         /// Extracts <see cref="ChatType"/> from a raw server update or
-        /// throws <see cref="BotManagerExcpetion"/> otherwise.
+        /// throws <see cref="BotManagerException"/> otherwise.
         /// </summary>
-        /// <param name="update">Original server update</param>
+        /// <param name="update">Original server update.</param>
+        /// <param name="requester">AN object that is requesting method. Use <c>this</c> statement.</param>
         /// <returns>Update's chat type.</returns>
-        public static ChatType GetChatType(Update update) => TryGetChatType(update)
-            ?? throw new BotManagerExcpetion("bm.ChatNotHandled");
+        public static ChatType GetChatType(Update update, object requester) => TryGetChatType(update)
+            ?? throw new BotManagerException("bm.ChatNotHandled", requester);
         /// <summary>
         /// Tries to extract <see cref="ChatType"/> from a raw server update.
         /// </summary>
-        /// <param name="update">Original server update</param>
+        /// <param name="update">Original server update.</param>
         /// <returns>Update's chat type.</returns>
         public static ChatType? TryGetChatType(Update update)
         {
@@ -340,16 +346,17 @@ namespace SKitLs.Bots.Telegram.Core.Model
 
         /// <summary>
         /// Extracts chat's ID from a raw server update or
-        /// throws <see cref="BotManagerExcpetion"/> otherwise.
+        /// throws <see cref="BotManagerException"/> otherwise.
         /// </summary>
-        /// <param name="update">Original server update</param>
+        /// <param name="update">Original server update.</param>
+        /// <param name="requester">AN object that is requesting method. Use <c>this</c> statement.</param>
         /// <returns>Update's chat ID.</returns>
-        public static long GetChatId(Update update) => TryGetChatId(update)
-            ?? throw new BotManagerExcpetion("bm.ChatIdNotHandled");
+        public static long GetChatId(Update update, object requester) => TryGetChatId(update)
+            ?? throw new BotManagerException("bm.ChatIdNotHandled", requester);
         /// <summary>
         /// Tries to extract chat's ID from a raw server update.
         /// </summary>
-        /// <param name="update">Original server update</param>
+        /// <param name="update">Original server update.</param>
         /// <returns>Update's chat ID.</returns>
         public static long? TryGetChatId(Update update)
         {
@@ -376,6 +383,10 @@ namespace SKitLs.Bots.Telegram.Core.Model
             else return null;
         }
 
+        /// <summary>
+        /// Returns list of updates that can be gotten from <see cref="ChatType.Private"/>.
+        /// </summary>
+        [Obsolete("Hardcoded. May be incorrect.")]
         public static List<UpdateType> PrivateUpdates { get; set; } = new()
         {
             UpdateType.Message,
@@ -385,6 +396,10 @@ namespace SKitLs.Bots.Telegram.Core.Model
             UpdateType.PreCheckoutQuery,
             UpdateType.ShippingQuery,
         };
+        /// <summary>
+        /// Returns list of updates that can be gotten from <see cref="ChatType.Group"/>.
+        /// </summary>
+        [Obsolete("Hardcoded. May be incorrect.")]
         public static List<UpdateType> GroupUpdates { get; set; } = new()
         {
             UpdateType.Message,
@@ -401,6 +416,10 @@ namespace SKitLs.Bots.Telegram.Core.Model
             UpdateType.Poll,
             UpdateType.PollAnswer,
         };
+        /// <summary>
+        /// Returns list of updates that can be gotten from <see cref="ChatType.Supergroup"/>.
+        /// </summary>
+        [Obsolete("Hardcoded. May be incorrect.")]
         public static List<UpdateType> SupergroupUpdates { get; set; } = new()
         {
             UpdateType.Message,
@@ -417,6 +436,10 @@ namespace SKitLs.Bots.Telegram.Core.Model
             UpdateType.Poll,
             UpdateType.PollAnswer,
         };
+        /// <summary>
+        /// Returns list of updates that can be gotten from <see cref="ChatType.Channel"/>.
+        /// </summary>
+        [Obsolete("Hardcoded. May be incorrect.")]
         public static List<UpdateType> ChannelUpdates { get; set; } = new()
         {
             UpdateType.ChannelPost,
@@ -432,6 +455,10 @@ namespace SKitLs.Bots.Telegram.Core.Model
             UpdateType.PollAnswer,
         };
 
+        /// <summary>
+        /// Returns a string that represents current object.
+        /// </summary>
+        /// <returns>A string that represents current object.</returns>
         public override string? ToString() => DebugName ?? base.ToString();
     }
 }

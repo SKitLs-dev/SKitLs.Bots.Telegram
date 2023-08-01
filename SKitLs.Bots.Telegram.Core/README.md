@@ -24,7 +24,7 @@ to focus on implementing bot logic without the hassle of handling low-level API 
 ### Requirements
 
 - Telegram.Bot 19.0.0 or higher
-- SKitLs.Utils.LocalLoggers 1.2.7 or higher
+- SKitLs.Utils.LocalLoggers 1.3.0 or higher
 
 Before running the project, please ensure that you have the following dependencies installed and properly configured in your development environment.
 

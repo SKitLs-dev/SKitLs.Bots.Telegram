@@ -23,7 +23,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
             {
                 errorMes += "SKitLs.Bots.Telegram Error\n";
                 errorMes += $"\n{Local(logger, sktg.CaptionLocalKey)}\n";
-                errorMes += $"{Local(logger, sktg.MessgeLocalKey, sktg.Format)}";
+                errorMes += $"{Local(logger, sktg.MessageLocalKey, sktg.Format)}";
 
                 warn = sktg.OriginType switch
                 {

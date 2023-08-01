@@ -5,7 +5,7 @@ using Telegram.Bot.Types.Enums;
 namespace SKitLs.Bots.Telegram.Core.Model.Building
 {
     /// <summary>
-    /// Bot creating proccess enter point. <see cref="BotManager"/> class wizard constructor.
+    /// Bot creating process enter point. <see cref="BotManager"/> class wizard constructor.
     /// </summary>
     public class BotBuilder
     {
@@ -23,23 +23,25 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// <summary>
         /// Creates a new instance of the wizard constructor.
         /// </summary>
-        /// <param name="token">Telegram bot's token</param>
-        private BotBuilder(string token, DebugSettings? assests = null)
+        /// <param name="token">Telegram bot's token.</param>
+        /// <param name="settings">Bot's settings to be applied.</param>
+        private BotBuilder(string token, DebugSettings? settings = null)
         {
-            if (assests is not null)
-                DebugSettings = assests;
+            if (settings is not null)
+                DebugSettings = settings;
             _botManager = new(token);
         }
         /// <summary>
         /// Creates a new instance of the wizard constructor.
         /// </summary>
-        /// <param name="token">Telegram bot's token</param>
+        /// <param name="token">Telegram bot's token.</param>
         public static BotBuilder NewBuilder(string token) => new(token);
 
         /// <summary>
         /// Enables private chats' handling. Uses vanilla <see cref="ChatScanner"/> by default.
         /// </summary>
-        /// <param name="builder">Customized <see cref="ChatScanner"/> desiner. Can be null to use default.</param>
+        /// <param name="builder">Customized <see cref="ChatScanner"/> designer.
+        /// Set <see langword="null"/> to use default.</param>
         public BotBuilder EnablePrivates(ChatDesigner? builder = null)
         {
             _botManager.PrivateChatUpdateHandler = builder?.Build() ?? new();
@@ -50,7 +52,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// <summary>
         /// Enables groups' handling. Uses vanilla <see cref="ChatScanner"/> by default.
         /// </summary>
-        /// <param name="builder">Customized <see cref="ChatScanner"/> desiner. Can be null to use default.</param>
+        /// <param name="builder">Customized <see cref="ChatScanner"/> designer. Can be null to use default.</param>
         public BotBuilder EnableGroups(ChatDesigner? builder = null)
         {
             _botManager.GroupChatUpdateHandler = builder?.Build() ?? new();
@@ -61,7 +63,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// <summary>
         /// Enables supergroups' handling. Uses vanilla <see cref="ChatScanner"/> by default.
         /// </summary>
-        /// <param name="builder">Customized <see cref="ChatScanner"/> desiner. Can be null to use default.</param>
+        /// <param name="builder">Customized <see cref="ChatScanner"/> designer. Can be null to use default.</param>
         public BotBuilder EnableSupergroups(ChatDesigner? builder = null)
         {
             _botManager.SupergroupChatUpdateHandler = builder?.Build() ?? new();
@@ -72,7 +74,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// <summary>
         /// Enables channels' handling. Uses vanilla <see cref="ChatScanner"/> by default.
         /// </summary>
-        /// <param name="builder">Customized <see cref="ChatScanner"/> desiner. Can be null to use default.</param>
+        /// <param name="builder">Customized <see cref="ChatScanner"/> designer. Can be null to use default.</param>
         public BotBuilder EnableChannels(ChatDesigner? builder = null)
         {
             _botManager.ChannelChatUpdateHandler = builder?.Build() ?? new();
@@ -82,12 +84,12 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         }
 
         /// <summary>
-        /// Sets custom <see cref="IDelieveryService"/> for messages sending.
+        /// Sets custom <see cref="IDeliveryService"/> for messages sending.
         /// </summary>
-        /// <param name="delievery">Custom service to be implemented</param>
-        public BotBuilder CustomDelievery(IDelieveryService delievery)
+        /// <param name="delivery">Custom service to be implemented.</param>
+        public BotBuilder CustomDelivery(IDeliveryService delivery)
         {
-            _botManager.DeliveryService = delievery;
+            _botManager.DeliveryService = delivery;
             return this;
         }
 
@@ -95,7 +97,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// Adds a new service of a type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">Interface type of a service</typeparam>
-        /// <param name="service">Service to be stored</param>
+        /// <param name="service">Service to be stored.</param>
         public BotBuilder AddService<T>(T service) where T : notnull
         {
             _botManager.AddService(service);
@@ -105,7 +107,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// <summary>
         /// Compiles created instance and returns the built one.
         /// </summary>
-        /// <param name="debugName">Custom debug name (<see cref="BotManager.DebugName"/>)</param>
+        /// <param name="debugName">Custom debug name (<see cref="BotManager.DebugName"/>).</param>
         public BotManager Build(string? debugName = null)
         {
             _botManager.DebugName = debugName;

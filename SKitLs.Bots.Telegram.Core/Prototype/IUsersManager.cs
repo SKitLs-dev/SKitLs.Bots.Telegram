@@ -28,7 +28,7 @@ namespace SKitLs.Bots.Telegram.Core.Prototype
         /// <summary>
         /// Asynchronously registries new user, using incoming <paramref name="update"/> data.
         /// </summary>
-        /// <param name="update"></param>
+        /// <param name="update">.</param>
         /// <returns><see cref="IBotUser"/> if user is registered successfully, otherwise <see langword="null"/>.</returns>
         public Task<IBotUser?> RegisterNewUserAsync(ICastedUpdate update);
     }

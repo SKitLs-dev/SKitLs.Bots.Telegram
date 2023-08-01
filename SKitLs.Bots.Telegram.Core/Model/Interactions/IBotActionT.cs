@@ -18,10 +18,11 @@ namespace SKitLs.Bots.Telegram.Core.Model.Interactions
         /// An action that should be raised on action execution.
         /// </summary>
         public BotInteraction<TUpdate> Action { get; }
+
         /// <summary>
         /// Checks either this action should be executed on a certain incoming update.
         /// </summary>
-        /// <param name="update">An incoming update</param>
+        /// <param name="update">An incoming update.</param>
         /// <returns><see langword="true"/> if this action should be executed; otherwise, <see langword="false"/>.</returns>
         public bool ShouldBeExecutedOn(TUpdate update);
     }

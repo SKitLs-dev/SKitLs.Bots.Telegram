@@ -5,7 +5,7 @@ using SKitLs.Bots.Telegram.Core.Model.Building;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonim;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonym;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.Core.Prototype;
 using Telegram.Bot.Types;
@@ -25,17 +25,28 @@ namespace SKitLs.Bots.Telegram.Core.Model
     /// </para>
     /// <para>Supports: <see cref="IOwnerCompilable"/>, <see cref="IActionsHolder"/></para>
     /// </summary>
-    public class ChatScanner : IDebugNamed, IOwnerCompilable, IActionsHolder
+    public sealed class ChatScanner : IDebugNamed, IOwnerCompilable, IActionsHolder
     {
         #region Properties
+        /// <summary>
+        /// Name, used for simplifying debugging process.
+        /// </summary>
         public string? DebugName { get; set; }
 
         private BotManager? _owner;
+        /// <summary>
+        /// Instance's owner.
+        /// </summary>
         public BotManager Owner
         {
             get => _owner ?? throw new NullOwnerException(GetType());
             set => _owner = value;
         }
+        /// <summary>
+        /// Specified method that raised during reflective <see cref="IOwnerCompilable.ReflectiveCompile(object, BotManager)"/> compilation.
+        /// Declare it to extend preset functionality.
+        /// Invoked after <see cref="Owner"/> updating, but before recursive update.
+        /// </summary>
         public Action<object, BotManager>? OnCompilation => null;
         
         /// <summary>
@@ -68,8 +79,8 @@ namespace SKitLs.Bots.Telegram.Core.Model
         public IUpdateHandlerBase<SignedCallbackUpdate>? CallbackHandler { get; set; }
         public IUpdateHandlerBase<SignedMessageUpdate>? MessageHandler { get; set; }
         public IUpdateHandlerBase<SignedMessageUpdate>? EditedMessageHandler { get; set; }
-        public IUpdateHandlerBase<AnonimMessageUpdate>? ChannelPostHandler { get; set; }
-        public IUpdateHandlerBase<AnonimMessageUpdate>? EditedChannelPostHandler { get; set; }
+        public IUpdateHandlerBase<AnonymMessageUpdate>? ChannelPostHandler { get; set; }
+        public IUpdateHandlerBase<AnonymMessageUpdate>? EditedChannelPostHandler { get; set; }
 
         public IUpdateHandlerBase<CastedUpdate>? ChatJoinRequestHandler { get; set; }
         public IUpdateHandlerBase<CastedUpdate>? ChatMemberHandler { get; set; }
@@ -86,6 +97,11 @@ namespace SKitLs.Bots.Telegram.Core.Model
         {
             GetDefaultBotUser = (id) => new DefaultBotUser(id);
         }
+        
+        /// <summary>
+        /// Collects all <see cref="IBotAction"/>s declared in the class.
+        /// </summary>
+        /// <returns>Collected list of declared actions.</returns>
         public List<IBotAction> GetActionsContent()
         {
             var res = new List<IBotAction>();
@@ -100,9 +116,9 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// Can be useful: <c><seealso cref="GetDeclaredHandlers"/></c>
         /// </para>
         /// </summary>
-        /// <param name="update">Incoming update</param>
+        /// <param name="update">Incoming update.</param>
         /// <exception cref="NullSenderException"></exception>
-        /// <exception cref="BotManagerExcpetion"></exception>
+        /// <exception cref="BotManagerException"></exception>
         public async Task HandleUpdateAsync(ICastedUpdate update)
         {
             IBotUser? sender = null;
@@ -117,7 +133,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
             else sender = GetDefaultBotUser(id);
 
             if (sender is null)
-                throw new NullSenderException();
+                throw new NullSenderException(this);
 
             IUpdateHandlerBase? suitHandler = update.Type switch
             {
@@ -149,17 +165,17 @@ namespace SKitLs.Bots.Telegram.Core.Model
 
         /// <summary>
         /// Extracts sender's ID from a raw server update or
-        /// throws <see cref="BotManagerExcpetion"/> otherwise.
+        /// throws <see cref="BotManagerException"/> otherwise.
         /// </summary>
-        /// <param name="update">Original server update</param>
+        /// <param name="update">Original server update.</param>
         /// <returns>Sender's ID.</returns>
-        /// <exception cref="BotManagerExcpetion"></exception>
+        /// <exception cref="BotManagerException"></exception>
         public long GetSenderId(Update update) => TryGetSenderId(update)
-            ?? throw new BotManagerExcpetion("cs.UserIdExtractError", ToString(), update.Id.ToString());
+            ?? throw new BotManagerException("cs.UserIdExtractError", this, update.Id.ToString());
         /// <summary>
         /// Tries to extract sender's ID from a raw server update.
         /// </summary>
-        /// <param name="update">Original server update</param>
+        /// <param name="update">Original server update.</param>
         /// <returns>Nullable sender's ID.</returns>
         public static long? TryGetSenderId(Update update)
         {
@@ -184,25 +200,26 @@ namespace SKitLs.Bots.Telegram.Core.Model
 
         /// <summary>
         /// Extracts sender instance of a type <see cref="User"/> from a raw server update or
-        /// throws <see cref="BotManagerExcpetion"/> otherwise.
+        /// throws <see cref="BotManagerException"/> otherwise.
         /// </summary>
-        /// <param name="update">Original server update</param>
+        /// <param name="update">Original server update.</param>
         /// <returns>Not-null instance of a sender.</returns>
-        /// <exception cref="BotManagerExcpetion"></exception>
+        /// <exception cref="BotManagerException"></exception>
         public User GetSender(Update update) => GetSender(update, this);
         /// <summary>
         /// Extracts sender instance of a type <see cref="User"/> from a raw server update or
-        /// throws <see cref="BotManagerExcpetion"/> otherwise.
+        /// throws <see cref="BotManagerException"/> otherwise.
         /// </summary>
-        /// <param name="update">Original server update</param>
+        /// <param name="update">Original server update.</param>
+        /// <param name="requester">An object that has requested extraction.</param>
         /// <returns>Not-null instance of a sender.</returns>
-        /// <exception cref="BotManagerExcpetion"></exception>
-        public static User GetSender(Update update, object? sender) => TryGetSender(update)
-            ?? throw new BotManagerExcpetion("cs.UserExtractError", sender?.ToString() ?? "Unknown object", update.Id.ToString());
+        /// <exception cref="BotManagerException"></exception>
+        public static User GetSender(Update update, object? requester) => TryGetSender(update)
+            ?? throw new BotManagerException("cs.UserExtractError", requester, update.Id.ToString());
         /// <summary>
         /// Tries to extract sender instance of a type <see cref="User"/> from a raw server update.
         /// </summary>
-        /// <param name="update">Original server update</param>
+        /// <param name="update">Original server update.</param>
         /// <returns>Nullable instance of a sender.</returns>
         public static User? TryGetSender(Update update)
         {
@@ -263,6 +280,10 @@ namespace SKitLs.Bots.Telegram.Core.Model
             return res;
         }
 
+        /// <summary>
+        /// Returns a string that represents current object.
+        /// </summary>
+        /// <returns>A string that represents current object.</returns>
         public override string? ToString() => DebugName is null
             ? Enum.GetName(typeof(TEnum.ChatType), ChatType)
             : $"{DebugName} ({Owner.DebugName})";

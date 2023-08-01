@@ -25,15 +25,15 @@ namespace SKitLs.Bots.Telegram.Core.resources.Settings
         /// <summary>
         /// Logger service used for logging system messages.
         /// <para>
-        /// <see cref="DefaultLocalizedLogger"/> by default.
+        /// <see cref="LocalizedConsoleLogger"/> by default.
         /// </para>
         /// </summary>
         public ILocalizedLogger LocalLogger { get; private set; }
         /// <summary>
         /// Creates a new instance of <see cref="DebugSettings"/> with specific data.
         /// </summary>
-        /// <param name="language">Language of debugging logger</param>
-        /// <param name="path">Path to foler with localizations</param>
+        /// <param name="language">Language of debugging logger.</param>
+        /// <param name="path">Path to folder with localizations.</param>
         public DebugSettings(LangKey language = LangKey.EN, string path = "resources/locals")
         {
             DebugLanguage = language;
@@ -61,27 +61,23 @@ namespace SKitLs.Bots.Telegram.Core.resources.Settings
 
         /// <summary>
         /// Sets custom path for debug localization.
-        /// Still uses <see cref="DefaultLocalizator"/> and <see cref="DefaultLocalizedLogger"/>.
+        /// Still uses <see cref="DefaultLocalizator"/> and <see cref="LocalizedConsoleLogger"/>.
         /// </summary>
-        /// <param name="path">Path to folder with localized content</param>
+        /// <param name="path">Path to folder with localized content.</param>
         public void UpdateLocalsPath(string path)
         {
             Localizator = new DefaultLocalizator(path);
             LocalLogger = new LocalizedConsoleLogger(Localizator);
         }
         /// <summary>
-        /// Sets custom debug localization. Note that <see cref="ILocalizedLogger.Localizator"/> should
-        /// be similar with <paramref name="localizator"/>. Otherwise exception is thrown.
+        /// Sets custom debug localization.
         /// </summary>
-        /// <param name="localizator">Custom localizator</param>
-        /// <param name="localLogger">Custom logger</param>
+        /// <param name="localLogger">Custom logger.</param>
         /// <exception cref="SKTgException"></exception>
-        public void UpdateLocalsSystem(ILocalizator localizator, ILocalizedLogger localLogger)
+        public void UpdateLocalsSystem(ILocalizedLogger localLogger)
         {
-            Localizator = localizator;
-            if (localLogger.Localizator != localizator)
-                throw new SKTgException("LocalSystemMissmatch", SKTEOriginType.External);
             LocalLogger = localLogger;
+            Localizator = localLogger.Localizator;
         }
     }
 }

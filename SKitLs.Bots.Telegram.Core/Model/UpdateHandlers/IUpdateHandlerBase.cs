@@ -20,8 +20,8 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers
         /// <summary>
         /// Handles <see cref="ICastedUpdate"/> updated, gotten from <see cref="ChatScanner"/>.
         /// </summary>
-        /// <param name="update">Update to handle</param>
-        /// <param name="sender">Sender to sign update</param>
+        /// <param name="update">Update to handle.</param>
+        /// <param name="sender">Sender to sign update.</param>
         public Task HandleUpdateAsync(ICastedUpdate update, IBotUser? sender);
     }
 }

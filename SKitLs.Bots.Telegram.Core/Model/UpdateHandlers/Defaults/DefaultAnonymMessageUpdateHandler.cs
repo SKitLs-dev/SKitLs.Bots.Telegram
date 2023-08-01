@@ -1,23 +1,22 @@
 ﻿using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
-using SKitLs.Bots.Telegram.Core.Exceptions.Internal;
 using SKitLs.Bots.Telegram.Core.Model.Building;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonym;
 using SKitLs.Bots.Telegram.Core.Prototype;
 using Telegram.Bot.Types.Enums;
 
 namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.Defaults
 {
     /// <summary>
-    /// Default realization for <see cref="IUpdateHandlerBase"/>&lt;<see cref="SignedMessageUpdate"/>&gt;.
+    /// Default realization for <see cref="IUpdateHandlerBase"/>&lt;<see cref="AnonymMessageUpdate"/>&gt;.
     /// Uses a system of sub-<see cref="IUpdateHandlerBase"/> for different message content such as:
     /// text, media, voice etc (see <see cref="MessageType"/>).
     /// <para>
     /// Inherits: <see cref="IOwnerCompilable"/>, <see cref="IActionsHolder"/>
     /// </para>
     /// </summary>
-    public class DefaultSignedMessageUpdateHandler : IUpdateHandlerBase<SignedMessageUpdate>
+    public class DefaultAnonymMessageUpdateHandler : IUpdateHandlerBase<AnonymMessageUpdate>
     {
         private BotManager? _owner;
         /// <summary>
@@ -38,23 +37,22 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.Defaults
         /// <summary>
         /// Sub-handler used for handling incoming Text Messages.
         /// </summary>
-        public IUpdateHandlerBase<SignedMessageTextUpdate>? TextMessageUpdateHandler { get; set; }
+        public IUpdateHandlerBase<AnonymMessageTextUpdate>? TextMessageUpdateHandler { get; set; }
 
         /// <summary>
         /// Sub-handler used for handling other incoming messages (PhotoMessage, MediaMessage, etc).
         /// </summary>
-        public IUpdateHandlerBase<SignedMessageUpdate>? RestMessagesUpdateHandler { get; set; }
+        public IUpdateHandlerBase<AnonymMessageUpdate>? RestMessagesUpdateHandler { get; set; }
 
         /// <summary>
-        /// Creates a new instance of a <see cref="DefaultSignedMessageUpdateHandler"/>
+        /// Creates a new instance of a <see cref="DefaultAnonymMessageUpdateHandler"/>
         /// with default realization of several sub-handlers.
         /// </summary>
-        public DefaultSignedMessageUpdateHandler()
+        public DefaultAnonymMessageUpdateHandler()
         {
-            TextMessageUpdateHandler = new DefaultSignedMessageTextUpdateHandler();
+            TextMessageUpdateHandler = new DefaultAnonymMessageTextUpdateHandler();
         }
 
-        
         /// <summary>
         /// Collects all <see cref="IBotAction"/>s declared in the class.
         /// </summary>
@@ -71,29 +69,24 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.Defaults
 
         /// <summary>
         /// Casts common incoming <see cref="ICastedUpdate"/> to the specified
-        /// <see cref="SignedMessageUpdate"/> update type.
+        /// <see cref="AnonymMessageUpdate"/> update type.
         /// </summary>
         /// <param name="update">Update to handle.</param>
         /// <param name="sender">Sender to sign update.</param>
-        /// <returns>Casted updated oh a type <see cref="SignedMessageUpdate"/>.</returns>
-        public SignedMessageUpdate CastUpdate(ICastedUpdate update, IBotUser? sender)
-        {
-            if (sender is null)
-                throw new NullSenderException(this);
-            return new(update, sender);
-        }
-        
+        /// <returns>Casted updated oh a type <see cref="AnonymMessageUpdate"/>.</returns>
+        public AnonymMessageUpdate CastUpdate(ICastedUpdate update, IBotUser? sender) => new(update);
+
         /// <summary>
-        /// Handles custom casted <see cref="SignedMessageUpdate"/> updated.
+        /// Handles custom casted <see cref="AnonymMessageUpdate"/> updated.
         /// <para>
         /// Cast and pass update via base <see cref="IUpdateHandlerBase.HandleUpdateAsync(ICastedUpdate, IBotUser?)"/>
         /// </para>
         /// </summary>
         /// <param name="update">Update to handle.</param>
-        public async Task HandleUpdateAsync(SignedMessageUpdate update)
+        public async Task HandleUpdateAsync(AnonymMessageUpdate update)
         {
             if (update.Message.Type == MessageType.Text && TextMessageUpdateHandler is not null)
-                await TextMessageUpdateHandler.HandleUpdateAsync(new SignedMessageTextUpdate(update));
+                await TextMessageUpdateHandler.HandleUpdateAsync(new AnonymMessageTextUpdate(update));
             else if (RestMessagesUpdateHandler is not null)
                 await RestMessagesUpdateHandler.HandleUpdateAsync(update);
             // Photo Video Voice etc

@@ -9,19 +9,27 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed
     /// </summary>
     public class SignedCallbackUpdate : CastedUpdate, ISignedUpdate
     {
-        public IBotUser Sender { get; private set; }
+        /// <summary>
+        /// Casted sender instance that has raised an update.
+        /// <para>
+        /// Generated via <see cref="ChatScanner.UsersManager"/>
+        /// or <see cref="ChatScanner.GetDefaultBotUser"/> mechanisms
+        /// of a <see cref="ChatScanner"/> class by default.
+        /// </para>
+        /// </summary>
+        public IBotUser Sender { get; init; }
         /// <summary>
         /// Callback query that has raised an update.
         /// </summary>
-        public CallbackQuery Callback { get; private set; }
+        public CallbackQuery Callback { get; init; }
         /// <summary>
         /// Incoming message's callback data.
         /// </summary>
-        public string Data { get; private set; }
+        public string Data { get; init; }
         /// <summary>
         /// Message instance that has raised an update.
         /// </summary>
-        public Message Message { get; private set; }
+        public Message Message { get; init; }
         /// <summary>
         /// Id of a message that have raised current update.
         /// </summary>
@@ -30,10 +38,10 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed
         /// <summary>
         /// Creates a new instance of an <see cref="SignedMessageUpdate"/>, using specific data.
         /// </summary>
-        /// <param name="chatScanner">Chat Scanner that has raised casted update</param>
-        /// <param name="source">Original telegram update. Not casted, contains null values</param>
-        /// <param name="chatId">ID of a chat that has raised updated</param>
-        /// <param name="sender">Casted sender instance that has raised an update</param>
+        /// <param name="chatScanner">Chat Scanner that has raised casted update.</param>
+        /// <param name="source">Original telegram update. Not casted, contains null values.</param>
+        /// <param name="chatId">ID of a chat that has raised updated.</param>
+        /// <param name="sender">Casted sender instance that has raised an update.</param>
         /// <exception cref="UpdateCastingException"></exception>
         /// <exception cref="NullSenderException"></exception>
         public SignedCallbackUpdate(ChatScanner chatScanner, Update source, long chatId, IBotUser sender)
@@ -42,7 +50,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed
             Callback = source.CallbackQuery ?? throw new UpdateCastingException(source.Id, "Callback: Query");
             Message = source.CallbackQuery.Message ?? throw new UpdateCastingException(source.Id, "Callback: Message");
             Data = source.CallbackQuery.Data ?? throw new UpdateCastingException(source.Id, "Callback: Data");
-            Sender = sender ?? throw new NullSenderException();
+            Sender = sender ?? throw new NullSenderException(this);
         }
 
         /// <summary>
@@ -50,8 +58,8 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed
         /// coping data from other <see cref="ICastedUpdate"/> and signing it with
         /// <paramref name="sender"/> instance.
         /// </summary>
-        /// <param name="update">An instance to be copied</param>
-        /// <param name="sender">Casted sender instance that has raised an update</param>
+        /// <param name="update">An instance to be copied.</param>
+        /// <param name="sender">Casted sender instance that has raised an update.</param>
         /// <exception cref="UpdateCastingException"></exception>
         /// <exception cref="NullSenderException"></exception>
         public SignedCallbackUpdate(ICastedUpdate update, IBotUser sender) : this(update.ChatScanner, update.OriginalSource, update.ChatId, sender) { }

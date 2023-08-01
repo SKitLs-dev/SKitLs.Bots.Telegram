@@ -1,6 +1,6 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonim;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonym;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.Core.Prototype;
 using Telegram.Bot.Types.Enums;
@@ -8,7 +8,7 @@ using Telegram.Bot.Types.Enums;
 namespace SKitLs.Bots.Telegram.Core.Model.Building
 {
     /// <summary>
-    /// Chat Handler creating proccess enter point. <see cref="ChatScanner"/> class wizard constructor.
+    /// Chat Handler creating process enter point. <see cref="ChatScanner"/> class wizard constructor.
     /// Each chat handles update in a certain chat type <see cref="ChatType"/>.
     /// </summary>
     public class ChatDesigner
@@ -34,7 +34,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// Access it via <see cref="OverrideDefaultUserFunc(Func{long, IBotUser})"/>
         /// </para>
         /// </summary>
-        /// <param name="manager">Manager to beimplemented</param>
+        /// <param name="manager">Manager to be implemented.</param>
         /// <returns>Updated instance.</returns>
         public ChatDesigner UseUsersManager(IUsersManager manager)
         {
@@ -47,7 +47,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// This function creates new default user to be sure all <see cref="ISignedUpdate"/> are
         /// handled properly.
         /// </summary>
-        /// <param name="func">Func to be implemented</param>
+        /// <param name="func">Func to be implemented.</param>
         /// <returns>Updated instance.</returns>
         public ChatDesigner OverrideDefaultUserFunc(Func<long, IBotUser> func)
         {
@@ -60,7 +60,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// <summary>
         /// Sets <see cref="ChatScanner.MessageHandler"/>.
         /// </summary>
-        /// <param name="handler">New handler</param>
+        /// <param name="handler">New handler.</param>
         public ChatDesigner UseMessageHandler(IUpdateHandlerBase<SignedMessageUpdate>? handler)
         {
             _chatScanner.MessageHandler = handler;
@@ -69,7 +69,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// <summary>
         /// Sets <see cref="ChatScanner.EditedMessageHandler"/>.
         /// </summary>
-        /// <param name="handler">New handler</param>
+        /// <param name="handler">New handler.</param>
         public ChatDesigner UseEditedMessageHandler(IUpdateHandlerBase<SignedMessageUpdate>? handler)
         {
             _chatScanner.EditedMessageHandler = handler;
@@ -78,8 +78,8 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// <summary>
         /// Sets <see cref="ChatScanner.ChannelPostHandler"/>.
         /// </summary>
-        /// <param name="handler">New handler</param>
-        public ChatDesigner UseChannelPostHandler(IUpdateHandlerBase<AnonimMessageUpdate>? handler)
+        /// <param name="handler">New handler.</param>
+        public ChatDesigner UseChannelPostHandler(IUpdateHandlerBase<AnonymMessageUpdate>? handler)
         {
             _chatScanner.ChannelPostHandler = handler;
             return this;
@@ -87,8 +87,8 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// <summary>
         /// Sets <see cref="ChatScanner.EditedChannelPostHandler"/>.
         /// </summary>
-        /// <param name="handler">New handler</param>
-        public ChatDesigner UseEditedChannelPostHandler(IUpdateHandlerBase<AnonimMessageUpdate>? handler)
+        /// <param name="handler">New handler.</param>
+        public ChatDesigner UseEditedChannelPostHandler(IUpdateHandlerBase<AnonymMessageUpdate>? handler)
         {
             _chatScanner.EditedChannelPostHandler = handler;
             return this;
@@ -96,7 +96,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// <summary>
         /// Sets <see cref="ChatScanner.CallbackHandler"/>.
         /// </summary>
-        /// <param name="handler">New handler</param>
+        /// <param name="handler">New handler.</param>
         public ChatDesigner UseCallbackHandler(IUpdateHandlerBase<SignedCallbackUpdate>? handler)
         {
             _chatScanner.CallbackHandler = handler;
@@ -153,7 +153,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// <summary>
         /// Compiles created instance and returns the built one.
         /// </summary>
-        /// <param name="debugName">Custom debug name (<see cref="BotManager.DebugName"/>)</param>
+        /// <param name="debugName">Custom debug name (<see cref="BotManager.DebugName"/>).</param>
         internal ChatScanner Build(string? debugName = null)
         {
             _chatScanner.DebugName = debugName;

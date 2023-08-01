@@ -1,28 +1,6 @@
 ﻿namespace SKitLs.Bots.Telegram.Core.Exceptions
 {
     /// <summary>
-    /// An enum that describes the origin of thrown <see cref="SKTgException"/>.
-    /// </summary>
-    public enum SKTEOriginType
-    {
-        /// <summary>
-        /// Represents an internal exception, which means that exception was thrown as a result of some internal processes.
-        /// For example, some data was not defined.
-        /// </summary>
-        Internal = -10,
-        /// <summary>
-        /// Represents an exception, that could be thrown either by some internal processes or external actions.
-        /// For example, some property was not defined or was overridden incorrectly.
-        /// </summary>
-        Inexternal = 0,
-        /// <summary>
-        /// Represents an external exception, which means that exception was thrown as a result of some external actions.
-        /// For example, user tried to add somewhat duplicate.
-        /// </summary>
-        External = 10,
-    }
-
-    /// <summary>
     /// Represents a base for project's exceptions. Contains information about exception's origin and its description
     /// localization keys.
     /// </summary>
@@ -31,7 +9,7 @@
         /// <summary>
         /// Represents the origin of thrown exception.
         /// </summary>
-        public SKTEOriginType OriginType { get; private set; }
+        public SKTEOriginType OriginType { get; private init; }
 
         /// <summary>
         /// Represents specific prefix for localization keys.
@@ -40,7 +18,7 @@
         /// <summary>
         /// Represents a key base for resolving localization string.
         /// </summary>
-        public string KeyBase { get; private set; }
+        public string KeyBase { get; private init; }
         /// <summary>
         /// Localization key, by which localized exception caption could be accessed.
         /// </summary>
@@ -48,12 +26,12 @@
         /// <summary>
         /// Localization key, by which localized exception message could be accessed.
         /// </summary>
-        public string MessgeLocalKey => $"{LocalKeyPrefix}Mes.{KeyBase}";
+        public string MessageLocalKey => $"{LocalKeyPrefix}Mes.{KeyBase}";
 
         /// <summary>
         /// Carries additional strings that should be written in localized exception message.
         /// </summary>
-        public string?[] Format { get; private set; }
+        public string?[] Format { get; private init; }
 
         /// <summary>
         /// Creates a new instance of <see cref="SKTgException"/> with specified data.

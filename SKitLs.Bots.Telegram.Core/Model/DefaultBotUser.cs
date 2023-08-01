@@ -1,10 +1,15 @@
-﻿namespace SKitLs.Bots.Telegram.Core.Prototype
+﻿using SKitLs.Bots.Telegram.Core.Prototype;
+
+namespace SKitLs.Bots.Telegram.Core.Model
 {
     /// <summary>
     /// Default realization of <see cref="IBotUser"/> interface. Provides basics for proper update handling.
     /// </summary>
     public class DefaultBotUser : IBotUser
     {
+        /// <summary>
+        /// User's telegram id. Can be used for sending messages instead of chat's id.
+        /// </summary>
         public long TelegramId { get; set; }
 
         /// <summary>

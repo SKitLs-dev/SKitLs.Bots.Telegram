@@ -8,7 +8,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
     /// Represents <see cref="IBotAction{TUpdate}"/> holding async action.
     /// </summary>
     /// <typeparam name="TUpdate">Specific casted update that this action should work with.</typeparam>
-    /// <param name="update">An incoming update</param>
+    /// <param name="update">An incoming update.</param>
     public delegate Task BotInteraction<TUpdate>(TUpdate update) where TUpdate : ICastedUpdate;
 
     /// <summary>

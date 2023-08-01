@@ -14,7 +14,7 @@ namespace SKitLs.Bots.Telegram.Core.Prototype
         /// Applies inherited class to <paramref name="entity"/>, defining and integrating necessary data to it.
         /// <para>
         /// For example, if <see cref="IApplicant{T}"/> is applicable to <see cref="IActionManager{TUpdate}"/>
-        /// use <see cref="IActionManager.AddSafely(IBotAction{TUpdate})"/> to integrate all <see cref="IBotAction{{TUpdate}}"/>,
+        /// use <see cref="IActionManager{TUpdate}.AddSafely(IBotAction{TUpdate})"/> to integrate all <see cref="IBotAction{TUpdate}"/>,
         /// defined in applicant.
         /// </para>
         /// </summary>

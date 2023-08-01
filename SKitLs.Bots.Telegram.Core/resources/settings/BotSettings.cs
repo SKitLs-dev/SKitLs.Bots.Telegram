@@ -10,7 +10,7 @@ namespace SKitLs.Bots.Telegram.Core.resources.Settings
     public partial class BotSettings
     {
         /// <summary>
-        /// /// Language that is used by <see cref="IDelieveryService"/> by default to send custom system messages to user.
+        /// Language that is used by <see cref="IDeliveryService"/> by default to send custom system messages to user.
         /// </summary>
         public LangKey BotLanguage { get; set; }
         

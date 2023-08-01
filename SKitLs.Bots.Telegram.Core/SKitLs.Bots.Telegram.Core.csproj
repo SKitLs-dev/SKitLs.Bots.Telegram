@@ -4,30 +4,39 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>1.5.1</AssemblyVersion>
+    <AssemblyVersion>2.0.0</AssemblyVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>$(AssemblyName)</Title>
     <Authors>Sargeras02, SKit-Labs</Authors>
     <PackageProjectUrl>https://github.com/Sargeras02/SKitLs.Bots.Telegram.git</PackageProjectUrl>
     <PackageIcon>libIcon.png</PackageIcon>
-    <PackageTags>Telegram, Bots, Management</PackageTags>
+    <PackageTags>Telegram, Bots, Management, Framework, Core</PackageTags>
     <FileVersion>$(AssemblyVersion)</FileVersion>
-    <PackageReleaseNotes>[1.5.0] + [1.5.1]
+    <PackageReleaseNotes>Global:
+(+) XML Documetation Included.
+(~) EN Localization updated (get from GitHub).
+(+) RU Localization added (get from GitHub).
+(~) Naming and summaries Check-up and Update.
+(~) DebugSettings minor update.
 
-( ! ) Loggers (*.external namespace) were moved to stand-alone library.
-See: SKitLs.Utils.
+Excpetions Update:
+(+) SKTgSignedException Added.
+(+) UpdateMissMatchException Added.
+(~) Minor interior updates.
 
-(*) Debug Language bug fixed.
+Management:
+(-) IIntegratable Removed.
 
-(+) README Added. README Updated.
-
-(~) Descriptions and naming updated.</PackageReleaseNotes>
+Updates and Handlers:
+(~) 'Anonim' -&gt; 'Anonym' Fixed.
+(~) Minor interior updates.</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <Copyright>Copyright (C) Sargeras02 2023</Copyright>
     <Description>The core module of the SKitLs.Bots.Telegram Framework.</Description>
     <Version>$(AssemblyVersion)</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

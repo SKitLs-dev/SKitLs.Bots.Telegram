@@ -4,7 +4,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
 {
     /// <summary>
     /// An interface that used in the reflective bot compilation <see cref="BotManager.ReflectiveCompile"/>.
-    /// Provides methods of specifing a certain instance of a <see cref="BotManager"/> class as the class's owner.
+    /// Provides methods of specifying a certain instance of a <see cref="BotManager"/> class as the class's owner.
     /// Used for handlers, managers and other services that should be able to access their owner instance after its compilation.
     /// <para>
     /// Fully autonomous module based on <c><see cref="System.Reflection"/></c>.
@@ -33,11 +33,11 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// and its reflective scanning.
         /// </para>
         /// <para>
-        /// Should <c>not</c> be overriden.
+        /// Should <c>not</c> be overridden.
         /// </para>
         /// </summary>
         /// <param name="sender">Instance that caused compilation. Used to get its properties' values.</param>
-        /// <param name="owner">Global owner used to be defined</param>
+        /// <param name="owner">Global owner used to be defined.</param>
         public void ReflectiveCompile(object sender, BotManager owner)
         {
             Owner = owner;

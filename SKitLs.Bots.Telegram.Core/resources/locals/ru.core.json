@@ -1,10 +1,50 @@
 {
-  "local.keyNotDefined": "Localized Key Is Not Defined ({0})",
+  "local.KeyNotDefined": "Ключ для локализации не определён. Язык: {0}; Ключ: {1}. Пожалуйста, убедитесь, что запрашиваемый языковой пакет скачен и установлен в {2}. Параметры для форматирования: ",
 
-  "system.StartUpMessage": "Start listening for @{0}",
+  "system.StartUpMessage": "Начинаем слушать @{0}",
+  "system.UpdateMessage": "[{0}] ({1}) Received: {2} - From: {3} - Content: {4}",
 
-  "exception.ChatIdNotHandled": "Start listening for @{0}",
-  "exception.ChatNotHandled": "Start listening for @{0}",
-  "exception.ChatTypeNotSupported": "Start listening for @{0}",
-  "exception.UpdateCasting": "Error in casting update: {0} (id: {1})"
+  // Exceptions
+  "system.ExternalExcep": "Эта ошибка помечена как Внешняя. Это значит, что она возникла из-за внешних действий. Пожалуйста, убедитесь, что ваш код не содержит ошибок.",
+  "system.InexternalExcep": "Эта ошибка может быть как Внешней, так и Внутренней. Пожалуйста, убедитесь, что ваш код не содержит ошибок. Если Вы уверены, что Ваш код безопасен, пожалуйста, сохраните информацию об ошибке и её контексте и опубликуйте сведения на GitHub.",
+  "system.InternalExcep": "Эта ошибка помечена как Внутренняя. Это значит, что она возникла из-за внутренних проблем библиотеки. Пожалуйста, сохраните информацию об ошибке и её контексте и опубликуйте сведения на GitHub.",
+
+  // External
+  "exceptionCap.Duplication": "Добавление дупликата",
+  "exceptionMes.Duplication": "Невозможно добавить в {0}: Элемент типа {1} ({2}) уже существует.",
+  "exceptionCap.ItemNotDefined": "Элемент не определён",
+  "exceptionMes.ItemNotDefined": "Невозможно найти в {0}: Элемент типа {1} ({2}) не существует.",
+  "exceptionCap.NullOrEmptyId": "Ошибка Null-Id",
+  "exceptionMes.NullOrEmptyId": "Ошибка в сущности {0}: Элемент типа {1} не содержит Id.",
+  "exceptionCap.ServiceNotDefined": "Сервис не определён",
+  "exceptionMes.ServiceNotDefined": "Ошибка в сущности {0}: Сервис типа {1} не определён. Используйте BotBuilder.AddService<T>().",
+
+  "exceptionCap.UHBCasting": "[UHBInformer] Ошибка каста обновления",
+  "exceptionMes.UHBCasting": "В результате работы UHBInformer возникла ошибка каста обновления. Обновление {0} (id: {1}), переданное обработчику, не соответсвует целевому типу TUpdate.",
+
+  // Inexternal
+  "exceptionCap.NullOwner": "Владелец не определён",
+  "exceptionMes.NullOwner": "Не удалось определить владельца для '{0}'.",
+  "exceptionCap.UpdateMissMatch": "Несоответсвие целевых типов обновления",
+  "exceptionMes.UpdateMissMatch": "Ошибка в сущности {0}: Ожидалось обновление типа {1}, но {2} было получено.",
+
+  // Internal
+  "exceptionCap.UpdateCasting": "Ошибка каста обновления",
+  "exceptionMes.UpdateCasting": "Возникла ошибка преобразования обновления: {1} (id: {0}).",
+  "exceptionCap.NullSender": "Отправитель неопределён",
+  "exceptionMes.NullSender": "Ошибка в сущности {0}: Отправитель не был определён.",
+
+  "exceptionCap.bm.ChatIdNotHandled": "[Bot Manager] - Chat's ID not handled",
+  "exceptionMes.bm.ChatIdNotHandled": "[{0}] Was not able to get Chat ID from update.",
+  "exceptionCap.bm.ChatNotHandled": "[Bot Manager] - Chat's type not handled",
+  "exceptionMes.bm.ChatNotHandled": "[{0}] Was not able to identify chat type by update.",
+  "exceptionCap.bm.ChatTypeNotSupported": "[Bot Manager] - Not supported chat type",
+  "exceptionMes.bm.ChatTypeNotSupported": "[{0}] Chat type of {1} is not supported.",
+
+  "exceptionCap.cs.NullUpdateHandler": "[Chat Scanner] - Null update handler",
+  "exceptionMes.cs.NullUpdateHandler": "Handler for \"{1} Update\" is not implemented in '{0}'.",
+  "exceptionCap.cs.UserExtractError": "[Chat Scanner] - User extraction error",
+  "exceptionMes.cs.UserExtractError": "Was not able to extract user sender in {0} from update (id: {1}).",
+  "exceptionCap.cs.UserIdExtractError": "[Chat Scanner] - User's ID' extraction error",
+  "exceptionMes.cs.UserIdExtractError": "Was not able to extract user's ID in {0} from update (id: {1})."
 }

@@ -22,10 +22,12 @@ namespace SKitLs.Bots.Telegram.Core.Model.Management
         /// An internal storage used to store saved actions.
         /// </summary>
         public IList<IBotAction<TUpdate>> Actions { get; }
+
         /// <summary>
         /// Applies and integrates custom class that supports <see cref="IIntegratable{TUpdate}"/>.
         /// </summary>
         /// <param name="integration">An item to be integrated.</param>
+        [Obsolete("Will be removed in future versions. Use IApplicant instead.", true)]
         public void Apply(IIntegratable<TUpdate> integration);
     }
 }

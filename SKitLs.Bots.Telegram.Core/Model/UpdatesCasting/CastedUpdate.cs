@@ -9,21 +9,39 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting
     /// </summary>
     public class CastedUpdate : ICastedUpdate
     {
+        /// <summary>
+        /// Bot Manager that has raised casted update.
+        /// </summary>
         public BotManager Owner => ChatScanner.Owner;
 
-        public ChatScanner ChatScanner { get; private set; }
+        /// <summary>
+        /// Chat Scanner that has raised casted update.
+        /// </summary>
+        public ChatScanner ChatScanner { get; init; }
+        /// <summary>
+        /// <see cref="ChatScanner"/>'s type.
+        /// </summary>
         public ChatType ChatType => ChatScanner.ChatType;
-        public long ChatId { get; private set; }
+        /// <summary>
+        /// ID of a chat that has raised updated.
+        /// </summary>
+        public long ChatId { get; init; }
 
-        public Update OriginalSource { get; private set; }
+        /// <summary>
+        /// Original telegram update. Not casted, contains null values.
+        /// </summary>
+        public Update OriginalSource { get; init; }
+        /// <summary>
+        /// <see cref="OriginalSource"/> update's type.
+        /// </summary>
         public UpdateType Type => OriginalSource.Type;
 
         /// <summary>
-        /// Creates a new instance of an <see cref="CastedUpdate"/>, using specific data.
+        /// Creates a new instance of an <see cref="CastedUpdate"/> with specified data.
         /// </summary>
-        /// <param name="chatScanner">Chat Scanner that has raised casted update</param>
-        /// <param name="source">Original telegram update. Not casted, contains null values</param>
-        /// <param name="chatId">ID of a chat that has raised updated</param>
+        /// <param name="chatScanner">Chat Scanner that has raised casted update.</param>
+        /// <param name="source">Original telegram update. Not casted, contains null values.</param>
+        /// <param name="chatId">ID of a chat that has raised updated.</param>
         /// <exception cref="ArgumentNullException"></exception>
         public CastedUpdate(ChatScanner chatScanner, Update source, long chatId)
         {
@@ -31,5 +49,11 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting
             OriginalSource = source ?? throw new ArgumentNullException(nameof(source));
             ChatId = chatId;
         }
+
+        /// <summary>
+        /// Returns a string that represents current object.
+        /// </summary>
+        /// <returns>A string that represents current object.</returns>
+        public override string ToString() => $"{Enum.GetName(ChatType)} ({OriginalSource.Id})";
     }
 }

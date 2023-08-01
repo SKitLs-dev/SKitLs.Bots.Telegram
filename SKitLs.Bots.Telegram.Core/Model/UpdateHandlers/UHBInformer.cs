@@ -1,6 +1,6 @@
-﻿using SKitLs.Bots.Telegram.Core.Exceptions;
-using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
+﻿using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.Core.Exceptions.Internal;
+using SKitLs.Bots.Telegram.Core.Model.Building;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Prototype;
@@ -8,40 +8,48 @@ using SKitLs.Bots.Telegram.Core.Prototype;
 namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers
 {
     /// <summary>
-    /// Default informer class that should infrom sender about incoming update.
+    /// Default informer class that should inform sender about incoming update.
     /// Only use for debugging purposes.
     /// </summary>
-    /// <typeparam name="TUpdate">Scecific casted update that this handler should work with.</typeparam>
+    /// <typeparam name="TUpdate">Specific casted update that this handler should work with.</typeparam>
     [Obsolete("Unsafe. Only use for debugging purposes.", false)]
     public class UHBInformer<TUpdate> : IUpdateHandlerBase<TUpdate> where TUpdate : class, ICastedUpdate
     {
         private BotManager? _owner;
+        /// <summary>
+        /// Instance's owner.
+        /// </summary>
         public BotManager Owner
         {
             get => _owner ?? throw new NullOwnerException(GetType());
             set => _owner = value;
         }
+        /// <summary>
+        /// Specified method that raised during reflective <see cref="IOwnerCompilable.ReflectiveCompile(object, BotManager)"/> compilation.
+        /// Declare it to extend preset functionality.
+        /// Invoked after <see cref="Owner"/> updating, but before recursive update.
+        /// </summary>
         public Action<object, BotManager>? OnCompilation => null;
-
+        
         /// <summary>
         /// Name for the handling update to be printed.
         /// </summary>
-        public string UpdateName { get; private set; }
+        public string UpdateName { get; init; }
         /// <summary>
         /// Determines whether info about update should be printed in logger.
         /// </summary>
-        public bool UseLogger { get; private set; }
+        public bool UseLogger { get; init; }
         /// <summary>
         /// Determines whether info about update should be printed in chat.
         /// </summary>
-        public bool InformInChat { get; private set; }
+        public bool InformInChat { get; init; }
 
         /// <summary>
         /// Creates a new instance of a <see cref="UHBInformer{TUpdate}"/> with specified data.
         /// </summary>
-        /// <param name="updateName">Name of the update to be printed</param>
-        /// <param name="log">Should info be printed in logger?</param>
-        /// <param name="inform">Should info be printed in chat?</param>
+        /// <param name="updateName">Name of the update to be printed.</param>
+        /// <param name="log">Determines either info should be printed in logger.</param>
+        /// <param name="inform">Determines either info should be printed in chat.</param>
         public UHBInformer(string? updateName = null, bool log = true, bool inform = false)
         {
             UpdateName = updateName ?? typeof(TUpdate).Name;
@@ -49,16 +57,37 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers
             InformInChat = inform;
         }
 
-        // This class does not contain any actions.
-        // => Returns new empty list.
+        /// <summary>
+        /// Returns an 
+        /// </summary>
+        /// <returns>An empty list, because <see cref="UHBInformer{TUpdate}"/> does not provide methods of executing actions.</returns>
         public List<IBotAction> GetActionsContent() => new();
 
+        /// <summary>
+        /// Handles <see cref="ICastedUpdate"/> updated, gotten from <see cref="ChatScanner"/>.
+        /// </summary>
+        /// <param name="update">Update to handle.</param>
+        /// <param name="sender">Sender to sign update.</param>
         public async Task HandleUpdateAsync(ICastedUpdate update, IBotUser? sender)
             => await HandleUpdateAsync(CastUpdate(update, sender));
 
+        /// <summary>
+        /// Casts common incoming <see cref="ICastedUpdate"/> to the specified
+        /// <typeparamref name="TUpdate"/> update type.
+        /// </summary>
+        /// <param name="update">Update to handle.</param>
+        /// <param name="sender">Sender to sign update.</param>
+        /// <returns>Casted updated oh a type <typeparamref name="TUpdate"/>.</returns>
         public TUpdate CastUpdate(ICastedUpdate update, IBotUser? sender) => (update as TUpdate)
-            ?? throw new BotManagerExcpetion("UHBCasting", UpdateName, update.OriginalSource.Id.ToString());
+            ?? throw new BotManagerException("UHBCasting", UpdateName, update.OriginalSource.Id.ToString());
 
+        /// <summary>
+        /// Handles custom casted <typeparamref name="TUpdate"/> updated.
+        /// <para>
+        /// Cast and pass update via base <see cref="IUpdateHandlerBase.HandleUpdateAsync(ICastedUpdate, IBotUser?)"/>
+        /// </para>
+        /// </summary>
+        /// <param name="update">Update to handle.</param>
         public async Task HandleUpdateAsync(TUpdate update)
         {
             string mes = $"Handled update (by {nameof(UHBInformer<TUpdate>)}): {UpdateName}";

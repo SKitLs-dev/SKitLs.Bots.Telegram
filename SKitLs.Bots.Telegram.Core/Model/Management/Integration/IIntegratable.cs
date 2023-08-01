@@ -7,7 +7,8 @@ namespace SKitLs.Bots.Telegram.Core.Model.Management.Integration
     /// TODO. An interface that provides mechanics for integrating external code
     /// into internal <see cref="BotManager"/> structure via <see cref="IBotAction"/>.
     /// </summary>
-    /// <typeparam name="TUpdate">Scecific casted update that this class should work with.</typeparam>
+    /// <typeparam name="TUpdate">Specific casted update that this class should work with.</typeparam>
+    [Obsolete("Will be removed in future versions. Use IApplicant instead.", true)]
     public interface IIntegratable<TUpdate> where TUpdate : ICastedUpdate
     {
         /// <summary>

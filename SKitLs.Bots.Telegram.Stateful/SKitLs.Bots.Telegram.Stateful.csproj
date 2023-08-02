@@ -4,23 +4,33 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Description>Extension for SKitLs.Bots.Telegram.Core. Pay attention to GitHub.
+    <Description>An extension project built upon the SKitLs.Bots.Telegram.Core Framework.
 
-Allows to split logic into independent parts, managing them with specific states conditions.</Description>
+Enables the segregation of user states.</Description>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>$(AssemblyName)</Title>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <AssemblyVersion>1.1.0</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
-    <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
+    <PackageReleaseNotes>(+) XML Documentation Included.
+(+) NotStatefulException
+
+(~) Naming Updated.
+(~) Summaries Updated.</PackageReleaseNotes>
     <Version>$(AssemblyVersion)</Version>
-    <Authors>SKitLs, Sargeras02</Authors>
+    <Authors>Sargeras02, SKit-Labs</Authors>
     <Copyright>Copyright (C) Sargeras02 2023</Copyright>
     <PackageProjectUrl>https://github.com/Sargeras02/SKitLs.Bots.Telegram.git</PackageProjectUrl>
     <PackageIcon>libIcon_Sf.png</PackageIcon>
-    <PackageTags>Telegram, Bots, Management, States, Orlean</PackageTags>
+    <PackageTags>Telegram, Bots, Management, States</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="resources\locals\en.state.json" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\..\libIcon_Sf.png">
@@ -34,8 +44,19 @@ Allows to split logic into independent parts, managing them with specific states
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SKitLs.Bots.Telegram.AdvancedMessages" Version="1.0.0" />
+    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.0.0" />
     <PackageReference Include="Telegram.Bot" Version="19.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="resources\locals\en.state.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <PackagePath>\</PackagePath>
+      <Pack>True</Pack>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,6 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model.Interactions;
-using SKitLs.Bots.Telegram.Core.Model.Management.Integration;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
-using SKitLs.Bots.Telegram.Core.Prototypes;
+using SKitLs.Bots.Telegram.Core.Prototype;
 
 namespace SKitLs.Bots.Telegram.Stateful.Prototype
 {
@@ -10,7 +9,7 @@ namespace SKitLs.Bots.Telegram.Stateful.Prototype
     /// user's states.
     /// </summary>
     /// <typeparam name="TUpdate">Type of update that this section works with.</typeparam>
-    public interface IStateSection<TUpdate> : IDebugNamed, IActionsHolder, IIntegratable<TUpdate>, IEquatable<IStateSection<TUpdate>>, IEnumerable<IBotAction<TUpdate>> where TUpdate : ICastedUpdate
+    public interface IStateSection<TUpdate> : IDebugNamed, IActionsHolder, IEquatable<IStateSection<TUpdate>>, IEnumerable<IBotAction<TUpdate>> where TUpdate : ICastedUpdate
     {
         /// <summary>
         /// Determines states that collected actions should react on.
@@ -33,6 +32,11 @@ namespace SKitLs.Bots.Telegram.Stateful.Prototype
         public bool IsEnabledWith(IUserState state) => EnabledAny || EnabledStates!.ToList().Contains(state);
 
         /// <summary>
+        /// Collects all <see cref="IBotAction{TUpdate}"/> declared in the class.
+        /// </summary>
+        /// <returns>Collected list of declared actions.</returns>
+        public IList<IBotAction<TUpdate>> GetActionsList();
+        /// <summary>
         /// Safely adds <paramref name="action"/> to internal storage.
         /// </summary>
         /// <param name="action">Action to be added.</param>
@@ -42,6 +46,10 @@ namespace SKitLs.Bots.Telegram.Stateful.Prototype
         /// </summary>
         /// <param name="actions">Actions to be added.</param>
         public void AddRangeSafely(IList<IBotAction<TUpdate>> actions);
-        public void Apply(IIntegratable<TUpdate> integration);
+        /// <summary>
+        /// Safely adds data of a new <paramref name="section"/> to internal storage.
+        /// </summary>
+        /// <param name="section">Section to be merged.</param>
+        public void MergeSafely(IStateSection<TUpdate> section);
     }
 }

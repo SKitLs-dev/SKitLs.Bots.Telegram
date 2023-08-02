@@ -1,0 +1,9 @@
+{
+  // External
+
+  // Inexternal
+  "exceptionCap.state.NotStatefulUser": "User not stateful",
+  "exceptionMes.state.NotStatefulUser": "Was not able to cast user to stateful one in {0}."
+
+  // Internal
+}

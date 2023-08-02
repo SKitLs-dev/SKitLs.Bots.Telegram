@@ -3,7 +3,7 @@ using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.Management;
 using SKitLs.Bots.Telegram.Core.Model.Management.Integration;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
-using SKitLs.Bots.Telegram.Core.Prototypes;
+using SKitLs.Bots.Telegram.Core.Prototype;
 
 namespace SKitLs.Bots.Telegram.Stateful.Prototype
 {
@@ -46,7 +46,11 @@ namespace SKitLs.Bots.Telegram.Stateful.Prototype
         /// <param name="sections">Sections to add.</param>
         public void AddSectionsRangeSafely(ICollection<IStateSection<TUpdate>> sections);
 
-        public void Apply(IIntegratable<TUpdate> integrations) => DefaultStateSection.Apply(integrations);
-        public void Apply(IStatefulIntegratable<TUpdate> integrations);
+        /// <summary>
+        /// Applies and integrates custom class that supports <see cref="IIntegratable{TUpdate}"/>.
+        /// </summary>
+        /// <param name="integration">An item to be integrated.</param>
+        [Obsolete("Will be removed in future versions. Use IApplicant instead.", true)]
+        public void Apply(IStatefulIntegratable<TUpdate> integration);
     }
 }

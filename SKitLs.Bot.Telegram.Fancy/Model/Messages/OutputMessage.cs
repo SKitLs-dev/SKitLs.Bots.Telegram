@@ -10,8 +10,17 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages
     /// </summary>
     public abstract class OutputMessage : IOutputMessage
     {
+        /// <summary>
+        /// Determines message id that current message should reply to.
+        /// </summary>
         public int ReplyToMessageId { get; set; }
+        /// <summary>
+        /// Determines message's parse mode.
+        /// </summary>
         public ParseMode? ParseMode { get; set; }
+        /// <summary>
+        /// Determines message's menu.
+        /// </summary>
         public IMesMenu? Menu { get; set; }
 
         /// <summary>
@@ -49,8 +58,17 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages
             Menu = menu;
             return this;
         }
+
+        /// <summary>
+        /// Builds object's data and packs it into one text so it could be easily sent to server.
+        /// </summary>
+        /// <returns>Valid text, ready to be sent.</returns>
         public abstract string GetMessageText();
 
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>A new object that is a copy of this instance.</returns>
         public abstract object Clone();
     }
 }

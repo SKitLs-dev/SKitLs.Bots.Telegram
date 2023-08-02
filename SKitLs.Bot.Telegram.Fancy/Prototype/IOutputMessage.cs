@@ -1,5 +1,5 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.AdvancedDelivery;
-using SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Protoype;
+using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
 using Telegram.Bot.Types.Enums;
 
 namespace SKitLs.Bots.Telegram.AdvancedMessages.Prototype
@@ -12,12 +12,13 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Prototype
         /// <summary>
         /// Determines message id that current message should reply to.
         /// </summary>
-        public int ReplyToMessageId { get; }
+        public int ReplyToMessageId { get; set; }
 
         /// <summary>
         /// Determines message's parse mode.
         /// </summary>
         public ParseMode? ParseMode { get; set; }
+
         /// <summary>
         /// Determines message's menu.
         /// </summary>

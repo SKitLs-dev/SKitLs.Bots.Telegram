@@ -11,6 +11,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Prototype
         ///// Represents specific method that can generate message's content, based on incoming update.
         ///// </summary>
         //public Func<ISignedUpdate?, IOutputMessage> MessageBuilder { get; }
+
         /// <summary>
         /// Generates new message content, based on an incoming <paramref name="update"/>.
         /// </summary>

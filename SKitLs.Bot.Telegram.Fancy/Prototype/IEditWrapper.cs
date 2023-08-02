@@ -1,4 +1,4 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Protoype;
+﻿using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
 
 namespace SKitLs.Bots.Telegram.AdvancedMessages.Prototype
 {

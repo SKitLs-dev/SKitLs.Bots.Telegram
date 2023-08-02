@@ -21,9 +21,16 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text
         /// </summary>
         public string? Footer { get; set; }
 
+        /// <summary>
+        /// Adds new section block to message's interior.
+        /// </summary>
+        /// <param name="block"></param>
         public void AddBlock(string block) => Sections.Add(block);
 
-        // TODO: make bolding flexible
+        /// <summary>
+        /// Builds object's data and packs it into one text so it could be easily sent to server.
+        /// </summary>
+        /// <returns>Valid text, ready to be sent.</returns>
         public override string GetMessageText()
         {
             string text = string.Empty;
@@ -33,6 +40,11 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text
             if (Footer is not null) text += $"_{Footer}_";
             return text;
         }
+
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>A new object that is a copy of this instance.</returns>
         public override object Clone()
         {
             var _sec = new List<string>();

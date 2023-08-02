@@ -1,7 +1,8 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
-using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting;
+using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation;
 using SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Model;
 using SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Prototype;
+using SKitLs.Bots.Telegram.Core.Model;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
@@ -25,18 +26,21 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus
         /// <summary>
         /// Serializer used to simplify addition process.
         /// </summary>
-        public IArgsSerilalizerService? Serializer { get; set; }
+        public IArgsSerializeService? Serializer { get; set; }
 
         /// <summary>
         /// Creates a new instance of <see cref="PairedInlineMenu"/> with default data.
         /// </summary>
         public PairedInlineMenu() { }
         /// <summary>
-        /// Creates a new instance of <see cref="ReplyMenu"/> with specified data.
+        /// Creates a new instance of <see cref="PairedInlineMenu"/>, resolving <see cref="IArgsSerializeService"/> from <paramref name="executer"/>.
         /// </summary>
-        /// <param name="label">Callback's label.</param>
-        /// <param name="data">Callback's data.</param>
-        public PairedInlineMenu(string label, string data) => Add(label, data);
+        public PairedInlineMenu(BotManager executer) : this(executer.ResolveService<IArgsSerializeService>())
+        { }
+        /// <summary>
+        /// Creates a new instance of <see cref="PairedInlineMenu"/> with specific <see cref="IArgsSerializeService"/>.
+        /// </summary>
+        public PairedInlineMenu(IArgsSerializeService serializer) => Serializer = serializer;
 
         /// <summary>
         /// Adds new default callback.
@@ -90,6 +94,10 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus
         public void Add(string label, string data, bool singleLine = false)
             => menus.Add(new InlineButtonPair(label, data) { SingleLine = singleLine });
 
+        /// <summary>
+        /// Creates specific <see cref="IReplyMarkup"/> that could be pushed to telegram's API.
+        /// </summary>
+        /// <returns>Converted to <see cref="IReplyMarkup"/> <see cref="IMesMenu"/>'s interior.</returns>
         public IReplyMarkup GetMarkup()
         {
             List<List<InlineKeyboardButton>> data = new();

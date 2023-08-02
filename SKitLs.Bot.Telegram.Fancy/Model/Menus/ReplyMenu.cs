@@ -62,6 +62,10 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus
         /// <param name="buttons">Buttons to add.</param>
         public void AddRange(List<string> buttons) => Buttons.AddRange(buttons);
 
+        /// <summary>
+        /// Creates specific <see cref="IReplyMarkup"/> that could be pushed to telegram's API.
+        /// </summary>
+        /// <returns>Converted to <see cref="IReplyMarkup"/> <see cref="IMesMenu"/>'s interior.</returns>
         public IReplyMarkup GetMarkup()
         {
             List<List<KeyboardButton>> data = new();
@@ -87,6 +91,12 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus
             };
         }
 
+        /// <summary>
+        /// Combines <see cref="ReplyMenu"/> interiors.
+        /// </summary>
+        /// <param name="left">First menu.</param>
+        /// <param name="right">Second menu.</param>
+        /// <returns>New <see cref="ReplyMenu"/> that contains data from both: <paramref name="left"/> and <paramref name="right"/> menus.</returns>
         public static ReplyMenu operator+(ReplyMenu left, ReplyMenu right)
         {
             var buttons = new List<string>();

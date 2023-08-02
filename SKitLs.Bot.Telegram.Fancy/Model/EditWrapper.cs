@@ -1,5 +1,5 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
-using SKitLs.Bots.Telegram.Core.Model.DelieverySystem.Protoype;
+using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
 
 namespace SKitLs.Bots.Telegram.AdvancedMessages.Model
 {
@@ -8,8 +8,14 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model
     /// </summary>
     public class EditWrapper : IBuildableMessage, IEditWrapper
     {
-        public IBuildableMessage Content { get; set; }
+        /// <summary>
+        /// Determines message's id that should be edited.
+        /// </summary>
         public int EditMessageId { get; set; }
+        /// <summary>
+        /// Represents specific message that should be pushed to <see cref="EditMessageId"/>.
+        /// </summary>
+        public IBuildableMessage Content { get; set; }
 
         /// <summary>
         /// Creates a new instance of <see cref="EditWrapper"/> with specified data.
@@ -23,7 +29,16 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model
             EditMessageId = editMessageId;
         }
 
-        public object Clone() => new EditWrapper((IBuildableMessage)Content.Clone(), EditMessageId);
+        /// <summary>
+        /// Builds object's data and packs it into one text so it could be easily sent to server.
+        /// </summary>
+        /// <returns>Valid text, ready to be sent.</returns>
         public string GetMessageText() => Content.GetMessageText();
+
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>A new object that is a copy of this instance.</returns>
+        public object Clone() => new EditWrapper((IBuildableMessage)Content.Clone(), EditMessageId);
     }
 }

@@ -25,10 +25,16 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text
         /// <param name="other">An instance to be copied.</param>
         public OutputMessageText(IOutputMessage other) : base(other) => Text = other.GetMessageText();
 
+        /// <summary>
+        /// Builds object's data and packs it into one text so it could be easily sent to server.
+        /// </summary>
+        /// <returns>Valid text, ready to be sent.</returns>
         public override string GetMessageText() => Text;
-        public override object Clone() => new OutputMessageText(this)
-        {
-            Text = (string)Text.Clone()
-        };
+
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>A new object that is a copy of this instance.</returns>
+        public override object Clone() => new OutputMessageText(this);
     }
 }

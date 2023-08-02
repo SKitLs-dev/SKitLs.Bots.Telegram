@@ -6,21 +6,30 @@ using SKitLs.Bots.Telegram.PageNavs.Prototype;
 namespace SKitLs.Bots.Telegram.PageNavs.Model
 {
     /// <summary>
-    /// The representation of a static menu page. Holds and displays preset text.
+    /// <see cref="StaticPage"/> class implements the <see cref="IBotPage"/> interface and represents a static menu page in the bot.
+    /// It holds and displays preset text content, providing a fixed and unchanging page representation.
     /// </summary>
-    public class StaticPage : IBotPage
+    public sealed class StaticPage : IBotPage
     {
-        public string PageId { get; private set; }
+        /// <summary>
+        /// An unique page's identifier.
+        /// </summary>
+        public string PageId { get; private init; }
         /// <summary>
         /// A string that represents <see cref="StaticPage"/> on the navigation menu bar.
         /// </summary>
-        public string Label { get; private set; }
+        public string Label { get; private init; }
+        /// <summary>
+        /// Returns a string that should be printed on the inline keyboard menu as a navigation label.
+        /// </summary>
+        /// <param name="update">An incoming update.</param>
+        /// <returns>A string that represents an instance as a navigation label.</returns>
         public string GetLabel(ISignedUpdate update) => Label;
 
         /// <summary>
         /// Static preset page body that would appeal as a page representation.
         /// </summary>
-        public IOutputMessage PageView { get; private set; }
+        public IOutputMessage PageView { get; private init; }
         /// <summary>
         /// Page's menu. If <see langword="null"/> is set to default <see cref="PageNavMenu"/>.
         /// </summary>
@@ -52,6 +61,15 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
             PageView = pageView;
             Menu = menu ?? new PageNavMenu();
         }
+
+        /// <summary>
+        /// Converts page data to a printable <see cref="IOutputMessage"/> that should be printed
+        /// based on incoming <paramref name="update"/>.
+        /// Optionally can add "Back" Button if <paramref name="previous"/> argument is not <see langword="null"/>.
+        /// </summary>
+        /// <param name="previous">A page to which should lead "Back" Button.</param>
+        /// <param name="update">An incoming update.</param>
+        /// <returns>Built ready-to-print message.</returns>
         public IOutputMessage BuildMessage(IBotPage? previous, ISignedUpdate update)
         {
             var mes = (IOutputMessage)PageView.Clone();
@@ -59,7 +77,15 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
             return mes;
         }
 
+        /// <summary>
+        /// Generates a string that could be used as a representation of this object.
+        /// </summary>
+        /// <returns>A string that could be used as a representation of this object.</returns>
         public string GetPacked() => PageId;
+        /// <summary>
+        /// Returns a string that represents current object.
+        /// </summary>
+        /// <returns>A string that represents current object.</returns>
         public override string ToString() => PageId;
     }
 }

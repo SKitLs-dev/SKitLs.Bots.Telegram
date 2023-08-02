@@ -1,34 +1,52 @@
 ﻿namespace SKitLs.Bots.Telegram.PageNavs.resources.settings
 {
+    /// <summary>
+    /// Represents special settings class for <c>*.PageNavs</c> project.
+    /// </summary>
     public static class PNSettings
     {
+        /// <summary>
+        /// Represents key prefix for library's localizations.
+        /// </summary>
         public static string LibraryKeyPrefix { get; set; } = "pn.";
 
-        public static string _backButtonLocalKey = "display.BackButton";
         /// <summary>
-        /// A system callback label key, used for <see cref="BackCallabck"/>.
+        /// A system callback name, used for <see cref="IMenuManager.OpenPageCallback"/>.
+        /// </summary>
+        public static string OpenCallBase => "OpenMenuPage";
+        /// <summary>
+        /// A system callback name, used for <see cref="IMenuManager.BackCallback"/>.
+        /// </summary>
+        public static string BackCallBase => "BackMenuPage";
+
+        private static string _backButtonLK = "display.BackButton";
+        /// <summary>
+        /// A system callback label key, used for <see cref="IMenuManager.BackCallback"/>.
         /// </summary>
         public static string BackButtonLocalKey
         {
-            get => LibraryKeyPrefix + _backButtonLocalKey;
-            set => _backButtonLocalKey = value;
+            get => LibraryKeyPrefix + _backButtonLK;
+            set => _backButtonLK = value;
         }
 
-        public static string _exitButtonLocalKey = "display.ExitButton";
+        private static string _exitButtonLK = "display.ExitButton";
         /// <summary>
-        /// A system callback label key, used for [ <see cref="OpenPageCallabck"/> (X) Exit Funcs ].
+        /// A system callback label key, used for <see cref="IMenuManager.OpenPageCallback"/>.
         /// </summary>
         public static string ExitButtonLocalKey
         {
-            get => LibraryKeyPrefix + _exitButtonLocalKey;
-            set => _exitButtonLocalKey = value;
+            get => LibraryKeyPrefix + _exitButtonLK;
+            set => _exitButtonLK = value;
         }
 
-        public static string _sessionExpiredLocalKey = "display.SessionExpired";
+        private static string _sessionExpiredLK = "display.SessionExpired";
+        /// <summary>
+        /// Represents localization key for a system message, which occurs when session data is expired.
+        /// </summary>
         public static string SessionExpiredLocalKey
         {
-            get => LibraryKeyPrefix + _sessionExpiredLocalKey;
-            set => _sessionExpiredLocalKey = value;
+            get => LibraryKeyPrefix + _sessionExpiredLK;
+            set => _sessionExpiredLK = value;
         }
     }
 }

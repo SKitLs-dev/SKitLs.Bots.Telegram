@@ -6,16 +6,16 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
     /// <summary>
     /// A session data used to store user's navigation history inside one certain message with defined id.
     /// </summary>
-    public class PageSessionData
+    public sealed class PageSessionData
     {
         /// <summary>
         /// User's id who this session belongs to.
         /// </summary>
-        public long OwnerId { get; private set; }
+        public long OwnerId { get; private init; }
         /// <summary>
         /// Message's id which this session belongs to.
         /// </summary>
-        public int MessageId { get; private set; }
+        public int MessageId { get; private init; }
         /// <summary>
         /// Navigation history.
         /// </summary>
@@ -49,7 +49,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         /// <summary>
         /// Tries to get the latest page that sender has opened without removing it from the navigation history.
         /// </summary>
-        /// <returns>The latest opened page or <see cref="" langword="null"/> if it doesn't exist.</returns>
+        /// <returns>The latest opened page or <see langword="null"/> if it doesn't exist.</returns>
         public bool TryPeek(out IBotPage? result) => Route.TryPeek(out result);
         /// <summary>
         /// Gets the latest page that sender has opened, removing it from the navigation history.
@@ -63,7 +63,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         /// <summary>
         /// Tries to get the latest page that sender has opened, removing it from the navigation history.
         /// </summary>
-        /// <returns>The latest opened page or <see cref="" langword="null"/> if it doesn't exist.</returns>
+        /// <returns>The latest opened page or <see langword="null"/> if it doesn't exist.</returns>
         public bool TryPop(out IBotPage? result) => Route.TryPop(out result);
     }
 }

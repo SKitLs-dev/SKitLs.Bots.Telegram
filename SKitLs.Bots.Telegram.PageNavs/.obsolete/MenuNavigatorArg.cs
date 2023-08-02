@@ -1,4 +1,4 @@
-﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Prototype;
+﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Prototype;
 
 namespace SKitLs.Bots.Telegram.PageNavs.Obsolete
 {

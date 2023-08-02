@@ -1,6 +1,6 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus;
 using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
-using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting;
+using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
@@ -24,11 +24,18 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         /// Determines whether a "Back" Button would be printed in the menu.
         /// </summary>
         public bool EnableBackButton { get; set; } = true;
+
         /// <summary>
         /// A list of pages that this page leads to.
         /// </summary>
         public List<IBotPage> PagesLinks { get; } = new();
+
+        /// <summary>
+        /// Adds links to specified <paramref name="pages"/> to the menu.
+        /// </summary>
+        /// <param name="pages">The array of pages that menu should link to.</param>
         public void PathTo(params IBotPage[] pages) => pages.ToList().ForEach(p => PagesLinks.Add(p));
+
         /// <summary>
         /// Tries to remove a certain page from menu's navigation links and returns the result of an attempt.
         /// </summary>
@@ -39,21 +46,33 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
             var existing = PagesLinks.Find(x => page.PageId == x.PageId);
             return existing is not null && PagesLinks.Remove(existing);
         }
+
         /// <summary>
         /// Optional. A special menu that an "Exit" Button leads to. Exiting process should
         /// refresh user's <see cref="PageSessionData"/>, setting root page to <c><see cref="ExitButtonLink"/></c> instance.
         /// Can be set via <see cref="ExitTo(IBotPage?)"/>.
         /// </summary>
         public IBotPage? ExitButtonLink { get; private set; }
+
+        /// <summary>
+        /// Adds special "Exit" Button, that refreshes user's session setting <paramref name="page"/> as a new root page.
+        /// </summary>
+        /// <param name="page">Page that "Exit" button should lead to.</param>
         public void ExitTo(IBotPage? page) => ExitButtonLink = page;
 
         /// <summary>
         /// A list of callbacks that should be append to the navigation buttons array.
         /// </summary>
         public List<LabeledData> Actions { get; } = new();
-        public void AddAction(LabeledData actionData) => Actions.Add(actionData);
+
         /// <summary>
         /// Adds new non-navigation action with a certain <paramref name="actionData"/> to the inline menu.
+        /// </summary>
+        /// <param name="actionData">Labeled data of a callback to add.</param>
+        public void AddAction(LabeledData actionData) => Actions.Add(actionData);
+
+        /// <summary>
+        /// Adds new non-navigation action with a certain <paramref name="action"/> to the inline menu.
         /// Automatically gets callback's action base via its <see cref="IBotAction.GetSerializedData(string[])"/>.
         /// </summary>
         /// <param name="action">Callback to add.</param>
@@ -77,7 +96,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
 
             var res = new PairedInlineMenu()
             {
-                Serializer = update.Owner.ResolveService<IArgsSerilalizerService>(),
+                Serializer = update.Owner.ResolveService<IArgsSerializeService>(),
                 ColumnsCount = ColumnsCount,
             };
             PagesLinks.ForEach(page => res.Add(string.Format(IPageMenu.NavigationLabelMask, page.GetLabel(update)), mm.OpenPageCallback, new(page)));

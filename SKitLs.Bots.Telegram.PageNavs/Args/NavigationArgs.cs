@@ -1,5 +1,5 @@
-﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting;
-using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Prototype;
+﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation;
+using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Prototype;
 using SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Prototype;
 using SKitLs.Bots.Telegram.PageNavs.Prototype;
 
@@ -25,7 +25,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Args
 
         /// <summary>
         /// Creates a new instance of <see cref="NavigationArgs"/> with <see langword="null"/> fields.
-        /// Used in <see cref="IArgsSerilalizerService"/> by default.
+        /// Used in <see cref="IArgsSerializeService"/> by default.
         /// <para>
         /// <c>Not recommended to use in your code.</c>
         /// </para>

@@ -6,7 +6,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Prototype
 {
     /// <summary>
     /// A specified interface that provides methods for the representation of a page's menu,
-    /// with integrated navigation functinality such as specilized actions or navigations list.
+    /// with integrated navigation functionality such as specialized actions or navigations list.
     /// <para>
     /// For default realization see: <see cref="PageNavMenu"/>.
     /// </para>
@@ -18,17 +18,20 @@ namespace SKitLs.Bots.Telegram.PageNavs.Prototype
         /// </summary>
         /// <param name="pages">The array of pages that menu should link to.</param>
         public void PathTo(params IBotPage[] pages);
+
         /// <summary>
         /// Tries to remove a certain page from menu's navigation links and returns the result of an attempt.
         /// </summary>
         /// <param name="page">Page to remove.</param>
         /// <returns><see langword="true"/> if an item was found and removed. Otherwise <see langword="false"/>.</returns>
         public bool TryRemove(IBotPage page);
+
         /// <summary>
         /// Adds special "Exit" Button, that refreshes user's session setting <paramref name="page"/> as a new root page.
         /// </summary>
         /// <param name="page">Page that "Exit" button should lead to.</param>
         public void ExitTo(IBotPage? page);
+
         /// <summary>
         /// Adds new non-navigation action with a certain <paramref name="actionData"/> to the inline menu.
         /// </summary>

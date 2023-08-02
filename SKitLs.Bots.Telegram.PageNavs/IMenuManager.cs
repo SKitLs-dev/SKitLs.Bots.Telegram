@@ -1,12 +1,11 @@
-﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Defaults;
-using SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Prototype;
+﻿using SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Prototype;
 using SKitLs.Bots.Telegram.Core.Model;
 using SKitLs.Bots.Telegram.Core.Model.Building;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.Management;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
-using SKitLs.Bots.Telegram.Core.Prototypes;
+using SKitLs.Bots.Telegram.Core.Prototype;
 using SKitLs.Bots.Telegram.PageNavs.Args;
 using SKitLs.Bots.Telegram.PageNavs.Prototype;
 
@@ -33,20 +32,10 @@ namespace SKitLs.Bots.Telegram.PageNavs
     public interface IMenuManager : IOwnerCompilable, IDebugNamed, IApplicant<IActionManager<SignedCallbackUpdate>>
     {
         /// <summary>
-        /// A system callback name, used for <see cref="OpenPageCallback"/>.
-        /// </summary>
-        public static string OpenCallBase => "OpenMenuPage";
-        /// <summary>
-        /// A system callback name, used for <see cref="BackCallback"/>.
-        /// </summary>
-        public static string BackCallBase => "BackMenuPage";
-
-        /// <summary>
         /// System callback that represents "Open Menu" request.
         /// Opens requested page and pushes it into user's session navigation list.
         /// <para>
-        /// Requires a <see cref="StringWrapper"/> argument that determines a certain page's id (<c>pageId</c>),
-        /// that should be opened.
+        /// Requires a <see cref="NavigationArgs"/> argument that determines paging data.
         /// </para>
         /// </summary>
         public IArgedAction<NavigationArgs, SignedCallbackUpdate> OpenPageCallback { get; }
@@ -62,7 +51,7 @@ namespace SKitLs.Bots.Telegram.PageNavs
         /// <summary>
         /// Pushes <paramref name="page"/> to a certain user's navigation data.
         /// </summary>
-        /// <param name="page">Page to pus.h</param>
+        /// <param name="page">Page to pus.h.</param>
         /// <param name="senderId">User's id.</param>
         /// <param name="messageId">Message's that host menu id.</param>
         public void Push(IBotPage page, long senderId, int messageId);
@@ -77,7 +66,7 @@ namespace SKitLs.Bots.Telegram.PageNavs
         /// Tries to get the latest page that sender has opened without removing it from the navigation history.
         /// </summary>
         /// <param name="senderId">User's id.</param>
-        /// <returns>The latest opened page or <see cref="" langword="null"/> if it doesn't exist.</returns>
+        /// <returns>The latest opened page or <see langword="null"/> if it doesn't exist.</returns>
         public IBotPage? TryPeek(long senderId);
         /// <summary>
         /// Gets the latest page that sender has opened, removing it from the navigation history.
@@ -90,7 +79,7 @@ namespace SKitLs.Bots.Telegram.PageNavs
         /// Tries to get the latest page that sender has opened, removing it from the navigation history.
         /// </summary>
         /// <param name="senderId">User's id.</param>
-        /// <returns>The latest opened page or <see cref="" langword="null"/> if it doesn't exist.</returns>
+        /// <returns>The latest opened page or <see langword="null"/> if it doesn't exist.</returns>
         public IBotPage? TryPop(long senderId);
 
         /// <summary>
@@ -120,7 +109,7 @@ namespace SKitLs.Bots.Telegram.PageNavs
         public IBotPage? TryGetDefined(string pageId);
 
         /// <summary>
-        /// Asyncroniously pushes a certain menu <paramref name="page"/> to the chat that has requested it
+        /// Asynchronously pushes a certain menu <paramref name="page"/> to the chat that has requested it
         /// with a certain signed <paramref name="update"/>.
         /// Based on the update's type, overrides an existing message or generates a new one.
         /// If <paramref name="refresh"/> is <see langword="true"/>, sets <paramref name="page"/> as a new root one.

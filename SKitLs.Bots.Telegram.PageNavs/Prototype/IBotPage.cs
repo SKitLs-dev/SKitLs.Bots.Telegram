@@ -1,5 +1,5 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
-using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Prototype;
+using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.PageNavs.Model;
 
@@ -18,6 +18,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Prototype
         /// An unique page's identifier.
         /// </summary>
         public string PageId { get; }
+
         /// <summary>
         /// Page's menu.
         /// </summary>
@@ -29,6 +30,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Prototype
         /// <param name="update">An incoming update.</param>
         /// <returns>A string that represents an instance as a navigation label.</returns>
         public string GetLabel(ISignedUpdate update);
+
         /// <summary>
         /// Converts page data to a printable <see cref="IOutputMessage"/> that should be printed
         /// based on incoming <paramref name="update"/>.

@@ -7,13 +7,13 @@ using SKitLs.Bots.Telegram.Stateful.Prototype;
 namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Numbers
 {
     /// <summary>
-    /// <see cref="IntInputProcess"/> is a special class of input behavior. Implements an abstract <see cref="TextInputsProcessBase{TArg}"/>.
+    /// <see cref="IntInputProcess"/> is a special class of input behavior. Implements an abstract <see cref="TextInputsProcessBase{TResult}"/>.
     /// <para>
     /// Int input help to realize input-and-forget process for <see cref="int"/> objects. They are unpack via defined
     /// <see cref="IArgsSerializeService.Unpack{TOut}(string)"/>.
     /// </para>
     /// </summary>
-    public class IntInputProcess : TextInputsProcessBase<IntArgument>
+    public class IntInputProcess : TextInputsProcessBase<int>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="IntInputProcess"/> class with the specified parameters.
@@ -23,7 +23,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Numbers
         /// <param name="processState">The state associated with the bot process.</param>
         /// <param name="startupMessage">The startup message of the bot process.</param>
         /// <param name="whenOver">The action that is invoked when the running bot process is completed.</param>
-        public IntInputProcess(string processDefId, string terminationalKey, IUserState processState, IOutputMessage startupMessage, InputProcessCompleted<IntArgument> whenOver)
+        public IntInputProcess(string processDefId, string terminationalKey, IUserState processState, IOutputMessage startupMessage, InputProcessCompleted<TextInputsArguments<int>> whenOver)
             : base(processDefId, terminationalKey, processState, startupMessage, whenOver) { }
 
         /// <summary>
@@ -32,6 +32,6 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Numbers
         /// <param name="userId">The unique identifier of the user for whom the bot process is running.</param>
         /// <param name="args">The specific arguments required to execute the bot process.</param>
         /// <returns><see cref="IntInputRunning"/> instance representing the ongoing execution of the process.</returns>
-        public override IBotRunningProcess GetRunning(long userId, IntArgument args) => new IntInputRunning(userId, args, this);
+        public override IBotRunningProcess GetRunning(long userId, TextInputsArguments<int> args) => new IntInputRunning(userId, args, this);
     }
 }

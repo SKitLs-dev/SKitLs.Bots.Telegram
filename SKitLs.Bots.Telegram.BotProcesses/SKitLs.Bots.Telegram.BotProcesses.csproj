@@ -7,14 +7,16 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
-    <Version>$(AssemblyVersion)-alpha</Version>
+    <Version>$(AssemblyVersion)-alpha.1</Version>
     <Title>$(AssemblyName)</Title>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>Sargeras02, SKit-Labs</Authors>
     <Copyright>Copyright (C) Sargeras02 2023</Copyright>
     <PackageProjectUrl>https://github.com/Sargeras02/SKitLs.Bots.Telegram.git</PackageProjectUrl>
     <PackageTags>Telegram, Bots, Management, Processing</PackageTags>
-    <PackageReleaseNotes>Initial Alpha Release</PackageReleaseNotes>
+    <PackageReleaseNotes>(+) class TextInputsArguments Added.
+
+(~) TextInputsProcessBase heirs now work with TextInputsArguments.</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -53,6 +55,7 @@ Provides methods of creating bot processes with advanced textual input mechanics
 
   <ItemGroup>
     <PackageReference Include="SKitLs.Bots.Telegram.AdvancedMessages" Version="1.1.0" />
+    <PackageReference Include="SKitLs.Bots.Telegram.ArgedInteractions" Version="1.3.1" />
     <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.0.0" />
     <PackageReference Include="SKitLs.Bots.Telegram.Stateful" Version="1.1.0" />
     <PackageReference Include="Telegram.Bot" Version="19.0.0" />

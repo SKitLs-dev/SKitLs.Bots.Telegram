@@ -10,12 +10,12 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Shot
     /// The running version of the <see cref="ShotInputProcess{TResult}"/>. See it for info.
     /// </summary>
     /// <typeparam name="TResult">The type of the wrapped argument, which must not be nullable.</typeparam>
-    public class ShotInputRunning<TResult> : TextInputsRunningBase<ShotInputProcess<TResult>, ShotArgument<TResult>> where TResult : notnull
+    public class ShotInputRunning<TResult> : TextInputsRunningBase<ShotInputProcess<TResult>, TResult> where TResult : notnull
     {
         /// <summary>
         /// Represents the process arguments associated with the running bot process.
         /// </summary>
-        public override ShotArgument<TResult> Arguments { get; protected set; }
+        public override TextInputsArguments<TResult> Arguments { get; protected set; }
         /// <summary>
         /// Represents the bot process definition that launched this running process.
         /// </summary>
@@ -27,7 +27,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Shot
         /// <param name="userId">The unique identifier of the user who owns and initiated the running bot process.</param>
         /// <param name="args">The process arguments associated with the running bot process.</param>
         /// <param name="launcher">The bot process definition that launched this running process.</param>
-        public ShotInputRunning(long userId, ShotArgument<TResult> args, ShotInputProcess<TResult> launcher) : base(userId)
+        public ShotInputRunning(long userId, TextInputsArguments<TResult> args, ShotInputProcess<TResult> launcher) : base(userId)
         {
             Arguments = args;
             Launcher = launcher;
@@ -48,7 +48,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Shot
                 var serializer = update.Owner.ResolveService<IArgsSerializeService>();
                 // Try to unpack and parse data
                 // Data counts wrong
-                var res = serializer.Unpack<TResult>(Launcher.Demask(update.Text));
+                var res = serializer.Unpack<TResult>((Launcher as IMaskedInput).Demask(update.Text));
 
                 if (res is null || res.ResultType != ConvertResultType.Ok)
                 {

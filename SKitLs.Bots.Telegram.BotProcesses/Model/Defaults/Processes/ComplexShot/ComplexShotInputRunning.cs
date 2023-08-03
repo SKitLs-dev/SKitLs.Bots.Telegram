@@ -11,12 +11,12 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.ComplexShot
     /// The running version of the <see cref="ComplexShotInputRunning{TResult}"/>. See it for info.
     /// </summary>
     /// <typeparam name="TResult">The type of the wrapped argument, which must not be nullable and have a parameterless constructor.</typeparam>
-    public class ComplexShotInputRunning<TResult> : TextInputsRunningBase<ComplexShotInputProcess<TResult>, ComplexShotArgument<TResult>> where TResult : notnull, new()
+    public class ComplexShotInputRunning<TResult> : TextInputsRunningBase<ComplexShotInputProcess<TResult>, TResult> where TResult : notnull, new()
     {
         /// <summary>
         /// Represents the process arguments associated with the running bot process.
         /// </summary>
-        public override ComplexShotArgument<TResult> Arguments { get; protected set; }
+        public override TextInputsArguments<TResult> Arguments { get; protected set; }
         /// <summary>
         /// Represents the bot process definition that launched this running process.
         /// </summary>
@@ -28,7 +28,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.ComplexShot
         /// <param name="userId">The unique identifier of the user who owns and initiated the running bot process.</param>
         /// <param name="args">The process arguments associated with the running bot process.</param>
         /// <param name="launcher">The bot process definition that launched this running process.</param>
-        public ComplexShotInputRunning(long userId, ComplexShotArgument<TResult> args, ComplexShotInputProcess<TResult> launcher) : base(userId)
+        public ComplexShotInputRunning(long userId, TextInputsArguments<TResult> args, ComplexShotInputProcess<TResult> launcher) : base(userId)
         {
             Arguments = args;
             Launcher = launcher;
@@ -49,7 +49,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.ComplexShot
                 var serializer = update.Owner.ResolveService<IArgsSerializeService>();
                 // Try to unpack and parse data
                 // Data counts wrong
-                var res = serializer.Deserialize<TResult>(update.Text, '\n');
+                var res = serializer.DeserializeTo(update.Text, Arguments.BuildingInstance, '\n');
 
                 //(ConvertResult<TResult>?)serializer.GetType()
                 //    .GetMethod(nameof(serializer.Deserialize))!

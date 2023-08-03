@@ -14,9 +14,9 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
     /// <summary>
     /// Represents an abstract base class for running bot processes with text inputs.
     /// </summary>
-    /// <typeparam name="TProcess">The type of the bot process definition, derived from <see cref="TextInputsProcessBase{TArg}"/>.</typeparam>
-    /// <typeparam name="TArg">The type of process arguments, implementing <see cref="IProcessArgument"/>.</typeparam>
-    public abstract class TextInputsRunningBase<TProcess, TArg> : IBotRunningProcess where TProcess : TextInputsProcessBase<TArg> where TArg : IProcessArgument
+    /// <typeparam name="TProcess">The type of the bot process definition, derived from <see cref="TextInputsProcessBase{TResult}"/>.</typeparam>
+    /// <typeparam name="TResult">The type of the resulting instance, which must not be nullable.</typeparam>
+    public abstract class TextInputsRunningBase<TProcess, TResult> : IBotRunningProcess where TProcess : TextInputsProcessBase<TResult> where TResult : notnull
     {
         /// <summary>
         /// Represents the unique identifier of the bot process definition.
@@ -32,7 +32,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
         /// <summary>
         /// Represents the process arguments associated with the running bot process.
         /// </summary>
-        public abstract TArg Arguments { get; protected set; }
+        public abstract TextInputsArguments<TResult> Arguments { get; protected set; }
         /// <summary>
         /// Represents the bot process definition that launched this running process.
         /// </summary>
@@ -40,7 +40,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
         /// <summary>
         /// Represents the action that is invoked when the running bot process is completed.
         /// </summary>
-        public virtual InputProcessCompleted<TArg> WhenOver => Launcher.WhenOver;
+        public virtual InputProcessCompleted<TextInputsArguments<TResult>> WhenOver => Launcher.WhenOver;
 
         /// <summary>
         /// Represents the key used to stop and terminate the bot process.
@@ -105,7 +105,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
         /// </summary>
         /// <param name="result">The result of the running bot process.</param>
         /// <param name="update">The update associated with the bot process termination.</param>
-        public virtual async Task TerminateWithAsync(TArg result, SignedMessageTextUpdate update)
+        public virtual async Task TerminateWithAsync(TextInputsArguments<TResult> result, SignedMessageTextUpdate update)
         {
             if (update.Sender is not IStatefulUser stateful)
                 throw new NotStatefulException(this);

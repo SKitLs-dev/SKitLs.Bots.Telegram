@@ -10,7 +10,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
 {
     /// <summary>
     /// <see cref="PartialSubProcess{TResult}"/> is a special class of input behavior.
-    /// Implements an abstract <see cref="TextInputsProcessBase{TArg}"/>.
+    /// Implements an abstract <see cref="TextInputsProcessBase{TResult}"/>.
     /// Used as <see cref="PartialInputProcess{TResult}"/> interior sub-process.
     /// <para>
     /// By its methods similar to
@@ -22,7 +22,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
     /// </para>
     /// </summary>
     /// <typeparam name="TResult">The type of the wrapped argument.</typeparam>
-    public class PartialSubProcess<TResult> : ISubProcess<PartialInputRunning<TResult>>
+    public class PartialSubProcess<TResult> : ISubProcess<PartialInputRunning<TResult>> where TResult : notnull
     {
         /// <summary>
         /// Represents the order of the sub-process within the parent bot running process.
@@ -64,7 +64,6 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
             ParseInput = parser ?? (u => u.Text);
         }
 
-        /// <summary>
         /// <summary>
         /// Creates new running bot process instance based on the specified user and arguments.
         /// </summary>

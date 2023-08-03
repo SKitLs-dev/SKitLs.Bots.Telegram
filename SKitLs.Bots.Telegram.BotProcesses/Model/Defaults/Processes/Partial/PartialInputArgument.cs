@@ -7,6 +7,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
     /// implementing the <see cref="IProcessArgument"/> interface.
     /// </summary>
     /// <typeparam name="TResult">The type of the wrapped argument, which must not be nullable.</typeparam>
+    [Obsolete($"Replaced with {nameof(TextInputsArguments<TResult>)}", true)]
     public class PartialInputArgument<TResult> : IProcessArgument
     {
         /// <summary>

@@ -11,7 +11,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
     /// The running version of the <see cref="PartialSubRunning{TResult}"/>. See it for info.
     /// </summary>
     /// <typeparam name="TResult">The type of the wrapped argument, which must not be nullable.</typeparam>
-    public class PartialSubRunning<TResult> : ISubRunning<PartialInputRunning<TResult>>
+    public class PartialSubRunning<TResult> : ISubRunning<PartialInputRunning<TResult>> where TResult : notnull
     {
         /// <summary>
         /// Represents the owner (parent) bot running process associated with this sub-process.

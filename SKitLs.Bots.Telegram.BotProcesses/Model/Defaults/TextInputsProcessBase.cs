@@ -26,7 +26,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
     /// while adhering to the <see cref="IBotProcess"/> interface.
     /// </para>
     /// </summary>
-    public abstract class TextInputsProcessBase<TArg> : IBotProcess<TArg>, IBotAction<SignedMessageTextUpdate>, IApplicant<IStatefulActionManager<SignedMessageTextUpdate>> where TArg : IProcessArgument
+    public abstract class TextInputsProcessBase<TResult> : IBotProcess<TextInputsArguments<TResult>>, IBotAction<SignedMessageTextUpdate>, IApplicant<IStatefulActionManager<SignedMessageTextUpdate>> where TResult : notnull
     {
         /// <summary>
         /// Returns the unique identifier for the action, which is the same as the process definition Id.
@@ -54,10 +54,10 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
         /// <summary>
         /// Represents the action that is invoked when the running bot process is completed.
         /// </summary>
-        public virtual InputProcessCompleted<TArg> WhenOver { get; protected set; }
+        public virtual InputProcessCompleted<TextInputsArguments<TResult>> WhenOver { get; protected set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextInputsProcessBase{TArg}"/> class with the specified process definition Id,
+        /// Initializes a new instance of the <see cref="TextInputsProcessBase{TResult}"/> class with the specified process definition Id,
         /// terminational key, and user state.
         /// </summary>
         /// <param name="processDefId">The unique identifier for the bot process.</param>
@@ -65,7 +65,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
         /// <param name="processState">The state associated with the bot process.</param>
         /// <param name="startupMessage">The startup message of the bot process.</param>
         /// <param name="whenOver">The action that is invoked when the running bot process is completed.</param>
-        public TextInputsProcessBase(string processDefId, string terminationalKey, IUserState processState, IOutputMessage startupMessage, InputProcessCompleted<TArg> whenOver)
+        public TextInputsProcessBase(string processDefId, string terminationalKey, IUserState processState, IOutputMessage startupMessage, InputProcessCompleted<TextInputsArguments<TResult>> whenOver)
         {
             ProcessDefId = processDefId;
             TerminationalKey = terminationalKey;
@@ -84,7 +84,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
         /// Determines if the bot process should be executed on the specified signed message text <paramref name="update"/>.
         /// </summary>
         /// <param name="update">An incoming update.</param>
-        /// <returns>Always returns <see langword="true"/> since <see cref="TextInputsProcessBase{TArg}"/> represents mechanics
+        /// <returns>Always returns <see langword="true"/> since <see cref="TextInputsProcessBase{TResult}"/> represents mechanics
         /// of text input handling based on <see cref="IUserState"/>.</returns>
         public bool ShouldBeExecutedOn(SignedMessageTextUpdate update) => true;
 
@@ -130,10 +130,10 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
         /// <param name="userId">The unique identifier of the user for whom the bot process is running.</param>
         /// <param name="args">The specific arguments required to execute the bot process.</param>
         /// <returns>The running bot process instance representing the ongoing execution of the process.</returns>
-        public abstract IBotRunningProcess GetRunning(long userId, TArg args);
+        public abstract IBotRunningProcess GetRunning(long userId, TextInputsArguments<TResult> args);
 
         /// <summary>
-        /// Applies <see cref="TextInputsProcessBase{TArg}"/> for an <paramref name="entity"/>, defining itself to its interior:
+        /// Applies <see cref="TextInputsProcessBase{TResult}"/> for an <paramref name="entity"/>, defining itself to its interior:
         /// creating <see cref="IStateSection{TUpdate}"/> with only <see cref="ProcessState"/> enabled.
         /// </summary>
         /// <param name="entity">An instance that this class should be applied to.</param>

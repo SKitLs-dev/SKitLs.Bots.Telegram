@@ -55,6 +55,7 @@ making it an essential addition to your Telegram bot development toolkit.
 - SKitLs.Bots.Telegram.Core 2.0.0 or higher
 - SKitLs.Bots.Telegram.Stateful 1.1.0 or higher
 - SKitLs.Bots.Telegram.AdvancedMessages 1.1.0 or higher
+- SKitLs.Bots.Telegram.ArgedInteractions 1.3.1 or higher
 
 Before running the project, please ensure that you have the following dependencies installed and properly configured in your development environment.
 
@@ -114,12 +115,13 @@ Refer to the project's documentation for any additional steps or considerations.
 2. Initialize processes:
 
     ```C#
-    private static async Task When_ProcessCompletedAsync(ShotInputArgument<YourType> args, SignedMessageTextUpdate update)
+    private static async Task When_ProcessCompletedAsync(TextInputsArguments<YourType> args, SignedMessageTextUpdate update)
     {
         if (args.CompleteStatus == CompleteStatus.Success)
         {
             await this.SendToDatabaseExample<YourType>(args.BuildingInstance);
         }
+        // Some inform action
         await InformSenderAsync(args.CompleteStatus, update);
     }
     ```
@@ -146,7 +148,7 @@ Refer to the project's documentation for any additional steps or considerations.
     {
         var _pm = update.Owner.ResolveService<IProcessManager>();
         await _pm.GetDefined("procId")
-            .GetRunning(update.Sender.TelegramId, new ShotInputArgument(new YourType()))
+            .GetRunning(update.Sender.TelegramId, new TextInputsArguments(new YourType()))
             .LauchWith(update);
     }
     ```

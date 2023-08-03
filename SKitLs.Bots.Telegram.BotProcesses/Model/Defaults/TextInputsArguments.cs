@@ -1,14 +1,14 @@
-﻿using SKitLs.Bots.Telegram.BotProcesses.Prototype;
+﻿using SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.ComplexShot;
+using SKitLs.Bots.Telegram.BotProcesses.Prototype;
 
-namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.ComplexShot
+namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
 {
     /// <summary>
-    /// Represents a generic class for wrapping an argument of a <see cref="ComplexShotInputProcess{TResult}"/> bot process,
+    /// Represents a generic class for wrapping an argument of a <see cref="TextInputsProcessBase{TResult}"/> bot process,
     /// implementing the <see cref="IProcessArgument"/> interface.
     /// </summary>
     /// <typeparam name="TResult">The type of the wrapped argument, which must not be nullable and have a parameterless constructor.</typeparam>
-    [Obsolete($"Replaced with {nameof(TextInputsArguments<TResult>)}", true)]
-    public class ComplexShotArgument<TResult> where TResult : notnull, new()
+    public class TextInputsArguments<TResult> : IProcessArgument where TResult : notnull
     {
         /// <summary>
         /// Represents the wrapped argument value.
@@ -25,6 +25,6 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.ComplexShot
         /// Initializes a new instance of the <see cref="ComplexShotArgument{TResult}"/> class with the specified value.
         /// </summary>
         /// <param name="value">The value to be wrapped.</param>
-        public ComplexShotArgument(TResult value) => BuildingInstance = value;
+        public TextInputsArguments(TResult value) => BuildingInstance = value;
     }
 }

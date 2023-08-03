@@ -8,12 +8,12 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Numbers
     /// <summary>
     /// The running version of the <see cref="IntInputProcess"/>. See it for info.
     /// </summary>
-    public class IntInputRunning : TextInputsRunningBase<IntInputProcess, IntArgument>
+    public class IntInputRunning : TextInputsRunningBase<IntInputProcess, int>
     {
         /// <summary>
         /// Represents the process arguments associated with the running bot process.
         /// </summary>
-        public override IntArgument Arguments { get; protected set; }
+        public override TextInputsArguments<int> Arguments { get; protected set; }
         /// <summary>
         /// Represents the bot process definition that launched this running process.
         /// </summary>
@@ -25,7 +25,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Numbers
         /// <param name="userId">The unique identifier of the user who owns and initiated the running bot process.</param>
         /// <param name="args">The process arguments associated with the running bot process.</param>
         /// <param name="launcher">The bot process definition that launched this running process.</param>
-        public IntInputRunning(long userId, IntArgument args, IntInputProcess launcher) : base(userId)
+        public IntInputRunning(long userId, TextInputsArguments<int> args, IntInputProcess launcher) : base(userId)
         {
             Arguments = args;
             Launcher = launcher ?? throw new ArgumentNullException(nameof(launcher));

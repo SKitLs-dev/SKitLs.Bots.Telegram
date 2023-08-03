@@ -7,12 +7,12 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
     /// The running version of the <see cref="PartialInputRunning{TResult}"/>. See it for info.
     /// </summary>
     /// <typeparam name="TResult">The type of the wrapped argument, which must not be nullable.</typeparam>
-    public class PartialInputRunning<TResult> : TextInputsRunningBase<PartialInputProcess<TResult>, PartialInputArgument<TResult>>
+    public class PartialInputRunning<TResult> : TextInputsRunningBase<PartialInputProcess<TResult>, TResult> where TResult : notnull
     {
         /// <summary>
         /// Represents the process arguments associated with the running bot process.
         /// </summary>
-        public override PartialInputArgument<TResult> Arguments { get; protected set; }
+        public override TextInputsArguments<TResult> Arguments { get; protected set; }
         /// <summary>
         /// Represents the bot process definition that launched this running process.
         /// </summary>
@@ -25,18 +25,13 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
         private int CurrentId { get; set; }
         private PartialSubRunning<TResult> Current => (PartialSubRunning<TResult>)SubProcesses[CurrentId].GetRunning(this);
 
-        //public bool ShouldExecute(PartialSubProcess<PartialInputArgument<TResult>> asker, string input)
-        //    => input.ToLower() == TerminationalKey.ToLower()
-        //    ? asker.IsTerminational
-        //    : asker.SubOrder == CurrentId;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PartialInputRunning{TResult}"/> class with the specified parameters.
         /// </summary>
         /// <param name="userId">The unique identifier of the user who owns and initiated the running bot process.</param>
         /// <param name="args">The process arguments associated with the running bot process.</param>
         /// <param name="launcher">The bot process definition that launched this running process.</param>
-        public PartialInputRunning(long userId, PartialInputArgument<TResult> args, PartialInputProcess<TResult> launcher) : base(userId)
+        public PartialInputRunning(long userId, TextInputsArguments<TResult> args, PartialInputProcess<TResult> launcher) : base(userId)
         {
             Arguments = args;
             Launcher = launcher;

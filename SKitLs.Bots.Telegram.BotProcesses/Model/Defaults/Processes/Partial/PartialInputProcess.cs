@@ -8,7 +8,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
 {
     /// <summary>
     /// <see cref="PartialInputProcess{TResult}"/> is a special class of input behavior.
-    /// Implements an abstract <see cref="TextInputsProcessBase{TArg}"/>.
+    /// Implements an abstract <see cref="TextInputsProcessBase{TResult}"/>.
     /// <para>
     /// Partial input help to realize step-by-step input process for complex objects with several properties.
     /// All of them should be unpack via defined <see cref="IArgsSerializeService.Unpack{TOut}(string)"/>.
@@ -18,7 +18,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
     /// </para>
     /// </summary>
     /// <typeparam name="TResult">The type of the wrapped argument, which must not be nullable.</typeparam>
-    public class PartialInputProcess<TResult> : TextInputsProcessBase<PartialInputArgument<TResult>>
+    public class PartialInputProcess<TResult> : TextInputsProcessBase<TResult> where TResult : notnull
     {
         private readonly List<PartialSubProcess<TResult>> subProcesses = new();
         /// <summary>
@@ -34,7 +34,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
         /// <param name="processState">The state associated with the bot process.</param>
         /// <param name="startupMessage">The startup message of the bot process.</param>
         /// <param name="whenOver">The action that is invoked when the running bot process is completed.</param>
-        public PartialInputProcess(string processDefId, string terminationalKey, IUserState processState, IOutputMessage startupMessage, InputProcessCompleted<PartialInputArgument<TResult>> whenOver)
+        public PartialInputProcess(string processDefId, string terminationalKey, IUserState processState, IOutputMessage startupMessage, InputProcessCompleted<TextInputsArguments<TResult>> whenOver)
             : base(processDefId, terminationalKey, processState, startupMessage, whenOver) { }
 
         /// <summary>
@@ -62,6 +62,6 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
         /// <param name="userId">The unique identifier of the user for whom the bot process is running.</param>
         /// <param name="args">The specific arguments required to execute the bot process.</param>
         /// <returns><see cref="PartialInputRunning{TResult}"/> instance representing the ongoing execution of the process.</returns>
-        public override IBotRunningProcess GetRunning(long userId, PartialInputArgument<TResult> args) => new PartialInputRunning<TResult>(userId, args, this);
+        public override IBotRunningProcess GetRunning(long userId, TextInputsArguments<TResult> args) => new PartialInputRunning<TResult>(userId, args, this);
     }
 }

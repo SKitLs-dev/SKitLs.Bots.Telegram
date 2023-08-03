@@ -6,6 +6,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Numbers
     /// Represents a generic class for wrapping an argument of a <see cref="IntInputProcess"/> bot process,
     /// implementing the <see cref="IProcessArgument"/> interface.
     /// </summary>
+    [Obsolete($"Replaced with {nameof(TextInputsArguments<int>)}", true)]
     public class IntArgument : IProcessArgument
     {
         /// <summary>

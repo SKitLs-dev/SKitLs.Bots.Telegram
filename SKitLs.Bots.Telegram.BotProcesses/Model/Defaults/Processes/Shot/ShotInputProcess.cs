@@ -10,7 +10,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Shot
 {
     /// <summary>
     /// <see cref="ShotInputProcess{TResult}"/> is a special class of input behavior.
-    /// Implements an abstract <see cref="TextInputsProcessBase{TArg}"/>.
+    /// Implements an abstract <see cref="TextInputsProcessBase{TResult}"/>.
     /// <para> Shot input help to realize input-and-forget process for simple objects that could be unpack via defined
     /// <see cref="IArgsSerializeService.Unpack{TOut}(string)"/>.</para>
     /// <para>
@@ -19,7 +19,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Shot
     /// </para>
     /// </summary>
     /// <typeparam name="TResult">The type of the wrapped argument, which must not be nullable.</typeparam>
-    public class ShotInputProcess<TResult> : TextInputsProcessBase<ShotArgument<TResult>> where TResult : notnull
+    public class ShotInputProcess<TResult> : TextInputsProcessBase<TResult>, IMaskedInput where TResult : notnull
     {
         /// <summary>
         /// Determines special string mask that would be used to unpack input text.
@@ -34,24 +34,8 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Shot
         /// <param name="processState">The state associated with the bot process.</param>
         /// <param name="startupMessage">The startup message of the bot process.</param>
         /// <param name="whenOver">The action that is invoked when the running bot process is completed.</param>
-        public ShotInputProcess(string processDefId, string terminationalKey, IUserState processState, IOutputMessage startupMessage, InputProcessCompleted<ShotArgument<TResult>> whenOver)
+        public ShotInputProcess(string processDefId, string terminationalKey, IUserState processState, IOutputMessage startupMessage, InputProcessCompleted<TextInputsArguments<TResult>> whenOver)
             : base(processDefId, terminationalKey, processState, startupMessage, whenOver) { }
-
-        // TODO : replace
-        /// <summary>
-        /// Uses <see cref="Demask(string)"/> to unpack input string.
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public string Demask(string input)
-        {
-            if (Mask is null) return input;
-            string pattern = Mask.Replace("{0}", "(.*?)"); // Regex.Escape();
-            var match = Regex.Match(input, pattern);
-            if (!match.Success || match.Groups.Count < 2) throw new Exception();
-            return match.Groups[1].Value;
-        }
 
         /// <summary>
         /// Creates new running bot process instance based on the specified user and arguments.
@@ -59,6 +43,6 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Shot
         /// <param name="userId">The unique identifier of the user for whom the bot process is running.</param>
         /// <param name="args">The specific arguments required to execute the bot process.</param>
         /// <returns><see cref="ShotInputRunning{TResult}"/> instance representing the ongoing execution of the process.</returns>
-        public override IBotRunningProcess GetRunning(long userId, ShotArgument<TResult> args) => new ShotInputRunning<TResult>(userId, args, this);
+        public override IBotRunningProcess GetRunning(long userId, TextInputsArguments<TResult> args) => new ShotInputRunning<TResult>(userId, args, this);
     }
 }

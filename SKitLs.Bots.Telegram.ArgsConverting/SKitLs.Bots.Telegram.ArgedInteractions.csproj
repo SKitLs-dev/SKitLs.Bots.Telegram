@@ -5,17 +5,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Title>$(AssemblyName)</Title>
-    <Version>1.3.0</Version>
+    <Version>1.3.1</Version>
     <Authors>Sargeras02, SKit-Labs</Authors>
     <Copyright>Copyright (C) Sargeras02 2023</Copyright>
     <PackageProjectUrl>https://github.com/Sargeras02/SKitLs.Bots.Telegram.git</PackageProjectUrl>
     <PackageIcon>libIcon_AI.png</PackageIcon>
     <PackageTags>Telegram, Bots, Management, Serialization, Argumenting</PackageTags>
-    <PackageReleaseNotes>(+) XML Documentation Included.
+    <PackageReleaseNotes>(+) IArgsSerializeService.DeserializeTo&lt;TOut&gt;(*) method Added.
 
-(~) Exceptions minor updates
-(~) Naming and summaries update</PackageReleaseNotes>
-    <AssemblyVersion>1.3.0</AssemblyVersion>
+(~) Type constraints Updated.
+(~) README Updated.</PackageReleaseNotes>
+    <AssemblyVersion>1.3.1</AssemblyVersion>
 	<FileVersion>$(AssemblyVersion)</FileVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>

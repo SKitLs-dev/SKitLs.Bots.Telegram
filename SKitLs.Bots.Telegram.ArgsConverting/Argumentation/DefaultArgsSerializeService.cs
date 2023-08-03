@@ -168,13 +168,26 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation
         public void Clear() => Rules.Clear();
 
         /// <summary>
-        /// Deserializes the specified input string to the output type <typeparamref name="TOut"/>.
+        /// Deserializes the specified input string to the output type <typeparamref name="TOut"/>,
+        /// creating a new instance of a type <typeparamref name="TOut"/>.
+        /// <typeparamref name="TOut"/> requires a parameterless constructor.
         /// </summary>
-        /// <typeparam name="TOut">Output type.</typeparam>
-        /// <param name="input">Input argument string.</param>
-        /// <param name="splitToken">Represents a token that the data is separated with.</param>
-        /// <returns>Conversion result.</returns>
+        /// <typeparam name="TOut">An output type, which must not be nullable and have a parameterless constructor.</typeparam>
+        /// <param name="input">An input argument string.</param>
+        /// <param name="splitToken">A token that the data is separated with.</param>
+        /// <returns>The conversion result.</returns>
         public ConvertResult<TOut> Deserialize<TOut>(string input, char splitToken = ';') where TOut : notnull, new()
+            => DeserializeTo<TOut>(input, new(), splitToken);
+        /// <summary>
+        /// Deserializes the specified input string to the output type <typeparamref name="TOut"/>,
+        /// overriding data of an existing <paramref name="instance"/>.
+        /// </summary>
+        /// <typeparam name="TOut">An output type.</typeparam>
+        /// <param name="input">An input argument string.</param>
+        /// <param name="instance">An instance that the deserialized data will be written to.</param>
+        /// <param name="splitToken">A token that the data is separated with.</param>
+        /// <returns>The conversion result.</returns>
+        public ConvertResult<TOut> DeserializeTo<TOut>(string input, TOut instance, char splitToken) where TOut : notnull
         {
             if (input is null) throw new ConvertNullInputException(this);
             List<string> args = input.Split(splitToken).ToList();
@@ -183,7 +196,6 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation
             //if (rule is null)
             //    throw new Exception();
 
-            TOut arsHolder = new();
             var propsLinks = typeof(TOut).GetProperties()
                 .Where(x => x.GetCustomAttribute<BotActionArgumentAttribute>() is not null)
                 .ToDictionary(x => x.GetCustomAttribute<BotActionArgumentAttribute>()!.ArgIndex);
@@ -191,24 +203,24 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation
             string _exceptionMes = string.Empty;
             if (args.Count != propsLinks.Count)
                 _exceptionMes += Owner.ResolveDebugString("ai.display.ArgumentsCountMissMatch");
+            else
+                for (int i = 0; i < propsLinks.Count; i++)
+                {
+                    PropertyInfo prop = propsLinks[i];
+                    Type propType = prop.PropertyType;
+                    dynamic convertRule = Convert.ChangeType(
+                        GetType().GetMethod(nameof(ResolveTypeRule))!
+                        .MakeGenericMethod(propType).Invoke(this, null),
+                        typeof(ConvertRule<>).MakeGenericType(propType))!;
 
-            for (int i = 0; i < propsLinks.Count; i++)
-            {
-                PropertyInfo prop = propsLinks[i];
-                Type propType = prop.PropertyType;
-                dynamic convertRule = Convert.ChangeType(
-                    GetType().GetMethod(nameof(ResolveTypeRule))!
-                    .MakeGenericMethod(propType).Invoke(this, null),
-                    typeof(ConvertRule<>).MakeGenericType(propType))!;
-
-                var convertRes = convertRule.Converter(args[i]);
-                if (convertRes.ResultType == ConvertResultType.Ok)
-                    prop.SetValue(arsHolder, convertRes.Value);
-                else _exceptionMes += $"{convertRes.Message}\n";
-            }
+                    var convertRes = convertRule.Converter(args[i]);
+                    if (convertRes.ResultType == ConvertResultType.Ok)
+                        prop.SetValue(instance, convertRes.Value);
+                    else _exceptionMes += $"{convertRes.Message}\n";
+                }
 
             return string.IsNullOrEmpty(_exceptionMes)
-                ? ConvertResult<TOut>.OK(arsHolder)
+                ? ConvertResult<TOut>.OK(instance)
                 : ConvertResult<TOut>.Incorrect(_exceptionMes);
         }
         /// <summary>

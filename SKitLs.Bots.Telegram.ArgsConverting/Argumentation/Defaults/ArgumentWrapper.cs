@@ -13,13 +13,13 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Defaults
     /// </para>
     /// </summary>
     /// <typeparam name="T">Holding class.</typeparam>
-    public class ArgumentWrapper<T> where T : class
+    public class ArgumentWrapper<T> where T : notnull
     {
         /// <summary>
         /// Value that should be packed or unpacked.
         /// </summary>
         [BotActionArgument(0)]
-        public T Value { get; set; } = null!;
+        public T Value { get; set; } = default!;
 
         /// <summary>
         /// Creates a new instance of <see cref="ArgumentWrapper{T}"/> with default data.

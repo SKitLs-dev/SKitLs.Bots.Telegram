@@ -56,7 +56,7 @@ Before running the project, please ensure that you have the following dependenci
     2. Run command:
     
     ```
-    dotnet add package SKitLs.Utils.Loggers
+    dotnet add package SKitLs.Bots.Telegram.ArgedInteractions
     ```
 
 2. Using NuGet Packages Manager:
@@ -74,7 +74,7 @@ Before running the project, please ensure that you have the following dependenci
 
     To install the project by downloading the source code and directly linking it to your project, adhere to the following steps:
 
-    1. Visit the project repository on [GitHub](https://github.com/your-username/your-repo)
+    1. Visit the project repository on [GitHub page](https://github.com/Sargeras02/SKitLs.Bots.Telegram.git).
     2. Click on the "Code" button and select "Download ZIP" to download the project's source code as a zip archive.
     3. Extract the downloaded zip archive to the desired location on your local machine.
     4. Open your existing project or create a new one in your IDE.
@@ -84,6 +84,8 @@ Before running the project, please ensure that you have the following dependenci
 
 Please note that each method may have specific requirements or configurations that need to be followed for successful installation.
 Refer to the project's documentation for any additional steps or considerations.
+
+**Do not forget to download and install appropriate localization pack from GitHub.**
 
 ## Usage
 
@@ -108,7 +110,7 @@ Refer to the project's documentation for any additional steps or considerations.
 2. Creating an Argumented Action (ex. Callback)
 
     You can create specialized bot actions that support arguments using `IArgedAction<TArg, TUpdate>` classes
-    (BotArgedCommand<TArg>, BotArgedCallback<TArg>, BotArgedTextInput<TArg>).
+    (`BotArgedCommand<TArg>`, `BotArgedCallback<TArg>`, `BotArgedTextInput<TArg>`).
     This allows the bot to respond to user interactions with context-specific actions.
 
     Below is an example of creating an argumented callback:

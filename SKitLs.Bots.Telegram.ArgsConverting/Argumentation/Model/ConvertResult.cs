@@ -8,7 +8,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model
     /// Contains resulting value or exception message.
     /// </summary>
     /// <typeparam name="TOut">Target type of converting.</typeparam>
-    public class ConvertResult<TOut>
+    public class ConvertResult<TOut> where TOut : notnull
     {
         private TOut? _value;
         /// <summary>

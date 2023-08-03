@@ -4,6 +4,24 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <Version>$(AssemblyVersion)-alpha</Version>
+    <Title>$(AssemblyName)</Title>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>Sargeras02, SKit-Labs</Authors>
+    <Copyright>Copyright (C) Sargeras02 2023</Copyright>
+    <PackageProjectUrl>https://github.com/Sargeras02/SKitLs.Bots.Telegram.git</PackageProjectUrl>
+    <PackageTags>Telegram, Bots, Management, Processing</PackageTags>
+    <PackageReleaseNotes>Initial Alpha Release</PackageReleaseNotes>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>libIcon_bp.png</PackageIcon>
+    <Description>An extension project built upon the SKitLs.Bots.Telegram.Core Framework.
+
+Provides methods of creating bot processes with advanced textual input mechanics.</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,8 +31,46 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SKitLs.Bots.Telegram.Core\SKitLs.Bots.Telegram.Core.csproj" />
-    <ProjectReference Include="..\SKitLs.Bots.Telegram.Stateful\SKitLs.Bots.Telegram.Stateful.csproj" />
+    <None Remove="resources\locals\en.procs.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include=".obsolete\AcceptWrap.cs" />
+    <Compile Include=".obsolete\InputDefaults.cs" />
+    <Compile Include=".obsolete\InputProcess.cs" />
+    <Compile Include=".obsolete\InputProcessArgs.cs" />
+    <Compile Include=".obsolete\InputProcessResult.cs" />
+    <Compile Include=".obsolete\IProcessIntegratable.cs" />
+    <Compile Include=".obsolete\ProcNewWrapper.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\libIcon_bp.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SKitLs.Bots.Telegram.AdvancedMessages" Version="1.1.0" />
+    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.0.0" />
+    <PackageReference Include="SKitLs.Bots.Telegram.Stateful" Version="1.1.0" />
+    <PackageReference Include="Telegram.Bot" Version="19.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="resources\locals\en.procs.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="README.md">
+      <PackagePath>\</PackagePath>
+      <Pack>True</Pack>
+    </None>
   </ItemGroup>
 
 </Project>

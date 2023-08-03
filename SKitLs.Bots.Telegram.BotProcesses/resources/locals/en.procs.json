@@ -1,0 +1,13 @@
+{
+  "procs.display.ConfirmDefaultMessage": "Would you like to accept this?",
+
+  // External
+  "procs.exceptionCap.NoState": "State is not defined",
+  "procs.exceptionMes.NoState": "Process with id {0} does not define any state.",
+
+  // Inexternal
+  "procs.exceptionCap.NoRunning": "Process is not running",
+  "procs.exceptionMes.NoRunning": "Process with id {0} is not being run for user {1}."
+
+  // Internal
+}

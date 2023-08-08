@@ -2,6 +2,7 @@
 
 namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting
 {
+    // XML-Doc Update
     /// <summary>
     /// Represents a signed update. Determines an update that contains specific <see cref="IBotUser"/> sender.
     /// </summary>

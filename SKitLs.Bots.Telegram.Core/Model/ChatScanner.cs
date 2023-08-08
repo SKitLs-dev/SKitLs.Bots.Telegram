@@ -13,6 +13,7 @@ using TEnum = Telegram.Bot.Types.Enums;
 
 namespace SKitLs.Bots.Telegram.Core.Model
 {
+    // XML-Doc Update
     /// <summary>
     /// <see cref="ChatScanner"/> used for handling updates in different chats' types (<see cref="TEnum.ChatType"/>)
     /// such as: Private, Group, Supergroup or Channel.
@@ -39,7 +40,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// </summary>
         public BotManager Owner
         {
-            get => _owner ?? throw new NullOwnerException(GetType());
+            get => _owner ?? throw new NullOwnerException(this);
             set => _owner = value;
         }
         /// <summary>
@@ -214,7 +215,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <param name="requester">An object that has requested extraction.</param>
         /// <returns>Not-null instance of a sender.</returns>
         /// <exception cref="BotManagerException"></exception>
-        public static User GetSender(Update update, object? requester) => TryGetSender(update)
+        public static User GetSender(Update update, object requester) => TryGetSender(update)
             ?? throw new BotManagerException("cs.UserExtractError", requester, update.Id.ToString());
         /// <summary>
         /// Tries to extract sender instance of a type <see cref="User"/> from a raw server update.

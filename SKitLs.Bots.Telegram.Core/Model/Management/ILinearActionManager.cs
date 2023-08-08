@@ -1,11 +1,11 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model.Building;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
-using SKitLs.Bots.Telegram.Core.Model.Management.Integration;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Prototype;
 
 namespace SKitLs.Bots.Telegram.Core.Model.Management
 {
+    // XML-Doc Update
     /// <summary>
     /// An interface that provides complex logic for handling updates via <see cref="IBotAction"/>
     /// interactions. Stores interactions and delegates incoming updates to stored actions.
@@ -22,12 +22,5 @@ namespace SKitLs.Bots.Telegram.Core.Model.Management
         /// An internal storage used to store saved actions.
         /// </summary>
         public IList<IBotAction<TUpdate>> Actions { get; }
-
-        /// <summary>
-        /// Applies and integrates custom class that supports <see cref="IIntegratable{TUpdate}"/>.
-        /// </summary>
-        /// <param name="integration">An item to be integrated.</param>
-        [Obsolete("Will be removed in future versions. Use IApplicant instead.", true)]
-        public void Apply(IIntegratable<TUpdate> integration);
     }
 }

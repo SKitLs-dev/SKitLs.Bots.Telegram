@@ -4,6 +4,7 @@ using Telegram.Bot.Types.Enums;
 
 namespace SKitLs.Bots.Telegram.Core.Model.Building
 {
+    // XML-Doc Update
     /// <summary>
     /// Bot creating process enter point. <see cref="BotManager"/> class wizard constructor.
     /// </summary>
@@ -44,6 +45,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// Set <see langword="null"/> to use default.</param>
         public BotBuilder EnablePrivates(ChatDesigner? builder = null)
         {
+            // TODO : Don't force naming
             _botManager.PrivateChatUpdateHandler = builder?.Build() ?? new();
             _botManager.PrivateChatUpdateHandler.ChatType = ChatType.Private;
             _botManager.PrivateChatUpdateHandler.DebugName = nameof(_botManager.PrivateChatUpdateHandler);
@@ -111,10 +113,10 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         public BotManager Build(string? debugName = null)
         {
             _botManager.DebugName = debugName;
-            _botManager.ReflectiveCompile();
-            _botManager.CollectActionsBasket();
             _botManager.AddService(DebugSettings.Localizator);
             _botManager.AddService(DebugSettings.LocalLogger);
+            _botManager.ReflectiveCompile();
+            _botManager.CollectActionsBasket();
             return _botManager;
         }
     }

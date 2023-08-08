@@ -1,5 +1,6 @@
 ﻿namespace SKitLs.Bots.Telegram.Core.Prototype
 {
+    // XML-Doc Update
     /// <summary>
     /// Represents a general instance of bot user. Can be extended with additional functional.
     /// </summary>

@@ -19,6 +19,7 @@ using Telegram.Bot.Types.Enums;
 
 namespace SKitLs.Bots.Telegram.Core.Model
 {
+    // XML-Doc Update
     /// <summary>
     /// Main bot's manager. Receives updates, handles and delegates them to sub-managers.
     /// <para>
@@ -114,7 +115,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         }
         
         /// <summary>
-        /// Delivery Service used for sending messages <see cref="IBuildableMessage"/> to server.
+        /// Delivery Service used for sending messages <see cref="ITelegramMessage"/> to server.
         /// <para>
         /// <see cref="DefaultDeliveryService"/> by default.
         /// </para>
@@ -272,7 +273,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <param name="cancellationToken">Cancellation token.</param>
         private Task HandleErrorAsync(ITelegramBotClient client, Exception exception, CancellationToken cancellationToken)
         {
-            if (BotBuilder.DebugSettings.ShouldPrintExceptions)
+            if (BotBuilder.DebugSettings.LogExceptions)
                 BotBuilder.DebugSettings.LocalLogger.Log(exception);
             else BotBuilder.DebugSettings.LocalLogger.Error("Exception was handled.");
             return Task.CompletedTask;
@@ -286,7 +287,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <exception cref="BotManagerException"></exception>
         private async Task SubDelegateUpdate(Update update)
         {
-            if (BotBuilder.DebugSettings.ShouldPrintUpdates) BotBuilder.DebugSettings.LocalLogger.Log(update);
+            if (BotBuilder.DebugSettings.LogUpdates) BotBuilder.DebugSettings.LocalLogger.Log(update);
 
             long chatId = GetChatId(update, this);
             ChatType senderChatType = GetChatType(update, this);

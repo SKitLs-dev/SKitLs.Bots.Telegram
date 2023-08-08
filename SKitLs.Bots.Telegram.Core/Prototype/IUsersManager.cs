@@ -4,32 +4,34 @@ using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 namespace SKitLs.Bots.Telegram.Core.Prototype
 {
     /// <summary>
-    /// Provides methods of advanced manipulations with users' data.
+    /// Provides methods for advanced manipulation of users' data.
     /// </summary>
     public interface IUsersManager
     {
         /// <summary>
-        /// Occurs when signed update is handled. Passes user, that has been determined as a sender.
+        /// Event that occurs when a signed update is handled, passing the user identified as the sender.
         /// </summary>
         public UserDataChanged? SignedUpdateHandled { get; }
 
         /// <summary>
-        /// Asynchronously checks if user with <paramref name="telegramId"/> is registered.
+        /// Asynchronously checks whether a user with the specified <paramref name="telegramId"/> is registered.
         /// </summary>
-        /// <param name="telegramId">User's id.</param>
-        /// <returns><see langword="true"/> if user's data is defined. Otherwise <see langword="false"/></returns>
+        /// <param name="telegramId">The user's ID.</param>
+        /// <returns><see langword="true"/> if user data is defined, otherwise <see langword="false"/>.</returns>
         public Task<bool> IsUserRegisteredAsync(long telegramId);
+        
         /// <summary>
-        /// Asynchronously gets specified user data by its <paramref name="telegramId"/>.
+        /// Asynchronously retrieves user data for the specified <paramref name="telegramId"/>.
         /// </summary>
-        /// <param name="telegramId">User's id.</param>
-        /// <returns><see cref="IBotUser"/> if user is registered, otherwise <see langword="null"/>.</returns>
+        /// <param name="telegramId">The user's ID.</param>
+        /// <returns>An instance of <see cref="IBotUser"/> if the user is registered; otherwise, <see langword="null"/>.</returns>
         public Task<IBotUser?> GetUserByIdAsync(long telegramId);
+        
         /// <summary>
-        /// Asynchronously registries new user, using incoming <paramref name="update"/> data.
+        /// Asynchronously registers a new user using incoming <paramref name="update"/> data.
         /// </summary>
-        /// <param name="update">.</param>
-        /// <returns><see cref="IBotUser"/> if user is registered successfully, otherwise <see langword="null"/>.</returns>
+        /// <param name="update">The incoming update data used for user registration.</param>
+        /// <returns>An instance of <see cref="IBotUser"/> if the user is successfully registered; otherwise, <see langword="null"/>.</returns>
         public Task<IBotUser?> RegisterNewUserAsync(ICastedUpdate update);
     }
 }

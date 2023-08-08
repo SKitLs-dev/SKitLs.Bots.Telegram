@@ -3,6 +3,7 @@ using System.Globalization;
 
 namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
 {
+    // XML-Doc Update
     /// <summary>
     /// Abstract base class representing a default bot action for processing updates of type <typeparamref name="TUpdate"/>.
     /// Implements interfaces <see cref="IFormattable"/> and <see cref="IBotAction{TUpdate}"/>.

@@ -2,6 +2,7 @@
 
 namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
 {
+    // XML-Doc Update
     /// <summary>
     /// Default realization of <see cref="IBotAction"/>&lt;<see cref="SignedMessageTextUpdate"/>&gt;
     /// used for handling text inputs and executing them.
@@ -11,7 +12,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
         /// <summary>
         /// Determines whether case of input string should be ignored.
         /// </summary>
-        public bool IgnoreCase { get; init; }
+        public bool IgnoreCase { get; set; }
 
         /// <summary>
         /// Creates a new instance of a <see cref="DefaultTextInput"/> with specific data.

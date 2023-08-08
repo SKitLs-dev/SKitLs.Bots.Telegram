@@ -1,5 +1,6 @@
 ﻿namespace SKitLs.Bots.Telegram.Core.Exceptions.External
 {
+    // XML-Doc Update
     /// <summary>
     /// An exception which occurs when trying to resolve an item that does not exist.
     /// </summary>

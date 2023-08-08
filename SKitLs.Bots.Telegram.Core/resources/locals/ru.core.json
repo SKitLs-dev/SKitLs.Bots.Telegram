@@ -34,17 +34,17 @@
   "exceptionCap.NullSender": "Отправитель неопределён",
   "exceptionMes.NullSender": "Ошибка в сущности {0}: Отправитель не был определён.",
 
-  "exceptionCap.bm.ChatIdNotHandled": "[Bot Manager] - Chat's ID not handled",
-  "exceptionMes.bm.ChatIdNotHandled": "[{0}] Was not able to get Chat ID from update.",
-  "exceptionCap.bm.ChatNotHandled": "[Bot Manager] - Chat's type not handled",
-  "exceptionMes.bm.ChatNotHandled": "[{0}] Was not able to identify chat type by update.",
-  "exceptionCap.bm.ChatTypeNotSupported": "[Bot Manager] - Not supported chat type",
-  "exceptionMes.bm.ChatTypeNotSupported": "[{0}] Chat type of {1} is not supported.",
+  "exceptionCap.bm.ChatIdNotHandled": "[Bot Manager] - ID Чата не определён",
+  "exceptionMes.bm.ChatIdNotHandled": "[{0}] Не удалось получить ID чата из входящего обновления.",
+  "exceptionCap.bm.ChatNotHandled": "[Bot Manager] - Тип Чата не определён",
+  "exceptionMes.bm.ChatNotHandled": "[{0}] Не удалось получить тип чата из входящего обновления.",
+  "exceptionCap.bm.ChatTypeNotSupported": "[Bot Manager] - Тип чата не поддерживается",
+  "exceptionMes.bm.ChatTypeNotSupported": "[{0}] Чаты типа {1} не поддерживаются.",
 
-  "exceptionCap.cs.NullUpdateHandler": "[Chat Scanner] - Null update handler",
-  "exceptionMes.cs.NullUpdateHandler": "Handler for \"{1} Update\" is not implemented in '{0}'.",
-  "exceptionCap.cs.UserExtractError": "[Chat Scanner] - User extraction error",
-  "exceptionMes.cs.UserExtractError": "Was not able to extract user sender in {0} from update (id: {1}).",
-  "exceptionCap.cs.UserIdExtractError": "[Chat Scanner] - User's ID' extraction error",
-  "exceptionMes.cs.UserIdExtractError": "Was not able to extract user's ID in {0} from update (id: {1})."
+  "exceptionCap.cs.NullUpdateHandler": "[Chat Scanner] - Обработчик событий не определён",
+  "exceptionMes.cs.NullUpdateHandler": "Обработчик для обновлений типа \"{1} Update\" не определён в обработчике чатов '{0}'.",
+  "exceptionCap.cs.UserExtractError": "[Chat Scanner] - Ошибка получения пользователя",
+  "exceptionMes.cs.UserExtractError": "Не удалось получить объект пользователя из обновления в {0} (ID обновления: {1}).",
+  "exceptionCap.cs.UserIdExtractError": "[Chat Scanner] - Ошибка получения ID пользователя",
+  "exceptionMes.cs.UserIdExtractError": "Не удалось получить ID пользователя из обновления в {0} (ID обновления: {1})."
 }

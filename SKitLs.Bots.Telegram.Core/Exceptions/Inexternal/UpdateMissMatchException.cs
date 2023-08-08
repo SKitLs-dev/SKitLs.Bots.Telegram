@@ -1,5 +1,6 @@
 ﻿namespace SKitLs.Bots.Telegram.Core.Exceptions.Inexternal
 {
+    // XML-Doc Update
     /// <summary>
     /// Represents an exception that occurs when there is a mismatch in update processing.
     /// </summary>

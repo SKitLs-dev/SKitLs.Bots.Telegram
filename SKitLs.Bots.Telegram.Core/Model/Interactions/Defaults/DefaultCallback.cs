@@ -2,6 +2,7 @@
 
 namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
 {
+    // XML-Doc Update
     /// <summary>
     /// Default realization of <see cref="IBotAction"/>&lt;<see cref="SignedCallbackUpdate"/>&gt;
     /// used for handling callbacks and executing them.
@@ -11,7 +12,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
         /// <summary>
         /// Display label for inline keyboards markup.
         /// </summary>
-        public string Label { get; init; }
+        public string Label { get; set; }
 
         /// <summary>
         /// Creates a new instance of a <see cref="DefaultCallback"/> with specific data of <see cref="LabeledData"/>.

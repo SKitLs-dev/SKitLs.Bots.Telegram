@@ -5,6 +5,7 @@ using SKitLs.Bots.Telegram.Core.Prototype;
 
 namespace SKitLs.Bots.Telegram.Core.Model.Management
 {
+    // XML-Doc Update
     /// <summary>
     /// An interface that provides complex logic for handling updates via <see cref="IBotAction"/>
     /// interactions. Stores interactions and delegates incoming updates to stored actions.

@@ -3,6 +3,7 @@ using Telegram.Bot.Types;
 
 namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonym
 {
+    // XML-Doc Update
     /// <summary>
     /// Casted update that represents default message update. Anonymous.
     /// Signed as <see cref="Signed.SignedMessageUpdate"/>

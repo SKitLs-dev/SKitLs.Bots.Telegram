@@ -4,6 +4,7 @@ using SKitLs.Bots.Telegram.Core.Prototype;
 
 namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed
 {
+    // XML-Doc Update
     /// <summary>
     /// Casted update that represents text signed message update.
     /// Signed variant of a <see cref="AnonymMessageTextUpdate"/>

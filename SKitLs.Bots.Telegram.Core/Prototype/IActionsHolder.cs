@@ -2,6 +2,7 @@
 
 namespace SKitLs.Bots.Telegram.Core.Prototype
 {
+    // XML-Doc Update
     /// <summary>
     /// An interface that provides ways of collecting all <see cref="IBotAction"/>s,
     /// declared in a certain class.

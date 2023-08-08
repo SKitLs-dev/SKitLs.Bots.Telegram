@@ -1,5 +1,6 @@
 ﻿namespace SKitLs.Bots.Telegram.Core.Exceptions
 {
+    // XML-Doc Update
     /// <summary>
     /// Represents a base for project's exceptions. Contains information about exception's origin and its description
     /// localization keys.

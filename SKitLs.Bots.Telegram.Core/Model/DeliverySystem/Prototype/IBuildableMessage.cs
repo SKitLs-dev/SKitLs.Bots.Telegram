@@ -1,15 +1,18 @@
-﻿namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype
+﻿using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+
+namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype
 {
     /// <summary>
-    /// An interface that provides ways of getting message's text.
+    /// An interface that defines a message entity that can be dynamically built based on an update.
+    /// Classes implementing this interface can generate message content based on specific update data.
     /// </summary>
-    public interface IBuildableMessage : ICloneable
+    public interface IBuildableMessage
     {
         /// <summary>
-        /// Builds object's data and packs it into one text so it could be easily sent to server.
+        /// Asynchronously builds the message content based on the provided <paramref name="update"/>.
         /// </summary>
-        /// <returns>Valid text, ready to be sent.</returns>
-        [Obsolete("Will be replaced with IDynamic methods from *.AdvancedMessages")]
-        public string GetMessageText();
+        /// <param name="update">The update used to dynamically generate the message content.</param>
+        /// <returns>An <see cref="ITelegramMessage"/> instance with dynamically generated content.</returns>
+        public Task<ITelegramMessage> BuildContentAsync(ICastedUpdate update);
     }
 }

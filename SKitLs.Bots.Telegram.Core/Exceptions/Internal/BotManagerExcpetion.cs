@@ -1,5 +1,6 @@
 ﻿namespace SKitLs.Bots.Telegram.Core.Exceptions.Internal
 {
+    // XML-Doc Update
     /// <summary>
     /// An exception that represents an internal <see cref="SKTgException"/> exception.
     /// </summary>

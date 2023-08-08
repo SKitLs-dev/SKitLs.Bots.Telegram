@@ -2,6 +2,7 @@
 
 namespace SKitLs.Bots.Telegram.Core.Model.Interactions
 {
+    // XML-Doc Update
     /// <summary>
     /// An interface that provides typed definition for bot actions with
     /// <typeparamref name="TUpdate"/> handling delegate via

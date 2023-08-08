@@ -7,6 +7,7 @@ using Telegram.Bot.Types.Enums;
 
 namespace SKitLs.Bots.Telegram.Core.Model.Building
 {
+    // XML-Doc Update
     /// <summary>
     /// Chat Handler creating process enter point. <see cref="ChatScanner"/> class wizard constructor.
     /// Each chat handles update in a certain chat type <see cref="ChatType"/>.

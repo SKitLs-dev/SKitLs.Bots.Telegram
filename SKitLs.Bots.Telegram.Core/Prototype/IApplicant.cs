@@ -3,6 +3,7 @@ using SKitLs.Bots.Telegram.Core.Model.Management;
 
 namespace SKitLs.Bots.Telegram.Core.Prototype
 {
+    // XML-Doc Update
     /// <summary>
     /// Generic interface that provides methods of integrating external code to library interior.
     /// Can be implemented in your custom class, which could be applied to a custom <typeparamref name="T"/>.

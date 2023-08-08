@@ -7,7 +7,8 @@ using Telegram.Bot.Types.Enums;
 
 namespace SKitLs.Bots.Telegram.Core.Model
 {
-    public static class CustomLoggingExtension
+    // XML-Doc Update
+    internal static class CustomLoggingExtension
     {
         private static string NoTitle => "NoTitle";
         private static string NoUserTag => "NoTag";
@@ -45,7 +46,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
                 errorMes += $"\n{exception.Message} ({exception.Source})\n";
             }
 
-            if (BotBuilder.DebugSettings.ShouldPrintExceptionTrace)
+            if (BotBuilder.DebugSettings.LogExceptionTrace)
                 errorMes += $"\n{exception.StackTrace}";
             
             logger.Error(errorMes);

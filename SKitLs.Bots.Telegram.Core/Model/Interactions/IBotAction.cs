@@ -1,5 +1,6 @@
 ﻿namespace SKitLs.Bots.Telegram.Core.Model.Interactions
 {
+    // XML-Doc Update
     /// <summary>
     /// An interface that provides generic definition for bot actions.
     /// <para>

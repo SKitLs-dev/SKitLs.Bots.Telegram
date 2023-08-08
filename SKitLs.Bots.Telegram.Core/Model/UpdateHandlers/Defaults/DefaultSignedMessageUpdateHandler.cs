@@ -9,6 +9,7 @@ using Telegram.Bot.Types.Enums;
 
 namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.Defaults
 {
+    // XML-Doc Update
     /// <summary>
     /// Default realization for <see cref="IUpdateHandlerBase"/>&lt;<see cref="SignedMessageUpdate"/>&gt;.
     /// Uses a system of sub-<see cref="IUpdateHandlerBase"/> for different message content such as:
@@ -25,7 +26,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.Defaults
         /// </summary>
         public BotManager Owner
         {
-            get => _owner ?? throw new NullOwnerException(GetType());
+            get => _owner ?? throw new NullOwnerException(this);
             set => _owner = value;
         }
         /// <summary>

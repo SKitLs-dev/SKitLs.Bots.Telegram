@@ -2,6 +2,7 @@
 
 namespace SKitLs.Bots.Telegram.Core.Exceptions.Inexternal
 {
+    // XML-Doc Update
     /// <summary>
     /// An exception which occurs when <see cref="IOwnerCompilable"/> class has not determined its owner
     /// during reflective compilation.

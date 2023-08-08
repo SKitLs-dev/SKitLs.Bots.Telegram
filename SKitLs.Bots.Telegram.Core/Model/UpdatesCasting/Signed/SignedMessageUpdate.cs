@@ -5,6 +5,7 @@ using Telegram.Bot.Types;
 
 namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed
 {
+    // XML-Doc Update
     /// <summary>
     /// Casted update that represents default signed message update.
     /// Signed variant of a <see cref="Anonym.AnonymMessageUpdate"/>

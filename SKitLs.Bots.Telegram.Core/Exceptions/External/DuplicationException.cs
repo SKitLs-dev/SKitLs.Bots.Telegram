@@ -1,5 +1,6 @@
 ﻿namespace SKitLs.Bots.Telegram.Core.Exceptions.External
 {
+    // XML-Doc Update
     /// <summary>
     /// An exception which occurs on attempt of adding a new item with an existing id.
     /// </summary>

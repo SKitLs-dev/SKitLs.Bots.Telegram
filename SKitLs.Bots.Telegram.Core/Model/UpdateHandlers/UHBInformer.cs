@@ -7,6 +7,7 @@ using SKitLs.Bots.Telegram.Core.Prototype;
 
 namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers
 {
+    // XML-Doc Update
     /// <summary>
     /// Default informer class that should inform sender about incoming update.
     /// Only use for debugging purposes.
@@ -21,7 +22,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers
         /// </summary>
         public BotManager Owner
         {
-            get => _owner ?? throw new NullOwnerException(GetType());
+            get => _owner ?? throw new NullOwnerException(this);
             set => _owner = value;
         }
         /// <summary>
@@ -92,7 +93,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers
         {
             string mes = $"Handled update (by {nameof(UHBInformer<TUpdate>)}): {UpdateName}";
             if (UseLogger) { Owner.LocalLogger.Log(mes); }
-            if (InformInChat) await Owner.DeliveryService.SendMessageToChatAsync(mes, update.ChatId);
+            if (InformInChat) await Owner.DeliveryService.SendMessageToChatAsync(update.ChatId, mes);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace SKitLs.Bots.Telegram.Core.Model.Interactions
 {
+    // XML-Doc Update
     /// <summary>
     /// Represents a data structure for storing labeled information used in callbacks.
     /// </summary>

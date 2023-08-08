@@ -4,6 +4,7 @@ using SKitLs.Bots.Telegram.Core.Prototype;
 
 namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers
 {
+    // XML-Doc Update
     /// <summary>
     /// An interface that determines common mechanisms for updates handling.
     /// <para>

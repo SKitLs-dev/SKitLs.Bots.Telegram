@@ -1,5 +1,6 @@
 ﻿namespace SKitLs.Bots.Telegram.Core.Exceptions.Internal
 {
+    // XML-Doc Update
     /// <summary>
     /// An exception which occurs when an update was not casted properly.
     /// </summary>

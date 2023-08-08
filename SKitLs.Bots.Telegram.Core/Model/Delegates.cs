@@ -1,19 +1,30 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.Interactions;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+﻿using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Prototype;
 
 namespace SKitLs.Bots.Telegram.Core.Model
 {
     /// <summary>
-    /// Represents <see cref="IBotAction{TUpdate}"/> holding async action.
+    /// A delegate representing an asynchronous interaction between a bot and an update of type <typeparamref name="TUpdate"/>.
     /// </summary>
-    /// <typeparam name="TUpdate">Specific casted update that this action should work with.</typeparam>
-    /// <param name="update">An incoming update.</param>
+    /// <typeparam name="TUpdate">The type of update parameter.</typeparam>
+    /// <param name="update">The update used as input for the interaction.</param>
+    /// <returns>An asynchronous task representing the bot's interaction with the update.</returns>
     public delegate Task BotInteraction<TUpdate>(TUpdate update) where TUpdate : ICastedUpdate;
 
     /// <summary>
-    /// Represents specified async delegate that gets <see cref="IBotUser"/> as a parameter.
+    /// A delegate representing an asynchronous task that operates on an update of type <typeparamref name="TUpdate"/>
+    /// and returns a result of type <typeparamref name="TOut"/>.
     /// </summary>
-    /// <param name="user">User that has been modified.</param>
+    /// <typeparam name="TUpdate">The type of update parameter.</typeparam>
+    /// <typeparam name="TOut">The type of the result returned by the task.</typeparam>
+    /// <param name="update">The update used as input for the task.</param>
+    /// <returns>An asynchronous task that returns a result of type <typeparamref name="TOut"/>.</returns>
+    public delegate Task<TOut> UpdateBasedTask<TUpdate, TOut>(TUpdate update) where TUpdate : ICastedUpdate;
+
+    /// <summary>
+    /// A delegate representing an asynchronous event of user data change for an <see cref="IBotUser"/>.
+    /// </summary>
+    /// <param name="user">The user whose data has changed.</param>
+    /// <returns>An asynchronous task representing the handling of user data change.</returns>
     public delegate Task UserDataChanged(IBotUser user);
 }

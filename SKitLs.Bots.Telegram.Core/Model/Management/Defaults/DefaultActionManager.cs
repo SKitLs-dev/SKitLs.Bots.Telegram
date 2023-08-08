@@ -2,11 +2,11 @@
 using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.Core.Model.Building;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
-using SKitLs.Bots.Telegram.Core.Model.Management.Integration;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 
 namespace SKitLs.Bots.Telegram.Core.Model.Management.Defaults
 {
+    // XML-Doc Update
     /// <summary>
     /// Default realization of <see cref="ILinearActionManager{TUpdate}"/>. Provides simple architecture
     /// with linear iteration searcher and one-of-many
@@ -20,13 +20,18 @@ namespace SKitLs.Bots.Telegram.Core.Model.Management.Defaults
         /// </summary>
         public string? DebugName { get; set; }
 
+        /// <summary>
+        /// Determines whether <see cref="DefaultActionManager{TUpdate}"/> should break iterator after first matched action was executed.
+        /// </summary>
+        public bool OnlyOneAction { get; set; }
+
         private BotManager? _owner;
         /// <summary>
         /// Instance's owner.
         /// </summary>
         public BotManager Owner
         {
-            get => _owner ?? throw new NullOwnerException(GetType());
+            get => _owner ?? throw new NullOwnerException(this);
             set => _owner = value;
         }
         /// <summary>
@@ -66,13 +71,6 @@ namespace SKitLs.Bots.Telegram.Core.Model.Management.Defaults
             .ForEach(act => AddSafely(act));
 
         /// <summary>
-        /// Applies and integrates custom class that supports <see cref="IIntegratable{TUpdate}"/>.
-        /// </summary>
-        /// <param name="integration">An item to be integrated.</param>
-        [Obsolete("Will be removed in future versions. Use IApplicant instead.", true)]
-        public void Apply(IIntegratable<TUpdate> integration) => AddRangeSafely(integration.GetActionsList());
-
-        /// <summary>
         /// Manages incoming update, delegating it to one of a stored actions.
         /// </summary>
         /// <param name="update">Update to be handled.</param>
@@ -82,7 +80,8 @@ namespace SKitLs.Bots.Telegram.Core.Model.Management.Defaults
                 if (callback.ShouldBeExecutedOn(update))
                 {
                     await callback.Action(update);
-                    break;
+                    if (OnlyOneAction)
+                        break;
                 }
         }
 

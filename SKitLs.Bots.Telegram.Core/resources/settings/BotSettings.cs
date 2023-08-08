@@ -23,6 +23,8 @@ namespace SKitLs.Bots.Telegram.Core.resources.Settings
         /// </summary>
         public Func<string, string> GetCommandText { get; set; }
 
+        public bool MakeDeliverySafe { get; set; } = true;
+
         /// <summary>
         /// Creates a new instance of a <see cref="BotSettings"/> that used in <see cref="BotManager"/>.
         /// </summary>

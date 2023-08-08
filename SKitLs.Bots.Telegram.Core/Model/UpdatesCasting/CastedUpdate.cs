@@ -3,6 +3,7 @@ using Telegram.Bot.Types.Enums;
 
 namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting
 {
+    // XML-Doc Update
     /// <summary>
     /// Default realization of an <see cref="ICastedUpdate"/>.
     /// Provides basic detalization of a raw server's update. Wrapper of a raw <see cref="Update"/>.

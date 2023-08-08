@@ -2,6 +2,7 @@
 
 namespace SKitLs.Bots.Telegram.Core.Model
 {
+    // XML-Doc Update
     /// <summary>
     /// Default realization of <see cref="IBotUser"/> interface. Provides basics for proper update handling.
     /// </summary>

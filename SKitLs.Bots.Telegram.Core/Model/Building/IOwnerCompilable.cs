@@ -2,6 +2,7 @@
 
 namespace SKitLs.Bots.Telegram.Core.Model.Building
 {
+    // XML-Doc Update
     /// <summary>
     /// An interface that used in the reflective bot compilation <see cref="BotManager.ReflectiveCompile"/>.
     /// Provides methods of specifying a certain instance of a <see cref="BotManager"/> class as the class's owner.

@@ -2,6 +2,8 @@
 
 The core module of the SKitLs.Bots.Telegram Framework.
 
+First time here? Jump to [Quick Start](#quick-start)
+
 ## Description
 
 SKitLs.Bots.Telegram.Core is a central package of the SKitLs.Bots.Telegram framework, providing essential mechanics for interfacing with the Telegram API.
@@ -24,6 +26,7 @@ to focus on implementing bot logic without the hassle of handling low-level API 
 ### Requirements
 
 - Telegram.Bot 19.0.0 or higher
+- SKitLs.Utils.Localizations 2.2.0 or higher
 - SKitLs.Utils.LocalLoggers 1.3.0 or higher
 
 Before running the project, please ensure that you have the following dependencies installed and properly configured in your development environment.
@@ -67,13 +70,13 @@ Before running the project, please ensure that you have the following dependenci
 Please note that each method may have specific requirements or configurations that need to be followed for successful installation.
 Refer to the project's documentation for any additional steps or considerations.
 
+**Do not forget to download and install appropriate localization pack from GitHub.**
+
 ## Usage
 
-See [GitHub page](https://github.com/Sargeras02/SKitLs.Bots.Telegram.git) for more information.
+### Localizations
 
-### Setup
-
-Each project supports localized debugging. Some of them requires specific language packages.
+Framework Core and each of its extensions supports localized debugging. Some of them requires specific language packages.
 You can find them in [GitHub's](https://github.com/Sargeras02/SKitLs.Bots.Telegram.git) locals folder.
 
 Place locals in "resources/locals" or update localization path.
@@ -83,85 +86,97 @@ BotBuilder.DebugSettings.DebugLanguage = LangKey.EN;
 BotBuilder.DebugSettings.UpdateLocalsPath("path/to/data");
 ```
 
-### Examples
+### Quick Start
 
-1. Quick Start
+```C#
+static async Task Main(string[] args)
+{
+    var privateMessages = new DefaultSignedMessageUpdateHandler();
+    var privateTexts = new DefaultSignedMessageTextUpdateHandler
+    {
+        CommandsManager = new DefaultActionManager<SignedMessageTextUpdate>()
+    };
+    privateTexts.CommandsManager.AddSafely(StartCommand);
+    privateMessages.TextMessageUpdateHandler = privateTexts;
+   
+    ChatDesigner privates = ChatDesigner.NewDesigner()
+        .UseMessageHandler(privateMessages);
+   
+    await BotBuilder.NewBuilder("YOUR_TOKEN")
+        .EnablePrivates(privates)
+        .Build()
+        .Listen();
+}
+
+private static DefaultCommand StartCommand => new("start", Do_StartAsync);
+private static async Task Do_StartAsync(SignedMessageTextUpdate update)
+{
+    await update.Owner.DeliveryService.AnswerSenderAsync("Hello, world!", update);
+}
+```
+
+### Add more Actions
+
+```C#
+private static DefaultCommand StartCommand => new("start", Do_StartAsync);
+private static async Task Do_StartAsync(SignedMessageTextUpdate update)
+{
+    await update.Owner.DeliveryService.AnswerSenderAsync("Hello, world!", update);
+    // OR if certain chat is needed
+    await update.Owner.DeliveryService.SendMessageToChatAsync(update.ChatId, "Hello, world!", update);
+}
+    
+private static DefaultCommand ExitInput => new("Exit bot!", Do_ExitAsync);
+private static DefaultCommand ExitCommand => new("exit", Do_ExitAsync);
+private static async Task Do_ExitAsync(SignedMessageTextUpdate update)
+{
+    // Access sent message
+    DeliveryResponse response = await update.Owner.DeliveryService.AnswerSenderAsync("Exiting...", update);
+    TelegramTextMessage message = new("Precess is completed.");
+    message.AllowSendingWithoutReply = true;
+    if (response.Success)
+    {
+        // Reply to message
+        message.ReplyToMessageId = response.SentMessage.MessageId;
+    }
+    await update.Owner.DeliveryService.AnswerSenderAsync(message, update);
+}
+
+private static DefaultCallback HelloCallback => new("helloCB", Do_HelloAsync);
+private static async Task Do_HelloAsync(SignedCallbackUpdate update)
+{
+    // Acces Telegram.Bot bot instance if necessary
+    await update.Owner.Bot.EditMessageTextAsync(update.TriggerMessageId, "Updated Body!")
+}
+```
+
+_You can use [SKitLs.Bots.Telegram.AdvancedMessages](https://www.nuget.org/packages/SKitLs.Bots.Telegram.AdvancedMessages/) package to get better messaging experience._
+
+### Use services
+    
+* Add service to bot
 
     ```C#
-    static async Task Main(string[] args)
-    {
-        var privateMessages = new DefaultSignedMessageUpdateHandler();
-        var privateTexts = new DefaultSignedMessageTextUpdateHandler
-        {
-            CommandsManager = new DefaultActionManager<SignedMessageTextUpdate>()
-        };
-        privateTexts.CommandsManager.AddSafely(StartCommand);
-        privateMessages.TextMessageUpdateHandler = privateTexts;
-   
-        ChatDesigner privates = ChatDesigner.NewDesigner()
-            .UseMessageHandler(privateMessages);
-   
-        await BotBuilder.NewBuilder("YOUR_TOKEN")
-            .EnablePrivates(privates)
-            .Build()
-            .Listen();
-    }
-
-    private static DefaultCommand StartCommand => new("start", Do_StartAsync);
-    private static async Task Do_StartAsync(SignedMessageTextUpdate update)
-    {
-        await update.Owner.DeliveryService.ReplyToSender("Hello, world!", update);
-    }
+    // ...
+    await BotBuilder.NewBuilder("YOUR_TOKEN")
+        .EnablePrivates(privates)
+        .AddServices<ISomeService>(new DefaultSomeService())
+        .Build()
+        .Listen();
     ```
 
-2. Add More Actions
-
-    ```C#
-    private static DefaultCommand StartCommand => new("start", Do_StartAsync);
-    private static async Task Do_StartAsync(SignedMessageTextUpdate update)
-    {
-        await update.Owner.DeliveryService.ReplyToSender("Hello, world!", update);
-    }
-    
-    private static DefaultCommand ExitInput => new("Exit bot!", Do_ExitAsync);
-    private static DefaultCommand ExitCommand => new("exit", Do_ExitAsync);
-    private static async Task Do_ExitAsync(SignedMessageTextUpdate update)
-    {
-        await update.Owner.DeliveryService.ReplyToSender("I'm Done!", update);
-    }
-
-    private static DefaultCallback HelloCallback => new("helloCB", Do_HelloAsync);
-    private static async Task Do_HelloAsync(SignedCallbackUpdate update)
-    {
-        // Acces Telegram.Bot bot instance if necessary
-        await update.Owner.Bot.EditMessageTextAsync(update.TriggerMessageId, "Updated Body!")
-    }
-    ```
-
-    _You can use SKitLs.Bots.Telegram.AdvancedMessages package to get better messaging experience._
-
-3. Use Services
-    
-    * Add service to bot
-
-        ```C#
-        await BotBuilder.NewBuilder("YOUR_TOKEN")
-            .EnablePrivates(privates)
-            .AddServices<ISomeService>(new SomeService())
-            .Build()
-            .Listen();
-        ```
-
-    * Resolve one when needed
+* Resolve one when needed
         
-        ```C#
-        private static DefaultCommand StartCommand => new("start", Do_StartAsync);
-        private static async Task Do_StartAsync(SignedMessageTextUpdate update)
-        {
-            var someService = update.Owner.ResolveService<ISomeService>();
-            await update.Owner.DeliveryService.ReplyToSender(someService.GetContentFor(update.Text), update);
-        }
-        ```
+    ```C#
+    private static DefaultCommand StartCommand => new("start", Do_StartAsync);
+    private static async Task Do_StartAsync(SignedMessageTextUpdate update)
+    {
+        var someService = update.Owner.ResolveService<ISomeService>();
+        await update.Owner.DeliveryService.AnswerSenderAsync(someService.GetContentFor(update.Text), update);
+    }
+    ```
+
+Visit [GitHub page](https://github.com/Sargeras02/SKitLs.Bots.Telegram.git) for more information.
 
 ## Contributors
 
@@ -184,7 +199,7 @@ Copyright (C) Sargeras02 2023
 For any issues related to the project, please feel free to reach out to us through the project's GitHub page.
 We welcome bug reports, feedback, and any other inquiries that can help us improve the project.
 
-You can also contact the project owner directly via their GitHub profile at the following [link](https://github.com/Sargeras02).
+You can also contact the project owner directly via their GitHub profile at the [following link](https://github.com/Sargeras02) or email: skitlsdev@gmail.com
 
 Your collaboration and support are highly appreciated, and we will do our best to address any concerns or questions promptly and professionally.
 Thank you for your interest in our project.

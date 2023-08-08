@@ -2,6 +2,7 @@
 
 namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
 {
+    // XML-Doc Update
     /// <summary>
     /// Default realization of <see cref="IBotAction"/>&lt;<see cref="SignedMessageTextUpdate"/>&gt;
     /// used for handling commands and executing them.

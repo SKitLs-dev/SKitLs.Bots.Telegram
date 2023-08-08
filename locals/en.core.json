@@ -16,32 +16,37 @@
   "exceptionMes.ItemNotDefined": "Item of a type {1} ({2}) is not defined in {0}.",
   "exceptionCap.LocalSystemMissmatch": "Missmatch in Local System",
   "exceptionMes.LocalSystemMissmatch": "Logger's Localizator doesn't match with 'localizator' param.",
-  "exceptionCap.NullOrEmptyId": "Null Id Exception",
+  "exceptionCap.NullOrEmptyId": "Null-Id Exception",
   "exceptionMes.NullOrEmptyId": "An error occured in {0} instance: an item of a type {1} has null or empty id.",
   "exceptionCap.ServiceNotDefined": "Service not defined",
-  "exceptionMes.ServiceNotDefined": "Service of a type {0} is not defined. Try BotBuilder.AddService<T>().",
+  "exceptionMes.ServiceNotDefined": "An error occured in {0} instance: service of a type {1} is not defined. Try BotBuilder.AddService<T>().",
+
   "exceptionCap.UHBCasting": "Update casting error in UHBInformer",
   "exceptionMes.UHBCasting": "Unsafe class was used and raised an error. In casting update: {0} (id: {1}).",
 
   // Inexternal
   "exceptionCap.NullOwner": "Null Owner",
-  "exceptionMes.NullOwner": "Was not able to access an owner of a type {0}.",
+  "exceptionMes.NullOwner": "Was not able to access an owner for an object '{0}'.",
+  "exceptionCap.UpdateMissMatch": "Update miss match",
+  "exceptionMes.UpdateMissMatch": "An error occured in {0} instance: update of a type {1} was expected, but {2} was received.",
 
   // Internal
+  "exceptionCap.UpdateCasting": "Update casting error",
+  "exceptionMes.UpdateCasting": "Error in casting update: {1} (id: {0}).",
+  "exceptionCap.NullSender": "Null sender",
+  "exceptionMes.NullSender": "An error occured in {0} instance: sender was null.",
+
   "exceptionCap.bm.ChatIdNotHandled": "[Bot Manager] - Chat's ID not handled",
-  "exceptionMes.bm.ChatIdNotHandled": "Was not able to get Chat ID from update.",
+  "exceptionMes.bm.ChatIdNotHandled": "[{0}] Was not able to get Chat ID from update.",
   "exceptionCap.bm.ChatNotHandled": "[Bot Manager] - Chat's type not handled",
-  "exceptionMes.bm.ChatNotHandled": "Was not able to identify chat type by update.",
+  "exceptionMes.bm.ChatNotHandled": "[{0}] Was not able to identify chat type by update.",
   "exceptionCap.bm.ChatTypeNotSupported": "[Bot Manager] - Not supported chat type",
-  "exceptionMes.bm.ChatTypeNotSupported": "Chat type of {0} is not supported.",
+  "exceptionMes.bm.ChatTypeNotSupported": "[{0}] Chat type of {1} is not supported.",
 
   "exceptionCap.cs.NullUpdateHandler": "[Chat Scanner] - Null update handler",
-  "exceptionMes.cs.NullUpdateHandler": "Handler for \"{1} Update\" is not implemented in {0}.",
+  "exceptionMes.cs.NullUpdateHandler": "Handler for \"{1} Update\" is not implemented in '{0}'.",
   "exceptionCap.cs.UserExtractError": "[Chat Scanner] - User extraction error",
   "exceptionMes.cs.UserExtractError": "Was not able to extract user sender in {0} from update (id: {1}).",
   "exceptionCap.cs.UserIdExtractError": "[Chat Scanner] - User's ID' extraction error",
-  "exceptionMes.cs.UserIdExtractError": "Was not able to extract user's ID in {0} from update (id: {1}).",
-
-  "exceptionCap.UpdateCasting": "Update casting error",
-  "exceptionMes.UpdateCasting": "Error in casting update: {0} (id: {1})."
+  "exceptionMes.cs.UserIdExtractError": "Was not able to extract user's ID in {0} from update (id: {1})."
 }

@@ -1,21 +1,21 @@
 ﻿namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model
 {
     /// <summary>
-    /// Represents a specified converting rule, used for converting incoming <see cref="string"/> data
-    /// to custom object of a type <typeparamref name="TOut"/>.
+    /// Represents a specific conversion rule used for converting incoming <see cref="string"/> data
+    /// to a custom object of type <typeparamref name="TOut"/>.
     /// </summary>
-    /// <typeparam name="TOut">Targeted result type.</typeparam>
+    /// <typeparam name="TOut">The targeted result type for the conversion.</typeparam>
     public sealed class ConvertRule<TOut> : ConvertRule where TOut : notnull
     {
         /// <summary>
-        /// An instruction of converting input <see cref="string"/> to <typeparamref name="TOut"/>.
+        /// An instruction for converting input <see cref="string"/> to <typeparamref name="TOut"/>.
         /// </summary>
         public Func<string, ConvertResult<TOut>> Converter { get; private set; }
 
         /// <summary>
-        /// Creates a new instance of a <see cref="ConvertRule"/> with a specified data.
+        /// Creates a new instance of the <see cref="ConvertRule"/> class with the specified data.
         /// </summary>
-        /// <param name="converter">An instruction of converting input <see cref="string"/> to <typeparamref name="TOut"/>.</param>
+        /// <param name="converter">An instruction for converting input <see cref="string"/> to <typeparamref name="TOut"/>.</param>
         public ConvertRule(Func<string, ConvertResult<TOut>> converter) : base(typeof(TOut))
         {
             Converter = converter;

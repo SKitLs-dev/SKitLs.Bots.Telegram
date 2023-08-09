@@ -4,6 +4,8 @@ An extension project built upon the SKitLs.Bots.Telegram.Core Framework.
 
 Provides a structured and efficient mechanism for the serialization and deserialization of textual data
 
+Need a boost? Jump to [Usage](#usage) section!
+
 ## Description
 
 SKitLs.Bots.Telegram.ArgedInteractions is an extension project built upon the SKitLs.Bots.Telegram.Core Framework.
@@ -41,7 +43,7 @@ Key Features:
 
 ### Requirements
 
-- SKitLs.Bots.Telegram.Core 2.0.0 or higher
+- SKitLs.Bots.Telegram.Core 2.1.0 or higher
 - Telegram.Bot 19.0.0 or higher
 
 Before running the project, please ensure that you have the following dependencies installed and properly configured in your development environment.
@@ -89,62 +91,64 @@ Refer to the project's documentation for any additional steps or considerations.
 
 ## Usage
 
-1. Registering Custom Serialization Rule
+### Registering Custom Serialization Rule
 
-    To serialize specific types of data in a Telegram bot, you can register custom serialization rules using the
-    `IArgsSerializeService` interface. This allows the bot to handle complex data structures effectively.
+To serialize specific types of data in a Telegram bot, you can register custom serialization rules using the
+`IArgsSerializeService` interface. This allows the bot to handle complex data structures effectively.
  
-    Here's an example of registering a custom serialization rule for a custom data type:
+Here's an example of registering a custom serialization rule for a custom data type:
 
-    ```C#
-    IArgsSerializeService argsSerializeService = new DefaultArgsSerializeService();
-    argsSerializeService.AddRule<MyCustomDataType>(input =>
-    {
-        MyCustomDataType customDataInstance;
-        // Custom logic to convert the string input into MyCustomDataType
-        // ... (implementation details)
-        return ConvertResult<MyCustomDataType>.Success(customDataInstance);
-    });
-    ```
+```C#
+IArgsSerializeService argsSerializeService = new DefaultArgsSerializeService();
+argsSerializeService.AddRule<MyCustomDataType>(input =>
+{
+    MyCustomDataType customDataInstance;
+    // Custom logic to convert the string input into MyCustomDataType
+    // ... (implementation details)
+    return ConvertResult<MyCustomDataType>.Success(customDataInstance);
+});
+```
 
-2. Creating an Argumented Action (ex. Callback)
+### Creating an Argumented Action (ex. Callback)
 
-    You can create specialized bot actions that support arguments using `IArgedAction<TArg, TUpdate>` classes
-    (`BotArgedCommand<TArg>`, `BotArgedCallback<TArg>`, `BotArgedTextInput<TArg>`).
-    This allows the bot to respond to user interactions with context-specific actions.
+You can create specialized bot actions that support arguments using `IArgedAction<TArg, TUpdate>` classes
+(`BotArgedCommand<TArg>`, `BotArgedCallback<TArg>`, `BotArgedTextInput<TArg>`).
+This allows the bot to respond to user interactions with context-specific actions.
 
-    Below is an example of creating an argumented callback:
+Below is an example of creating an argumented callback:
 
-    ```C#
-    LabeledData labeledData = new LabeledData("This is label", "argedCallbackId");
-    BotArgedInteraction<MyCustomDataType, SignedCallbackUpdate> customArgAction = async (args, update) =>
-    {
-        // Custom logic to handle the callback with the provided arguments
-        // ... (implementation details)
-    };
+```C#
+LabeledData labeledData = new LabeledData("This is label", "argedCallbackId");
+BotArgedInteraction<MyCustomDataType, SignedCallbackUpdate> customArgAction = async (args, update) =>
+{
+    // Custom logic to handle the callback with the provided arguments
+    // ... (implementation details)
+};
 
-    // Creating the BotArgedCallback instance
-    BotArgedCallback<MyCustomDataType> argedCallback = new BotArgedCallback<MyCustomDataType>(labeledData, customArgAction);
-    ```
+// Creating the BotArgedCallback instance
+BotArgedCallback<MyCustomDataType> argedCallback = new BotArgedCallback<MyCustomDataType>(labeledData, customArgAction);
+```
 
-    And implement it into Telegram.Bot.InlineKeyboardMarkup with:
+And implement it into Telegram.Bot.InlineKeyboardMarkup with:
 
-    ```C#
-    MyCustomDataType data = new(...);
-    var callbackData = argedCallback.GetSerializedData(data, argsSerializeService);
-    _ = InlineKeyboardMarkup.WithCallbackData(argedCallback.Label, callbackData);
-    ```
+```C#
+MyCustomDataType data = new(...);
+var callbackData = argedCallback.GetSerializedData(data, argsSerializeService);
+_ = InlineKeyboardMarkup.WithCallbackData(argedCallback.Label, callbackData);
+```
 
-    Or (if using `*.AdvancedMessages` Framework Extension) via menus:
+Or (if using `*.AdvancedMessages` Framework Extension) via menus:
 
-    ```C#
-    var menu = new PairedInlineMenu()
-    {
-        Serializer = argsSerializeService
-    };
-    menu.Add(argedCallback, data);
-    IReplyMarkup markup = menu.GetMarkup();
-    ```
+```C#
+var menu = new PairedInlineMenu()
+{
+    Serializer = argsSerializeService
+};
+menu.Add(argedCallback, data);
+IReplyMarkup markup = menu.GetMarkup();
+```
+
+_You can use [SKitLs.Bots.Telegram.AdvancedMessages](https://www.nuget.org/packages/SKitLs.Bots.Telegram.AdvancedMessages/) package to get better messaging experience._
 
 ## Contributors
 
@@ -167,7 +171,7 @@ Copyright (C) Sargeras02 2023
 For any issues related to the project, please feel free to reach out to us through the project's GitHub page.
 We welcome bug reports, feedback, and any other inquiries that can help us improve the project.
 
-You can also contact the project owner directly via their GitHub profile at the following [link](https://github.com/Sargeras02).
+You can also contact the project owner directly via their GitHub profile at the [following link](https://github.com/Sargeras02) or email: skitlsdev@gmail.com
 
 Your collaboration and support are highly appreciated, and we will do our best to address any concerns or questions promptly and professionally.
 Thank you for your interest in our project.

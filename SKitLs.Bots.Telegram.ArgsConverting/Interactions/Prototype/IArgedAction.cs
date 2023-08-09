@@ -8,51 +8,47 @@ using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 namespace SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Prototype
 {
     /// <summary>
-    /// Provides mechanics of realization specific bot actions <see cref="IBotAction{TUpdate}"/> that contains arguments.
-    /// Arguments are being deserialized and unpacked during runtime automatically.
+    /// Provides mechanics for implementing specific bot actions <see cref="IBotAction{TUpdate}"/> that involve arguments.
+    /// Arguments are automatically deserialized and unpacked during runtime.
     /// </summary>
-    /// <typeparam name="TArg"></typeparam>
-    /// <typeparam name="TUpdate"></typeparam>
-    public interface IArgedAction<TArg, TUpdate> : IBotAction<TUpdate> where TUpdate : ICastedUpdate
+    /// <typeparam name="TArg">The type representing the action's arguments.</typeparam>
+    /// <typeparam name="TUpdate">The type of the incoming update.</typeparam>
+    public interface IArgedAction<TArg, TUpdate> : IBotAction<TUpdate> where TUpdate : ICastedUpdate where TArg : notnull
     {
         /// <summary>
-        /// Represents specific token that action's data is split with.
-        /// <para>
-        /// Example: <c>';'</c> token by default for <see cref="BotArgedCallback{TArg}"/> so its data is
-        /// <c>'callbackName;arg1;arg2;arg3'</c>.
-        /// </para>
+        /// Represents the specific token that the action's data is split with.
         /// </summary>
         public char SplitToken { get; }
 
         /// <summary>
-        /// An action that should be executed on update.
+        /// The action that should be executed on the update.
         /// </summary>
         public BotArgedInteraction<TArg, TUpdate> ArgAction { get; }
 
         /// <summary>
-        /// Deserializes an incoming string data to get a specific <typeparamref name="TArg"/> instance with
-        /// unpacked received data.
+        /// Deserializes the incoming string data to obtain a specific <typeparamref name="TArg"/> instance
+        /// with unpacked received data.
         /// </summary>
-        /// <param name="update">An incoming update.</param>
-        /// <param name="serializer">Bot's serialization service.</param>
-        /// <returns>Result of converting attempt.</returns>
+        /// <param name="update">The incoming update.</param>
+        /// <param name="serializer">The bot's serialization service.</param>
+        /// <returns>The result of the conversion attempt.</returns>
         public ConvertResult<TArg> DeserializeArgs(TUpdate update, IArgsSerializeService serializer);
 
         /// <summary>
-        /// Serializes <paramref name="data"/>'s properties marked with <see cref="BotActionArgumentAttribute"/>
-        /// with rules provided by <paramref name="serializer"/>.
+        /// Serializes the properties of <paramref name="data"/> marked with <see cref="BotActionArgumentAttribute"/>
+        /// using the rules provided by <paramref name="serializer"/>.
         /// </summary>
-        /// <param name="data">An argument object that should be serialized.</param>
-        /// <param name="serializer">Bot's serialization service.</param>
-        /// <returns>Serialized <paramref name="data"/>.</returns>
+        /// <param name="data">The argument object to be serialized.</param>
+        /// <param name="serializer">The bot's serialization service.</param>
+        /// <returns>The serialized <paramref name="data"/>.</returns>
         public string SerializeArgs(TArg data, IArgsSerializeService serializer);
 
         /// <summary>
-        /// Generates ready-to-use <see cref="string"/>.
+        /// Generates a ready-to-use <see cref="string"/>.
         /// </summary>
-        /// <param name="data">An argument object that should be serialized.</param>
-        /// <param name="serializer">Bot's serialization service.</param>
-        /// <returns>Ready-to-use <see cref="string"/> that can be used as actor.</returns>
+        /// <param name="data">The argument object to be serialized.</param>
+        /// <param name="serializer">The bot's serialization service.</param>
+        /// <returns>A ready-to-use <see cref="string"/> that can be used as an actor.</returns>
         public string GetSerializedData(TArg data, IArgsSerializeService serializer);
     }
 }

@@ -4,18 +4,18 @@ using SKitLs.Bots.Telegram.Core.Exceptions;
 namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model
 {
     /// <summary>
-    /// Represents a converting result for <see cref="ConvertRule{TOut}"/>.
-    /// Contains resulting value or exception message.
+    /// Represents a conversion result for the <see cref="ConvertRule{TOut}"/> class.
+    /// Contains either the resulting value or an exception message.
     /// </summary>
-    /// <typeparam name="TOut">Target type of converting.</typeparam>
+    /// <typeparam name="TOut">The target type of the conversion.</typeparam>
     public class ConvertResult<TOut> where TOut : notnull
     {
         private TOut? _value;
         /// <summary>
-        /// Represents the value that has been gotten in the result of <see cref="ConvertRule{TOut}"/> work.
-        /// Throws Null Exception if value <see langword="null"/>.
+        /// Represents the value that has been obtained as a result of the <see cref="ConvertRule{TOut}"/> operation.
+        /// Throws a <see cref="ArgedInterException"/> if the value is <see langword="null"/>.
         /// </summary>
-        /// <exception cref="ArgedInterException"></exception>
+        /// <exception cref="ArgedInterException">Thrown when the value is null.</exception>
         public TOut Value
         {
             get => _value ?? throw new ArgedInterException("ConvertNullValue", SKTEOriginType.Inexternal, this);
@@ -23,35 +23,37 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model
         }
 
         /// <summary>
-        /// Represents a targeted result type.
+        /// Represents the targeted result type for the conversion.
         /// </summary>
         public Type ValueType => typeof(TOut);
+
         /// <summary>
-        /// Represents converting result type.
+        /// Represents the type of the conversion result.
         /// </summary>
         public ConvertResultType ResultType { get; private init; }
+
         /// <summary>
-        /// Contains a message that describes converting result.
+        /// Contains a message that describes the conversion result.
         /// </summary>
         public string ResultMessage { get; private init; }
 
         /// <summary>
-        /// Creates a new instance of a type <see cref="ConvertResult{TOut}"/> with a specified data.
+        /// Creates a new instance of the <see cref="ConvertResult{TOut}"/> class with the specified data.
         /// </summary>
-        /// <param name="resultType">Converting result type.</param>
-        /// <param name="message">A message that describes converting result.</param>
+        /// <param name="resultType">The type of the conversion result.</param>
+        /// <param name="message">A message that describes the conversion result.</param>
         public ConvertResult(ConvertResultType resultType, string? message = null)
         {
             ResultType = resultType;
-            ResultMessage = message ?? nameof(resultType);
+            ResultMessage = message ?? Enum.GetName(resultType) ?? "Unknown";
         }
         /// <summary>
-        /// Initializes a new instance of a type <see cref="ConvertResult{TOut}"/> with a specified data.
+        /// Initializes a new instance of the <see cref="ConvertResult{TOut}"/> class with the specified data.
         /// </summary>
-        /// <param name="resultType">Converting result type.</param>
-        /// <param name="message">Message that describes converting result.</param>
-        /// <param name="value">Value that has been gotten in the result of converting.</param>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <param name="value">The value obtained from the conversion.</param>
+        /// <param name="resultType">The type of the conversion result.</param>
+        /// <param name="message">A message that describes the conversion result.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the value is null.</exception>
         public ConvertResult(TOut value, ConvertResultType resultType = ConvertResultType.Ok, string? message = null)
             : this(resultType, message) => Value = value ?? throw new ArgumentNullException(nameof(value));
 

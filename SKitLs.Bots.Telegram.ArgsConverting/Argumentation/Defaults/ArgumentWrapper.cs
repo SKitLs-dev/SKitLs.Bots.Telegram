@@ -5,30 +5,30 @@ using SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Prototype;
 namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Defaults
 {
     /// <summary>
-    /// Special wrapper used for wrapping custom classes to integrate them into <see cref="IArgedAction{TArg, TUpdate}"/>
-    /// as serializable argument.
+    /// Special wrapper designed for encapsulating custom classes with no public parameterless constructors
+    /// to integrate them into <see cref="IArgedAction{TArg, TUpdate}"/> as serializable arguments.
     /// <para>
-    /// Specific <see cref="ConvertRule{TOut}"/> for <typeparamref name="T"/> should be defined in your
+    /// A specific <see cref="ConvertRule{TOut}"/> for <typeparamref name="T"/> should be defined in your
     /// <see cref="IArgsSerializeService"/>.
     /// </para>
     /// </summary>
-    /// <typeparam name="T">Holding class.</typeparam>
+    /// <typeparam name="T">The type of the encapsulated class.</typeparam>
     public class ArgumentWrapper<T> where T : notnull
     {
         /// <summary>
-        /// Value that should be packed or unpacked.
+        /// The value that should be packed or unpacked.
         /// </summary>
         [BotActionArgument(0)]
         public T Value { get; set; } = default!;
 
         /// <summary>
-        /// Creates a new instance of <see cref="ArgumentWrapper{T}"/> with default data.
+        /// Creates a new instance of the <see cref="ArgumentWrapper{T}"/> class with default data.
         /// </summary>
         public ArgumentWrapper() { }
         /// <summary>
-        /// Creates a new instance of <see cref="ArgumentWrapper{T}"/> with specific data.
+        /// Creates a new instance of the <see cref="ArgumentWrapper{T}"/> class with specific data.
         /// </summary>
-        /// <param name="value">Value of the holding data.</param>
+        /// <param name="value">The value of the encapsulated data.</param>
         public ArgumentWrapper(T value) => Value = value;
     }
 }

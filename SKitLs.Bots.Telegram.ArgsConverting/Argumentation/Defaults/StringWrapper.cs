@@ -3,33 +3,33 @@
 namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Defaults
 {
     /// <summary>
-    /// The <see cref="StringWrapper"/> class is a special wrapper used to encapsulate <see cref="string"/> data and
+    /// The <see cref="StringWrapper"/> class is a specialized wrapper designed to encapsulate <see cref="string"/> data and
     /// integrate it into the <see cref="IArgedAction{TArg, TUpdate}"/> interface as a serializable argument.
     /// <para>
-    /// It is a specific solution designed as an implementation of the <see cref="ArgumentWrapper{T}"/> for strings.
+    /// This class is a specific solution created as an implementation of the <see cref="ArgumentWrapper{T}"/> for strings.
     /// </para>
     /// </summary>
     public class StringWrapper : ArgumentWrapper<string>
     {
         /// <summary>
-        /// Creates a new instance of <see cref="StringWrapper"/> with default data.
+        /// Creates a new instance of the <see cref="StringWrapper"/> class with default data.
         /// </summary>
         public StringWrapper() : base(string.Empty) { }
         /// <summary>
-        /// Creates a new instance of <see cref="StringWrapper"/> with specific data.
+        /// Creates a new instance of the <see cref="StringWrapper"/> class with specific data.
         /// </summary>
-        /// <param name="value">Value of the holding data.</param>
+        /// <param name="value">The value of the encapsulated data.</param>
         public StringWrapper(string value) : base(value) { }
 
         /// <summary>
-        /// implicit operator for StringWrapper => string
+        /// Defines an implicit operator for converting <see cref="StringWrapper"/> to <see cref="string"/>.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">The <see cref="StringWrapper"/> instance to convert.</param>
         public static implicit operator StringWrapper(string value) => new(value);
         /// <summary>
-        /// implicit operator for string => StringWrapper
+        /// Defines an implicit operator for converting <see cref="string"/> to <see cref="StringWrapper"/>.
         /// </summary>
-        /// <param name="source"></param>
+        /// <param name="source">The <see cref="string"/> instance to wrap.</param>
         public static implicit operator string(StringWrapper source) => source.Value;
     }
 }

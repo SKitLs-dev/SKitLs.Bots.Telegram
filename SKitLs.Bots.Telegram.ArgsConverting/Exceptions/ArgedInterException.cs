@@ -1,4 +1,5 @@
-﻿using SKitLs.Bots.Telegram.Core.Exceptions;
+﻿using SKitLs.Bots.Telegram.ArgedInteractions.resources.settings;
+using SKitLs.Bots.Telegram.Core.Exceptions;
 
 namespace SKitLs.Bots.Telegram.ArgedInteractions.Exceptions
 {
@@ -12,7 +13,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Exceptions
         /// <summary>
         /// Gets or sets the extension prefix used for localization keys.
         /// </summary>
-        public static string ExtensionLocalPrefix { get; set; } = "ai";
+        public static string ExtensionLocalPrefix { get; set; } = SKaiSettings.ExtensionPrefix;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ArgedInterException"/> class with the specified parameters.
@@ -20,7 +21,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Exceptions
         /// <param name="localKey">A string representing the local key for the exception message.</param>
         /// <param name="originType">The origin type of the exception.</param>
         /// <param name="sender">The object that caused the exception.</param>
-        /// <param name="format">Optional. Array of format strings used for the exception message.</param>
+        /// <param name="format"><b>Optional.</b> Array of format strings used for the exception message.</param>
         public ArgedInterException(string localKey, SKTEOriginType originType, object sender, params string?[] format)
             : base($"{ExtensionLocalPrefix}.{localKey}", originType, sender, format) { }
     }

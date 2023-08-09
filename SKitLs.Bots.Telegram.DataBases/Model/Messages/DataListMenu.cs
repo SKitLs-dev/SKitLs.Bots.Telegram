@@ -1,6 +1,6 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus;
 using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
-using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting;
+using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.DataBases.Model.Args;
 using SKitLs.Bots.Telegram.DataBases.Prototype;
@@ -18,7 +18,7 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Messages
         private PaginationInfo Paging { get; set; }
 
         public DataListMenu(IDataManager owner, IBotDataSet dataSet) : this(owner, dataSet, dataSet.Pagination) { }
-        public DataListMenu(IDataManager owner, IBotDataSet dataSet, PaginationInfo paging) : this(owner, dataSet.GetAll(), paging, dataSet.Properties.AllowAdd) { }
+        public DataListMenu(IDataManager owner, IBotDataSet dataSet, PaginationInfo paging) : this(owner, dataSet.GetAllDisplayable(), paging, dataSet.Properties.AllowAdd) { }
         public DataListMenu(IDataManager owner, IList<IBotDisplayable> data, PaginationInfo paging, bool allowAdd)
         {
             Owner = owner;
@@ -41,7 +41,7 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Messages
         public IMesMenu Build(IBotPage? previous, IBotPage owner, ISignedUpdate update)
         {
             var mm  = Owner.Owner.ResolveService<IMenuManager>();
-            var serializer = Owner.Owner.ResolveService<IArgsSerilalizerService>();
+            var serializer = Owner.Owner.ResolveService<IArgsSerializeService>();
             var res = new PairedInlineMenu()
             {
                 ColumnsCount = 2,
@@ -49,17 +49,17 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Messages
             };
 
             Data.ForEach(x => res.Add(x.ListLabel(),
-                Owner.OpenObjCallback.GetSerializedData(new(Paging, x.BotArgId), serializer), true));
+                Owner.OpenObjectCallback.GetSerializedData(new(Paging, x.BotArgId), serializer), true));
 
             if (AllowAdd)
-                res.Add(Owner.AddCallback, Paging);
+                res.Add(Owner.AddNewCallback, Paging);
 
             if (Paging.StartIndex > 0)
-                res.Add("<<<", Owner.OpenCallback.GetSerializedData(Paging.Prev(), serializer));
+                res.Add("<<<", Owner.OpenDatabaseCallback.GetSerializedData(Paging.Prev(), serializer));
             if (Paging.StartIndex + Paging.Count < SourceSize)
-                res.Add(">>>", Owner.OpenCallback.GetSerializedData(Paging.Next(), serializer));
+                res.Add(">>>", Owner.OpenDatabaseCallback.GetSerializedData(Paging.Next(), serializer));
             if (previous is not null)
-                res.Add("<< Назад", mm.BackCallabck.GetSerializedData(), true);
+                res.Add("<< Назад", mm.BackCallback.GetSerializedData(), true);
             
             return res;
         }

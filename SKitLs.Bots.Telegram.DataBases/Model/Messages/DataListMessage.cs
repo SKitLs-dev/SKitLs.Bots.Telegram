@@ -1,17 +1,18 @@
-﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages;
+﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text;
 using SKitLs.Bots.Telegram.DataBases.Model.Args;
 using SKitLs.Bots.Telegram.DataBases.Prototype;
 
 namespace SKitLs.Bots.Telegram.DataBases.Model.Messages
 {
-    internal class DataListMessage : OutputMessageDecorText
+    internal class DataListMessage : OMDText
     {
         public DataListMessage(IBotDataSet dataSet) : this(dataSet, dataSet.Pagination) { }
-        public DataListMessage(IBotDataSet dataSet, PaginationInfo paging) : this(dataSet.GetAll(), paging, dataSet.Properties.AllowReadRows) { }
-        public DataListMessage(IList<IBotDisplayable> data, bool allowReadRows) : this(data, new(), allowReadRows) { }
-        public DataListMessage(IList<IBotDisplayable> data, PaginationInfo paging, bool allowReadRows) : base(BuildListBody(data, paging, allowReadRows))
+        public DataListMessage(IBotDataSet dataSet, PaginationInfo paging)
+            : this(dataSet.GetAllDisplayable(), dataSet.Properties.MainPageHeader, paging, dataSet.Properties.AllowReadRows) { }
+        public DataListMessage(IList<IBotDisplayable> data, string header, bool allowReadRows) : this(data, header, new(), allowReadRows) { }
+        public DataListMessage(IList<IBotDisplayable> data, string header, PaginationInfo paging, bool allowReadRows = true) : base(BuildListBody(data, paging, allowReadRows))
         {
-            Header = "База данных";
+            Header = header;
         }
 
         private static string BuildListBody(IList<IBotDisplayable> data, PaginationInfo pagination, bool allowReadRows)

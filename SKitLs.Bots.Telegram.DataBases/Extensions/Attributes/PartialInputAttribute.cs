@@ -1,4 +1,4 @@
-﻿namespace SKitLs.Bots.Telegram.DataBases.Prototype.Attributes
+﻿namespace SKitLs.Bots.Telegram.DataBases.Extensions.Attributes
 {
     public abstract class BotInputPropAttribute : Attribute
     {

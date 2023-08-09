@@ -1,16 +1,19 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
-using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Prototype;
+using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Prototype;
+using SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Prototype;
+using SKitLs.Bots.Telegram.BotProcesses.Prototype;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype.Processes;
+using SKitLs.Bots.Telegram.Core.Model.Building;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.DataBases.Model;
 using SKitLs.Bots.Telegram.DataBases.Model.Args;
+using SKitLs.Bots.Telegram.PageNavs.Prototype;
 
 namespace SKitLs.Bots.Telegram.DataBases.Prototype
 {
-    public interface IBotDataSet : IArgPackable, IBotDisplayable
+    public interface IBotDataSet : IOwnerCompilable, IArgPackable, IBotDisplayable
     {
-        public IDataManager Owner { get; set; }
-
         /// <summary>
         /// Type of stored data
         /// </summary>
@@ -23,28 +26,30 @@ namespace SKitLs.Bots.Telegram.DataBases.Prototype
         public PaginationInfo Pagination { get; }
         public List<IBotProcess> DefinedProcesses { get; }
 
-        /// <summary>
-        /// Page used for displaying data. Use null for defaults.
-        /// </summary>
-        public void OverrideMainPage(IOutputMessage message);
+        public int Count { get; }
 
-        public List<IBotDisplayable> GetAll();
+        public List<IBotDisplayable> GetContextSubsetDisplayable(ISignedUpdate update);
+        public List<IBotDisplayable> GetUserSubsetDisplayable(long telegramId);
+        public IBotDisplayable FirstDisplayable();
+
+        public List<IBotDisplayable> GetAllDisplayable();
         /// <summary>
         /// Tries to get data by id
         /// </summary>
-        /// <param name="bid"></param>
+        /// <param name="bid">.</param>
         /// <returns></returns>
         public IBotDisplayable? TryGetExisting(long bid);
         /// <summary>
         /// Gets data by id
         /// </summary>
-        /// <param name="bid"></param>
+        /// <param name="bid">.</param>
         /// <returns></returns>
         public IBotDisplayable GetExisting(long bid);
 
-        public Task DisplayDataObjectAsync(ObjInfoArg args, SignedCallbackUpdate update);
+        public Task DisplayObjectDataAsync(ObjInfoArg args, SignedCallbackUpdate update);
         public Task LaunchAddProcessAsync(PaginationInfo args, SignedCallbackUpdate update);
         public Task LaunchEditProcessAsync(ObjInfoArg args, SignedCallbackUpdate update);
-        public Task ExecuteRemoveAsync(ObjInfoArg args, SignedCallbackUpdate update);
+        public Task LaunchRemoveProcessAsync(ObjInfoArg args, SignedCallbackUpdate update);
+        public string ResolveStatus(ProcessCompleteStatus status, DbActionType action);
     }
 }

@@ -8,7 +8,7 @@
         /// <summary>
         /// Used to display full object information
         /// </summary>
-        /// <param name="args"></param>
+        /// <param name="args">.</param>
         /// <returns></returns>
         public string FullDisplay(params string[] args);
         /// <summary>

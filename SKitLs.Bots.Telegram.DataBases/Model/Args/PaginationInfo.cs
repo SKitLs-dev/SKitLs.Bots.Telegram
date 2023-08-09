@@ -1,6 +1,5 @@
-﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Prototype;
+﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Prototype;
 using SKitLs.Bots.Telegram.DataBases.Prototype;
-using SKitLs.Bots.Telegram.PageNavs.Prototype;
 
 namespace SKitLs.Bots.Telegram.DataBases.Model.Args
 {

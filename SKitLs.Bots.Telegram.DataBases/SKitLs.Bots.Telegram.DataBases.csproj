@@ -4,17 +4,41 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageTags>Framework, Telegram, Bots, Databases, CRM</PackageTags>
+    <Version>$(AssemblyVersion)-alpha</Version>
+    <Title>$(AssemblyName)</Title>
+    <Authors>Sargeras02, SKit-Labs</Authors>
+    <Copyright>Copyright (C) Sargeras02 2023</Copyright>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/Sargeras02/SKitLs.Bots.Telegram.git</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SKitLs.Bots.Telegram.BotProcesses\SKitLs.Bots.Telegram.BotProcesses.csproj" />
-    <ProjectReference Include="..\SKitLs.Bots.Telegram.Core\SKitLs.Bots.Telegram.Core.csproj" />
-    <ProjectReference Include="..\SKitLs.Bots.Telegram.PageNavs\SKitLs.Bots.Telegram.PageNavs.csproj" />
-    <ProjectReference Include="..\SKitLs.Bots.Telegram.Stateful\SKitLs.Bots.Telegram.Stateful.csproj" />
+    <Folder Include="Exceptions\External\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Exceptions\External\" />
+    <PackageReference Include="SKitLs.Bots.Telegram.AdvancedMessages" Version="1.1.0" />
+    <PackageReference Include="SKitLs.Bots.Telegram.ArgedInteractions" Version="1.3.1" />
+    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.0.1" />
+    <PackageReference Include="SKitLs.Bots.Telegram.PageNavs" Version="1.4.0" />
+    <PackageReference Include="SKitLs.Bots.Telegram.Stateful" Version="1.1.0" />
+    <PackageReference Include="Telegram.Bot" Version="19.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SKitLs.Bots.Telegram.BotProcesses\SKitLs.Bots.Telegram.BotProcesses.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

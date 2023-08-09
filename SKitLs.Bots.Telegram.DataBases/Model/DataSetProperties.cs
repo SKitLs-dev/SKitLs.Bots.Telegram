@@ -9,7 +9,14 @@ namespace SKitLs.Bots.Telegram.DataBases.Model
         /// </summary>
         public string DataSetLabel { get; }
         public int PaginationCount { get; set; }
-        public IOutputMessage? MainPageBody { get; set; }
+        private string? _mainPageHeader;
+        public string MainPageHeader
+        {
+            get => _mainPageHeader ?? DataSetLabel;
+            set => _mainPageHeader = value;
+        }
+
+        // TODO : Probably add (ISigneUpdate) dependency
         public bool AllowReadRows { get; set; } = true;
         public bool AllowAdd { get; set; } = true;
         public bool ConfirmAdd { get; set; } = true;
@@ -19,11 +26,11 @@ namespace SKitLs.Bots.Telegram.DataBases.Model
         public bool ConfirmRemove { get; set; } = true;
         internal bool AllowExit { get; set; } = true;
 
-        public DataSetProperties(string dataSetLabel, int paginationCount = 5, IOutputMessage? mainPageBody = null)
+        public DataSetProperties(string dataSetLabel, int paginationCount = 5, string? mainPageHeader = null)
         {
             DataSetLabel = dataSetLabel ?? throw new ArgumentNullException(nameof(dataSetLabel));
             PaginationCount = paginationCount;
-            MainPageBody = mainPageBody;
+            MainPageHeader = mainPageHeader;
         }
     }
 }

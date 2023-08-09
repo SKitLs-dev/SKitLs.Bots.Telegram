@@ -1,9 +1,9 @@
-﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Prototype;
+﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Prototype;
 using SKitLs.Bots.Telegram.DataBases.Prototype;
 
 namespace SKitLs.Bots.Telegram.DataBases.Model.Args
 {
-    public class DtoWrapArg<T> where T : IBotDisplayable
+    public class DtoArg<T> where T : IBotDisplayable
     {
         [BotActionArgument(0)]
         public IBotDataSet DataSet { get; set; } = null!;
@@ -11,8 +11,8 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Args
         [BotActionArgument(1)]
         public long DataId { get; set; }
 
-        public DtoWrapArg() { }
-        public DtoWrapArg(T obj, IBotDataSet ds)
+        public DtoArg() { }
+        public DtoArg(T obj, IBotDataSet ds)
         {
             DataSet = ds;
             DataId = obj.BotArgId;

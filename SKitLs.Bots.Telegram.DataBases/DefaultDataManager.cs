@@ -1,14 +1,20 @@
-﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting;
-using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Model;
+﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages;
+using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation;
+using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model;
 using SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Model;
-using SKitLs.Bots.Telegram.BotProcesses.Prototype;
+using SKitLs.Bots.Telegram.BotProcesses.Model.Defaults;
+using SKitLs.Bots.Telegram.Core.Exceptions.External;
 using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.Core.Model;
+using SKitLs.Bots.Telegram.Core.Model.Building;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
+using SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults;
 using SKitLs.Bots.Telegram.Core.Model.Management;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
+using SKitLs.Bots.Telegram.Core.Prototype;
 using SKitLs.Bots.Telegram.DataBases.Model;
 using SKitLs.Bots.Telegram.DataBases.Model.Args;
+using SKitLs.Bots.Telegram.DataBases.Model.Datasets;
 using SKitLs.Bots.Telegram.DataBases.Model.Messages;
 using SKitLs.Bots.Telegram.DataBases.Prototype;
 using SKitLs.Bots.Telegram.PageNavs;
@@ -16,29 +22,45 @@ using SKitLs.Bots.Telegram.PageNavs.Model;
 using SKitLs.Bots.Telegram.PageNavs.Prototype;
 using SKitLs.Bots.Telegram.Stateful.Model;
 using SKitLs.Bots.Telegram.Stateful.Prototype;
+using Settings = SKitLs.Bots.Telegram.DataBases.resources.settings.SkDBSettings;
 
 namespace SKitLs.Bots.Telegram.DataBases
 {
     /// <summary>
-    /// The default realization of <see cref="IDataManager"/> that realises all the basic functional.
+    /// The default realization of <see cref="IDataManager"/> that realizes all the basic functional.
     /// </summary>
-    public class DefaultDataManager : IDataManager
+    public sealed class DefaultDataManager : IDataManager
     {
         private BotManager? _owner;
         public BotManager Owner
         {
-            get => _owner ?? throw new NullOwnerException(GetType());
+            get => _owner ?? throw new NullOwnerException(this);
             set => _owner = value;
         }
         public Action<object, BotManager>? OnCompilation => OnReflectiveCompile;
 
+        public string? DatabaseLabel { get; set; }
+
         private IMenuManager MenuManager => Owner.ResolveService<IMenuManager>();
 
-        public string SourceSetId => "system.source";
-        public BotDataSet<IBotDataSet> SourceSet { get; set; }
+        /// <summary>
+        /// The id used for main dataset that storages all other datasets.
+        /// </summary>
+        public static string SourceSetId => Settings.SourceSetId;
+        /// <summary>
+        /// The main dataset that storages all other datasets.
+        /// </summary>
+        public IBotDataSet<IBotDataSet> SourceSet { get; private init; }
 
-        public DefaultDataManager()
+        public DefaultDataManager(string? databaseLabel = null)
         {
+            OpenDatabaseCallback = new(Settings.OpenDatabaseCallbackId, Settings.OpenDatabaseLK, Do_OpenDbPageAsync);
+            OpenObjectCallback = new(Settings.OpenObjectCallbackId, Settings.OpenObjectLK, Do_OpenObjectAsync);
+            AddNewCallback = new(Settings.AddNewCallbackId, Settings.AddNewLK, Do_AddProcessAsync);
+            EditExistingCallback = new(Settings.EditExistingCallbackId, Settings.EditExistingLK, Do_EditProcessAsync);
+            RemoveExistingCallback = new(Settings.RemoveExistingCallbackId, Settings.RemoveExistingLK, Do_RemoveAsync);
+
+            DatabaseLabel = databaseLabel;
             var props = new DataSetProperties(SourceSetId, 0)
             {
                 AllowAdd = false,
@@ -46,32 +68,38 @@ namespace SKitLs.Bots.Telegram.DataBases
                 AllowExit = false,
                 AllowRemove = false,
             };
-            SourceSet = new BotDataSet<IBotDataSet>(SourceSetId);
+            SourceSet = new BotDataSet<IBotDataSet>(SourceSetId, properties: props);
         }
 
-        public async Task Add(IBotDataSet dataSet)
-        {
-            dataSet.Owner = this;
-            await SourceSet.AddAsync(dataSet, null);
-        }
-        // TODO
-        public IBotDataSet GetSet(long setId) => (IBotDataSet)SourceSet.GetExisting(setId);
-        public IBotDataSet GetSet(string setNameId) => SourceSet.GetAll()
+        public List<IBotDataSet> GetAll() => SourceSet.GetAll();
+        public async Task AddAsync(IBotDataSet dataSet) => await SourceSet.AddAsync(dataSet, null);
+        public IBotDataSet GetSet(long setId) => TryGetSet(setId)
+            ?? throw new NotDefinedException(this, typeof(IBotDataSet), setId.ToString());
+        public IBotDataSet? TryGetSet(long setId) => (IBotDataSet?)SourceSet.TryGetExisting(setId);
+
+        public IBotDataSet GetSet(string setNameId) => TryGetSet(setNameId)
+            ?? throw new NotDefinedException(this, typeof(IBotDataSet), setNameId);
+        public IBotDataSet? TryGetSet(string setNameId) => SourceSet.GetAllDisplayable()
             .Cast<IBotDataSet>()
             .ToList()
-            .Find(x => x.DataSetId == setNameId)
-            ?? throw new Exception();
-        public IBotDataSet GetSet(Type setType) => SourceSet.GetAll()
+            .Find(x => x.DataSetId == setNameId);
+
+        public IBotDataSet GetSet(Type setType) => TryGetSet(setType)
+            ?? throw new NotDefinedException(this, typeof(IBotDataSet), setType.Name);
+        public IBotDataSet? TryGetSet(Type setType) => SourceSet.GetAllDisplayable()
             .Cast<IBotDataSet>()
             .ToList()
-            .Find(x => x.DataType == setType)
-            ?? throw new Exception();
-        public IBotDataSet<T> GetSet<T>() where T : class, IBotDisplayable => (IBotDataSet<T>)GetSet(typeof(T));
-        public List<T> GetMergedData<T>() => SourceSet.GetAll()
+            .Find(x => x.DataType == setType);
+
+        public IBotDataSet<T> GetSet<T>() where T : class, IBotDisplayable => TryGetSet<T>()
+            ?? throw new NotDefinedException(this, typeof(IBotDataSet), typeof(T).Name);
+        public IBotDataSet<T>? TryGetSet<T>() where T : class, IBotDisplayable => (IBotDataSet<T>?)TryGetSet(typeof(T));
+
+        public List<T> GetMergedData<T>() => SourceSet.GetAllDisplayable()
             .Cast<IBotDataSet>()
             .ToList()
             .FindAll(x => typeof(T).IsAssignableFrom(x.DataType))
-            .SelectMany(x => x.GetAll())
+            .SelectMany(x => x.GetAllDisplayable())
             .Cast<T>()
             .ToList();
 
@@ -79,74 +107,101 @@ namespace SKitLs.Bots.Telegram.DataBases
         {
             var display = new DataListMessage(SourceSet);
             var dataMenu = new DataSetsMenu(this);
-            var dataPage = new StaticPage("dtmngtPage", "Управление данными", display)
-            {
-                Menu = dataMenu,
-            };
+            var dataPage = new WidgetPage(Settings.RootPage_Id, u => DatabaseLabel ?? u.Owner.ResolveBotString(Settings.RootPage_LabelLK), new DynamicMessage(u => display), dataMenu);
             return dataPage;
         }
-
-        public BotArgedCallback<PaginationInfo> OpenCallback => new("dtmng", "{open set}", OpenDbPageAsync);
-        private async Task OpenDbPageAsync(PaginationInfo args, SignedCallbackUpdate update)
+        public List<IBotAction> GetActionsContent() => new()
         {
-            var display = new DataListMessage(args.DataSet, args);
-            var dataMenu = new DataListMenu(this, args.DataSet, args);
-            var dataPage = new StaticPage("tmppage", args.DataSet.Properties.DataSetLabel, display)
-            {
-                Menu = dataMenu,
-            };
+            OpenDatabaseCallback,
+            OpenObjectCallback,
+            AddNewCallback,
+            EditExistingCallback,
+            RemoveExistingCallback,
+        };
+
+        public BotArgedCallback<PaginationInfo> OpenDatabaseCallback { get; }
+        private async Task Do_OpenDbPageAsync(PaginationInfo args, SignedCallbackUpdate update)
+        {
+            var ds = args.DataSet;
+            var context = ds.GetContextSubsetDisplayable(update);
+            var display = new DataListMessage(context, ds.Properties.MainPageHeader, args);
+            var dataMenu = new DataListMenu(this, context, args, ds.Properties.AllowAdd);
+            var dataPage = new StaticPage(Settings.DataTempPageId, ds.Properties.DataSetLabel, display, dataMenu);
 
             await MenuManager.PushPageAsync(dataPage, update);
         }
 
-        public BotArgedCallback<ObjInfoArg> OpenObjCallback => new("dtobj", "{open object}", RaiseOpenObjectAsync);
-        private async Task RaiseOpenObjectAsync(ObjInfoArg args, SignedCallbackUpdate update)
-            => await args.DataSet.DisplayDataObjectAsync(args, update);
-        public BotArgedCallback<PaginationInfo> AddCallback => new("addta", "➕ Добавить", RaiseAddProcessAsync);
-        private async Task RaiseAddProcessAsync(PaginationInfo args, SignedCallbackUpdate update)
+        public BotArgedCallback<ObjInfoArg> OpenObjectCallback { get; }
+        private async Task Do_OpenObjectAsync(ObjInfoArg args, SignedCallbackUpdate update)
+            => await args.DataSet.DisplayObjectDataAsync(args, update);
+        public BotArgedCallback<PaginationInfo> AddNewCallback { get; }
+        private async Task Do_AddProcessAsync(PaginationInfo args, SignedCallbackUpdate update)
             => await args.DataSet.LaunchAddProcessAsync(args, update);
-        public BotArgedCallback<ObjInfoArg> EditCallback => new("editdta", "✏️ Редактировать", RaiseEditProcessAsync);
-        private async Task RaiseEditProcessAsync(ObjInfoArg args, SignedCallbackUpdate update)
+        public BotArgedCallback<ObjInfoArg> EditExistingCallback { get; }
+        private async Task Do_EditProcessAsync(ObjInfoArg args, SignedCallbackUpdate update)
             => await args.DataSet.LaunchEditProcessAsync(args, update);
-        public BotArgedCallback<ObjInfoArg> RemoveCallback => new("deldta", "❌ Удалить", RaiseRemoveAsync);
-        private async Task RaiseRemoveAsync(ObjInfoArg args, SignedCallbackUpdate update)
-            => await args.DataSet.ExecuteRemoveAsync(args, update);
+        public BotArgedCallback<ObjInfoArg> RemoveExistingCallback { get; }
+        private async Task Do_RemoveAsync(ObjInfoArg args, SignedCallbackUpdate update)
+            => await args.DataSet.LaunchRemoveProcessAsync(args, update);
+        
+        private void OnReflectiveCompile(object sender, BotManager owner)
+        {
+            var dsRule = new ConvertRule<IBotDataSet>(id =>
+            {
+                var res = TryGetSet(id);
+                return res is not null
+                    ? ConvertResult<IBotDataSet>.OK(res)
+                    : ConvertResult<IBotDataSet>.NotPresented();
+            });
+            owner.ResolveService<IArgsSerializeService>().AddRule(dsRule);
 
-        private void OnReflectiveCompile(object sender, BotManager bm)
+            GetActionsContent()
+                .Where(x => x is DefaultCallback)
+                .Cast<DefaultCallback>()
+                .ToList()
+                .ForEach(x => x.Label = Owner.ResolveBotString(x.Label));
+        }
+        public void ApplyTo(IStatefulActionManager<SignedMessageTextUpdate> entity)
         {
-            var dsRule = new ConvertRule<IBotDataSet>(dsid => ConvertResult<IBotDataSet>.OK(GetSet(dsid)));
-            bm.ResolveService<IArgsSerilalizerService>().AddRule(dsRule);
+            // TODO
+            if (Owner is null)
+                throw new Exception($"Call {nameof(ApplyTo)} only after {nameof(BotBuilder.Build)}.");
 
-            //var procRule = new ConvertRule<YesNoDataProcess<SignedCallbackUpdate>>(pid => {
-            //    var lpid = long.Parse(pid);
-            //    if (!processes.ContainsKey(lpid))
-            //        throw new Exception();
-            //    return ConvertResult<YesNoDataProcess<SignedCallbackUpdate>>.OK(processes[lpid]);
-            //});
-        }
-        public void ApplyFor(IActionManager<SignedCallbackUpdate> callbackManager)
-        {
-            callbackManager.AddSafely(OpenCallback);
-            callbackManager.AddSafely(AddCallback);
-            callbackManager.AddSafely(OpenObjCallback);
-            callbackManager.AddSafely(EditCallback);
-            callbackManager.AddSafely(RemoveCallback);
-        }
-        public void ApplyFor(IStatefulActionManager<SignedMessageTextUpdate> entity)
-        {
-            foreach (var ds in SourceSet.GetAllCasted())
+            foreach (var ds in SourceSet.GetAll())
             {
                 foreach (var proc in ds.DefinedProcesses)
                 {
-                    var sec = new DefaultStateSection<SignedMessageTextUpdate>();
-                    sec.EnableState(proc.ProcessState);
-                    sec.AddSafely((IBotAction<SignedMessageTextUpdate>)proc);
-                    entity.AddSectionSafely(sec);
+                    if (proc is IApplicant<IStatefulActionManager<SignedMessageTextUpdate>> applicant)
+                    {
+                        applicant.ApplyTo(entity);
+                    }
                 }
             }
         }
+        public void ApplyTo(IStatefulActionManager<SignedCallbackUpdate> entity)
+        {
+            // TODO
+            if (Owner is null)
+                throw new Exception($"Call {nameof(ApplyTo)} only after {nameof(BotBuilder.Build)}.");
 
-        public void ApplyFor(IMenuManager entity)
+            entity.AddSafely(OpenDatabaseCallback);
+            entity.AddSafely(AddNewCallback);
+            entity.AddSafely(OpenObjectCallback);
+            entity.AddSafely(EditExistingCallback);
+            entity.AddSafely(RemoveExistingCallback);
+
+            foreach (var ds in SourceSet.GetAll())
+            {
+                foreach (var proc in ds.DefinedProcesses)
+                {
+                    if (proc is IApplicant<IStatefulActionManager<SignedCallbackUpdate>> applicant)
+                    {
+                        applicant.ApplyTo(entity);
+                    }
+                }
+            }
+        }
+        public void ApplyTo(IMenuManager entity)
         {
             entity.Define(GetRootPage());
         }

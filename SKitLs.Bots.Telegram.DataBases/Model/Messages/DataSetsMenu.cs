@@ -1,6 +1,6 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus;
 using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
-using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting;
+using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.DataBases.Prototype;
 using SKitLs.Bots.Telegram.PageNavs;
@@ -17,17 +17,16 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Messages
         public IMesMenu Build(IBotPage? previous, IBotPage owner, ISignedUpdate update)
         {
             var mm = update.Owner.ResolveService<IMenuManager>();
-            var serializer = Owner.Owner.ResolveService<IArgsSerilalizerService>();
+            var serializer = Owner.Owner.ResolveService<IArgsSerializeService>();
             var res = new PairedInlineMenu();
 
-            Owner.SourceSet.GetAll()
-                .Cast<IBotDataSet>()
+            Owner.GetAll()
                 .ToList()
                 .ForEach(x => res.Add(x.ListLabel(), 
-                Owner.OpenCallback.GetSerializedData(x.Pagination, serializer)));
+                Owner.OpenDatabaseCallback.GetSerializedData(x.Pagination, serializer)));
 
             if (previous is not null)
-                res.Add("<< Назад", mm.BackCallabck.GetSerializedData());
+                res.Add("<< Назад", mm.BackCallback.GetSerializedData());
             return res;
         }
     }

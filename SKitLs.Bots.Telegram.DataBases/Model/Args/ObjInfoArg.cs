@@ -1,6 +1,5 @@
-﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumenting.Prototype;
+﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Prototype;
 using SKitLs.Bots.Telegram.DataBases.Prototype;
-using SKitLs.Bots.Telegram.PageNavs.Prototype;
 
 namespace SKitLs.Bots.Telegram.DataBases.Model.Args
 {
@@ -19,15 +18,24 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Args
         public long ObjId { get; set; }
 
         public ObjInfoArg() { }
-        public ObjInfoArg(PaginationInfo source, long objId)
+        internal ObjInfoArg(PaginationInfo source, long objId)
         {
             DataSet = source.DataSet;
             StartIndex = source.StartIndex;
             Count = source.Count;
             ObjId = objId;
         }
+        public ObjInfoArg(IBotDataSet dataSet, long objId, int startIndex = 0, int count = 5)
+        {
+            DataSet = dataSet;
+            StartIndex = startIndex;
+            Count = count;
+            ObjId = objId;
+        }
 
         public IBotDisplayable GetObject() => DataSet.GetExisting(ObjId);
+        // TODO type equality: T and DataSet.Type
+        public T GetObject<T>() => (T)DataSet.GetExisting(ObjId);
         public PaginationInfo GetPagination() => new(DataSet, StartIndex, Count);
     }
 }

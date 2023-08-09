@@ -1,0 +1,38 @@
+{
+  "system.db.TerminationalKey": "Отмена",
+
+  "display.db.OpenDtMngMes": "Управление данными",
+  "display.db.OpenDbMes": "> open db dynamic",
+  "display.db.OpenObjMes": "> open obj dynamic",
+  "display.db.AddObjectMes": "➕ Добавить",
+  "display.db.EditObjectMes": "✏️ Редактировать",
+  "display.db.RemoveObjectMes": "❌ Удалить",
+
+  "display.db.ReadRowsForbiddenMes": "Данные запрещены к просмотру.",
+
+  // Actions Messages
+  "display.db.AddStartupMessage": "Введите, пожалуйста, следующие данные, каждый параметр с новой строки:\n{0}",
+  "display.db.EditStartupMessage": "Введите, пожалуйста, обновлённые данные, каждый параметр с новой строки. Текущие значения:\n{0}",
+
+  "display.db.AddItConfirmMessage": "Проверьте, пожалуйста, введённые данные:\n{0}\nВсё верно?",
+  "display.db.RemoveConfirmMessage": "Вы уверены, что хотите удалить объект?.",
+
+  // Actions Completed
+  "display.db.AddSuccess": "Объект успешно добавлен.",
+  "display.db.AddCanceled": "Добавление объекта отменёно.",
+  "display.db.AddUnknown": "Ошибка. Не удалось разрешить статус.",
+  "display.db.EditSuccess": "Данные успешно обновлены.",
+  "display.db.EditCanceled": "Обновление данных отменёно.",
+  "display.db.EditUnknown": "Ошибка. Не удалось разрешить статус.",
+  "display.db.RemoveSuccess": "Объект был удалён.",
+  "display.db.RemoveCanceled": "Удаление было отменено.",
+  "display.db.RemoveUnknown": "Ошибка. Не удалось разрешить статус.",
+
+  // External
+  "db.exceptionCap.Duplication": "Integration duplication",
+  "db.exceptionMes.Duplication": "Failed attempt in {0}: an item of a type {1} ({2}) already exists."
+
+  // Inexternal
+
+  // Internal
+}

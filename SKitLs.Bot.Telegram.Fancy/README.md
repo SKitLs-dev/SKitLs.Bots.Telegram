@@ -41,11 +41,11 @@ informative, and user-friendly messages, thereby enhancing the overall user expe
 
 ### Requirements
 
-- Telegram.Bot 19.0.0 or higher
-- SKitLs.Bots.Telegram.Core 2.0.0 or higher
-- SKitLs.Bots.Telegram.ArgedInteractions 1.3.0 or higher
-
 Before running the project, please ensure that you have the following dependencies installed and properly configured in your development environment.
+
+- Telegram.Bot 19.0.0 or higher
+- SKitLs.Bots.Telegram.Core 2.1.2 or higher
+- SKitLs.Bots.Telegram.ArgedInteractions 1.3.3 or higher
 
 ### Installation
 
@@ -75,7 +75,7 @@ Before running the project, please ensure that you have the following dependenci
 
     To install the project by downloading the source code and directly linking it to your project, adhere to the following steps:
 
-    1. Visit the project repository on [GitHub](https://github.com/your-username/your-repo)
+    1. Visit the project repository on [GitHub](https://github.com/SKitLs-dev/SKitLs.Bots.Telegram.git)
     2. Click on the "Code" button and select "Download ZIP" to download the project's source code as a zip archive.
     3. Extract the downloaded zip archive to the desired location on your local machine.
     4. Open your existing project or create a new one in your IDE.
@@ -90,23 +90,54 @@ Refer to the project's documentation for any additional steps or considerations.
 
 ## Usage
 
-1. Update Delivery System
+### Update Delivery System
 
-    ```C#
-    BotBuilder.NewBuilder()
-        .CustomDelivery(new AdvancedDeliverySystem())
-        .Build()
-        .Listen();
-    ```
+```C#
+BotBuilder.NewBuilder()
+    .CustomDelivery(new AdvancedDeliverySystem())
+    .Build()
+    .Listen();
+```
 
-2. Custom messages and menus
+### Design your message
 
-    ```C#
-    var mes = new MultiblockMessage();
-    mes.AddBlock("Block section #1");
-    mes.AddBlock("Block section #2");
-    mes.AddMenu(new ReplyMenu(IS.Inputs.Anon_DemoTrain));
-    ```
+```C#
+var mes = new OutputMessageText("Message with inline menu");
+
+var menu = new InlineMenu();
+menu.Add(someCallback);
+menu.Add(new UrlButton("Href", "https://linktoyoursource.example");
+
+mes.Menu = menu;
+```
+
+```C#
+var mes = new OutputMessageText("Message with reply menu");
+
+var menu = new ReplyMenu()
+{
+    ColumnsCount = 2,
+};
+menu.Add("Text instead of button");
+menu.Add(new RelpyButton("Text but button"));
+menu.Add(new RequestUserButton("Request User", 242085, true).OnlyUsers());
+
+mes.Menu = menu;
+```
+
+### Build content on context
+
+```C#
+var mes = new MultiblockMessage("display.localkey");
+mes.ContentBuilder = Localize;
+
+async Task<MultiblockMessage> Localize(MultiblockMessage sender, ICastedUpdate? update)
+{
+    var key = sender.GetBody();
+    var text = update?.Owner.ResolveBotString(key) ?? key;
+    return new MultiblockMessage(text);
+}
+```
 
 ## Contributors
 
@@ -122,14 +153,14 @@ Thank you for considering contributing to our project.
 
 This project is distributed under the terms of the MIT License.
 
-Copyright (C) Sargeras02 2023
+Copyright (C) SKitLs 2023
 
 ## Developer contact
 
 For any issues related to the project, please feel free to reach out to us through the project's GitHub page.
 We welcome bug reports, feedback, and any other inquiries that can help us improve the project.
 
-You can also contact the project owner directly via their GitHub profile at the following [link](https://github.com/Sargeras02).
+You can also contact the project owner directly via their GitHub profile at the [following link](https://github.com/SKitLs-dev) or email: skitlsdev@gmail.com
 
 Your collaboration and support are highly appreciated, and we will do our best to address any concerns or questions promptly and professionally.
 Thank you for your interest in our project.

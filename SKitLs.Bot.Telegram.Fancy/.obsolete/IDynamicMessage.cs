@@ -1,10 +1,12 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+﻿using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 
 namespace SKitLs.Bots.Telegram.AdvancedMessages.Prototype
 {
     /// <summary>
     /// Provides mechanics of creating dynamic messages, whose content can be updated and overridden during runtime.
     /// </summary>
+    [Obsolete($"Replaced with {nameof(IBuildableMessage)} since .Core [v2.1]")]
     public interface IDynamicMessage
     {
         ///// <summary>

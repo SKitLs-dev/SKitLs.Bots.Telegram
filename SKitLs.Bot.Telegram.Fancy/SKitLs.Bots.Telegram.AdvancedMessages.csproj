@@ -4,30 +4,79 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Description>An extension project built upon the SKitLs.Bots.Telegram.Core Framework.
+    <Description>Offers enhanced methods for sending messages in Telegram bots.
 
-Offers enhanced methods for sending messages in Telegram bots.</Description>
-    <Version>1.1.0</Version>
+An extension project built upon the SKitLs.Bots.Telegram.Core Framework.</Description>
+    <Version>2.0.0</Version>
     <FileVersion>$(AssemblyVersion)</FileVersion>
-    <PackageReleaseNotes>(+) XML Documentation Included.
-(+) README Added.
+    <PackageReleaseNotes>Global:
+(~) Package info Updated.
+(~) Ownership transfered to SKitLs.
+(~) README Updated
+(+) IBuildableContent Added
+(+) delegate ContentBuilder&lt;TSender&gt; Added
 
-(~) Naming Updated.
-(~) Summaries Updated.
-(~) Minor interior updates.</PackageReleaseNotes>
+AdvancedDeliverySystem:
+(~) IDeliverySystem implemented properly
+(~) Major interior update
+
+Messages (due to .Core [v2.1] Rebuild):
+(+) MenuWrapper Added
+(~) IOutputMessage Updated
+(~) OutputMessage Updated
+(~) IEditWrapper Updated
+(~) EditWrapper Updated
+(~) OutputMessageText
+(~) MultiblockMessage
+
+Menus:
+(~) IMesMenu =&gt; IMessageMenu Renamed and Updated
+(+) ReplyBase Added
+(+) InlineBase Added
+(~) InlineMenu Updated
+(~) ReplyMenu Updated
+(~) ReplyCleaner Updated
+
+Buttons:
+(+) IInlineButton Added
+(+) InlineButton Added
+(+) UrlButton Added
+(+) IReplyButton Added
+(+) ReplyButton Added
+(+) RequestContactButton Added
+(+) RequestLocationButton Added
+(+) RequestPollButton Added
+(+) RequestUserButton Added
+
+Obsolete:
+(-) DynamicMessage
+(-) IDynamicMessage
+(-) IFormattableMessage
+(-) InlineButtonPair
+
+Removed:
+(-) OMDMedia Removed
+(-) OMDText Removed</PackageReleaseNotes>
     <Title>$(AssemblyName)</Title>
-    <Authors>Sargeras02, SKit-Labs</Authors>
-    <Copyright>Copyright (C) Sargeras02 2023</Copyright>
-    <PackageProjectUrl>https://github.com/Sargeras02/SKitLs.Bots.Telegram.git</PackageProjectUrl>
+    <Authors>SKitLs, Sargeras02</Authors>
+    <Copyright>Copyright (C) SKitLs 2023</Copyright>
+    <PackageProjectUrl>https://github.com/SKitLs-dev/SKitLs.Bots.Telegram.git</PackageProjectUrl>
     <PackageIcon>libIcon_AM.png</PackageIcon>
     <PackageTags>Telegram, Bots, Messaging, Formatting</PackageTags>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <AssemblyVersion>1.1.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0</AssemblyVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include=".obsolete\DynamicMessage.cs" />
+    <Compile Include=".obsolete\IDynamicMessage.cs" />
+    <Compile Include=".obsolete\IFormattableMessage.cs" />
+    <Compile Include=".obsolete\InlineButtonPair.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\..\libIcon_AM.png">
@@ -37,8 +86,8 @@ Offers enhanced methods for sending messages in Telegram bots.</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SKitLs.Bots.Telegram.ArgedInteractions" Version="1.3.0" />
-    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.0.0" />
+    <PackageReference Include="SKitLs.Bots.Telegram.ArgedInteractions" Version="1.3.3" />
+    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.1.2" />
     <PackageReference Include="Telegram.Bot" Version="19.0.0" />
   </ItemGroup>
 
@@ -51,6 +100,10 @@ Offers enhanced methods for sending messages in Telegram bots.</Description>
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Model\Messages\Attaches\" />
   </ItemGroup>
 
 </Project>

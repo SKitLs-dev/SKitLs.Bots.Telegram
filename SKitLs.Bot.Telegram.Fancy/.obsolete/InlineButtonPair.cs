@@ -5,6 +5,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model
     /// <summary>
     /// Represents specific data container that carries info about inline button: label, data, single line.
     /// </summary>
+    [Obsolete("Obsolete. Replaced with 'InlineButton's")]
     public class InlineButtonPair
     {
         /// <summary>

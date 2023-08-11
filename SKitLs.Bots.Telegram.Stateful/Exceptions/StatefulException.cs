@@ -1,4 +1,5 @@
 ﻿using SKitLs.Bots.Telegram.Core.Exceptions;
+using SKitLs.Bots.Telegram.Stateful.resources.settings;
 
 namespace SKitLs.Bots.Telegram.Stateful.Exceptions
 {
@@ -10,9 +11,9 @@ namespace SKitLs.Bots.Telegram.Stateful.Exceptions
     public class StatefulException : SKTgSignedException
     {
         /// <summary>
-        /// Gets or sets the extension prefix used for localization keys.
+        /// Gets the extension prefix used for localization keys.
         /// </summary>
-        public static string ExtensionPrefix { get; set; } = "state";
+        public static string ExtensionPrefix => SKStateSetting.ExtensionPrefix;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StatefulException"/> class with the specified parameters.

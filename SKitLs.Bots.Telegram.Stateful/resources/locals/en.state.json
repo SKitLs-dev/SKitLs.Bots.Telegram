@@ -3,7 +3,9 @@
 
   // Inexternal
   "exceptionCap.state.NotStatefulUser": "User not stateful",
-  "exceptionMes.state.NotStatefulUser": "Was not able to cast user to stateful one in {0}."
+  "exceptionMes.state.NotStatefulUser": "Was not able to cast user to stateful one in {0}.",
+  "exceptionCap.state.NoDefaultSection": "No Default State Section",
+  "exceptionMes.state.NoDefaultSection": "{0} does not declare any default state section."
 
   // Internal
 }

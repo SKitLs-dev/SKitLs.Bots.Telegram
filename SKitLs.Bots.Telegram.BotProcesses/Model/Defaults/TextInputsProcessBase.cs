@@ -1,17 +1,22 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
+using SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Confirm;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype.Processes;
 using SKitLs.Bots.Telegram.Core.Exceptions;
 using SKitLs.Bots.Telegram.Core.Model;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.Core.Prototype;
 using SKitLs.Bots.Telegram.Stateful.Exceptions.External;
 using SKitLs.Bots.Telegram.Stateful.Model;
 using SKitLs.Bots.Telegram.Stateful.Prototype;
+using Telegram.Bot.Types;
 
 namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
 {
+    public delegate IOutputMessage DynamicArg<TResult>(TextInputsArguments<TResult> args, ISignedUpdate update) where TResult : notnull;
+
     /// <summary>
     /// Abstract class serving as an intermediary between <see cref="IBotProcess"/> and implemented processes supporting <see cref="SignedMessageTextUpdate"/>.
     /// It is designed to handle bot processes involving text-based interactions and requires implementation by derived classes.
@@ -26,7 +31,8 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
     /// while adhering to the <see cref="IBotProcess"/> interface.
     /// </para>
     /// </summary>
-    public abstract class TextInputsProcessBase<TResult> : IBotProcess<TextInputsArguments<TResult>>, IBotAction<SignedMessageTextUpdate>, IApplicant<IStatefulActionManager<SignedMessageTextUpdate>> where TResult : notnull
+    /// <typeparam name="TResult">The type of the wrapped argument, which must not be nullable.</typeparam>
+    public abstract class TextInputsProcessBase<TResult> : IBotProcess<TextInputsArguments<TResult>>, IBotAction<SignedMessageTextUpdate>, IApplicant<IStatefulActionManager<SignedMessageTextUpdate>>, IApplicant<IStatefulActionManager<SignedCallbackUpdate>> where TResult : notnull
     {
         /// <summary>
         /// Returns the unique identifier for the action, which is the same as the process definition Id.
@@ -50,12 +56,29 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
         /// <summary>
         /// Represents the startup message of the bot process.
         /// </summary>
-        public virtual IOutputMessage StartupMessage { get; protected set; }
+        // TODO : IDynamic
+        public virtual DynamicArg<TResult> StartupMessage { get; protected set; }
         /// <summary>
         /// Represents the action that is invoked when the running bot process is completed.
         /// </summary>
-        public virtual InputProcessCompleted<TextInputsArguments<TResult>> WhenOver { get; protected set; }
+        public virtual ProcessCompletedByInput<TResult>? ForcedOver { get; protected set; }
+        /// <summary>
+        /// Represents the action that is invoked when the running bot process is completed.
+        /// </summary>
+        public virtual ProcessCompletedByCallback<TResult>? ConfirmOver { get; protected set; }
+        public virtual ConfirmationProcess<TResult>? Confirmation { get; protected set; }
+        public virtual DynamicArg<TResult>? ConfirmationMessage { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextInputsProcessBase{TResult}"/> class with the specified process definition Id,
+        /// terminational key, and user state.
+        /// </summary>
+        /// <param name="processData">The process's main data.</param>
+        /// <param name="startupMessage">The startup message of the bot process.</param>
+        /// <param name="confirmOver">The action that is invoked when the running bot process is completed.</param>
+        // TODO
+        public TextInputsProcessBase(IST processData, DynamicArg<TResult> startupMessage, ProcessCompletedByCallback<TResult> confirmOver) : this(processData.Id, processData.State, processData.TerminationalKey, startupMessage, confirmOver)
+        { }
         /// <summary>
         /// Initializes a new instance of the <see cref="TextInputsProcessBase{TResult}"/> class with the specified process definition Id,
         /// terminational key, and user state.
@@ -64,14 +87,51 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
         /// <param name="terminationalKey">The key used to stop and terminate the bot process.</param>
         /// <param name="processState">The state associated with the bot process.</param>
         /// <param name="startupMessage">The startup message of the bot process.</param>
-        /// <param name="whenOver">The action that is invoked when the running bot process is completed.</param>
-        public TextInputsProcessBase(string processDefId, string terminationalKey, IUserState processState, IOutputMessage startupMessage, InputProcessCompleted<TextInputsArguments<TResult>> whenOver)
+        /// <param name="confirmOver">The action that is invoked when the running bot process is completed.</param>
+        // TODO
+        public TextInputsProcessBase(string processDefId, IUserState processState, string terminationalKey, DynamicArg<TResult> startupMessage, ProcessCompletedByCallback<TResult> confirmOver, DynamicArg<TResult>? confirmMessage = null) : this(processDefId, processState, terminationalKey, startupMessage)
+        {
+            ConfirmOver = confirmOver;
+            ConfirmationMessage = confirmMessage;
+            Confirmation = new ConfirmationProcess<TResult>(ProcessDefId, ProcessState, ConfirmOver, ConfirmationMessage);
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextInputsProcessBase{TResult}"/> class with the specified process definition Id,
+        /// terminational key, and user state.
+        /// </summary>
+        /// <param name="processData">The process's main data.</param>
+        /// <param name="startupMessage">The startup message of the bot process.</param>
+        /// <param name="forcedOver">The action that is invoked when the running bot process is completed.</param>
+        // TODO
+        public TextInputsProcessBase(IST processData, DynamicArg<TResult> startupMessage, ProcessCompletedByInput<TResult> forcedOver) : this(processData.Id, processData.State, processData.TerminationalKey, startupMessage, forcedOver)
+        { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextInputsProcessBase{TResult}"/> class with the specified process definition Id,
+        /// terminational key, and user state.
+        /// </summary>
+        /// <param name="processDefId">The unique identifier for the bot process.</param>
+        /// <param name="processState">The state associated with the bot process.</param>
+        /// <param name="terminationalKey">The key used to stop and terminate the bot process.</param>
+        /// <param name="startupMessage">The startup message of the bot process.</param>
+        /// <param name="forcedOver">The action that is invoked when the running bot process is completed.</param>
+        // TODO
+        public TextInputsProcessBase(string processDefId, IUserState processState, string terminationalKey, DynamicArg<TResult> startupMessage, ProcessCompletedByInput<TResult> forcedOver) : this(processDefId, processState, terminationalKey, startupMessage)
+        {
+            ForcedOver = forcedOver;
+        }
+        private TextInputsProcessBase(string processDefId, IUserState processState, string terminationalKey, DynamicArg<TResult> startupMessage)
         {
             ProcessDefId = processDefId;
-            TerminationalKey = terminationalKey;
             ProcessState = processState;
+            TerminationalKey = terminationalKey;
             StartupMessage = startupMessage;
-            WhenOver = whenOver;
+        }
+
+        public void UpdateIST(IST processData)
+        {
+            ProcessDefId = processData.Id ?? ProcessDefId;
+            ProcessState = processData.State ?? ProcessState;
+            TerminationalKey = processData.TerminationalKey ?? TerminationalKey;
         }
 
         /// <summary>
@@ -144,6 +204,22 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
             var section = new DefaultStateSection<SignedMessageTextUpdate>();
             section.EnableState(ProcessState);
             section.AddSafely(this);
+            entity.AddSectionSafely(section);
+        }
+        /// <summary>
+        /// Applies <see cref="TextInputsProcessBase{TResult}"/> for an <paramref name="entity"/>, defining itself to its interior:
+        /// creating <see cref="IStateSection{TUpdate}"/> with only <see cref="ProcessState"/> enabled.
+        /// </summary>
+        /// <param name="entity">An instance that this class should be applied to.</param>
+        /// <exception cref="SKTgSignedException">Thrown if <see cref="ProcessState"/> is <see langword="null"/>.</exception>
+        public void ApplyTo(IStatefulActionManager<SignedCallbackUpdate> entity)
+        {
+            if (Confirmation is null)
+                return;
+            if (ProcessState is null) throw new SKTgSignedException("procs.NoState", SKTEOriginType.External, this, ProcessDefId);
+            var section = new DefaultStateSection<SignedCallbackUpdate>();
+            section.EnableState(ProcessState);
+            section.AddSafely(Confirmation);
             entity.AddSectionSafely(section);
         }
 

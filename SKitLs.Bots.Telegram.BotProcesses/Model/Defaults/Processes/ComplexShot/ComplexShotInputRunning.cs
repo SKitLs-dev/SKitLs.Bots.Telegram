@@ -11,7 +11,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.ComplexShot
     /// The running version of the <see cref="ComplexShotInputRunning{TResult}"/>. See it for info.
     /// </summary>
     /// <typeparam name="TResult">The type of the wrapped argument, which must not be nullable and have a parameterless constructor.</typeparam>
-    public class ComplexShotInputRunning<TResult> : TextInputsRunningBase<ComplexShotInputProcess<TResult>, TResult> where TResult : notnull, new()
+    public class ComplexShotInputRunning<TResult> : TextInputsRunningBase<ComplexShotInputProcess<TResult>, TResult> where TResult : notnull
     {
         /// <summary>
         /// Represents the process arguments associated with the running bot process.
@@ -40,53 +40,16 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.ComplexShot
         /// <param name="update">The update containing the input for the bot process.</param>
         public override async Task HandleInput(SignedMessageTextUpdate update)
         {
-            Arguments.CompleteStatus = update.Text.ToLower() == TerminationalKey.ToLower()
-                ? ProcessCompleteStatus.Canceled
-                : ProcessCompleteStatus.Pending;
-
+            await base.HandleInput(update);
             if (Arguments.CompleteStatus == ProcessCompleteStatus.Pending)
             {
-                var serializer = update.Owner.ResolveService<IArgsSerializeService>();
-                // Try to unpack and parse data
-                // Data counts wrong
-                var res = serializer.DeserializeTo(update.Text, Arguments.BuildingInstance, '\n');
-
-                //(ConvertResult<TResult>?)serializer.GetType()
-                //    .GetMethod(nameof(serializer.Deserialize))!
-                //    .MakeGenericMethod(typeof(TResult))
-                //    .Invoke(serializer, new object[] { update.Text, '\n' });
-                //var res = Serializer.Deserialize<IBotDisplayable>(update.Text, '\n');
-
-                if (res is null || res.ResultType != ConvertResultType.Ok)
-                {
-                    var mes = new MultiblockMessage();
-                    mes.AddBlock("Следующие данные были введены неверно:");
-                    mes.AddBlock(res?.ResultMessage ?? "Внутренняя ошибка преобразования");
-                    mes.AddBlock("Отредактируйте, пожалуйста, данные, и ведите их заново");
-                    await update.Owner.DeliveryService.ReplyToSender(mes, update);
-
-                    Arguments.CompleteStatus = ProcessCompleteStatus.Failure;
-                }
-                else
-                {
-                    Arguments.BuildingInstance = res.Value;
-                    Arguments.CompleteStatus = ProcessCompleteStatus.Success;
-
-                    //var mes = new MultiblockMessage();
-                    //mes.AddBlock("Проверьте введённые данные:");
-                    //mes.AddBlock(value.FullDisplay());
-                    //var menu = new PairedInlineMenu()
-                    //{
-                    //    ColumnsCount = 2
-                    //};
-                    //menu.Add("Да", ConfirmCallback.GetSerializedData(new ConfrimArg<SignedCallbackUpdate>(true, proc), Serializer));
-                    //menu.Add("Нет", ConfirmCallback.GetSerializedData(new ConfrimArg<SignedCallbackUpdate>(false, proc), Serializer));
-                    //mes.Menu = menu;
-                    //await Owner.DeliveryService.ReplyToSender(mes, update);
-                }
+                var input = Launcher is IMaskedInput masked ? masked.Demask(update.Text) : update.Text;
+                var result = update.Owner.ResolveService<IArgsSerializeService>()
+                    .DeserializeTo(input, Arguments.BuildingInstance, '\n');
+                
+                await HandleConversionAsync(result, update);
             }
-
-            await TerminateWithAsync(Arguments, update);
+            await TerminateAsync(update);
         }
     }
 }

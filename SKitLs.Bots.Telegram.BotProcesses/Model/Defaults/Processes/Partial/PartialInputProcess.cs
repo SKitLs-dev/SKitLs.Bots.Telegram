@@ -1,6 +1,5 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation;
-using SKitLs.Bots.Telegram.BotProcesses.Prototype;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype.Processes;
 using SKitLs.Bots.Telegram.Stateful.Prototype;
 
@@ -29,13 +28,39 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
         /// <summary>
         /// Initializes a new instance of the <see cref="PartialInputProcess{TResult}"/> class with the specified parameters.
         /// </summary>
+        /// <param name="processData">The process's main data.</param>
+        /// <param name="startupMessage">The startup message of the bot process.</param>
+        /// <param name="overByInput">The action that is invoked when the running bot process is completed.</param>
+        public PartialInputProcess(IST processData, DynamicArg<TResult> startupMessage, ProcessCompletedByInput<TResult> overByInput)
+            : base(processData, startupMessage, overByInput) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PartialInputProcess{TResult}"/> class with the specified parameters.
+        /// </summary>
         /// <param name="processDefId">The unique identifier for the bot process.</param>
         /// <param name="terminationalKey">The key used to stop and terminate the bot process.</param>
         /// <param name="processState">The state associated with the bot process.</param>
         /// <param name="startupMessage">The startup message of the bot process.</param>
-        /// <param name="whenOver">The action that is invoked when the running bot process is completed.</param>
-        public PartialInputProcess(string processDefId, string terminationalKey, IUserState processState, IOutputMessage startupMessage, InputProcessCompleted<TextInputsArguments<TResult>> whenOver)
-            : base(processDefId, terminationalKey, processState, startupMessage, whenOver) { }
+        /// <param name="overByInput">The action that is invoked when the running bot process is completed.</param>
+        public PartialInputProcess(string processDefId, string terminationalKey, IUserState processState, DynamicArg<TResult> startupMessage, ProcessCompletedByInput<TResult> overByInput)
+            : base(processDefId, processState, terminationalKey, startupMessage, overByInput) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PartialInputProcess{TResult}"/> class with the specified parameters.
+        /// </summary>
+        /// <param name="processData">The process's main data.</param>
+        /// <param name="startupMessage">The startup message of the bot process.</param>
+        /// <param name="overByCallback">The action that is invoked when the running bot process is completed.</param>
+        public PartialInputProcess(IST processData, DynamicArg<TResult> startupMessage, ProcessCompletedByCallback<TResult> overByCallback)
+            : base(processData, startupMessage, overByCallback) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PartialInputProcess{TResult}"/> class with the specified parameters.
+        /// </summary>
+        /// <param name="processDefId">The unique identifier for the bot process.</param>
+        /// <param name="terminationalKey">The key used to stop and terminate the bot process.</param>
+        /// <param name="processState">The state associated with the bot process.</param>
+        /// <param name="startupMessage">The startup message of the bot process.</param>
+        /// <param name="overByCallback">The action that is invoked when the running bot process is completed.</param>
+        public PartialInputProcess(string processDefId, string terminationalKey, IUserState processState, DynamicArg<TResult> startupMessage, ProcessCompletedByCallback<TResult> overByCallback)
+            : base(processDefId, processState, terminationalKey, startupMessage, overByCallback) { }
 
         /// <summary>
         /// Adds sub-process to internal storage.

@@ -1,11 +1,13 @@
-﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text;
+﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model;
+using SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus;
+using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text;
 using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model;
-using SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Prototype;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype.Processes;
 using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
+using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.Stateful.Exceptions.External;
@@ -17,8 +19,12 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Confirm
     /// The running version of the <see cref="ConfirmationProcess{TResult}"/>. See it for info.
     /// </summary>
     /// <typeparam name="TResult">The type of the wrapped argument, which must not be nullable.</typeparam>
-    public class ConfirmationRunning<TResult> : IBotRunningProcess where TResult : IProcessArgument
+    public class ConfirmationRunning<TResult> : IBotRunningProcess where TResult : notnull
     {
+        public static string DefaultMessageLK { get; set; } = "procs.display.ConfirmDefaultMessage";
+        public static string YesLK { get; set; } = "procs.display.ConfirmYes";
+        public static string NoLK { get; set; } = "procs.display.ConfirmNo";
+
         /// <summary>
         /// Represents the bot process definition that launched this running process.
         /// </summary>
@@ -31,7 +37,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Confirm
         /// <summary>
         /// Represents the wrapped argument value.
         /// </summary>
-        public TResult PendingInstance { get; private set; }
+        public TextInputsArguments<TResult> PendingInstance { get; private set; }
 
         /// <summary>
         /// Represents the unique identifier of the bot process definition.
@@ -54,11 +60,11 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Confirm
         /// <summary>
         /// Represents the startup message of the bot process.
         /// </summary>
-        public IOutputMessage? StartupMessage => Launcher.StartupMessage;
+        public DynamicArg<TResult>? StartupMessage => Launcher.StartupMessage;
         /// <summary>
         /// Represents the action that is invoked when the running bot process is completed.
         /// </summary>
-        public ProcessCompleted<TResult, SignedCallbackUpdate> OnDecision => Launcher.OnDecision;
+        public ProcessCompletedByCallback<TResult> OnDecision => Launcher.OnDecision;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfirmationRunning{TResult}"/> class with the specified parameters.
@@ -66,7 +72,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Confirm
         /// <param name="userId">The unique identifier of the user who owns and initiated the running bot process.</param>
         /// <param name="value">The pending value, associated with the running bot process, awaiting for confirmation.</param>
         /// <param name="launcher">The bot process definition that launched this running process.</param>
-        public ConfirmationRunning(long userId, TResult value, ConfirmationProcess<TResult> launcher)
+        public ConfirmationRunning(long userId, TextInputsArguments<TResult> value, ConfirmationProcess<TResult> launcher)
         {
             OwnerUserId = userId;
             PendingInstance = value;
@@ -80,12 +86,21 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Confirm
         /// <param name="update">The update to launch the bot process with.</param>
         public async Task LaunchWith<TUpdate>(TUpdate update) where TUpdate : ISignedUpdate
         {
-            var mes = (StartupMessage is IDynamicMessage dynamic
-                ? dynamic.BuildWith(update)
-                : StartupMessage)
-                ?? new OutputMessageText(update.Owner.ResolveBotString("procs.display.ConfirmDefaultMessage"));
-
+            var mes = BuildProcessMessage();
+            if (update is SignedCallbackUpdate callback)
+                mes = new EditWrapper(mes, callback.TriggerMessageId);
             await update.Owner.DeliveryService.ReplyToSender(mes, update);
+
+            IBuildableMessage BuildProcessMessage()
+            {
+                var mes = StartupMessage?.Invoke(PendingInstance, update)
+                    ?? new OutputMessageText(update.Owner.ResolveBotString(DefaultMessageLK));
+                var menu = new PairedInlineMenu(update.Owner);
+                menu.Add(update.Owner.ResolveBotString(YesLK), Launcher.GetYesCallback());
+                menu.Add(update.Owner.ResolveBotString(NoLK), Launcher.GetNoCallback());
+                mes.Menu = menu;
+                return mes;
+            }
         }
 
         /// <summary>
@@ -100,14 +115,15 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Confirm
                 throw new NotStatefulException(this);
 
             var res = update.Owner.ResolveService<IArgsSerializeService>()
-                .Deserialize<bool>(callback.Data[(callback.Data.IndexOf(SplitToken) + 1)..], SplitToken);
+                .Unpack<bool>(callback.Data[(callback.Data.IndexOf(SplitToken) + 1)..]);
             PendingInstance.CompleteStatus = res.ResultType == ConvertResultType.Ok
                 ? ProcessCompleteStatus.Pending
                 : ProcessCompleteStatus.Failure;
-            PendingInstance.CompleteStatus = res.Value
-                ? ProcessCompleteStatus.Success
-                : ProcessCompleteStatus.Canceled;
-
+            PendingInstance.CompleteStatus = PendingInstance.CompleteStatus == ProcessCompleteStatus.Pending
+                ? (res.Value
+                    ? ProcessCompleteStatus.Success
+                    : ProcessCompleteStatus.Canceled)
+                : PendingInstance.CompleteStatus;
             update.Owner.ResolveService<IProcessManager>().Terminate(stateful);
             await OnDecision.Invoke(PendingInstance, callback);
         }

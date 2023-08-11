@@ -1,5 +1,8 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model;
+using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text;
 using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
+using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model;
+using SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Confirm;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype.Processes;
 using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
@@ -40,7 +43,11 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
         /// <summary>
         /// Represents the action that is invoked when the running bot process is completed.
         /// </summary>
-        public virtual InputProcessCompleted<TextInputsArguments<TResult>> WhenOver => Launcher.WhenOver;
+        public virtual ProcessCompletedByInput<TResult>? ForcedOver => Launcher.ForcedOver;
+        // <summary>
+        // Represents the action that is invoked when the running bot process is completed.
+        // </summary>
+        public virtual ConfirmationProcess<TResult>? Confirmation => Launcher.Confirmation;
 
         /// <summary>
         /// Represents the key used to stop and terminate the bot process.
@@ -55,7 +62,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
         /// <summary>
         /// Represents the startup message of the bot process.
         /// </summary>
-        public virtual IOutputMessage StartupMessage => Launcher.StartupMessage;
+        public virtual DynamicArg<TResult> StartupMessage => Launcher.StartupMessage;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextInputsRunningBase{TProcess, TArg}"/> class with the specified <paramref name="ownerUserId"/>.
@@ -73,9 +80,8 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
         /// <param name="update">The update to launch the bot process with.</param>
         public virtual async Task LaunchWith<TUpdate>(TUpdate update) where TUpdate : ISignedUpdate
         {
-            IBuildableMessage mes = StartupMessage is IDynamicMessage dynamic
-                ? dynamic.BuildWith(update)
-                : StartupMessage;
+            // TODO
+            IBuildableMessage mes = StartupMessage?.Invoke(Arguments, update) ?? throw new Exception();
 
             if (update is SignedCallbackUpdate callback)
                 mes = new EditWrapper(mes, callback.TriggerMessageId);
@@ -98,20 +104,53 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
         /// Handles the input update of type <see cref="SignedMessageTextUpdate"/> for the running bot process.
         /// </summary>
         /// <param name="update">The update containing the input for the bot process.</param>
-        public abstract Task HandleInput(SignedMessageTextUpdate update);
+        public virtual Task HandleInput(SignedMessageTextUpdate update)
+        {
+            Arguments.CompleteStatus = update.Text.ToLower() == TerminationalKey.ToLower()
+                ? ProcessCompleteStatus.Canceled
+                : ProcessCompleteStatus.Pending;
+            return Task.CompletedTask;
+        }
+
+        protected virtual async Task HandleConversionAsync(ConvertResult<TResult> result, SignedMessageTextUpdate update)
+        {
+            if (result.ResultType != ConvertResultType.Ok)
+            {
+                Arguments.CompleteStatus = ProcessCompleteStatus.Failure;
+
+                // TODO : Localize
+                var mes = new MultiblockMessage();
+                mes.AddBlock("Следующие данные были введены неверно:");
+                mes.AddBlock(result?.ResultMessage ?? "Внутренняя ошибка преобразования");
+                mes.AddBlock("Отредактируйте, пожалуйста, данные, и ведите их заново");
+                await update.Owner.DeliveryService.ReplyToSender(mes, update);
+            }
+            else
+            {
+                Arguments.CompleteStatus = ProcessCompleteStatus.Success;
+                Arguments.BuildingInstance = result.Value;
+            }
+        }
 
         /// <summary>
         /// Terminates the running bot process with the specified result and update.
         /// </summary>
-        /// <param name="result">The result of the running bot process.</param>
         /// <param name="update">The update associated with the bot process termination.</param>
-        public virtual async Task TerminateWithAsync(TextInputsArguments<TResult> result, SignedMessageTextUpdate update)
+        public virtual async Task TerminateAsync<TUpdate>(TUpdate update) where TUpdate : ISignedUpdate
         {
             if (update.Sender is not IStatefulUser stateful)
                 throw new NotStatefulException(this);
 
-            update.Owner.ResolveService<IProcessManager>().Terminate(stateful);
-            await WhenOver.Invoke(result, update);
+            var _pm = update.Owner.ResolveService<IProcessManager>();
+            _pm.Terminate(stateful);
+
+            if (ForcedOver is not null && update is SignedMessageTextUpdate text)
+                await ForcedOver.Invoke(Arguments, text);
+
+            if (Confirmation is not null)
+            {
+                await _pm.Run(Confirmation, Arguments, update).LaunchWith(update);
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
     /// Represents a generic class for wrapping an argument of a <see cref="TextInputsProcessBase{TResult}"/> bot process,
     /// implementing the <see cref="IProcessArgument"/> interface.
     /// </summary>
-    /// <typeparam name="TResult">The type of the wrapped argument, which must not be nullable and have a parameterless constructor.</typeparam>
+    /// <typeparam name="TResult">The type of the wrapped argument, which must not be nullable.</typeparam>
     public class TextInputsArguments<TResult> : IProcessArgument where TResult : notnull
     {
         /// <summary>

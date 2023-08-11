@@ -27,7 +27,6 @@ SKitLs.Bots.Telegram.PageNavs library offers a set of tools to create custom men
 
 ### Requirements
 
-- Telegram.Bot 19.0.0 or higher
 - SKitLs.Bots.Telegram.Core 2.0.0 or higher
 - SKitLs.Bots.Telegram.ArgedInteraction 1.3.0 or higher
 - SKitLs.Bots.Telegram.AdvancedMessages 1.1.0 or higher
@@ -62,7 +61,7 @@ Before running the project, please ensure that you have the following dependenci
 
     To install the project by downloading the source code and directly linking it to your project, adhere to the following steps:
 
-    1. Visit the project repository on [GitHub](https://github.com/Sargeras02/SKitLs.Bots.Telegram.git)
+    1. Visit the project repository on [GitHub](https://github.com/SKitLs-dev/SKitLs.Bots.Telegram.git)
     2. Click on the "Code" button and select "Download ZIP" to download the project's source code as a zip archive.
     3. Extract the downloaded zip archive to the desired location on your local machine.
     4. Open your existing project or create a new one in your IDE.

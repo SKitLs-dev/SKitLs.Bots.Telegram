@@ -1,5 +1,5 @@
-﻿using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
-using SKitLs.Bots.Telegram.BotProcesses.Prototype;
+﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text;
+using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype.Processes;
 using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
@@ -68,13 +68,21 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
             var exceptionMes = InputPreview?.Invoke(update);
             if (exceptionMes is null)
             {
-                HandlingProperty.SetValue(BuildingInstance, ParseInput(update));
-                await Owner.Valid(update);
+                try
+                {
+                    var result = ParseInput(update);
+                    HandlingProperty.SetValue(BuildingInstance, result);
+                    await Owner.Valid(update);
+                }
+                catch (Exception)
+                {
+                    // TODO : go message
+                    exceptionMes = new OutputMessageText("todo");
+                }
             }
-            else
-            {
+
+            if (exceptionMes is not null)
                 await update.Owner.DeliveryService.ReplyToSender(exceptionMes, update);
-            }
         }
     }
 }

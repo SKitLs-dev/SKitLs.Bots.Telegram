@@ -7,9 +7,9 @@ using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.Core.Prototype;
 using SKitLs.Bots.Telegram.PageNavs.Args;
-using SKitLs.Bots.Telegram.PageNavs.Prototype;
+using SKitLs.Bots.Telegram.PageNavs.Model;
 
-namespace SKitLs.Bots.Telegram.PageNavs
+namespace SKitLs.Bots.Telegram.PageNavs.Prototype
 {
     /// <summary>
     /// An interface that provides methods of inline message navigation via callbacks and <see cref="IBotPage"/> pages.

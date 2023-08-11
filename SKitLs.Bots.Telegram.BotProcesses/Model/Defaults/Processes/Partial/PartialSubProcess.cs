@@ -1,7 +1,6 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model;
-using SKitLs.Bots.Telegram.BotProcesses.Prototype;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype.Processes;
 using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
 using System.Reflection;

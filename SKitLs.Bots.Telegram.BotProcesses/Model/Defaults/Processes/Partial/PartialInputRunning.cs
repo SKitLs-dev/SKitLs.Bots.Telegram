@@ -46,7 +46,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
             if (update.Text.ToLower() == TerminationalKey.ToLower())
             {
                 Arguments.CompleteStatus = ProcessCompleteStatus.Canceled;
-                await TerminateWithAsync(Arguments, update);
+                await TerminateAsync(update);
             }
             else
             {
@@ -69,7 +69,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
             else
             {
                 Arguments.CompleteStatus = ProcessCompleteStatus.Success;
-                await TerminateWithAsync(Arguments, update);
+                await TerminateAsync(update);
             }
         }
     }

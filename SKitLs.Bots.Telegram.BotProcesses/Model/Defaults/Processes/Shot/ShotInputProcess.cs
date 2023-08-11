@@ -25,7 +25,15 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Shot
         /// Determines special string mask that would be used to unpack input text.
         /// </summary>
         public string Mask { get; set; } = "{0}";
-        
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ShotInputProcess{TResult}"/> class with the specified parameters.
+        /// </summary>
+        /// <param name="processData">The process's main data.</param>
+        /// <param name="startupMessage">The startup message of the bot process.</param>
+        /// <param name="overByInput">The action that is invoked when the running bot process is completed.</param>
+        public ShotInputProcess(IST processData, DynamicArg<TResult> startupMessage, ProcessCompletedByInput<TResult> overByInput)
+            : base(processData, startupMessage, overByInput) { }
         /// <summary>
         /// Initializes a new instance of the <see cref="ShotInputProcess{TResult}"/> class with the specified parameters.
         /// </summary>
@@ -33,9 +41,27 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Shot
         /// <param name="terminationalKey">The key used to stop and terminate the bot process.</param>
         /// <param name="processState">The state associated with the bot process.</param>
         /// <param name="startupMessage">The startup message of the bot process.</param>
-        /// <param name="whenOver">The action that is invoked when the running bot process is completed.</param>
-        public ShotInputProcess(string processDefId, string terminationalKey, IUserState processState, IOutputMessage startupMessage, InputProcessCompleted<TextInputsArguments<TResult>> whenOver)
-            : base(processDefId, terminationalKey, processState, startupMessage, whenOver) { }
+        /// <param name="overByInput">The action that is invoked when the running bot process is completed.</param>
+        public ShotInputProcess(string processDefId, string terminationalKey, IUserState processState, DynamicArg<TResult> startupMessage, ProcessCompletedByInput<TResult> overByInput)
+            : base(processDefId, processState, terminationalKey, startupMessage, overByInput) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ShotInputProcess{TResult}"/> class with the specified parameters.
+        /// </summary>
+        /// <param name="processData">The process's main data.</param>
+        /// <param name="startupMessage">The startup message of the bot process.</param>
+        /// <param name="overByCallback">The action that is invoked when the running bot process is completed.</param>
+        public ShotInputProcess(IST processData, DynamicArg<TResult> startupMessage, ProcessCompletedByCallback<TResult> overByCallback)
+            : base(processData, startupMessage, overByCallback) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ShotInputProcess{TResult}"/> class with the specified parameters.
+        /// </summary>
+        /// <param name="processDefId">The unique identifier for the bot process.</param>
+        /// <param name="terminationalKey">The key used to stop and terminate the bot process.</param>
+        /// <param name="processState">The state associated with the bot process.</param>
+        /// <param name="startupMessage">The startup message of the bot process.</param>
+        /// <param name="overByCallback">The action that is invoked when the running bot process is completed.</param>
+        public ShotInputProcess(string processDefId, string terminationalKey, IUserState processState, DynamicArg<TResult> startupMessage, ProcessCompletedByCallback<TResult> overByCallback)
+            : base(processDefId, processState, terminationalKey, startupMessage, overByCallback) { }
 
         /// <summary>
         /// Creates new running bot process instance based on the specified user and arguments.

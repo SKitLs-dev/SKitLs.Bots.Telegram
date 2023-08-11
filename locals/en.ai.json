@@ -1,0 +1,17 @@
+{
+  "ai.display.ArgumentsCountMissMatch": "Serializer has gotten string with less arguments count then formally needed.",
+
+  // Exceptions
+
+  // External
+  "exceptionCap.ai.NullPacked": "Packing returned null",
+  "exceptionMes.ai.NullPacked": "An item of a type {0} returned an empty or a null value on packing attempt. Make sure type's ToString() is valid or implement IArgPackable interface.",
+
+  // Inexternal
+  "exceptionCap.ai.ConvertNullInput": "Convertation error: Null Input",
+  "exceptionMes.ai.ConvertNullInput": "Serializer has gotten null input string. This could happened due to internal data loss or external null input.",
+  "exceptionCap.ai.ConvertNullValue": "Convertation Null Value",
+  "exceptionMes.ai.ConvertNullValue": "Attempt to get convertation value was failed. Make sure convertation result is OK. Otherwise report."
+
+  // Internal
+}

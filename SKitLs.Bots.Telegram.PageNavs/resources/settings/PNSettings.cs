@@ -1,4 +1,6 @@
-﻿namespace SKitLs.Bots.Telegram.PageNavs.resources.settings
+﻿using SKitLs.Bots.Telegram.PageNavs.Prototype;
+
+namespace SKitLs.Bots.Telegram.PageNavs.resources.settings
 {
     /// <summary>
     /// Represents special settings class for <c>*.PageNavs</c> project.

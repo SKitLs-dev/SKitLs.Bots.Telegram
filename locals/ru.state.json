@@ -1,0 +1,11 @@
+{
+  // External
+
+  // Inexternal
+  "exceptionCap.state.NotStatefulUser": "Пользователь без состояний",
+  "exceptionMes.state.NotStatefulUser": "Не удалось привести переданного пользователя к типу, поддерживающему состояния в {0}.",
+  "exceptionCap.state.NoDefaultSection": "Секция состояний по умолчанию не определена",
+  "exceptionMes.state.NoDefaultSection": "Секция состояний по умолчанию не определена в {0}."
+
+  // Internal
+}

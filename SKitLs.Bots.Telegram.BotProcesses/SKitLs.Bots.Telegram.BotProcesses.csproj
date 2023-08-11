@@ -7,16 +7,14 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
-    <Version>$(AssemblyVersion)-alpha.1</Version>
+    <Version>$(AssemblyVersion)-rc</Version>
     <Title>$(AssemblyName)</Title>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>Sargeras02, SKit-Labs</Authors>
     <Copyright>Copyright (C) Sargeras02 2023</Copyright>
     <PackageProjectUrl>https://github.com/Sargeras02/SKitLs.Bots.Telegram.git</PackageProjectUrl>
     <PackageTags>Telegram, Bots, Management, Processing</PackageTags>
-    <PackageReleaseNotes>(+) class TextInputsArguments Added.
-
-(~) TextInputsProcessBase heirs now work with TextInputsArguments.</PackageReleaseNotes>
+    <PackageReleaseNotes>(~) Essential Interior Updates</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -34,6 +32,7 @@ Provides methods of creating bot processes with advanced textual input mechanics
 
   <ItemGroup>
     <None Remove="resources\locals\en.procs.json" />
+    <None Remove="resources\locals\ru.procs.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -62,6 +61,7 @@ Provides methods of creating bot processes with advanced textual input mechanics
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="resources\locals\ru.procs.json" />
     <Resource Include="resources\locals\en.procs.json" />
   </ItemGroup>
 

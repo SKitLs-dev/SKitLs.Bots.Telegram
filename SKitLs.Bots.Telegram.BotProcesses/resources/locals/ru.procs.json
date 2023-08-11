@@ -1,7 +1,7 @@
 {
   "procs.display.ConfirmDefaultMessage": "Would you like to accept this?",
-  "procs.display.ConfirmYes": "Yes",
-  "procs.display.ConfirmNo": "No",
+  "procs.display.ConfirmYes": "Да",
+  "procs.display.ConfirmNo": "Нет",
 
   // External
   "procs.exceptionCap.NoState": "State is not defined",

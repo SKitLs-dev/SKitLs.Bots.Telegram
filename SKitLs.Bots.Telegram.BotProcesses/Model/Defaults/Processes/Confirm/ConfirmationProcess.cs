@@ -12,7 +12,7 @@ using SKitLs.Bots.Telegram.Stateful.Prototype;
 
 namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Confirm
 {
-    public sealed class ConfirmationProcess<TResult> : IBotProcess, IBotAction<SignedCallbackUpdate>, IApplicant<IStatefulActionManager<SignedCallbackUpdate>> where TResult : IProcessArgument
+    public sealed class ConfirmationProcess<TResult> : IBotProcess<TextInputsArguments<TResult>>, IBotAction<SignedCallbackUpdate>, IApplicant<IStatefulActionManager<SignedCallbackUpdate>> where TResult : notnull
     {
         public string ActionId => ProcessDefId;
         public string ProcessDefId { get; private set; }
@@ -20,10 +20,10 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Confirm
         // TODO: Maybe exclude.
         public char SplitToken { get; set; } = ';';
 
-        public IOutputMessage? StartupMessage { get; private set; }
-        public ProcessCompleted<TResult, SignedCallbackUpdate> OnDecision { get; private set; }
+        public DynamicArg<TResult>? StartupMessage { get; private set; }
+        public ProcessCompletedByCallback<TResult> OnDecision { get; private set; }
 
-        public ConfirmationProcess(string processDefId, IUserState processState, ProcessCompleted<TResult, SignedCallbackUpdate> onDecision, IOutputMessage? startupMessage = null)
+        public ConfirmationProcess(string processDefId, IUserState processState, ProcessCompletedByCallback<TResult> onDecision, DynamicArg<TResult>? startupMessage = null)
         {
             ProcessDefId = processDefId;
             ProcessState = processState;
@@ -31,19 +31,21 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Confirm
             StartupMessage = startupMessage;
         }
 
+        public void UpdateIST(IST processData)
+        {
+            ProcessDefId = processData.Id ?? ProcessDefId;
+            ProcessState = processData.State ?? ProcessState;
+        }
+
         /// <summary>
         /// Checks either this action should be executed on a certain incoming update.
         /// </summary>
         /// <param name="update">An incoming update.</param>
         /// <returns><see langword="true"/> if this action should be executed; otherwise, <see langword="false"/>.</returns>
-        public bool ShouldBeExecutedOn(SignedCallbackUpdate update) => update.Data.Contains(SplitToken) && ProcessDefId == update.Data[..update.Data.IndexOf(SplitToken)];
+        public bool ShouldBeExecutedOn(SignedCallbackUpdate update) => true;
+        //update.Data.Contains(SplitToken) && ProcessDefId == update.Data[..update.Data.IndexOf(SplitToken)];
 
-        public string GetSerializedData(params string[] args)
-        {
-            var res = ProcessDefId;
-            args.ToList().ForEach(x =>  res += $"{SplitToken}{x}");
-            return res;
-        }
+        public string GetSerializedData(params string[] args) => $"{ProcessDefId}{SplitToken}{args.FirstOrDefault()}";
         public string GetYesCallback() => GetSerializedData(true.ToString());
         public string GetNoCallback() => GetSerializedData(false.ToString());
 
@@ -86,5 +88,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Confirm
             else
                 return false;
         }
+
+        public IBotRunningProcess GetRunning(long userId, TextInputsArguments<TResult> args) => new ConfirmationRunning<TResult>(userId, args, this);
     }
 }

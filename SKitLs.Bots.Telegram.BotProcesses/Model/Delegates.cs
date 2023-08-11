@@ -1,8 +1,10 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
+﻿using SKitLs.Bots.Telegram.BotProcesses.Model.Defaults;
+using SKitLs.Bots.Telegram.BotProcesses.Prototype;
+using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 
-namespace SKitLs.Bots.Telegram.BotProcesses.Prototype
+namespace SKitLs.Bots.Telegram.BotProcesses.Model
 {
     /// <summary>
     /// Represents a delegate for handling the completion of a process with specified arguments and update.
@@ -14,12 +16,20 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Prototype
     public delegate Task ProcessCompleted<TArg, TUpdate>(TArg args, TUpdate update) where TArg : IProcessArgument where TUpdate : ISignedUpdate;
 
     /// <summary>
-    /// Represents a delegate for handling the completion of an input process with specified arguments and a <see cref="SignedMessageTextUpdate"/>.
+    /// Represents a delegate for handling the completion of an input process with specified arguments, triggered by <see cref="SignedMessageTextUpdate"/>.
     /// </summary>
-    /// <typeparam name="TArg">The type of process arguments, implementing <see cref="IProcessArgument"/>.</typeparam>
+    /// <typeparam name="TResult">The type of the wrapped argument, which must not be nullable.</typeparam>
     /// <param name="args">The arguments of the input process.</param>
     /// <param name="update">The <see cref="SignedMessageTextUpdate"/> associated with the input process completion.</param>
-    public delegate Task InputProcessCompleted<TArg>(TArg args, SignedMessageTextUpdate update) where TArg : IProcessArgument;
+    public delegate Task ProcessCompletedByInput<TResult>(TextInputsArguments<TResult> args, SignedMessageTextUpdate update) where TResult : notnull;
+
+    /// <summary>
+    /// Represents a delegate for handling the completion of an input process with specified arguments, triggered by <see cref="SignedCallbackUpdate"/>.
+    /// </summary>
+    /// <typeparam name="TResult">The type of the wrapped argument, which must not be nullable.</typeparam>
+    /// <param name="args">The arguments of the input process.</param>
+    /// <param name="update">The <see cref="SignedCallbackUpdate"/> associated with the input process completion.</param>
+    public delegate Task ProcessCompletedByCallback<TResult>(TextInputsArguments<TResult> args, SignedCallbackUpdate update) where TResult : notnull;
 
     /// <summary>
     /// Represents a delegate for previewing input data before assigning it.

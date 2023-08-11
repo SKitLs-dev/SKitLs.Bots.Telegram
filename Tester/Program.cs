@@ -30,7 +30,7 @@ namespace Tester
         private static DefaultCommand StartCommand => new("start", Do_StartAsync);
         private static async Task Do_StartAsync(SignedMessageTextUpdate update)
         {
-            await update.Owner.DeliveryService.ReplyToSender("Hello, world!", update);
+            await update.Owner.DeliveryService.AnswerSenderAsync("Hello, world!", update);
         }
     }
 }

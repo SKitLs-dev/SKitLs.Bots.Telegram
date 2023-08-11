@@ -16,11 +16,10 @@ using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.Core.Prototype;
 using SKitLs.Bots.Telegram.PageNavs.Args;
-using SKitLs.Bots.Telegram.PageNavs.Model;
 using SKitLs.Bots.Telegram.PageNavs.Prototype;
 using SKitLs.Bots.Telegram.PageNavs.resources.settings;
 
-namespace SKitLs.Bots.Telegram.PageNavs
+namespace SKitLs.Bots.Telegram.PageNavs.Model
 {
     /// <summary>
     /// Default realization of the <see cref="IMenuManager"/> interface that provides methods of inline message navigation.
@@ -389,7 +388,7 @@ namespace SKitLs.Bots.Telegram.PageNavs
         /// <param name="refresh">Determines whether pushing <paramref name="page"/> should be set as a new root one.</param>
         public async Task PushPageAsync(IBotPage page, ISignedUpdate update, bool refresh = false)
         {
-            if (refresh && CheckSession(update))
+            if (refresh && Navigations.ContainsKey(update.Sender.TelegramId))
                 Navigations.Remove(update.Sender.TelegramId);
 
             var previous = TryPeek(update);
@@ -404,7 +403,7 @@ namespace SKitLs.Bots.Telegram.PageNavs
                     .ReplyToSender(new EditWrapper(displayMes, mesId), callback);
             }
             // M.Push
-            // [!] TODO : should be updated after .AdvancedMessaging
+            // TODO : should be updated after .AdvancedMessaging
             else
             {
                 var response = await Owner.DeliveryService.ReplyToSender(displayMes, update);

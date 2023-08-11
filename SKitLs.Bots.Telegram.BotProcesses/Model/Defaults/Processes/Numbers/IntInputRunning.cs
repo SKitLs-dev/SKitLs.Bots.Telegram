@@ -37,18 +37,17 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Numbers
         /// <param name="update">The update containing the input for the bot process.</param>
         public override async Task HandleInput(SignedMessageTextUpdate update)
         {
-            Arguments.CompleteStatus = update.Text.ToLower() == TerminationalKey.ToLower()
-                ? ProcessCompleteStatus.Canceled
-                : ProcessCompleteStatus.Pending;
-
-            var unpack = update.Owner.ResolveService<IArgsSerializeService>().Unpack<int>(update.Text);
+            await base.HandleInput(update);
+            var input = Launcher is IMaskedInput masked ? masked.Demask(update.Text) : update.Text;
+            var unpack = update.Owner.ResolveService<IArgsSerializeService>()
+                .Unpack<int>(input);
+            
             Arguments.CompleteStatus = unpack.ResultType == ConvertResultType.Ok
                 ? ProcessCompleteStatus.Success
                 : ProcessCompleteStatus.Failure;
+            Arguments.BuildingInstance = unpack.ResultType == ConvertResultType.Ok ? unpack.Value : 0;
 
-            Arguments.BuildingInstance = unpack.Value;
-
-            await TerminateWithAsync(Arguments, update);
+            await TerminateAsync(update);
         }
     }
 }

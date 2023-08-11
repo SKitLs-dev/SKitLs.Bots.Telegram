@@ -39,49 +39,16 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Shot
         /// <param name="update">The update containing the input for the bot process.</param>
         public override async Task HandleInput(SignedMessageTextUpdate update)
         {
-            Arguments.CompleteStatus = update.Text.ToLower() == TerminationalKey.ToLower()
-                ? ProcessCompleteStatus.Canceled
-                : ProcessCompleteStatus.Pending;
-
+            await base.HandleInput(update);
             if (Arguments.CompleteStatus == ProcessCompleteStatus.Pending)
             {
-                var serializer = update.Owner.ResolveService<IArgsSerializeService>();
-                // Try to unpack and parse data
-                // Data counts wrong
-                var res = serializer.Unpack<TResult>((Launcher as IMaskedInput).Demask(update.Text));
-
-                if (res is null || res.ResultType != ConvertResultType.Ok)
-                {
-                    var mes = new MultiblockMessage();
-                    mes.AddBlock("Следующие данные были введены неверно:");
-                    mes.AddBlock(res?.ResultMessage ?? "Внутренняя ошибка преобразования");
-                    mes.AddBlock("Отредактируйте, пожалуйста, данные, и ведите их заново");
-                    await update.Owner.DeliveryService.ReplyToSender(mes, update);
-
-                    Arguments.CompleteStatus = ProcessCompleteStatus.Failure;
-                }
-                else
-                {
-                    Arguments.BuildingInstance = res.Value;
-                    Arguments.CompleteStatus = ProcessCompleteStatus.Success;
-
-                    // TODO: Init Confirmational process
-
-                    //var mes = new MultiblockMessage();
-                    //mes.AddBlock("Проверьте введённые данные:");
-                    //mes.AddBlock(value.FullDisplay());
-                    //var menu = new PairedInlineMenu()
-                    //{
-                    //    ColumnsCount = 2
-                    //};
-                    //menu.Add("Да", ConfirmCallback.GetSerializedData(new ConfrimArg<SignedCallbackUpdate>(true, proc), Serializer));
-                    //menu.Add("Нет", ConfirmCallback.GetSerializedData(new ConfrimArg<SignedCallbackUpdate>(false, proc), Serializer));
-                    //mes.Menu = menu;
-                    //await Owner.DeliveryService.ReplyToSender(mes, update);
-                }
+                var input = Launcher is IMaskedInput masked ? masked.Demask(update.Text) : update.Text;
+                var result = update.Owner.ResolveService<IArgsSerializeService>()
+                    .Unpack<TResult>(input);
+                
+                await HandleConversionAsync(result, update);
             }
-
-            await TerminateWithAsync(Arguments, update);
+            await TerminateAsync(update);
         }
     }
 }

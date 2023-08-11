@@ -11,9 +11,9 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Exceptions
     public class ArgedInterException : SKTgSignedException
     {
         /// <summary>
-        /// Gets or sets the extension prefix used for localization keys.
+        /// Gets the extension prefix used for localization keys.
         /// </summary>
-        public static string ExtensionLocalPrefix { get; set; } = SKaiSettings.ExtensionPrefix;
+        public static string ExtensionLocalPrefix => SKaiSettings.ExtensionPrefix;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ArgedInterException"/> class with the specified parameters.

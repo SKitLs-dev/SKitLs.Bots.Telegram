@@ -1,4 +1,4 @@
-# SKitLs.Bots.Telegram.Core ![Static Badge](https://img.shields.io/badge/Follow%20GitHub%20-%20black?logo=github&link=https%3A%2F%2Fgithub.com%2FSargeras02%2FSKitLs.Bots.Telegram.git) ![GitHub](https://img.shields.io/github/license/Sargeras02/SKitLs.Bots.Telegram) ![Nuget](https://img.shields.io/nuget/v/SKitLs.Bots.Telegram.Core) [![CodeFactor](https://www.codefactor.io/repository/github/sargeras02/skitls.bots.telegram/badge)](https://www.codefactor.io/repository/github/sargeras02/skitls.bots.telegram)
+# SKitLs.Bots.Telegram.Core ![Static Badge](https://img.shields.io/badge/Follow%20GitHub%20-%20black?logo=github&link=https%3A%2F%2Fgithub.com%2FSargeras02%2FSKitLs.Bots.Telegram.git) ![GitHub](https://img.shields.io/github/license/SKitLs-dev/SKitLs.Bots.Telegram) ![Nuget](https://img.shields.io/nuget/v/SKitLs.Bots.Telegram.Core) [![CodeFactor](https://www.codefactor.io/repository/github/sargeras02/skitls.bots.telegram/badge)](https://www.codefactor.io/repository/github/sargeras02/skitls.bots.telegram)
 
 The core module of the SKitLs.Bots.Telegram Framework.
 
@@ -25,11 +25,12 @@ to focus on implementing bot logic without the hassle of handling low-level API 
 
 ### Requirements
 
-- Telegram.Bot 19.0.0 or higher
-- SKitLs.Utils.Localizations 2.2.0 or higher
-- SKitLs.Utils.LocalLoggers 1.3.0 or higher
-
 Before running the project, please ensure that you have the following dependencies installed and properly configured in your development environment.
+
+- Telegram.Bot 19.0.0 or higher
+- SKitLs.Utils.Loggers 1.4.1 or higher
+- SKitLs.Utils.Localizations 2.2.1 or higher
+- SKitLs.Utils.LocalLoggers 1.3.1 or higher
 
 ### Installation
 
@@ -59,7 +60,7 @@ Before running the project, please ensure that you have the following dependenci
 
     To install the project by downloading the source code and directly linking it to your project, adhere to the following steps:
 
-    1. Visit the project repository on [GitHub](https://github.com/Sargeras02/SKitLs.Bots.Telegram.git)
+    1. Visit the project repository on [GitHub](https://github.com/SKitLs-dev/SKitLs.Bots.Telegram.git)
     2. Click on the "Code" button and select "Download ZIP" to download the project's source code as a zip archive.
     3. Extract the downloaded zip archive to the desired location on your local machine.
     4. Open your existing project or create a new one in your IDE.
@@ -77,7 +78,7 @@ Refer to the project's documentation for any additional steps or considerations.
 ### Localizations
 
 Framework Core and each of its extensions supports localized debugging. Some of them requires specific language packages.
-You can find them in [GitHub's](https://github.com/Sargeras02/SKitLs.Bots.Telegram.git) locals folder.
+You can find them in [GitHub's](https://github.com/SKitLs-dev/SKitLs.Bots.Telegram.git) locals folder.
 
 Place locals in "resources/locals" or update localization path.
 
@@ -176,7 +177,7 @@ _You can use [SKitLs.Bots.Telegram.AdvancedMessages](https://www.nuget.org/packa
     }
     ```
 
-Visit [GitHub page](https://github.com/Sargeras02/SKitLs.Bots.Telegram.git) for more information.
+Visit [GitHub page](https://github.com/SKitLs-dev/SKitLs.Bots.Telegram.git) for more information.
 
 ## Contributors
 
@@ -192,14 +193,14 @@ Thank you for considering contributing to our project.
 
 This project is distributed under the terms of the MIT License.
 
-Copyright (C) Sargeras02 2023
+Copyright (C) SKitLs 2023
 
 ## Developer contact
 
 For any issues related to the project, please feel free to reach out to us through the project's GitHub page.
 We welcome bug reports, feedback, and any other inquiries that can help us improve the project.
 
-You can also contact the project owner directly via their GitHub profile at the [following link](https://github.com/Sargeras02) or email: skitlsdev@gmail.com
+You can also contact the project owner directly via their GitHub profile at the [following link](https://github.com/SKitLs-dev) or email: skitlsdev@gmail.com
 
 Your collaboration and support are highly appreciated, and we will do our best to address any concerns or questions promptly and professionally.
 Thank you for your interest in our project.

@@ -44,7 +44,7 @@ making it an invaluable asset for enhancing the user experience and overall func
 ### Requirements
 
 - Telegram.Bot 19.0.0 or higher
-- SKitLs.Bots.Telegram.Core 2.0.0 or higher
+- SKitLs.Bots.Telegram.Core 2.1.2 or higher
 
 Before running the project, please ensure that you have the following dependencies installed and properly configured in your development environment.
 
@@ -76,7 +76,7 @@ Before running the project, please ensure that you have the following dependenci
 
     To install the project by downloading the source code and directly linking it to your project, adhere to the following steps:
 
-    1. Visit the project repository on [GitHub](https://github.com/Sargeras02/SKitLs.Bots.Telegram.git)
+    1. Visit the project repository on [GitHub](https://github.com/SKitLs-dev/SKitLs.Bots.Telegram.git)
     2. Click on the "Code" button and select "Download ZIP" to download the project's source code as a zip archive.
     3. Extract the downloaded zip archive to the desired location on your local machine.
     4. Open your existing project or create a new one in your IDE.
@@ -91,32 +91,35 @@ Refer to the project's documentation for any additional steps or considerations.
 
 ## Usage
 
-1. Define user state:
-
-    ```C#
-    var state = new DefaultUserState(0, "Default");
-    ```
-
-2. Define state section and enable state:
-
-    ```C#
-    var section = new DefaultStateSection<SignedMessageTextUpdate>();
-    // Enable your state
-    section.EnableState(state);
-
-    section.AddSafely(// some action);
-    ```
-
-3. Use Stateful Manager:
+### Define user state:
 
 ```C#
-var textInputManager = new DefaultStatefulManager<SignedMessageTextUpdate>();
+IUserState state1 = new DefaultUserState(0, "Default");
+IUserState state2 = new DefaultUserState(1, "Typing");
+```
+
+### Define state section and enable state:
+
+```C#
+IStateSection<SignedMessageTextUpdate> section = new DefaultStateSection<SignedMessageTextUpdate>();
+// Enabled for any states by default
+// OR Enable your state(s)
+section.EnableState(state1);
+section.EnableState(state2);
+
+section.AddSafely(// some action);
+```
+
+### Use Stateful Manager:
+
+```C#
+IStatefulActionManager<SignedMessageTextUpdate> textInputManager = new StatefulActionManager<SignedMessageTextUpdate>();
 
 // Add section
 textInputManager.AddSectionSafely(section);
 
 // Or if you have IApplicant applicant
-applicant.ApplyFor(textInputManager);
+// applicant.ApplyFor(textInputManager);
 
 // Add it to handler
 var privateText = new DefaultSignedMessageTextUpdateHandler();
@@ -137,14 +140,14 @@ Thank you for considering contributing to our project.
 
 This project is distributed under the terms of the MIT License.
 
-Copyright (C) Sargeras02 2023
+Copyright (C) SKitLs 2023
 
 ## Developer contact
 
 For any issues related to the project, please feel free to reach out to us through the project's GitHub page.
 We welcome bug reports, feedback, and any other inquiries that can help us improve the project.
 
-You can also contact the project owner directly via their GitHub profile at the following [link](https://github.com/Sargeras02).
+You can also contact the project owner directly via their GitHub profile at the [following link](https://github.com/SKitLs-dev) or email: skitlsdev@gmail.com
 
 Your collaboration and support are highly appreciated, and we will do our best to address any concerns or questions promptly and professionally.
 Thank you for your interest in our project.

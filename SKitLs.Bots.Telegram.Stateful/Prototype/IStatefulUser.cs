@@ -3,16 +3,17 @@
 namespace SKitLs.Bots.Telegram.Stateful.Prototype
 {
     /// <summary>
-    /// Represents specific stateful bot user. Can be extended with additional functional.
+    /// Represents a specific stateful bot user. This interface can be extended with additional functionality.
     /// </summary>
     public interface IStatefulUser : IBotUser
     {
         /// <summary>
-        /// Represents current user state.
+        /// Represents the current user state.
         /// </summary>
         public IUserState State { get; set; }
+
         /// <summary>
-        /// Resets user state to default one.
+        /// Resets the user state to the default one.
         /// </summary>
         public void ResetState();
     }

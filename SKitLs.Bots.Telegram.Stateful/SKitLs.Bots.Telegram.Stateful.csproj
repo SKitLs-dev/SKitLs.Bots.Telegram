@@ -4,22 +4,46 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Description>An extension project built upon the SKitLs.Bots.Telegram.Core Framework.
+    <Description>Enables the segregation of user states.
 
-Enables the segregation of user states.</Description>
+An extension project built upon the SKitLs.Bots.Telegram.Core Framework.</Description>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>$(AssemblyName)</Title>
-    <AssemblyVersion>1.1.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
-    <PackageReleaseNotes>(+) XML Documentation Included.
-(+) NotStatefulException
+    <PackageReleaseNotes>Global:
+(~) Package info Updated
+(~) Ownership transfered to SKitLs
+(~) README Updated
+(~) en localization Updated
+(+) ru localization Added
+(+) SKStateSetting Added
 
-(~) Naming Updated.
-(~) Summaries Updated.</PackageReleaseNotes>
+Prototype, major:
+(~) IStateSection Updated
+(~) IStatefulActionManager Updated
+
+Prototype, minor:
+(~) IUserState summaries Updated
+(~) IStatefulUser summaries Updated
+
+Model:
+(~) DefaultStatefulManager Updated
+(~) DefaultStatefulManager -&gt; StatefulActionManager
+(~) DefaultStateSection Updated
+(~) DefaultUserState Updated
+
+Exceptions:
+(+) NoDefaultSection Added
+(~) NotStateful marked as Inexternal now
+(~) Minor interior updates
+
+Obsolete:
+(-) IStatefulIntegratable Removed</PackageReleaseNotes>
     <Version>$(AssemblyVersion)</Version>
-    <Authors>Sargeras02, SKit-Labs</Authors>
-    <Copyright>Copyright (C) Sargeras02 2023</Copyright>
-    <PackageProjectUrl>https://github.com/Sargeras02/SKitLs.Bots.Telegram.git</PackageProjectUrl>
+    <Authors>SKitLs, Sargeras02</Authors>
+    <Copyright>Copyright (C) SKitLs 2023</Copyright>
+    <PackageProjectUrl>https://github.com/SKitLs-dev/SKitLs.Bots.Telegram.git</PackageProjectUrl>
     <PackageIcon>libIcon_Sf.png</PackageIcon>
     <PackageTags>Telegram, Bots, Management, States</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -30,6 +54,7 @@ Enables the segregation of user states.</Description>
 
   <ItemGroup>
     <None Remove="resources\locals\en.state.json" />
+    <None Remove="resources\locals\ru.state.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,22 +62,22 @@ Enables the segregation of user states.</Description>
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <None Include="..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.0.0" />
-    <PackageReference Include="Telegram.Bot" Version="19.0.0" />
+    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.1.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="resources\locals\ru.state.json" />
     <Resource Include="resources\locals\en.state.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Update="README.md">
       <PackagePath>\</PackagePath>
       <Pack>True</Pack>

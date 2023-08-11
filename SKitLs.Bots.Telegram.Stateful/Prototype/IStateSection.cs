@@ -5,51 +5,58 @@ using SKitLs.Bots.Telegram.Core.Prototype;
 namespace SKitLs.Bots.Telegram.Stateful.Prototype
 {
     /// <summary>
-    /// Provides mechanics of declaring specific state sections, which are used to fragment handling logics into parts, based on
-    /// user's states.
+    /// Provides the mechanics of declaring specific state sections, which are used to fragment handling logics into parts,
+    /// based on the user's states.
     /// </summary>
-    /// <typeparam name="TUpdate">Type of update that this section works with.</typeparam>
+    /// <typeparam name="TUpdate">The type of update that this section works with.</typeparam>
     public interface IStateSection<TUpdate> : IDebugNamed, IActionsHolder, IEquatable<IStateSection<TUpdate>>, IEnumerable<IBotAction<TUpdate>> where TUpdate : ICastedUpdate
     {
         /// <summary>
-        /// Determines states that collected actions should react on.
-        /// </summary>
-        public IList<IUserState>? EnabledStates { get; }
-        /// <summary>
-        /// Determines, whether collected action should be executed regardless user state.
+        /// Determines whether the collected actions should be executed regardless of the user's state.
         /// </summary>
         public bool EnabledAny { get; }
+
         /// <summary>
-        /// Enables custom state.
+        /// Retrieves a list of all user states that this section is permitted to react to.
         /// </summary>
-        /// <param name="state">State to enable.</param>
+        /// <returns>A list of enabled user states.</returns>
+        public IEnumerable<IUserState> GetEnabledStates();
+
+        /// <summary>
+        /// Enables a custom state.
+        /// </summary>
+        /// <param name="state">The state to enable.</param>
         public void EnableState(IUserState state);
+
         /// <summary>
-        /// Determines, whether this section should be executed with <paramref name="state"/>.
+        /// Determines whether this section should be executed with the given <paramref name="state"/>.
         /// </summary>
-        /// <param name="state">State to analyze.</param>
-        /// <returns><see langword="true"/> if section is enabled with <paramref name="state"/>. Otherwise <see langword="false"/>.</returns>
-        public bool IsEnabledWith(IUserState state) => EnabledAny || EnabledStates!.ToList().Contains(state);
+        /// <param name="state">The state to analyze.</param>
+        /// <returns><see langword="true"/> if the section is enabled with the specified <paramref name="state"/>; otherwise, <see langword="false"/>.</returns>
+        public bool IsEnabledWith(IUserState state) => EnabledAny || GetEnabledStates().Contains(state);
 
         /// <summary>
         /// Collects all <see cref="IBotAction{TUpdate}"/> declared in the class.
         /// </summary>
-        /// <returns>Collected list of declared actions.</returns>
-        public IList<IBotAction<TUpdate>> GetActionsList();
+        /// <returns>A collected list of declared actions.</returns>
+        public IEnumerable<IBotAction<TUpdate>> GetActionsList();
+
         /// <summary>
-        /// Safely adds <paramref name="action"/> to internal storage.
+        /// Safely adds the <paramref name="action"/> to the internal storage.
         /// </summary>
-        /// <param name="action">Action to be added.</param>
+        /// <param name="action">The action to be added.</param>
         public void AddSafely(IBotAction<TUpdate> action);
+
         /// <summary>
-        /// Safely adds range of <paramref name="actions"/> to internal storage.
+        /// Safely adds a range of <paramref name="actions"/> to the internal storage.
         /// </summary>
-        /// <param name="actions">Actions to be added.</param>
-        public void AddRangeSafely(IList<IBotAction<TUpdate>> actions);
+        /// <param name="actions">The collection of actions to be added.</param>
+        public void AddRangeSafely(IEnumerable<IBotAction<TUpdate>> actions);
+
         /// <summary>
-        /// Safely adds data of a new <paramref name="section"/> to internal storage.
+        /// Safely adds data of a new <paramref name="section"/> to the internal storage.
         /// </summary>
-        /// <param name="section">Section to be merged.</param>
+        /// <param name="section">The section to be merged.</param>
         public void MergeSafely(IStateSection<TUpdate> section);
     }
 }

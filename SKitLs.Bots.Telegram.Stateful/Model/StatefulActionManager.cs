@@ -3,54 +3,58 @@ using SKitLs.Bots.Telegram.Core.Model;
 using SKitLs.Bots.Telegram.Core.Model.Building;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+using SKitLs.Bots.Telegram.Stateful.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.Stateful.Prototype;
 using System.Collections.ObjectModel;
 
 namespace SKitLs.Bots.Telegram.Stateful.Model
 {
     /// <summary>
-    /// Default realization of <see cref="IStatefulActionManager{TUpdate}"/>. Provides sectioned architecture
-    /// with deep iteration searcher and one-of-many
+    /// Default implementation of <see cref="IStatefulActionManager{TUpdate}"/>. 
+    /// Provides a sectioned architecture with deep iteration search capabilities and a one-of-many
     /// <see cref="IBotAction{TUpdate}.ShouldBeExecutedOn(TUpdate)"/> selector.
     /// </summary>
-    /// <typeparam name="TUpdate">Specific casted update that this manager should work with.</typeparam>
-    public class DefaultStatefulManager<TUpdate> : IStatefulActionManager<TUpdate>, IOwnerCompilable where TUpdate : ICastedUpdate, ISignedUpdate
+    /// <typeparam name="TUpdate">The specific casted update that this manager should work with.</typeparam>
+    public class StatefulActionManager<TUpdate> : IStatefulActionManager<TUpdate>, IOwnerCompilable where TUpdate : ICastedUpdate, ISignedUpdate
     {
-        /// <summary>
-        /// Name, used for simplifying debugging process.
-        /// </summary>
+        /// <inheritdoc/>
         public string? DebugName { get; set; }
 
         private BotManager? _owner;
-        /// <summary>
-        /// Instance's owner.
-        /// </summary>
+        /// <inheritdoc/>
         public BotManager Owner
         {
             get => _owner ?? throw new NullOwnerException(this);
             set => _owner = value;
         }
-        /// <summary>
-        /// Specified method that raised during reflective <see cref="IOwnerCompilable.ReflectiveCompile(object, BotManager)"/> compilation.
-        /// Declare it to extend preset functionality.
-        /// Invoked after <see cref="Owner"/> updating, but before recursive update.
-        /// </summary>
+        /// <inheritdoc/>
         public Action<object, BotManager>? OnCompilation => null;
 
         /// <summary>
-        /// Internal collection used for storing action sections. 
+        /// Determines whether <see cref="StatefulActionManager{TUpdate}"/> should break iterator after first matched action was executed.
         /// </summary>
-        public ICollection<IStateSection<TUpdate>> ActionSections { get; set; }
+        public bool OnlyOneAction { get; set; }
+
         /// <summary>
-        /// State section that is defined as a default one.
+        /// An internal collection used for storing action sections. 
         /// </summary>
-        public IStateSection<TUpdate> DefaultStateSection => ActionSections
-            .ToList()
-            .Find(x => x.EnabledAny) ?? throw new Exception();
-        /// <summary>
-        /// Collects all <see cref="IBotAction"/>s declared in the class.
-        /// </summary>
-        /// <returns>Collected list of declared actions.</returns>
+        public List<IStateSection<TUpdate>> ActionSections { get; private set; }
+
+        /// <inheritdoc/>
+        public IEnumerable<IStateSection<TUpdate>> GetActionSections() => ActionSections;
+
+        private IStateSection<TUpdate>? _defaultSection;
+        /// <inheritdoc/>
+        public IStateSection<TUpdate> DefaultStateSection
+        {
+            get => _defaultSection ?? ActionSections
+                .ToList()
+                .Find(x => x.EnabledAny)
+                ?? throw new NoDefaultSectionException(this);
+            set => _defaultSection = value;
+        }
+
+        /// <inheritdoc/>
         public List<IBotAction> GetActionsContent()
         {
             var res = new List<IBotAction>();
@@ -59,37 +63,27 @@ namespace SKitLs.Bots.Telegram.Stateful.Model
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="DefaultStatefulManager{TUpdate}"/> with specified data.
+        /// Initializes a new instance of the <see cref="StatefulActionManager{TUpdate}"/> class with the specified parameters.
         /// </summary>
         /// <param name="debugName">Optional. Debug name.</param>
-        public DefaultStatefulManager(string? debugName = null)
+        public StatefulActionManager(string? debugName = null)
         {
             DebugName = debugName;
-            ActionSections = new Collection<IStateSection<TUpdate>>
+            ActionSections = new List<IStateSection<TUpdate>>
             {
                 new DefaultStateSection<TUpdate>()
             };
         }
 
-        /// <summary>
-        /// Safely adds new action to internal storage.
-        /// Verifies it is unique via <see cref="IBotAction.ActionId"/>.
-        /// </summary>
-        /// <param name="action">Action to be stored.</param>
+        /// <inheritdoc/>
         public void AddSafely(IBotAction<TUpdate> action) => DefaultStateSection.AddSafely(action);
-        /// <summary>
-        /// Safely adds range of actions to internal storage.
-        /// Verifies they are unique via <see cref="IBotAction.ActionId"/>.
-        /// </summary>
-        /// <param name="actions">Actions to be stored.</param>
+
+        /// <inheritdoc/>
         public void AddRangeSafely(ICollection<IBotAction<TUpdate>> actions) => actions
             .ToList()
             .ForEach(sec => AddSafely(sec));
 
-        /// <summary>
-        /// Safely adds new state section.
-        /// </summary>
-        /// <param name="section">Section to add.</param>
+        /// <inheritdoc/>
         public void AddSectionSafely(IStateSection<TUpdate> section)
         {
             // Найти секции с тем же набором доступным состояний
@@ -107,7 +101,7 @@ namespace SKitLs.Bots.Telegram.Stateful.Model
             {
                 var intersectedStates = ActionSections
                     .Where(x => !x.EnabledAny)
-                    .Where(x => x.EnabledStates!.Intersect(section.EnabledStates!).Any())
+                    .Where(x => x.GetEnabledStates().Intersect(section.GetEnabledStates()).Any())
                     .SelectMany(x => x.GetActionsContent());
                 if (intersectedStates.Intersect(section.GetActionsContent()).Any())
                     throw new Exception();
@@ -116,52 +110,36 @@ namespace SKitLs.Bots.Telegram.Stateful.Model
             }
 
             // Данная проверка необходима для следующего кейса:
-            //  Если существующая секция доступна для состояний (0, 1, 2) и содержит условный /start
-            //  То /start из новой секции (0, 1) будет просто напросто игнорироваться
+            // Если существующая секция доступна для состояний (0, 1, 2) и содержит условный /start
+            // То /start из новой секции (0, 1) будет просто напросто игнорироваться
         }
-        /// <summary>
-        /// Safely adds a range of state section.
-        /// </summary>
-        /// <param name="sections">Sections to add.</param>
+
+        /// <inheritdoc/>
         public void AddSectionsRangeSafely(ICollection<IStateSection<TUpdate>> sections) => sections
             .ToList()
             .ForEach(s => AddSectionSafely(s));
 
-        /// <summary>
-        /// Applies and integrates custom class that supports <see cref="IStatefulIntegratable{TUpdate}"/>.
-        /// </summary>
-        /// <param name="integration">An item to be integrated.</param>
-        [Obsolete("Will be removed in future versions. Use IApplicant instead.", true)]
-        public void Apply(IStatefulIntegratable<TUpdate> integration) => AddSectionsRangeSafely(integration.GetSectionsList());
-
-        /// <summary>
-        /// Manages incoming update, delegating it to one of a stored actions.
-        /// </summary>
-        /// <param name="update">Update to be handled.</param>
+        /// <inheritdoc/>
         public async Task ManageUpdateAsync(TUpdate update)
         {
-            // TODO
             if (update.Sender is not IStatefulUser stateful)
-                throw new Exception();
+                throw new NotStatefulException(this);
 
             var enabled = ActionSections
                 .ToList()
                 .FindAll(x => x.IsEnabledWith(stateful.State))
                 .SelectMany(x => x);
 
-            // TODO
             foreach (var action in enabled)
                 if (action.ShouldBeExecutedOn(update))
                 {
                     await action.Action(update);
-                    break;
+                    if (OnlyOneAction)
+                        break;
                 }
         }
 
-        /// <summary>
-        /// Returns a string that represents current object.
-        /// </summary>
-        /// <returns>A string that represents current object.</returns>
+        /// <inheritdoc/>
         public override string? ToString() => DebugName ?? base.ToString();
     }
 }

@@ -3,16 +3,17 @@
 namespace SKitLs.Bots.Telegram.Stateful.Prototype
 {
     /// <summary>
-    /// Provides mechanics of user states. Default: <see cref="DefaultUserState"/>.
+    /// Defines the mechanism for user states. The default implementation is <see cref="DefaultUserState"/>.
     /// </summary>
     public interface IUserState : IEquatable<int>, IComparable<int>
     {
         /// <summary>
-        /// Represents state's unique identifier.
+        /// Gets the unique identifier of the state.
         /// </summary>
         public int StateId { get; }
+
         /// <summary>
-        /// State's display name.
+        /// Gets the display name of the state.
         /// </summary>
         public string Name { get; }
     }

@@ -15,11 +15,13 @@ namespace SKitLs.Bots.Telegram.Core.Model
     /// A delegate representing an asynchronous task that operates on an update of type <typeparamref name="TUpdate"/>
     /// and returns a result of type <typeparamref name="TOut"/>.
     /// </summary>
+    /// <typeparam name="TSender">The type of the sender (usually a message or button).</typeparam>
     /// <typeparam name="TUpdate">The type of update parameter.</typeparam>
     /// <typeparam name="TOut">The type of the result returned by the task.</typeparam>
+    /// <param name="sender">The sender object that content is being built for.</param>
     /// <param name="update">The update used as input for the task.</param>
     /// <returns>An asynchronous task that returns a result of type <typeparamref name="TOut"/>.</returns>
-    public delegate Task<TOut> UpdateBasedTask<TUpdate, TOut>(TUpdate update) where TUpdate : ICastedUpdate;
+    public delegate Task<TOut> UpdateBasedTask<TSender, TUpdate, TOut>(TSender sender, TUpdate? update) where TUpdate : ICastedUpdate;
 
     /// <summary>
     /// A delegate representing an asynchronous event of user data change for an <see cref="IBotUser"/>.

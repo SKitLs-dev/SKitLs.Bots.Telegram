@@ -2,7 +2,7 @@
 
 The core module of the SKitLs.Bots.Telegram Framework.
 
-First time here? Jump to [Quick Start](#quick-start)
+First time here? Jump to [Quick Start](#quick-start)!
 
 ## Description
 

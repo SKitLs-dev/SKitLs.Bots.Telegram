@@ -13,6 +13,6 @@ namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype
         /// </summary>
         /// <param name="update">The update used to dynamically generate the message content.</param>
         /// <returns>An <see cref="ITelegramMessage"/> instance with dynamically generated content.</returns>
-        public Task<ITelegramMessage> BuildContentAsync(ICastedUpdate update);
+        public Task<ITelegramMessage> BuildContentAsync(ICastedUpdate? update);
     }
 }

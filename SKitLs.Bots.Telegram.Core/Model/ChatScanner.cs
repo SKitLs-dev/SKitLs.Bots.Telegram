@@ -29,10 +29,15 @@ namespace SKitLs.Bots.Telegram.Core.Model
     public sealed class ChatScanner : IDebugNamed, IOwnerCompilable, IActionsHolder
     {
         #region Properties
+        private string? _debugName;
         /// <summary>
         /// Name, used for simplifying debugging process.
         /// </summary>
-        public string? DebugName { get; set; }
+        public string DebugName
+        {
+            get => _debugName ?? Enum.GetName(typeof(TEnum.ChatType), ChatType) ?? "Unknown";
+            set => _debugName = value;
+        }
 
         private BotManager? _owner;
         /// <summary>
@@ -285,8 +290,6 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// Returns a string that represents current object.
         /// </summary>
         /// <returns>A string that represents current object.</returns>
-        public override string? ToString() => DebugName is null
-            ? Enum.GetName(typeof(TEnum.ChatType), ChatType)
-            : $"{DebugName} ({Owner.DebugName})";
+        public override string? ToString() => $"{DebugName} ({Owner})";
     }
 }

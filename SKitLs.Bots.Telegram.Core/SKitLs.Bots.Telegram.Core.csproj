@@ -4,36 +4,20 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>2.1.0</AssemblyVersion>
+    <AssemblyVersion>2.1.1</AssemblyVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>$(AssemblyName)</Title>
-    <Authors>Sargeras02, SKit-Labs</Authors>
+    <Authors>Sargeras02, SKitLs</Authors>
     <PackageProjectUrl>https://github.com/Sargeras02/SKitLs.Bots.Telegram.git</PackageProjectUrl>
     <PackageIcon>libIcon.png</PackageIcon>
     <PackageTags>Telegram, Bots, Management, Framework, Core</PackageTags>
     <FileVersion>$(AssemblyVersion)</FileVersion>
-    <PackageReleaseNotes>Major .DeliverySystem Refactor:
-(+) IBuildableMessage replaced with ITelegramMessage
-(+) TelegramTextMessage Added
-(+) IBuildableMessage Added (based on IDynamicMessage from *.AdvancedMessages)
-(+) BuildableMessage Added
-
-(~) DeliveryResponse complete review
-(~) IDeliveryService naming and summaries Updated
-
-Rest minor:
-(~) README Updated
-(~) NullOwnerException initialization Updated
-(~) Settings namings Updated
-(~) Delegates summaries Updated
-(~) IUsersManager summaries Updated
-(~) DebugSettings summaries Updated
-
-(-) Obsolete BotCompilableAttribute Removed
-(-) Obsolete IIntegratable Removed
-(-) Obsolete IDefaultExceptionActions Removed
-(-) Obsolete TypedChatSettings Removed
-(-) Obsolete Removed</PackageReleaseNotes>
+    <PackageReleaseNotes>(~) UpdateBasedTask signature Updated
+(~) IBuildableMessage.BuildContentAsync signature Updated
+(~) BuildableMessage virtualized
+(~) TelegramTextMessage virtualized
+(~) ChatScanner ToString() Updated
+(~) README Updated</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <Copyright>Copyright (C) Sargeras02 2023</Copyright>

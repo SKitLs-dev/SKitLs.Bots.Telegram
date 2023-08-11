@@ -80,13 +80,13 @@ namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Model
         }
 
         /// <inheritdoc/>
-        public string GetMessageText() => Text;
+        public virtual string GetMessageText() => Text;
 
         /// <inheritdoc/>
-        public IReplyMarkup? GetReplyMarkup() => ReplyMarkup;
+        public virtual IReplyMarkup? GetReplyMarkup() => ReplyMarkup;
 
         /// <inheritdoc/>
-        public object Clone() => new TelegramTextMessage((string)Text.Clone());
+        public virtual object Clone() => new TelegramTextMessage((string)Text.Clone());
 
         /// <inheritdoc/>
         public override string? ToString() => $"{GetType().Name} \"{Text}\"";

@@ -43,7 +43,7 @@ Key Features:
 
 ### Requirements
 
-- SKitLs.Bots.Telegram.Core 2.1.0 or higher
+- SKitLs.Bots.Telegram.Core 2.1.2 or higher
 - Telegram.Bot 19.0.0 or higher
 
 Before running the project, please ensure that you have the following dependencies installed and properly configured in your development environment.
@@ -76,7 +76,7 @@ Before running the project, please ensure that you have the following dependenci
 
     To install the project by downloading the source code and directly linking it to your project, adhere to the following steps:
 
-    1. Visit the project repository on [GitHub page](https://github.com/Sargeras02/SKitLs.Bots.Telegram.git).
+    1. Visit the project repository on [GitHub page](https://github.com/SKitLs-dev/SKitLs.Bots.Telegram.git).
     2. Click on the "Code" button and select "Download ZIP" to download the project's source code as a zip archive.
     3. Extract the downloaded zip archive to the desired location on your local machine.
     4. Open your existing project or create a new one in your IDE.
@@ -137,17 +137,6 @@ var callbackData = argedCallback.GetSerializedData(data, argsSerializeService);
 _ = InlineKeyboardMarkup.WithCallbackData(argedCallback.Label, callbackData);
 ```
 
-Or (if using `*.AdvancedMessages` Framework Extension) via menus:
-
-```C#
-var menu = new PairedInlineMenu()
-{
-    Serializer = argsSerializeService
-};
-menu.Add(argedCallback, data);
-IReplyMarkup markup = menu.GetMarkup();
-```
-
 _You can use [SKitLs.Bots.Telegram.AdvancedMessages](https://www.nuget.org/packages/SKitLs.Bots.Telegram.AdvancedMessages/) package to get better messaging experience._
 
 ## Contributors
@@ -164,14 +153,14 @@ Thank you for considering contributing to our project.
 
 This project is distributed under the terms of the MIT License.
 
-Copyright (C) Sargeras02 2023
+Copyright (C) SKitLs 2023
 
 ## Developer contact
 
 For any issues related to the project, please feel free to reach out to us through the project's GitHub page.
 We welcome bug reports, feedback, and any other inquiries that can help us improve the project.
 
-You can also contact the project owner directly via their GitHub profile at the [following link](https://github.com/Sargeras02) or email: skitlsdev@gmail.com
+You can also contact the project owner directly via their GitHub profile at the [following link](https://github.com/SKitLs-dev) or email: skitlsdev@gmail.com
 
 Your collaboration and support are highly appreciated, and we will do our best to address any concerns or questions promptly and professionally.
 Thank you for your interest in our project.

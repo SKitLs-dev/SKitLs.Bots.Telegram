@@ -9,6 +9,7 @@ using SKitLs.Bots.Telegram.Core.Exceptions.External;
 using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.Core.Model;
 using SKitLs.Bots.Telegram.Core.Model.Building;
+using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Model;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults;
 using SKitLs.Bots.Telegram.Core.Model.Management;
@@ -22,12 +23,12 @@ using SKitLs.Bots.Telegram.PageNavs.resources.settings;
 namespace SKitLs.Bots.Telegram.PageNavs.Model
 {
     /// <summary>
-    /// Default realization of the <see cref="IMenuManager"/> interface that provides methods of inline message navigation.
-    /// Realized via <see cref="PageSessionData"/>, that provides simple navigation data stack-storage for only one message.
-    /// Enables two ways of navigation: forward and backward by allowing to open a new page via <see cref="OpenPageCallback"/>
-    /// or rollback to a previous one via <see cref="BackCallback"/>.
+    /// Default implementation of the <see cref="IMenuManager"/> interface, providing methods for inline message navigation.
+    /// Utilizes <see cref="PageSessionData"/> to provide a simple navigation data stack-storage for a single message.
+    /// Enables two methods of navigation: forward by opening a new page via <see cref="OpenPageCallback"/>
+    /// and backward by rolling back to a previous page via <see cref="BackCallback"/>.
     /// <para>
-    /// Allows to store menu pages' data, providing access to it, and handle special menu updates, released via callbacks.
+    /// Allows storage of menu pages' data, providing access to it, and handling special menu updates released via callbacks.
     /// </para>
     /// <para>
     /// Add-on architecture level. Access via <see cref="BotManager.ResolveService{T}"/>.
@@ -42,31 +43,23 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
     /// </summary>
     public class DefaultMenuManager : IMenuManager
     {
-        /// <summary>
-        /// Name, used for simplifying debugging process.
-        /// </summary>
+        /// <inheritdoc/>
         public string? DebugName { get; set; }
 
         private BotManager? _owner;
-        /// <summary>
-        /// Instance's owner.
-        /// </summary>
+        /// <inheritdoc/>
         public BotManager Owner
         {
             get => _owner ?? throw new NullOwnerException(this);
             set => _owner = value;
         }
-        /// <summary>
-        /// Specified method that raised during reflective <see cref="IOwnerCompilable.ReflectiveCompile(object, BotManager)"/> compilation.
-        /// Declare it to extend preset functionality.
-        /// Invoked after <see cref="Owner"/> updating, but before recursive update.
-        /// </summary>
+        /// <inheritdoc/>
         public Action<object, BotManager>? OnCompilation => OnReflectiveCompile;
 
         /// <summary>
-        /// Creates a new instance of a <see cref="DefaultMenuManager"/> with specified data.
+        /// Initializes a new instance of <see cref="DefaultMenuManager"/> with optional debug name.
         /// </summary>
-        /// <param name="debugName">Implementation of <see cref="IDebugNamed"/>.</param>
+        /// <param name="debugName">Optional debug name.</param>
         public DefaultMenuManager(string? debugName = null) => DebugName = debugName;
 
         #region Sessions and navigation data.
@@ -74,59 +67,37 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         /// An internal storage that provides access to all saved navigation sessions.
         /// </summary>
         private Dictionary<long, PageSessionData> Navigations { get; } = new();
-        /// <summary>
-        /// Detects whether a session for a certain update exists and valid.
-        /// </summary>
-        /// <param name="update">An incoming update.</param>
-        /// <returns><see langword="true"/> if <paramref name="update"/> is a <see cref="SignedCallbackUpdate"/>,
-        /// session exists and its <see cref="PageSessionData.MessageId"/>
-        /// is equal to the <paramref name="update"/>'s <see cref="SignedCallbackUpdate.TriggerMessageId"/>.
-        /// Otherwise <see langword="false"/>.</returns>
+        
+        /// <inheritdoc cref="CheckSession(SignedCallbackUpdate)"/>
         private bool CheckSession(ISignedUpdate update) => update is SignedCallbackUpdate callback && CheckSession(callback);
-        /// <summary>
-        /// Detects whether a session for a certain update exists and valid.
-        /// </summary>
+        /// <inheritdoc cref="CheckSession(long, int)"/>
         /// <param name="update">An incoming update.</param>
-        /// <returns><see langword="true"/> if session exists and its <see cref="PageSessionData.MessageId"/>
-        /// is equal to the <paramref name="update"/>'s <see cref="SignedCallbackUpdate.TriggerMessageId"/>.
-        /// Otherwise <see langword="false"/>.</returns>
-        private bool CheckSession(SignedCallbackUpdate update)
-            => CheckSession(update.Sender.TelegramId, update.TriggerMessageId);
+        private bool CheckSession(SignedCallbackUpdate update) => CheckSession(update.Sender.TelegramId, update.TriggerMessageId);
         /// <summary>
         /// Detects whether a session for the specified data exists and valid.
         /// </summary>
-        /// <param name="userId">User's id, to check its session.</param>
-        /// <param name="messageId">Message's id, to check session for.</param>
+        /// <param name="userId">The user's ID to check its session.</param>
+        /// <param name="messageId">The message's ID to check session for.</param>
         /// <returns><see langword="true"/> if session exists and its <see cref="PageSessionData.MessageId"/>
-        /// is equal to the <paramref name="messageId"/>.
-        /// Otherwise <see langword="false"/>.</returns>
-        private bool CheckSession(long userId, int messageId)
-            => Navigations.ContainsKey(userId)
-            && Navigations[userId].MessageId == messageId;
+        /// is equal to the <paramref name="messageId"/>;
+        /// otherwise <see langword="false"/>.</returns>
+        private bool CheckSession(long userId, int messageId) => Navigations.ContainsKey(userId) && Navigations[userId].MessageId == messageId;
 
-        /// <summary>
-        /// Gets user's menu session by an incoming signed update for a certain message.
-        /// If one doesn't exist, generates and returns a new one.
-        /// </summary>
+        /// <inheritdoc cref="GetSession(long, int)"/>
         /// <param name="update">An incoming signed update.</param>
-        /// <param name="messageId">Message's id.</param>
-        /// <returns>An existing or a new one <see cref="PageSessionData"/> for a certain user and message.</returns>
+        /// <param name="messageId">The message's ID.</param>
         public PageSessionData GetSession(ISignedUpdate update, int messageId) => GetSession(update.Sender, messageId);
-        /// <summary>
-        /// Gets user's menu session for a certain message.
-        /// If one doesn't exist, generates and returns a new one.
-        /// </summary>
+        /// <inheritdoc cref="GetSession(long, int)"/>
         /// <param name="sender">A certain sender.</param>
-        /// <param name="messageId">Message's id.</param>
-        /// <returns>An existing or a new one <see cref="PageSessionData"/> for a certain user and message.</returns>
+        /// <param name="messageId">The message's ID.</param>
         public PageSessionData GetSession(IBotUser sender, int messageId) => GetSession(sender.TelegramId, messageId);
         /// <summary>
-        /// Gets user's menu session by his id for a certain message.
-        /// If one doesn't exist, generates and returns a new one.
+        /// Gets the user's menu session by their ID for a certain message.
+        /// If it doesn't exist, generates and returns a new one.
         /// </summary>
-        /// <param name="senderId">User's id.</param>
-        /// <param name="messageId">Message's id.</param>
-        /// <returns>An existing or a new one <see cref="PageSessionData"/> for a certain user and message.</returns>
+        /// <param name="senderId">User's ID.</param>
+        /// <param name="messageId">Message's ID.</param>
+        /// <returns>An existing or a new <see cref="PageSessionData"/> for a certain user and message.</returns>
         public PageSessionData GetSession(long senderId, int messageId)
         {
             if (CheckSession(senderId, messageId))
@@ -141,130 +112,69 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         }
         #endregion
 
-        #region Sessions manipulation.
-        /// <summary>
-        /// Pushes <paramref name="page"/> to a certain <see cref="PageSessionData"/> <paramref name="session"/>.
-        /// </summary>
-        /// <param name="page">Page to push.</param>
-        /// <param name="session">Session to push page to.</param>
+        #region Sessions manipulation
+        /// <inheritdoc cref="Push(IBotPage, long, int)"/>
+        /// <param name="page">A page to push.</param>
+        /// <param name="session">The session to push page to.</param>
         public void Push(IBotPage page, PageSessionData session) => Push(page, session.OwnerId, session.MessageId);
-        /// <summary>
-        /// Pushes <paramref name="page"/> to a certain user's navigation data.
-        /// </summary>
-        /// <param name="page">Page to push.</param>
+        /// <inheritdoc cref="Push(IBotPage, IBotUser, int)"/>
+        /// <param name="page">A page to push.</param>
         /// <param name="update">An incoming update.</param>
-        /// <param name="messageId">Message's that host menu id.</param>
+        /// <param name="messageId">A message that host menu id.</param>
         public void Push(IBotPage page, ISignedUpdate update, int messageId) => Push(page, update.Sender, messageId);
-        /// <summary>
-        /// Pushes <paramref name="page"/> to a certain user's navigation data.
-        /// </summary>
-        /// <param name="page">Page to open.</param>
+        /// <inheritdoc cref="Push(IBotPage, long, int)"/>
+        /// <param name="page">A page to push.</param>
         /// <param name="sender">A certain sender.</param>
-        /// <param name="messageId">Message's that host menu id.</param>
+        /// <param name="messageId">A message that host menu id.</param>
         public void Push(IBotPage page, IBotUser sender, int messageId) => Push(page, sender.TelegramId, messageId);
-        /// <summary>
-        /// Pushes <paramref name="page"/> to a certain user's navigation data.
-        /// </summary>
-        /// <param name="page">Page to pus.h.</param>
-        /// <param name="senderId">User's id.</param>
-        /// <param name="messageId">Message's that host menu id.</param>
+        /// <inheritdoc/>
         public void Push(IBotPage page, long senderId, int messageId) => GetSession(senderId, messageId).Push(page);
-        /// <summary>
-        /// Gets the latest page that update's sender has opened without removing it from the navigation history.
-        /// Throws an exception if that page doesn't exist.
-        /// </summary>
+
+        /// <inheritdoc cref="Peek(IBotUser)"/>
         /// <param name="update">An incoming update.</param>
-        /// <returns>The latest opened page.</returns>
-        /// <exception cref="NotDefinedException">Thrown when <see cref="PageSessionData"/>
-        /// for <see cref="ISignedUpdate.Sender"/> doesn't exist.</exception>
         public IBotPage Peek(ISignedUpdate update) => Peek(update.Sender);
-        /// <summary>
-        /// Gets the latest page that sender has opened without removing it from the navigation history.
-        /// Throws an exception if that page doesn't exist.
-        /// </summary>
+        /// <inheritdoc cref="Peek(long)"/>
         /// <param name="sender">A certain sender.</param>
-        /// <returns>The latest opened page.</returns>
-        /// <exception cref="NotDefinedException">Thrown when <see cref="PageSessionData"/>
-        /// for <paramref name="sender"/> doesn't exist.</exception>
         public IBotPage Peek(IBotUser sender) => Peek(sender.TelegramId);
-        /// <summary>
-        /// Gets the latest page that sender has opened without removing it from the navigation history.
-        /// Throws an exception if that page doesn't exist.
-        /// </summary>
-        /// <param name="senderId">User's id.</param>
-        /// <returns>The latest opened page.</returns>
+        /// <inheritdoc/>
+        /// <remarks>Throws an exception if that page does not exist.</remarks>
         /// <exception cref="NotDefinedException">Thrown when <see cref="PageSessionData"/>
         /// for <paramref name="senderId"/> doesn't exist.</exception>
-        public IBotPage Peek(long senderId) => TryPeek(senderId)
-            ?? throw new NotDefinedException(this, typeof(PageSessionData), senderId.ToString());
-        /// <summary>
-        /// Tries to get the latest page that update's sender has opened without removing it from the navigation history.
-        /// </summary>
+        public IBotPage Peek(long senderId) => TryPeek(senderId) ?? throw new NotDefinedException(this, typeof(PageSessionData), senderId.ToString());
+
+        /// <inheritdoc cref="TryPeek(IBotUser)"/>
         /// <param name="update">An incoming update.</param>
-        /// <returns>The latest opened page or <see langword="null"/> if it doesn't exist.</returns>
         public IBotPage? TryPeek(ISignedUpdate update) => TryPeek(update.Sender);
-        /// <summary>
-        /// Tries to get the latest page that sender has opened without removing it from the navigation history.
-        /// </summary>
+        /// <inheritdoc cref="TryPeek(long)"/>
         /// <param name="sender">A certain sender.</param>
-        /// <returns>The latest opened page or <see langword="null"/> if it doesn't exist.</returns>
         public IBotPage? TryPeek(IBotUser sender) => TryPeek(sender.TelegramId);
-        /// <summary>
-        /// Tries to get the latest page that sender has opened without removing it from the navigation history.
-        /// </summary>
-        /// <param name="senderId">User's id.</param>
-        /// <returns>The latest opened page or <see langword="null"/> if it doesn't exist.</returns>
+        /// <inheritdoc/>
         public IBotPage? TryPeek(long senderId)
         {
             if (!Navigations.ContainsKey(senderId)) return null;
             if (Navigations[senderId].TryPeek(out IBotPage? res)) return res;
             return null;
         }
-        /// <summary>
-        /// Gets the latest page that update's sender has opened, removing it from the navigation history.
-        /// Throws an exception if that page doesn't exist.
-        /// </summary>
+
+        /// <inheritdoc cref="Pop(ISignedUpdate)"/>
         /// <param name="update">An incoming update.</param>
-        /// <returns>The latest opened page.</returns>
-        /// <exception cref="NotDefinedException">Thrown when <see cref="PageSessionData"/>
-        /// for <see cref="ISignedUpdate.Sender"/> doesn't exist.</exception>
         public IBotPage Pop(ISignedUpdate update) => Pop(update.Sender);
-        /// <summary>
-        /// Gets the latest page that sender has opened, removing it from the navigation history.
-        /// Throws an exception if that page doesn't exist.
-        /// </summary>
+        /// <inheritdoc cref="Pop(long)"/>
         /// <param name="sender">A certain sender.</param>
-        /// <returns>The latest opened page.</returns>
-        /// <exception cref="NotDefinedException">Thrown when <see cref="PageSessionData"/>
-        /// for <paramref name="sender"/> doesn't exist.</exception>
         public IBotPage Pop(IBotUser sender) => Pop(sender.TelegramId);
-        /// <summary>
-        /// Gets the latest page that sender has opened, removing it from the navigation history.
-        /// Throws an exception if that page doesn't exist.
-        /// </summary>
-        /// <param name="senderId">User's id.</param>
-        /// <returns>The latest opened page.</returns>
+        /// <inheritdoc/>
+        /// <remarks>Throws an exception if that page doesn't exist.</remarks>
         /// <exception cref="NotDefinedException">Thrown when <see cref="PageSessionData"/>
         /// for <paramref name="senderId"/> doesn't exist.</exception>
-        public IBotPage Pop(long senderId) => TryPop(senderId)
-            ?? throw new NotDefinedException(this, typeof(PageSessionData), senderId.ToString());
-        /// <summary>
-        /// Tries to get the latest page that update's sender has opened, removing it from the navigation history.
-        /// </summary>
+        public IBotPage Pop(long senderId) => TryPop(senderId) ?? throw new NotDefinedException(this, typeof(PageSessionData), senderId.ToString());
+
+        /// <inheritdoc cref="TryPop(IBotUser)"/>
         /// <param name="update">An incoming update.</param>
-        /// <returns>The latest opened page or <see langword="null"/> if it doesn't exist.</returns>
         public IBotPage? TryPop(ISignedUpdate update) => TryPop(update.Sender);
-        /// <summary>
-        /// Tries to get the latest page that sender has opened, removing it from the navigation history.
-        /// </summary>
+        /// <inheritdoc cref="TryPop(long)"/>
         /// <param name="sender">A certain sender.</param>
-        /// <returns>The latest opened page or <see langword="null"/> if it doesn't exist.</returns>
         public IBotPage? TryPop(IBotUser sender) => TryPop(sender.TelegramId);
-        /// <summary>
-        /// Tries to get the latest page that sender has opened, removing it from the navigation history.
-        /// </summary>
-        /// <param name="senderId">User's id.</param>
-        /// <returns>The latest opened page or <see langword="null"/> if it doesn't exist.</returns>
+        /// <inheritdoc/>
         public IBotPage? TryPop(long senderId)
         {
             if (!Navigations.ContainsKey(senderId)) return null;
@@ -273,27 +183,19 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         }
         #endregion
 
+        #region Page Definition
         /// <summary>
         /// An internal storage that provides access to all saved pages data.
         /// </summary>
         private List<IBotPage> DefinedPages { get; } = new();
-        /// <summary>
-        /// Determines whether a page is defined. Uses <see cref="IBotPage.PageId"/>.
-        /// </summary>
+
+        /// <inheritdoc cref="IsDefined(string)"/>
         /// <param name="page">A page to lookup.</param>
-        /// <returns><see langword="true"/> if page exists. Otherwise <see langword="false"/>.</returns>
         public bool IsDefined(IBotPage page) => TryGetDefined(page) is not null;
-        /// <summary>
-        /// Determines whether a page with <paramref name="pageId"/> id is defined.
-        /// </summary>
-        /// <param name="pageId">Page's id.</param>
-        /// <returns><see langword="true"/> if page exists. Otherwise <see langword="false"/>.</returns>
+        /// <inheritdoc/>
         public bool IsDefined(string pageId) => TryGetDefined(pageId) is not null;
-        /// <summary>
-        /// Saves a new page data into the internal storage, that can be accessed
-        /// via <see cref="GetDefined(string)"/> method in future.
-        /// </summary>
-        /// <param name="item">Page to define by saving it into the internal storage.</param>
+
+        /// <inheritdoc/>
         /// <exception cref="NullIdException">Thrown when id of an <paramref name="item"/> is null or empty.</exception>
         /// <exception cref="DuplicationException">Thrown when an item with same id already exists.</exception>
         public void Define(IBotPage item)
@@ -302,42 +204,23 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
             if (IsDefined(item)) throw new DuplicationException(GetType(), item.GetType(), item.PageId);
             DefinedPages.Add(item);
         }
-        /// <summary>
-        /// Gets defined via <see cref="Define(IBotPage)"/> page from the internal storage by <paramref name="page"/>'s id.
-        /// Throws an exception if that page doesn't exist.
-        /// </summary>
+
+        /// <inheritdoc cref="GetDefined(string)"/>
         /// <param name="page">Page to recover (by its id).</param>
-        /// <returns>Defined page.</returns>
-        /// <exception cref="NotDefinedException">Thrown when a page with a specified id doesn't exist.</exception>
         public IBotPage GetDefined(IBotPage page) => GetDefined(page.PageId);
-        /// <summary>
-        /// Gets defined via <see cref="Define(IBotPage)"/> page from the internal storage by page's id.
-        /// Throws an exception if that page doesn't exist.
-        /// </summary>
-        /// <param name="pageId">Page's id.</param>
-        /// <returns>Defined page.</returns>
+        /// <inheritdoc/>
+        /// <remarks>Throws an exception if that page does not exist.</remarks>
         /// <exception cref="NotDefinedException">Thrown when a page with a specified id doesn't exist.</exception>
         public IBotPage GetDefined(string pageId) => TryGetDefined(pageId) ?? throw new NotDefinedException(this, typeof(IBotPage), pageId);
-        /// <summary>
-        /// Tries to get defined via <see cref="Define(IBotPage)"/> page from the internal storage by <paramref name="page"/>'s id.
-        /// </summary>
-        /// <param name="page">Page to recover (by its id).</param>
-        /// <returns>Defined page or <see langword="null"/> if doesn't exist.</returns>
-        public IBotPage? TryGetDefined(IBotPage page) => TryGetDefined(page.PageId);
-        /// <summary>
-        /// Tries to get defined via <see cref="Define(IBotPage)"/> page from the internal storage by page's id.
-        /// </summary>
-        /// <param name="pageId">Page's id.</param>
-        /// <returns>Defined page or <see langword="null"/> if doesn't exist.</returns>
-        public IBotPage? TryGetDefined(string pageId) => DefinedPages.Find(x => x.PageId == pageId);
 
-        /// <summary>
-        /// System callback that represents "Back" request.
-        /// Gets previous page from user's session data and opens it.
-        /// <para>
-        /// Doesn't need any arguments to use.
-        /// </para>
-        /// </summary>
+        /// <inheritdoc cref="TryGetDefined(string)"/>
+        /// <param name="page">Page to recover (by its id).</param>\
+        public IBotPage? TryGetDefined(IBotPage page) => TryGetDefined(page.PageId);
+        /// <inheritdoc/>
+        public IBotPage? TryGetDefined(string pageId) => DefinedPages.Find(x => x.PageId == pageId);
+        #endregion
+
+        /// <inheritdoc/>
         public IBotAction<SignedCallbackUpdate> BackCallback => new DefaultCallback(PNSettings.BackCallBase, "{back menu}", BackMenuAsync);
         private async Task BackMenuAsync(SignedCallbackUpdate update)
         {
@@ -366,51 +249,32 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
             await PushPageAsync(page, update);
         }
 
-        /// <summary>
-        /// System callback that represents "Open Menu" request.
-        /// Opens requested page and pushes it into user's session navigation list.
-        /// <para>
-        /// Requires a <see cref="NavigationArgs"/> argument that determines paging data.
-        /// </para>
-        /// </summary>
+        /// <inheritdoc/>
         public IArgedAction<NavigationArgs, SignedCallbackUpdate> OpenPageCallback => new BotArgedCallback<NavigationArgs>(PNSettings.OpenCallBase, "{open menu}", OpenMenuAsync);
         private async Task OpenMenuAsync(NavigationArgs args, SignedCallbackUpdate update)
             => await (CheckSession(update) ? PushPageAsync(args.Page, update, args.Refresh) : HandleSessionExpiredAsync(update));
 
-        /// <summary>
-        /// Asynchronously pushes a certain menu <paramref name="page"/> to the chat that has requested it
-        /// with a certain signed <paramref name="update"/>.
-        /// Based on the update's type, overrides an existing message or generates a new one.
-        /// If <paramref name="refresh"/> is <see langword="true"/>, sets <paramref name="page"/> as a new root one.
-        /// </summary>
-        /// <param name="page">Page to push.</param>
-        /// <param name="update">An incoming updated.</param>
-        /// <param name="refresh">Determines whether pushing <paramref name="page"/> should be set as a new root one.</param>
+        /// <inheritdoc/>
         public async Task PushPageAsync(IBotPage page, ISignedUpdate update, bool refresh = false)
         {
             if (refresh && Navigations.ContainsKey(update.Sender.TelegramId))
                 Navigations.Remove(update.Sender.TelegramId);
 
             var previous = TryPeek(update);
-            IOutputMessage displayMes = page.BuildMessage(previous, update);
+            var displayMes = await (await page.BuildMessageAsync(previous, update)).BuildContentAsync(update);
 
             // M.Update
             int mesId;
             if (update is SignedCallbackUpdate callback)
             {
                 mesId = callback.TriggerMessageId;
-                await Owner.DeliveryService
-                    .ReplyToSender(new EditWrapper(displayMes, mesId), callback);
+                await Owner.DeliveryService.AnswerSenderAsync(new EditWrapper(displayMes, mesId), callback);
             }
             // M.Push
-            // TODO : should be updated after .AdvancedMessaging
             else
             {
-                var response = await Owner.DeliveryService.ReplyToSender(displayMes, update);
-                mesId = response.Message is not null
-                    ? response.Message.MessageId
-                    : throw new Exception($"{nameof(DefaultMenuManager)},Push Page => null message returned.");
-
+                var response = await Owner.DeliveryService.AnswerSenderAsync(displayMes, update);
+                mesId = response.SentMessage.MessageId;
             }
             // Gets session or generates a new one and pushes page to it.
             Push(page, GetSession(update, mesId));
@@ -452,17 +316,11 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         /// <param name="update">An update that has raised an exception.</param>
         private static async Task HandleSessionExpiredAsync(SignedCallbackUpdate update)
         {
-            var mes = new OutputMessageText(update.Owner.ResolveBotString(PNSettings.SessionExpiredLocalKey))
-            {
-                Menu = null
-            };
-            await update.Owner.DeliveryService.ReplyToSender(new EditWrapper(mes, update.TriggerMessageId), update);
+            var mes = new TelegramTextMessage(update.Owner.ResolveBotString(PNSettings.SessionExpiredLocalKey));
+            await update.Owner.DeliveryService.AnswerSenderAsync(new EditWrapper(mes, update.TriggerMessageId), update);
         }
 
-        /// <summary>
-        /// Returns a string that represents current object.
-        /// </summary>
-        /// <returns>A string that represents current object.</returns>
+        /// <inheritdoc/>
         public override string ToString() => DebugName ?? nameof(DefaultMenuManager);
     }
 }

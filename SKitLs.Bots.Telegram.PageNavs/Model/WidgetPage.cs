@@ -10,9 +10,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
     /// </summary>
     public sealed class WidgetPage : IBotPage
     {
-        /// <summary>
-        /// An unique page's identifier.
-        /// </summary>
+        /// <inheritdoc/>
         public string PageId { get; private init; }
 
         /// <summary>
@@ -21,34 +19,31 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         public Func<ISignedUpdate, string> LabelBuilder { get; private init; }
 
         /// <summary>
-        /// Dynamic page body that would appeal as a page representation. Can be customized based on incoming update.
+        /// Page body that would appeal as a page representation. Can be customized based on incoming update.
         /// </summary>
-        public IDynamicMessage PageView { get; private init; }
+        public IOutputMessage PageView { get; private init; }
 
-        /// <summary>
-        /// Page's menu. If <see langword="null"/> is set to default <see cref="PageNavMenu"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public IPageMenu Menu { get; set; }
 
         /// <summary>
-        /// Creates a new instance of a <see cref="WidgetPage"/> with specified data.
+        /// Initializes a new instance of a <see cref="WidgetPage"/> class with specified data.
         /// </summary>
         /// <param name="pageId">Page's unique identifier.</param>
         /// <param name="label">Page's display label.</param>
         /// <param name="pageView">Page's message body. Does not copy any actions from its <see cref="IOutputMessage.Menu"/>.</param>
         /// <param name="menu">Page's menu. If <paramref name="menu"/> is <see langword="null"/>,
         /// <see cref="Menu"/> will be set to default <see cref="PageNavMenu"/>.</param>
-        public WidgetPage(string pageId, string label, IDynamicMessage pageView, IPageMenu? menu = null)
-            : this(pageId, u => label, pageView, menu) { }
+        public WidgetPage(string pageId, string label, IOutputMessage pageView, IPageMenu? menu = null) : this(pageId, u => label, pageView, menu) { }
         /// <summary>
-        /// Creates a new instance of a <see cref="WidgetPage"/> with specified data.
+        /// Initializes a new instance of a <see cref="WidgetPage"/> class with specified data.
         /// </summary>
         /// <param name="pageId">Page's unique identifier.</param>
         /// <param name="labelBuilder">Page's display label builder.</param>
         /// <param name="pageView">Page's message body. Does not copy any actions from its <see cref="IOutputMessage.Menu"/>.</param>
         /// <param name="menu">Page's menu. If <paramref name="menu"/> is <see langword="null"/>,
         /// <see cref="Menu"/> will be set to default <see cref="PageNavMenu"/>.</param>
-        public WidgetPage(string pageId, Func<ISignedUpdate, string> labelBuilder, IDynamicMessage pageView, IPageMenu? menu = null)
+        public WidgetPage(string pageId, Func<ISignedUpdate, string> labelBuilder, IOutputMessage pageView, IPageMenu? menu = null)
         {
             PageId = pageId;
             LabelBuilder = labelBuilder;
@@ -56,37 +51,21 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
             Menu = menu ?? new PageNavMenu();
         }
 
-        /// <summary>
-        /// Returns a string that should be printed on the inline keyboard menu as a navigation label.
-        /// </summary>
-        /// <param name="update">An incoming update.</param>
-        /// <returns>A string that represents an instance as a navigation label.</returns>
+        /// <inheritdoc/>
         public string GetLabel(ISignedUpdate update) => LabelBuilder(update);
 
-        /// <summary>
-        /// Converts page data to a printable <see cref="IOutputMessage"/> that should be printed
-        /// based on incoming <paramref name="update"/>.
-        /// Optionally can add "Back" Button if <paramref name="previous"/> argument is not <see langword="null"/>.
-        /// </summary>
-        /// <param name="previous">A page to which should lead "Back" Button.</param>
-        /// <param name="update">An incoming update.</param>
-        /// <returns>Built ready-to-print message.</returns>
-        public IOutputMessage BuildMessage(IBotPage? previous, ISignedUpdate update)
+        /// <inheritdoc/>
+        public async Task<IOutputMessage> BuildMessageAsync(IBotPage? previous, ISignedUpdate update)
         {
-            var mes = PageView.BuildWith(update);
-            mes.Menu = Menu.Build(previous, this, update);
-            return mes;
+            var clone = (IOutputMessage)PageView.Clone();
+            clone.Menu = await Menu.BuildAsync(previous, this, update);
+            return clone;
         }
 
-        /// <summary>
-        /// Generates a string that could be used as a representation of this object.
-        /// </summary>
-        /// <returns>A string that could be used as a representation of this object.</returns>
+        /// <inheritdoc/>
         public string GetPacked() => PageId;
-        /// <summary>
-        /// Returns a string that represents current object.
-        /// </summary>
-        /// <returns>A string that represents current object.</returns>
+
+        /// <inheritdoc/>
         public override string ToString() => PageId;
     }
 }

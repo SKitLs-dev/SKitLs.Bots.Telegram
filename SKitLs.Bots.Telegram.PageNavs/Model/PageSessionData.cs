@@ -12,10 +12,12 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         /// User's id who this session belongs to.
         /// </summary>
         public long OwnerId { get; private init; }
+
         /// <summary>
         /// Message's id which this session belongs to.
         /// </summary>
         public int MessageId { get; private init; }
+
         /// <summary>
         /// Navigation history.
         /// </summary>
@@ -37,6 +39,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         /// </summary>
         /// <param name="page">Page data to push.</param>
         public void Push(IBotPage page) => Route.Push(page);
+
         /// <summary>
         /// Gets the latest page that sender has opened without removing it from the navigation history.
         /// Throws an exception if that page doesn't exist.
@@ -46,11 +49,13 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         public IBotPage Peek() => TryPeek(out IBotPage? res)
             ? res ?? throw new NotDefinedException(GetType(), typeof(IBotPage), nameof(Peek))
             : throw new NotDefinedException(GetType(), typeof(IBotPage), nameof(Peek));
+
         /// <summary>
         /// Tries to get the latest page that sender has opened without removing it from the navigation history.
         /// </summary>
         /// <returns>The latest opened page or <see langword="null"/> if it doesn't exist.</returns>
         public bool TryPeek(out IBotPage? result) => Route.TryPeek(out result);
+
         /// <summary>
         /// Gets the latest page that sender has opened, removing it from the navigation history.
         /// Throws an exception if that page doesn't exist.
@@ -60,6 +65,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         public IBotPage Pop() => TryPop(out IBotPage? res)
             ? res ?? throw new NotDefinedException(GetType(), typeof(IBotPage), nameof(Pop))
             : throw new NotDefinedException(GetType(), typeof(IBotPage), nameof(Pop));
+
         /// <summary>
         /// Tries to get the latest page that sender has opened, removing it from the navigation history.
         /// </summary>

@@ -5,26 +5,28 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Title>$(AssemblyName)</Title>
-    <Version>1.4.0</Version>
-    <Authors>Sargeras02, SKit-Labs</Authors>
-    <Copyright>Copyright (C) Sargeras02 2023</Copyright>
+    <Version>1.5.0</Version>
+    <Authors>SKtiLs, Sargeras02</Authors>
+    <Copyright>Copyright (C) SKtiLs 2023</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <FileVersion>$(AssemblyVersion)</FileVersion>
-    <AssemblyVersion>1.4.0</AssemblyVersion>
-    <PackageReleaseNotes>(+) XML Documentation Included.
-(+) README file Added.
+    <AssemblyVersion>1.5.0</AssemblyVersion>
+    <PackageReleaseNotes>Ownership transfered to SKitLs
 
-(~) Naming updates.
-(~) Summaries updates.
-(~) Minor interior updates.</PackageReleaseNotes>
+(~) .Core [v2.1] sync
+(~) .AdvancedMessages [v2.0] sync
+
+(-) StaticPage obsolete
+
+(~) Documentation Updated</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageIcon>libIcon_PN.png</PackageIcon>
-    <Description>An extension project built upon the SKitLs.Bots.Telegram.Core Framework.
+    <Description>Allows to create special navigational menus.
 
-Allows to create special navigational menus.</Description>
-    <PackageProjectUrl>https://github.com/Sargeras02/SKitLs.Bots.Telegram.git</PackageProjectUrl>
-    <PackageTags>Telegram, Bots, Management, Design</PackageTags>
+An extension project built upon the SKitLs.Bots.Telegram.Core Framework.</Description>
+    <PackageProjectUrl>https://github.com/SKtiLs-dev/SKitLs.Bots.Telegram.git</PackageProjectUrl>
+    <PackageTags>Telegram, Bots, Management, Design, Menu, Inline</PackageTags>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
@@ -45,10 +47,9 @@ Allows to create special navigational menus.</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SKitLs.Bots.Telegram.AdvancedMessages" Version="1.1.0" />
-    <PackageReference Include="SKitLs.Bots.Telegram.ArgedInteractions" Version="1.3.0" />
-    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.0.0" />
-    <PackageReference Include="Telegram.Bot" Version="19.0.0" />
+    <PackageReference Include="SKitLs.Bots.Telegram.AdvancedMessages" Version="2.0.1" />
+    <PackageReference Include="SKitLs.Bots.Telegram.ArgedInteractions" Version="1.3.3" />
+    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.1.3" />
   </ItemGroup>
 
   <ItemGroup>

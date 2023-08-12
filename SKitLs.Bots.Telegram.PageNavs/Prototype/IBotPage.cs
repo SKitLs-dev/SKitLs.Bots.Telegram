@@ -1,44 +1,43 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Prototype;
+using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.PageNavs.Model;
 
 namespace SKitLs.Bots.Telegram.PageNavs.Prototype
 {
     /// <summary>
-    /// An interface that provides methods for the representation of a menu page instance,
-    /// that <see cref="IMenuManager"/> can work with.
+    /// Represents an interface for a menu page instance that can be managed by an <see cref="IMenuManager"/>.
     /// <para>
-    /// For default realizations see: <see cref="StaticPage"/>, <see cref="WidgetPage"/>.
+    /// For default implementations, refer to: <see cref="StaticPage"/>, <see cref="WidgetPage"/>.
     /// </para>
     /// </summary>
     public interface IBotPage : IArgPackable
     {
         /// <summary>
-        /// An unique page's identifier.
+        /// Represents the unique identifier of the page.
         /// </summary>
         public string PageId { get; }
 
         /// <summary>
-        /// Page's menu.
+        /// Represents the menu associated with the page.
         /// </summary>
         public IPageMenu? Menu { get; }
 
         /// <summary>
-        /// Returns a string that should be printed on the inline keyboard menu as a navigation label.
+        /// Gets a label that should be displayed on the inline keyboard menu as a navigation option.
         /// </summary>
-        /// <param name="update">An incoming update.</param>
-        /// <returns>A string that represents an instance as a navigation label.</returns>
+        /// <param name="update">The incoming update.</param>
+        /// <returns>A string representing the navigation label for this page.</returns>
         public string GetLabel(ISignedUpdate update);
 
         /// <summary>
-        /// Converts page data to a printable <see cref="IOutputMessage"/> that should be printed
-        /// based on incoming <paramref name="update"/>.
-        /// Optionally can add "Back" Button if <paramref name="previous"/> argument is not <see langword="null"/>.
+        /// Asynchronously converts the page data to a printable <see cref="IOutputMessage"/> based on the incoming <paramref name="update"/>.
+        /// Optionally, a "Back" button can be added if the <paramref name="previous"/> argument is not <see langword="null"/>.
         /// </summary>
-        /// <param name="previous">A page to which should lead "Back" Button.</param>
-        /// <param name="update">An incoming update.</param>
-        /// <returns>Built ready-to-print message.</returns>
-        public IOutputMessage BuildMessage(IBotPage? previous, ISignedUpdate update);
+        /// <param name="previous">The page to which the "Back" button should lead.</param>
+        /// <param name="update">The incoming update.</param>
+        /// <returns>The built ready-to-print message.</returns>
+        public Task<IOutputMessage> BuildMessageAsync(IBotPage? previous, ISignedUpdate update);
     }
 }

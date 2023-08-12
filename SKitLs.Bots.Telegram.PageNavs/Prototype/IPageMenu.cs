@@ -25,13 +25,13 @@ namespace SKitLs.Bots.Telegram.PageNavs.Prototype
         }
 
         /// <summary>
-        /// Converts an in instance of a custom <see cref="IPageMenu"/> to the specified <see cref="IMesMenu"/>
+        /// Asynchronously converts an in instance of a custom <see cref="IPageMenu"/> to the specified <see cref="IMessageMenu"/>
         /// that can be integrated to an instance of <see cref="IOutputMessage"/>.
         /// </summary>
         /// <param name="previous">A page to which should lead "Back" Button.</param>
         /// <param name="owner">Current page that owns menu.</param>
         /// <param name="update">An incoming update.</param>
         /// <returns>Built ready-to-use menu.</returns>
-        public IMesMenu Build(IBotPage? previous, IBotPage owner, ISignedUpdate update);
+        public Task<IMessageMenu> BuildAsync(IBotPage? previous, IBotPage owner, ISignedUpdate update);
     }
 }

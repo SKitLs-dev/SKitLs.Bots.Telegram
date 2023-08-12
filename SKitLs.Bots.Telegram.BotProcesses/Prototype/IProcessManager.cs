@@ -27,8 +27,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Prototype
         /// based on its unique process Id.
         /// </summary>
         /// <param name="processId">The unique identifier of the bot process to be retrieved.</param>
-        /// <returns>The bot process instance with the specified Id, or throws an exception if the process is not found.</returns>
-        /// <exception cref="NotDefinedException"></exception>
+        /// <returns>The bot process instance with the specified Id.</returns>
         public IBotProcess GetDefined(string processId);
 
         /// <summary>

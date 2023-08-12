@@ -1,15 +1,13 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model;
 using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text;
-using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model;
 using SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Confirm;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype.Processes;
 using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
-using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
-using SKitLs.Bots.Telegram.Stateful.Exceptions.External;
+using SKitLs.Bots.Telegram.Stateful.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.Stateful.Prototype;
 
 namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
@@ -41,12 +39,12 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
         /// </summary>
         public abstract TProcess Launcher { get; protected set; }
         /// <summary>
-        /// Represents the action that is invoked when the running bot process is completed.
+        /// Represents the action that is invoked when the running bot process is completed without confirmation.
         /// </summary>
         public virtual ProcessCompletedByInput<TResult>? ForcedOver => Launcher.ForcedOver;
-        // <summary>
-        // Represents the action that is invoked when the running bot process is completed.
-        // </summary>
+        /// <summary>
+        /// Represents the action that is invoked when the running bot process is completed after confirmation.
+        /// </summary>
         public virtual ConfirmationProcess<TResult>? Confirmation => Launcher.Confirmation;
 
         /// <summary>
@@ -81,12 +79,13 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
         public virtual async Task LaunchWith<TUpdate>(TUpdate update) where TUpdate : ISignedUpdate
         {
             // TODO
-            IBuildableMessage mes = StartupMessage?.Invoke(Arguments, update) ?? throw new Exception();
+            if (StartupMessage is null) throw new Exception();
 
+            var mes = await StartupMessage.Invoke(Arguments, update).BuildContentAsync(update);
             if (update is SignedCallbackUpdate callback)
                 mes = new EditWrapper(mes, callback.TriggerMessageId);
 
-            await update.Owner.DeliveryService.ReplyToSender(mes, update);
+            await update.Owner.DeliveryService.AnswerSenderAsync(mes, update);
         }
 
         /// <summary>
@@ -123,7 +122,8 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
                 mes.AddBlock("Следующие данные были введены неверно:");
                 mes.AddBlock(result?.ResultMessage ?? "Внутренняя ошибка преобразования");
                 mes.AddBlock("Отредактируйте, пожалуйста, данные, и ведите их заново");
-                await update.Owner.DeliveryService.ReplyToSender(mes, update);
+
+                await update.Owner.DeliveryService.AnswerSenderAsync(await mes.BuildContentAsync(update), update);
             }
             else
             {

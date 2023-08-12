@@ -33,7 +33,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
         /// <summary>
         /// Represents the startup message of the sub-process.
         /// </summary>
-        public IDynamicMessage StartupMessage => Launcher.StartupMessage;
+        public IOutputMessage StartupMessage => Launcher.StartupMessage;
         /// <summary>
         /// Represents the startup message of the sub-process.
         /// </summary>
@@ -82,7 +82,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
             }
 
             if (exceptionMes is not null)
-                await update.Owner.DeliveryService.ReplyToSender(exceptionMes, update);
+                await update.Owner.DeliveryService.AnswerSenderAsync(await exceptionMes.BuildContentAsync(update), update);
         }
     }
 }

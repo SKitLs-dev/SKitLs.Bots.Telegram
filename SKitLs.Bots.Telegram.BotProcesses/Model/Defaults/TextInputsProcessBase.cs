@@ -1,4 +1,5 @@
-﻿using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
+﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model;
+using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Confirm;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype.Processes;
@@ -8,10 +9,9 @@ using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.Core.Prototype;
-using SKitLs.Bots.Telegram.Stateful.Exceptions.External;
+using SKitLs.Bots.Telegram.Stateful.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.Stateful.Model;
 using SKitLs.Bots.Telegram.Stateful.Prototype;
-using Telegram.Bot.Types;
 
 namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
 {
@@ -56,7 +56,6 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults
         /// <summary>
         /// Represents the startup message of the bot process.
         /// </summary>
-        // TODO : IDynamic
         public virtual DynamicArg<TResult> StartupMessage { get; protected set; }
         /// <summary>
         /// Represents the action that is invoked when the running bot process is completed.

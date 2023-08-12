@@ -1,25 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 
 namespace SKitLs.Bots.Telegram.BotProcesses.Prototype
 {
-    internal interface IMaskedInput
+    /// <summary>
+    /// Represents an interface for working with masked input, allowing unpacking input using a specified mask.
+    /// </summary>
+    public interface IMaskedInput
     {
         /// <summary>
-        /// Determines special string mask that would be used to unpack input text.
+        /// Represents the special string mask that is used to unpack input text.
         /// </summary>
         public string Mask { get; }
 
         /// <summary>
-        /// Uses <see cref="Mask"/> to unpack input string.
+        /// Unpacks the input string using the specified <see cref="Mask"/>.
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
+        /// <param name="input">The input string to be demasked.</param>
+        /// <returns>The demasked value extracted from the input, based on the specified mask.</returns>
+        /// <exception cref="Exception">Thrown when the demasking process fails, typically due to an invalid mask or pattern.</exception>
         public string Demask(string input)
         {
             if (Mask is null) return input;

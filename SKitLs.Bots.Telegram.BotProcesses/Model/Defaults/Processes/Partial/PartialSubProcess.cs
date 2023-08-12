@@ -39,7 +39,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
         /// <summary>
         /// Represents the startup message of the sub-process.
         /// </summary>
-        public IDynamicMessage StartupMessage { get; set; }
+        public IOutputMessage StartupMessage { get; set; }
         /// <summary>
         /// Represents the input preview delegate for the sub-process.
         /// </summary>
@@ -55,7 +55,7 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
         /// <param name="property">The handling property of the sub-process.</param>
         /// <param name="startupMessage">The startup message of the sub-process.</param>
         /// <param name="parser">The parse input delegate for the sub-process.</param>
-        public PartialSubProcess(PropertyInfo property, IDynamicMessage startupMessage, ParseInputDelegate? parser)
+        public PartialSubProcess(PropertyInfo property, IOutputMessage startupMessage, ParseInputDelegate? parser)
         {
             if (!typeof(TResult).GetProperties().Contains(property)) throw new ArgumentException(nameof(property));
             HandlingProperty = property;

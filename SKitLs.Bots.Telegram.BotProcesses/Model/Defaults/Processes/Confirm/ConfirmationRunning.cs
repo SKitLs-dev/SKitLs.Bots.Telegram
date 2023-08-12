@@ -1,16 +1,15 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model;
-using SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus;
+using SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Inline;
 using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text;
-using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype.Processes;
+using SKitLs.Bots.Telegram.BotProcesses.resources.settings;
 using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
-using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
-using SKitLs.Bots.Telegram.Stateful.Exceptions.External;
+using SKitLs.Bots.Telegram.Stateful.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.Stateful.Prototype;
 
 namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Confirm
@@ -21,10 +20,6 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Confirm
     /// <typeparam name="TResult">The type of the wrapped argument, which must not be nullable.</typeparam>
     public class ConfirmationRunning<TResult> : IBotRunningProcess where TResult : notnull
     {
-        public static string DefaultMessageLK { get; set; } = "procs.display.ConfirmDefaultMessage";
-        public static string YesLK { get; set; } = "procs.display.ConfirmYes";
-        public static string NoLK { get; set; } = "procs.display.ConfirmNo";
-
         /// <summary>
         /// Represents the bot process definition that launched this running process.
         /// </summary>
@@ -86,21 +81,16 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Confirm
         /// <param name="update">The update to launch the bot process with.</param>
         public async Task LaunchWith<TUpdate>(TUpdate update) where TUpdate : ISignedUpdate
         {
-            var mes = BuildProcessMessage();
-            if (update is SignedCallbackUpdate callback)
-                mes = new EditWrapper(mes, callback.TriggerMessageId);
-            await update.Owner.DeliveryService.ReplyToSender(mes, update);
+            var mes = StartupMessage?.Invoke(PendingInstance, update) ?? new OutputMessageText(update.Owner.ResolveBotString(SKBpSettings.DefaultMessageLK));
+            var menu = new InlineMenu(update.Owner);
+            menu.Add(update.Owner.ResolveBotString(SKBpSettings.YesLK), Launcher.GetYesCallback());
+            menu.Add(update.Owner.ResolveBotString(SKBpSettings.NoLK), Launcher.GetNoCallback());
+            mes.Menu = await menu.BuildContentAsync(update);
 
-            IBuildableMessage BuildProcessMessage()
-            {
-                var mes = StartupMessage?.Invoke(PendingInstance, update)
-                    ?? new OutputMessageText(update.Owner.ResolveBotString(DefaultMessageLK));
-                var menu = new PairedInlineMenu(update.Owner);
-                menu.Add(update.Owner.ResolveBotString(YesLK), Launcher.GetYesCallback());
-                menu.Add(update.Owner.ResolveBotString(NoLK), Launcher.GetNoCallback());
-                mes.Menu = menu;
-                return mes;
-            }
+            var message = await mes.BuildContentAsync(update);
+            if (update is SignedCallbackUpdate callback)
+                message = new EditWrapper(message, callback.TriggerMessageId);
+            await update.Owner.DeliveryService.AnswerSenderAsync(message, update);
         }
 
         /// <summary>

@@ -1,10 +1,8 @@
-﻿using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
-using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation;
+﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype.Processes;
 using SKitLs.Bots.Telegram.Stateful.Prototype;
-using System.Text.RegularExpressions;
 
 namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Shot
 {

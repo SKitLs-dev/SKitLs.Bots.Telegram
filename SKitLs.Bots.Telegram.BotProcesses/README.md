@@ -51,13 +51,13 @@ making it an essential addition to your Telegram bot development toolkit.
 
 ### Requirements
 
-- Telegram.Bot 19.0.0 or higher
-- SKitLs.Bots.Telegram.Core 2.0.0 or higher
-- SKitLs.Bots.Telegram.Stateful 1.1.0 or higher
-- SKitLs.Bots.Telegram.AdvancedMessages 1.1.0 or higher
-- SKitLs.Bots.Telegram.ArgedInteractions 1.3.1 or higher
-
 Before running the project, please ensure that you have the following dependencies installed and properly configured in your development environment.
+
+- Telegram.Bot 19.0.0 or higher
+- SKitLs.Bots.Telegram.Core 2.1.0 or higher
+- SKitLs.Bots.Telegram.Stateful 2.0.0 or higher
+- SKitLs.Bots.Telegram.AdvancedMessages 2.0.1 or higher
+- SKitLs.Bots.Telegram.ArgedInteractions 1.3.3 or higher
 
 ### Installation
 
@@ -183,14 +183,14 @@ Thank you for considering contributing to our project.
 
 This project is distributed under the terms of the MIT License.
 
-Copyright (C) Sargeras02 2023
+Copyright (C) SKitLs 2023
 
 ## Developer contact
 
 For any issues related to the project, please feel free to reach out to us through the project's GitHub page.
 We welcome bug reports, feedback, and any other inquiries that can help us improve the project.
 
-You can also contact the project owner directly via their GitHub profile at the following [link](https://github.com/Sargeras02).
+You can also contact the project owner directly via their GitHub profile at the [following link](https://github.com/SKitLs-dev) or email: skitlsdev@gmail.com
 
 Your collaboration and support are highly appreciated, and we will do our best to address any concerns or questions promptly and professionally.
 Thank you for your interest in our project.

@@ -63,8 +63,8 @@ namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Partial
             CurrentId++;
             if (CurrentId < SubProcesses.Count)
             {
-                var mes = Current.StartupMessage.BuildWith(update);
-                await update.Owner.DeliveryService.ReplyToSender(mes, update);
+                var mes = await Current.StartupMessage.BuildContentAsync(update);
+                await update.Owner.DeliveryService.AnswerSenderAsync(mes, update);
             }
             else
             {

@@ -16,10 +16,6 @@
         // easier for the Process Manager and other components to interact with and execute different bot processes in a 
         // consistent manner.
 
-        // It does not contain any specific members or properties, as its main role is to provide a common contract for 
-        // process arguments. Concrete classes implementing this interface will define their specific properties and 
-        // data members according to the requirements of each individual bot process.
-
         // For example, a specific bot process might require arguments related to user input, while another process might 
         // need configuration settings or data from external sources. By adhering to the IProcessArguments interface, these 
         // processes can be managed and executed by the Process Manager in a flexible and maintainable manner.

@@ -1,9 +1,7 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text;
-using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Shot;
 using SKitLs.Bots.Telegram.BotProcesses.Prototype.Processes;
 using SKitLs.Bots.Telegram.Stateful.Prototype;
-using System.Net.Http.Headers;
 
 namespace SKitLs.Bots.Telegram.BotProcesses.Model.Defaults.Processes.Util
 {

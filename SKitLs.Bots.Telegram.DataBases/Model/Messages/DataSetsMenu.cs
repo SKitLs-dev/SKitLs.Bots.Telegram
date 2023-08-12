@@ -1,4 +1,5 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus;
+using SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Inline;
 using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
@@ -14,11 +15,11 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Messages
 
         public DataSetsMenu(IDataManager owner) => Owner = owner;
 
-        public IMesMenu Build(IBotPage? previous, IBotPage owner, ISignedUpdate update)
+        public async Task<IMessageMenu> BuildAsync(IBotPage? previous, IBotPage owner, ISignedUpdate update)
         {
             var mm = update.Owner.ResolveService<IMenuManager>();
             var serializer = Owner.Owner.ResolveService<IArgsSerializeService>();
-            var res = new PairedInlineMenu();
+            var res = new InlineMenu();
 
             Owner.GetAll()
                 .ToList()
@@ -27,7 +28,7 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Messages
 
             if (previous is not null)
                 res.Add("<< Назад", mm.BackCallback.GetSerializedData());
-            return res;
+            return await res.BuildContentAsync(update);
         }
     }
 }

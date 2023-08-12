@@ -1,4 +1,4 @@
-﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus;
+﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Inline;
 using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.DataBases.Model.Args;
@@ -19,11 +19,11 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Messages
             ObjInfo = infoArg;
         }
 
-        public IMesMenu Build(IBotPage? previous, IBotPage owner, ISignedUpdate update)
+        public async Task<IMessageMenu> BuildAsync(IBotPage? previous, IBotPage owner, ISignedUpdate update)
         {
             if (ObjInfo.DataSet.DataType != typeof(T))
                 throw new Exception("ObjMenu => types miss match");
-            var res = new PairedInlineMenu(update.Owner);
+            var res = new InlineMenu(update.Owner);
 
             var ds = (IBotDataSet<T>)ObjInfo.DataSet;
             if (ds.Properties.AllowEdit)
@@ -33,7 +33,7 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Messages
             ds.GetObjectActions().ForEach(action => res.Add(action, new DtoArg<T>(ObjInfo.GetObject<T>(), ds)));
             res.Add("<< Назад", Owner.OpenDatabaseCallback, ObjInfo.GetPagination());
 
-            return res;
+            return await res.BuildContentAsync(update);
         }
     }
 }

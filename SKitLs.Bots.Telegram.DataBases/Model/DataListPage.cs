@@ -10,7 +10,7 @@ namespace SKitLs.Bots.Telegram.DataBases.Model
         public IOutputMessage Source => throw new NotImplementedException();
         public IPageMenu? Menu => throw new NotImplementedException();
 
-        public IOutputMessage BuildMessage(IBotPage? previous, ISignedUpdate update)
+        public Task<IOutputMessage> BuildMessageAsync(IBotPage? previous, ISignedUpdate update)
         {
             throw new NotImplementedException();
         }

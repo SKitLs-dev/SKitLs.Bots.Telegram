@@ -1,5 +1,5 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model;
-using SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus;
+using SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Reply;
 using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text;
 using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Model;
@@ -19,8 +19,8 @@ using SKitLs.Bots.Telegram.DataBases.Extensions;
 using SKitLs.Bots.Telegram.DataBases.Model.Args;
 using SKitLs.Bots.Telegram.DataBases.Model.Messages;
 using SKitLs.Bots.Telegram.DataBases.Prototype;
-using SKitLs.Bots.Telegram.PageNavs;
 using SKitLs.Bots.Telegram.PageNavs.Model;
+using SKitLs.Bots.Telegram.PageNavs.Prototype;
 using Settings = SKitLs.Bots.Telegram.DataBases.resources.settings.SkDBSettings;
 
 namespace SKitLs.Bots.Telegram.DataBases.Model.Datasets
@@ -130,7 +130,7 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Datasets
                 ? obj.FullDisplay()
                 : Owner.ResolveBotString("display.db.ReadRowsForbiddenMes"));
 
-            var objPage = new StaticPage(Settings.DataTempPageId, obj.ListDisplay(), objBody, new ObjMenu<T>(DataManager, args));
+            var objPage = new WidgetPage(Settings.DataTempPageId, obj.ListDisplay(), objBody, new ObjMenu<T>(DataManager, args));
 
             await MenuManager.PushPageAsync(objPage, update);
         }
@@ -201,8 +201,8 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Datasets
                 text = string.Format(text, args.BuildingInstance.FullDisplay());
                 await AddAsync(args.BuildingInstance, update);
             }
-            var mes = new OutputMessageText(text) { Menu = new ReplyCleaner() };
-            await update.Owner.DeliveryService.ReplyToSender(new EditWrapper(mes, update.TriggerMessageId), update);
+            var mes = await new OutputMessageText(text) { Menu = new ReplyCleaner() }.BuildContentAsync(update);
+            await update.Owner.DeliveryService.AnswerSenderAsync(new EditWrapper(mes, update.TriggerMessageId), update);
         }
 
         public TextInputsProcessBase<T>? EditProcess { get; private set; }
@@ -224,8 +224,8 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Datasets
                 text = string.Format(text, args.BuildingInstance.FullDisplay());
                 await UpdateAsync(args.BuildingInstance, update);
             }
-            var mes = new OutputMessageText(text) { Menu = new ReplyCleaner() };
-            await update.Owner.DeliveryService.ReplyToSender(new EditWrapper(mes, update.TriggerMessageId), update);
+            var mes = await new OutputMessageText(text) { Menu = new ReplyCleaner() }.BuildContentAsync(update);
+            await update.Owner.DeliveryService.AnswerSenderAsync(new EditWrapper(mes, update.TriggerMessageId), update);
         }
 
         public TextInputsProcessBase<T>? RemoveProcess { get; private set; }
@@ -247,8 +247,8 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Datasets
             {
                 await RemoveAsync(args.BuildingInstance, update);
             }
-            var mes = new OutputMessageText(text) { Menu = new ReplyCleaner() };
-            await update.Owner.DeliveryService.ReplyToSender(new EditWrapper(mes, update.TriggerMessageId), update);
+            var mes = await new OutputMessageText(text) { Menu = new ReplyCleaner() }.BuildContentAsync(update);
+            await update.Owner.DeliveryService.AnswerSenderAsync(new EditWrapper(mes, update.TriggerMessageId), update);
         }
 
         // TODO : GetName() for PCS

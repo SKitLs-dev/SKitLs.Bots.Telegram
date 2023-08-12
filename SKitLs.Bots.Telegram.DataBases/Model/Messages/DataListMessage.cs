@@ -4,7 +4,7 @@ using SKitLs.Bots.Telegram.DataBases.Prototype;
 
 namespace SKitLs.Bots.Telegram.DataBases.Model.Messages
 {
-    internal class DataListMessage : OMDText
+    internal class DataListMessage : MultiblockMessage
     {
         public DataListMessage(IBotDataSet dataSet) : this(dataSet, dataSet.Pagination) { }
         public DataListMessage(IBotDataSet dataSet, PaginationInfo paging)

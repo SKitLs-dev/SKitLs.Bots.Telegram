@@ -6,7 +6,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype
     /// An interface that defines a message entity that can be dynamically built based on an update.
     /// Classes implementing this interface can generate message content based on specific update data.
     /// </summary>
-    public interface IBuildableMessage
+    public interface IBuildableMessage : ICloneable
     {
         /// <summary>
         /// Asynchronously builds the message content based on the provided <paramref name="update"/>.

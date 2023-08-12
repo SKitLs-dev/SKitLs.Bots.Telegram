@@ -86,7 +86,16 @@ namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Model
         public virtual IReplyMarkup? GetReplyMarkup() => ReplyMarkup;
 
         /// <inheritdoc/>
-        public virtual object Clone() => new TelegramTextMessage((string)Text.Clone());
+        public virtual object Clone() => new TelegramTextMessage((string)Text.Clone())
+        {
+            AllowSendingWithoutReply = AllowSendingWithoutReply,
+            DisableNotification = DisableNotification,
+            DisableWebPagePreview = DisableWebPagePreview,
+            ParseMode = ParseMode,
+            ProtectContent = ProtectContent,
+            ReplyMarkup = ReplyMarkup,
+            ReplyToMessageId = ReplyToMessageId,
+        };
 
         /// <inheritdoc/>
         public override string? ToString() => $"{GetType().Name} \"{Text}\"";

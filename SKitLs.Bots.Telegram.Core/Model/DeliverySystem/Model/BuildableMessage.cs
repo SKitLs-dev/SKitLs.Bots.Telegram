@@ -23,6 +23,18 @@ namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Model
         }
 
         /// <inheritdoc/>
+        public override object Clone() => new BuildableMessage(_messageBuilder)
+        {
+            AllowSendingWithoutReply = AllowSendingWithoutReply,
+            DisableNotification = DisableNotification,
+            DisableWebPagePreview = DisableWebPagePreview,
+            ParseMode = ParseMode,
+            ProtectContent = ProtectContent,
+            ReplyMarkup = ReplyMarkup,
+            ReplyToMessageId = ReplyToMessageId,
+        };
+
+        /// <inheritdoc/>
         public virtual async Task<ITelegramMessage> BuildContentAsync(ICastedUpdate? update)
         {
             Text = await _messageBuilder.Invoke(this, update);

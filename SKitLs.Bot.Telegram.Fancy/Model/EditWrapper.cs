@@ -31,11 +31,10 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model
             EditMessageId = editMessageId;
         }
 
-        // TODO
         /// <inheritdoc/>
-        public /*override*/ string GetMessageText() => Content.GetMessageText();
+        public override string GetMessageText() => Content.GetMessageText();
 
         /// <inheritdoc/>
-        public /*override*/ object Clone() => new EditWrapper((ITelegramMessage)Content.Clone(), EditMessageId);
+        public override object Clone() => new EditWrapper((ITelegramMessage)Content.Clone(), EditMessageId);
     }
 }

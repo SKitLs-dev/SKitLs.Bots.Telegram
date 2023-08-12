@@ -24,7 +24,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text
         /// <inheritdoc/>
         public OutputMessageText(IOutputMessage other) : base(other)
         {
-            Text = other is OutputMessageText text ? text.Text : other.GetType().Name;
+            Text = other is OutputMessageText text ? (string)text.Text.Clone() : other.GetType().Name;
         }
 
         /// <inheritdoc/>

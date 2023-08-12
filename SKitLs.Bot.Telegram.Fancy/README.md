@@ -44,7 +44,7 @@ informative, and user-friendly messages, thereby enhancing the overall user expe
 Before running the project, please ensure that you have the following dependencies installed and properly configured in your development environment.
 
 - Telegram.Bot 19.0.0 or higher
-- SKitLs.Bots.Telegram.Core 2.1.2 or higher
+- SKitLs.Bots.Telegram.Core 2.1.3 or higher
 - SKitLs.Bots.Telegram.ArgedInteractions 1.3.3 or higher
 
 ### Installation

@@ -24,12 +24,21 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Reply
         /// Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language.
         /// Other users in the group don't see the keyboard.
         /// </summary>
-        public bool Selective { get; }
+        public bool Selective { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="ReplyCleaner"/> class with a specified data.
+        /// </summary>
+        /// <param name="selective">Determines whether the keyboard should be shown to specific users only.</param>
+        public ReplyCleaner(bool selective = false) => Selective = selective;
 
         /// <inheritdoc/>
         public IReplyMarkup GetMarkup() => new ReplyKeyboardRemove()
         {
             Selective = Selective
         };
+
+        /// <inheritdoc/>
+        public object Clone() => new ReplyCleaner(Selective);
     }
 }

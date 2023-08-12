@@ -31,5 +31,8 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus
         /// </summary>
         /// <returns>The underlying reply markup associated with this menu wrapper.</returns>
         public IReplyMarkup GetMarkup() => Markup;
+
+        /// <inheritdoc/>
+        public object Clone() => new MenuWrapper(Markup);
     }
 }

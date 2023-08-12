@@ -106,7 +106,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text
                 Sections = _sec,
                 Footer = (string?)Footer?.Clone(),
                 ParseMode = ParseMode,
-                Menu = Menu
+                Menu = (IMessageMenu?)Menu?.Clone()
             };
         }
     }

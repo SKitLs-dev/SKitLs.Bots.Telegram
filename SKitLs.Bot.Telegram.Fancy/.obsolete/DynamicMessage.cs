@@ -53,6 +53,11 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages
         /// </summary>
         public bool AllowSendingWithoutReply => throw new NotImplementedException();
 
+        bool IOutputMessage.DisableWebPagePreview { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        bool IOutputMessage.DisableNotification { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        bool IOutputMessage.ProtectContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        bool IOutputMessage.AllowSendingWithoutReply { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         /// <summary>
         /// Initializes a new instance of <see cref="DynamicMessage"/> with the specified message building delegate.
         /// </summary>

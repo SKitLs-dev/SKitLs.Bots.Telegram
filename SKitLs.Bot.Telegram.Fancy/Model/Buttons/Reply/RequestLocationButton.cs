@@ -19,5 +19,11 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Buttons.Reply
         {
             RequestLocation = true
         };
+
+        /// <inheritdoc/>
+        public override object Clone() => new RequestLocationButton(Label, SingleLine)
+        {
+            ContentBuilder = ContentBuilder,
+        };
     }
 }

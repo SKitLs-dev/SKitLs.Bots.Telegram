@@ -53,7 +53,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text
         /// Constructor for the <see cref="MultiblockMessage"/> class with a specified menu.
         /// </summary>
         /// <param name="menu">The menu associated with the message.</param>
-        public MultiblockMessage(IMessageMenu menu) => Menu = menu ?? throw new ArgumentNullException(nameof(menu));
+        public MultiblockMessage(IBuildableContent<IMessageMenu> menu) => Menu = menu ?? throw new ArgumentNullException(nameof(menu));
 
         /// <summary>
         /// Adds a new section block to the message's content.
@@ -79,7 +79,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text
         public override async Task<ITelegramMessage> BuildContentAsync(ICastedUpdate? update)
         {
             var message = ContentBuilder is not null ? await ContentBuilder.Invoke(this, update) : this;
-            var menu = message.Menu is IBuildableContent<IMessageMenu> buildable ? await buildable.BuildContentAsync(update) : Menu;
+            var menu = Menu is not null ? await Menu.BuildContentAsync(update) : null;
             var text = message.GetBody();
 
             return new TelegramTextMessage(text)
@@ -106,7 +106,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text
                 Sections = _sec,
                 Footer = (string?)Footer?.Clone(),
                 ParseMode = ParseMode,
-                Menu = (IMessageMenu?)Menu?.Clone()
+                Menu = (IBuildableContent<IMessageMenu>?)Menu?.Clone()
             };
         }
     }

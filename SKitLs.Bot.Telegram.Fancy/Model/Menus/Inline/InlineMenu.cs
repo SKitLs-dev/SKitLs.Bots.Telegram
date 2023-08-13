@@ -41,6 +41,13 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Inline
         /// </summary>
         public InlineMenu(IArgsSerializeService serializer) => Serializer = serializer;
 
+        private InlineMenu(List<IInlineButton> buttons, IArgsSerializeService? serializer)
+        {
+            Buttons = buttons ?? throw new ArgumentNullException(nameof(buttons));
+            Serializer = serializer;
+        }
+
+
         /// <summary>
         /// Adds a new default callback to the menu.
         /// </summary>
@@ -103,5 +110,28 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Inline
 
         /// <inheritdoc/>
         protected override List<IInlineButton> GetButtons() => Buttons;
+
+        /// <inheritdoc/>
+        public override object Clone()
+        {
+            var buttons = new List<IInlineButton>();
+            foreach (var button in GetButtons())
+                buttons.Add(button is ICloneable clone ? (IInlineButton)clone.Clone() : button);
+            return new InlineMenu(buttons, Serializer) { ColumnsCount = ColumnsCount };
+        }
+
+        /// <summary>
+        /// Combines the interiors of two <see cref="InlineMenu"/> instances.
+        /// </summary>
+        /// <param name="left">The first menu to combine.</param>
+        /// <param name="right">The second menu to combine.</param>
+        /// <returns>A new <see cref="InlineMenu"/> instance containing data from both <paramref name="left"/> and <paramref name="right"/> menus.</returns>
+        public static InlineMenu operator +(InlineMenu left, InlineMenu right)
+        {
+            var buttons = new List<IInlineButton>();
+            buttons.AddRange(left.Buttons);
+            buttons.AddRange(right.Buttons);
+            return new InlineMenu(buttons, left.Serializer ?? right.Serializer);
+        }
     }
 }

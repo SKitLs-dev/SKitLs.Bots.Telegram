@@ -53,6 +53,6 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Prototype
         /// <summary>
         /// Represents the message's menu, if applicable.
         /// </summary>
-        public IMessageMenu? Menu { get; set; }
+        public IBuildableContent<IMessageMenu>? Menu { get; set; }
     }
 }

@@ -19,5 +19,11 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Buttons.Reply
         {
             RequestContact = true
         };
+
+        /// <inheritdoc/>
+        public override object Clone() => new RequestContactButton(Label, SingleLine)
+        {
+            ContentBuilder = ContentBuilder,
+        };
     }
 }

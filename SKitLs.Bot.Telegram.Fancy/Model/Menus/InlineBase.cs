@@ -23,6 +23,9 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus
         protected abstract List<IInlineButton> GetButtons();
 
         /// <inheritdoc/>
+        public abstract object Clone();
+
+        /// <inheritdoc/>
         /// <remarks>
         /// If a button in the menu supports the <see cref="IBuildableContent{T}"/> interface, it will be automatically built.
         /// </remarks>

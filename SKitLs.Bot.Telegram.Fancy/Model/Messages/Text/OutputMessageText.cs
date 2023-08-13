@@ -34,7 +34,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text
         public override async Task<ITelegramMessage> BuildContentAsync(ICastedUpdate? update)
         {
             var message = ContentBuilder is not null ? await ContentBuilder.Invoke(this, update) : this;
-            var menu = message.Menu is IBuildableContent<IMessageMenu> buildable ? await buildable.BuildContentAsync(update) : Menu;
+            var menu = Menu is not null ? await Menu.BuildContentAsync(update) : null;
 
             return new TelegramTextMessage(message.Text)
             {

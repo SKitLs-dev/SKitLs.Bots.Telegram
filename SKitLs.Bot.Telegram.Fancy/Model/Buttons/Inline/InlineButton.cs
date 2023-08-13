@@ -47,5 +47,8 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Buttons.Inline
 
         /// <inheritdoc/>
         public virtual InlineKeyboardButton GetButton() => InlineKeyboardButton.WithCallbackData(Label, Data);
+
+        /// <inheritdoc/>
+        public virtual object Clone() => new InlineButton(Label, Data, SingleLine);
     }
 }

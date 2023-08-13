@@ -57,6 +57,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages
         bool IOutputMessage.DisableNotification { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         bool IOutputMessage.ProtectContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         bool IOutputMessage.AllowSendingWithoutReply { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        IBuildableContent<IMessageMenu>? IOutputMessage.Menu { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Initializes a new instance of <see cref="DynamicMessage"/> with the specified message building delegate.

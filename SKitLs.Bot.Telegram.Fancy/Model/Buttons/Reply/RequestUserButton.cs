@@ -27,7 +27,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Buttons.Reply
         /// <summary>
         /// <b>[<see href="https://core.telegram.org/bots/api#keyboardbuttonrequestuser">Telegram API</see>]</b>
         /// <para/>
-        /// Specifies that this button should be available only to bots.
+        /// Specifies that this button should request only bots (no users).
         /// </summary>
         /// <returns>The current <see cref="RequestUserButton"/> instance.</returns>
         public RequestUserButton OnlyBots()
@@ -38,7 +38,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Buttons.Reply
         /// <summary>
         /// <b>[<see href="https://core.telegram.org/bots/api#keyboardbuttonrequestuser">Telegram API</see>]</b>
         /// <para/>
-        /// Specifies that this button should be available only to bots.
+        /// Specifies that this button should request only users (no bots).
         /// </summary>
         /// <returns>The current <see cref="RequestUserButton"/> instance.</returns>
         public RequestUserButton OnlyUsers()
@@ -50,7 +50,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Buttons.Reply
         /// <summary>
         /// <b>[<see href="https://core.telegram.org/bots/api#keyboardbuttonrequestuser">Telegram API</see>]</b>
         /// <para/>
-        /// Specifies that this button should be available only to premium users.
+        /// Specifies that this button should request only premium users.
         /// </summary>
         /// <returns>The current <see cref="RequestUserButton"/> instance.</returns>
         public RequestUserButton OnlyPremium()
@@ -61,7 +61,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Buttons.Reply
         /// <summary>
         /// <b>[<see href="https://core.telegram.org/bots/api#keyboardbuttonrequestuser">Telegram API</see>]</b>
         /// <para/>
-        /// Specifies that this button should be available only to regular (non-premium) users.
+        /// Specifies that this button should request only non-premium users.
         /// </summary>
         /// <returns>The current <see cref="RequestUserButton"/> instance.</returns>
         public RequestUserButton OnlyRegular()
@@ -79,6 +79,15 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Buttons.Reply
                 UserIsBot = IsBot,
                 UserIsPremium = IsPremium
             },
+        };
+
+
+        /// <inheritdoc/>
+        public override object Clone() => new RequestUserButton(Label, RequestId, SingleLine)
+        {
+            IsBot = IsBot,
+            IsPremium = IsPremium,
+            ContentBuilder = ContentBuilder,
         };
     }
 }

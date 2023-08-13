@@ -50,5 +50,12 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Buttons.Reply
                 Type = Type is not null ? Enum.GetName(typeof(PollType), Type) : null,
             }
         };
+
+        /// <inheritdoc/>
+        public override object Clone() => new RequestPollButton(Label, SingleLine)
+        {
+            Type = Type,
+            ContentBuilder = ContentBuilder,
+        };
     }
 }

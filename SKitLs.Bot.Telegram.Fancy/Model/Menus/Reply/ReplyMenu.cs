@@ -1,4 +1,5 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Buttons.Reply;
+using SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Inline;
 using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -51,6 +52,15 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Reply
 
         /// <inheritdoc/>
         protected override List<IReplyButton> GetButtons() => Buttons;
+
+        /// <inheritdoc/>
+        public override object Clone()
+        {
+            var buttons = new List<IReplyButton>();
+            foreach (var button in GetButtons())
+                buttons.Add(button is ICloneable clone ? (IReplyButton)clone.Clone() : button);
+            return new ReplyMenu(buttons) { ColumnsCount = ColumnsCount };
+        }
 
         /// <summary>
         /// Combines the interiors of two <see cref="ReplyMenu"/> instances.

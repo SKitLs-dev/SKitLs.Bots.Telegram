@@ -1,4 +1,5 @@
-﻿using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
+﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Buttons.Inline;
+using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -42,5 +43,8 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Buttons.Reply
 
         /// <inheritdoc/>
         public virtual KeyboardButton GetButton() => new(Label);
+
+        /// <inheritdoc/>
+        public virtual object Clone() => new ReplyButton(Label, SingleLine);
     }
 }

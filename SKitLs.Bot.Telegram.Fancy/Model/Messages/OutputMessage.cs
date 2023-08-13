@@ -35,7 +35,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages
         public virtual bool AllowSendingWithoutReply { get; set; }
 
         /// <inheritdoc/>
-        public virtual IMessageMenu? Menu { get; set; }
+        public virtual IBuildableContent<IMessageMenu>? Menu { get; set; }
 
         /// <summary>
         /// <b>Optional.</b> Represents the content builder for this message.
@@ -50,7 +50,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages
         /// Constructor for the <see cref="OutputMessage{TMessage}"/> class with a specified menu.
         /// </summary>
         /// <param name="menu">The menu associated with the message.</param>
-        public OutputMessage(IMessageMenu menu) => Menu = menu ?? throw new ArgumentNullException(nameof(menu));
+        public OutputMessage(IBuildableContent<IMessageMenu> menu) => Menu = menu ?? throw new ArgumentNullException(nameof(menu));
         /// <summary>
         /// Copy constructor for the <see cref="OutputMessage{TMessage}"/> class.
         /// </summary>
@@ -58,7 +58,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages
         public OutputMessage(IOutputMessage other)
         {
             ReplyToMessageId = other.ReplyToMessageId;
-            Menu = other.Menu;
+            Menu = (IBuildableContent<IMessageMenu>?)other.Menu?.Clone();
             ParseMode = other.ParseMode;
             DisableWebPagePreview = other.DisableWebPagePreview;
             DisableNotification = other.DisableNotification;

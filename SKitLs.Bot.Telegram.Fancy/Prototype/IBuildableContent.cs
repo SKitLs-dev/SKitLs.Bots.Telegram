@@ -6,7 +6,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Prototype
     /// Represents an interface for building the content of an entity asynchronously.
     /// </summary>
     /// <typeparam name="T">Specific type of the instance that should be returned after content is built.</typeparam>
-    public interface IBuildableContent<T>
+    public interface IBuildableContent<T> : ICloneable
     {
         /// <summary>
         /// Asynchronously constructs the content of the entity based on the given update.

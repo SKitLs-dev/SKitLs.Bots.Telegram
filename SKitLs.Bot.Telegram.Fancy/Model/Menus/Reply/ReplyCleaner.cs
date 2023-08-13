@@ -8,7 +8,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Reply
     /// Represents a specific menu designed to remove a custom reply keyboard (<see cref="ReplyMenu"/>)
     /// by using the <see cref="ReplyKeyboardRemove"/> feature.
     /// </summary>
-    public class ReplyCleaner : IMessageMenu
+    public class ReplyCleaner : IBuildableContent<IMessageMenu>
     {
         /// <summary>
         /// <b>[<see href="https://core.telegram.org/bots/api#replykeyboardmarkup">Telegram API</see>]</b>
@@ -32,7 +32,10 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Reply
         /// <param name="selective">Determines whether the keyboard should be shown to specific users only.</param>
         public ReplyCleaner(bool selective = false) => Selective = selective;
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets the reply markup for the message menu, which defines the custom keyboard or other user interface elements.
+        /// </summary>
+        /// <returns>The <see cref="ReplyKeyboardRemove"/> instance for the message menu.</returns>
         public IReplyMarkup GetMarkup() => new ReplyKeyboardRemove()
         {
             Selective = Selective
@@ -40,5 +43,8 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Reply
 
         /// <inheritdoc/>
         public object Clone() => new ReplyCleaner(Selective);
+
+        /// <inheritdoc/>
+        public async Task<IMessageMenu> BuildContentAsync(ICastedUpdate? update) => await Task.FromResult(new MenuWrapper(GetMarkup()));
     }
 }

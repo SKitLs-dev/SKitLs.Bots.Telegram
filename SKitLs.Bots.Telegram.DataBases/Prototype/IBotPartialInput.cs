@@ -5,6 +5,6 @@ namespace SKitLs.Bots.Telegram.DataBases.Prototype
 {
     public interface IBotPartialInput
     {
-        public IOutputMessage GetMesFor(PropertyInfo property, string terminationalKey);
+        public Task<IOutputMessage> GetMesFor(PropertyInfo property, string terminationalKey);
     }
 }

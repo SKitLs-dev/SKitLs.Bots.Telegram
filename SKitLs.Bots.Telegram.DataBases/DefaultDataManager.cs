@@ -1,4 +1,5 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages;
+using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model;
 using SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Model;
@@ -107,7 +108,7 @@ namespace SKitLs.Bots.Telegram.DataBases
         {
             var display = new DataListMessage(SourceSet);
             var dataMenu = new DataSetsMenu(this);
-            var dataPage = new WidgetPage(Settings.RootPage_Id, u => DatabaseLabel ?? u.Owner.ResolveBotString(Settings.RootPage_LabelLK), new DynamicMessage(u => display), dataMenu);
+            var dataPage = new WidgetPage(Settings.RootPage_Id, u => DatabaseLabel ?? u.Owner.ResolveBotString(Settings.RootPage_LabelLK), display, dataMenu);
             return dataPage;
         }
         public List<IBotAction> GetActionsContent() => new()
@@ -126,7 +127,7 @@ namespace SKitLs.Bots.Telegram.DataBases
             var context = ds.GetContextSubsetDisplayable(update);
             var display = new DataListMessage(context, ds.Properties.MainPageHeader, args);
             var dataMenu = new DataListMenu(this, context, args, ds.Properties.AllowAdd);
-            var dataPage = new StaticPage(Settings.DataTempPageId, ds.Properties.DataSetLabel, display, dataMenu);
+            var dataPage = new WidgetPage(Settings.DataTempPageId, ds.Properties.DataSetLabel, display, dataMenu);
 
             await MenuManager.PushPageAsync(dataPage, update);
         }

@@ -125,10 +125,11 @@ namespace SKitLs.Bots.Telegram.Stateful.Model
             if (update.Sender is not IStatefulUser stateful)
                 throw new NotStatefulException(this);
 
-            var enabled = ActionSections
+            var enabled = GetActionSections()
                 .ToList()
                 .FindAll(x => x.IsEnabledWith(stateful.State))
-                .SelectMany(x => x);
+                .SelectMany(x => x.GetActionsList())
+                .ToList();
 
             foreach (var action in enabled)
                 if (action.ShouldBeExecutedOn(update))

@@ -9,9 +9,11 @@
 An extension project built upon the SKitLs.Bots.Telegram.Core Framework.</Description>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>$(AssemblyName)</Title>
-    <AssemblyVersion>2.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
-    <PackageReleaseNotes>Global:
+    <PackageReleaseNotes>(!) StatefulActionManager update management critical bug fixed
+
+Global:
 (~) Package info Updated
 (~) Ownership transfered to SKitLs
 (~) README Updated
@@ -65,7 +67,7 @@ Obsolete:
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.1.2" />
+    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup>

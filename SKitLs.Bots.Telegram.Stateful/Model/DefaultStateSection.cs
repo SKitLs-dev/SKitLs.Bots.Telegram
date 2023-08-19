@@ -35,7 +35,7 @@ namespace SKitLs.Bots.Telegram.Stateful.Model
         public DefaultStateSection(string? name = null) => DebugName = name;
 
         /// <inheritdoc/>
-        public IEnumerable<IUserState> GetEnabledStates() => EnabledStates ?? new();
+        public List<IUserState> GetEnabledStates() => EnabledStates ?? new();
 
         /// <inheritdoc/>
         public void EnableState(IUserState state)
@@ -45,7 +45,7 @@ namespace SKitLs.Bots.Telegram.Stateful.Model
         }
 
         /// <inheritdoc/>
-        public IEnumerable<IBotAction<TUpdate>> GetActionsList() => SavedActions;
+        public List<IBotAction<TUpdate>> GetActionsList() => SavedActions;
 
         /// <inheritdoc/>
         public List<IBotAction> GetActionsContent() => GetActionsList().Cast<IBotAction>().ToList();
@@ -74,7 +74,7 @@ namespace SKitLs.Bots.Telegram.Stateful.Model
         /// <inheritdoc/>
         public IEnumerator<IBotAction<TUpdate>> GetEnumerator()
         {
-            foreach (var item in SavedActions)
+            foreach (var item in GetActionsList())
                 yield return item;
         }
         /// <inheritdoc/>

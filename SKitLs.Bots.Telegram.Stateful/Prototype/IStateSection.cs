@@ -20,7 +20,7 @@ namespace SKitLs.Bots.Telegram.Stateful.Prototype
         /// Retrieves a list of all user states that this section is permitted to react to.
         /// </summary>
         /// <returns>A list of enabled user states.</returns>
-        public IEnumerable<IUserState> GetEnabledStates();
+        public List<IUserState> GetEnabledStates();
 
         /// <summary>
         /// Enables a custom state.
@@ -39,7 +39,7 @@ namespace SKitLs.Bots.Telegram.Stateful.Prototype
         /// Collects all <see cref="IBotAction{TUpdate}"/> declared in the class.
         /// </summary>
         /// <returns>A collected list of declared actions.</returns>
-        public IEnumerable<IBotAction<TUpdate>> GetActionsList();
+        public List<IBotAction<TUpdate>> GetActionsList();
 
         /// <summary>
         /// Safely adds the <paramref name="action"/> to the internal storage.

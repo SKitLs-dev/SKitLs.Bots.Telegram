@@ -43,10 +43,10 @@ making it an invaluable asset for enhancing the user experience and overall func
 
 ### Requirements
 
-- Telegram.Bot 19.0.0 or higher
-- SKitLs.Bots.Telegram.Core 2.1.2 or higher
-
 Before running the project, please ensure that you have the following dependencies installed and properly configured in your development environment.
+
+- Telegram.Bot 19.0.0 or higher
+- SKitLs.Bots.Telegram.Core 2.3.0 or higher
 
 ### Installation
 

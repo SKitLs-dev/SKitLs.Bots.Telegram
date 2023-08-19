@@ -9,39 +9,9 @@
 An extension project built upon the SKitLs.Bots.Telegram.Core Framework.</Description>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>$(AssemblyName)</Title>
-    <AssemblyVersion>2.1.0</AssemblyVersion>
+    <AssemblyVersion>2.2.0</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
-    <PackageReleaseNotes>(!) StatefulActionManager update management critical bug fixed
-
-Global:
-(~) Package info Updated
-(~) Ownership transfered to SKitLs
-(~) README Updated
-(~) en localization Updated
-(+) ru localization Added
-(+) SKStateSetting Added
-
-Prototype, major:
-(~) IStateSection Updated
-(~) IStatefulActionManager Updated
-
-Prototype, minor:
-(~) IUserState summaries Updated
-(~) IStatefulUser summaries Updated
-
-Model:
-(~) DefaultStatefulManager Updated
-(~) DefaultStatefulManager -&gt; StatefulActionManager
-(~) DefaultStateSection Updated
-(~) DefaultUserState Updated
-
-Exceptions:
-(+) NoDefaultSection Added
-(~) NotStateful marked as Inexternal now
-(~) Minor interior updates
-
-Obsolete:
-(-) IStatefulIntegratable Removed</PackageReleaseNotes>
+    <PackageReleaseNotes>( ! ) StatefulActionManager update management critical bug fixed</PackageReleaseNotes>
     <Version>$(AssemblyVersion)</Version>
     <Authors>SKitLs, Sargeras02</Authors>
     <Copyright>Copyright (C) SKitLs 2023</Copyright>

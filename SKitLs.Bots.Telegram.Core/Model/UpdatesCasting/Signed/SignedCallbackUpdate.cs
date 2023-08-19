@@ -8,7 +8,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed
     /// <summary>
     /// Casted update that represents default signed callback update.
     /// </summary>
-    public class SignedCallbackUpdate : CastedUpdate, ISignedUpdate
+    public class SignedCallbackUpdate : CastedUpdate, ISignedUpdate, IMessageTriggered
     {
         /// <summary>
         /// Casted sender instance that has raised an update.
@@ -31,9 +31,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed
         /// Message instance that has raised an update.
         /// </summary>
         public Message Message { get; init; }
-        /// <summary>
-        /// Id of a message that have raised current update.
-        /// </summary>
+        /// <inheritdoc/>
         public int TriggerMessageId => Message.MessageId;
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using TEnum = Telegram.Bot.Types.Enums;
 
 namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Model
 {
@@ -11,10 +12,10 @@ namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Model
     public class TelegramTextMessage : ITelegramMessage
     {
         /// <inheritdoc/>
-        public ParseMode ParseMode { get; set; }
+        public ParseMode? ParseMode { get; set; } = TEnum.ParseMode.Markdown;
 
         /// <inheritdoc/>
-        public int ReplyToMessageId { get; set; }
+        public int? ReplyToMessageId { get; set; }
 
         /// <inheritdoc/>
         public bool DisableWebPagePreview { get; set; }

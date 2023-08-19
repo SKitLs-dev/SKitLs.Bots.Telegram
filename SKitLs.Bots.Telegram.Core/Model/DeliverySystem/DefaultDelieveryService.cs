@@ -65,8 +65,8 @@ namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem
             cts ??= new();
             try
             {
-                var text = Owner.Settings.MakeDeliverySafe
-                    ? MakeParseSafe(message.GetMessageText(), message.ParseMode)
+                var text = Owner.Settings.MakeDeliverySafe && message.ParseMode is not null
+                    ? MakeParseSafe(message.GetMessageText(), message.ParseMode.Value)
                     : message.GetMessageText();
 
                 var resMessage = await Bot.SendTextMessageAsync(

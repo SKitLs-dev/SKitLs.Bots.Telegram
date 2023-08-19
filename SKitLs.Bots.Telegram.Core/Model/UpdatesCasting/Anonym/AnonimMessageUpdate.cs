@@ -8,15 +8,14 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonym
     /// Casted update that represents default message update. Anonymous.
     /// Signed as <see cref="Signed.SignedMessageUpdate"/>
     /// </summary>
-    public class AnonymMessageUpdate : CastedUpdate
+    public class AnonymMessageUpdate : CastedUpdate, IMessageTriggered
     {
         /// <summary>
         /// Message instance that has raised an update.
         /// </summary>
         public Message Message { get; init; }
-        /// <summary>
-        /// ID of a message that has raised current update.
-        /// </summary>
+
+        /// <inheritdoc/>
         public int TriggerMessageId => Message.MessageId;
 
         /// <summary>

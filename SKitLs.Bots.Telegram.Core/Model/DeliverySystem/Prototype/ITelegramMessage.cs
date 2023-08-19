@@ -17,7 +17,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype
         /// <para/>
         /// See <see href="https://core.telegram.org/bots/api#formatting-options">formatting options</see> for more details.
         /// </summary>
-        public ParseMode ParseMode { get; }
+        public ParseMode? ParseMode { get; }
 
         /// <summary>
         /// <b>[<see href="https://core.telegram.org/bots/api#sendmessage">Telegram API</see>]</b>
@@ -25,7 +25,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype
         /// <para/>
         /// Use with <see cref="AllowSendingWithoutReply"/> to prevent from server's errors.
         /// </summary>
-        public int ReplyToMessageId { get; }
+        public int? ReplyToMessageId { get; }
 
         /// <summary>
         /// <b>[<see href="https://core.telegram.org/bots/api#sendmessage">Telegram API</see>]</b>

@@ -8,7 +8,7 @@ using Telegram.Bot.Types.Enums;
 namespace SKitLs.Bots.Telegram.Core.Model
 {
     // XML-Doc Update
-    internal static class CustomLoggingExtension
+    public static class CustomLoggingExtension
     {
         private static string NoTitle => "NoTitle";
         private static string NoUserTag => "NoTag";

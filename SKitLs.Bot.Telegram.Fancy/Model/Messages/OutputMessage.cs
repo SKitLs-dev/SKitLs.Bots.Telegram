@@ -1,10 +1,9 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.AdvancedDelivery;
-using SKitLs.Bots.Telegram.AdvancedMessages.Model.Buttons.Inline;
 using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
-using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Model;
 using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using Telegram.Bot.Types.Enums;
+using TEnum = Telegram.Bot.Types.Enums;
 
 namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages
 {
@@ -17,10 +16,10 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages
     public abstract class OutputMessage<TMessage> : IOutputMessage where TMessage : class, IOutputMessage
     {
         /// <inheritdoc/>
-        public virtual ParseMode ParseMode { get; set; }
+        public virtual ParseMode? ParseMode { get; set; } = TEnum.ParseMode.Markdown;
 
         /// <inheritdoc/>
-        public virtual int ReplyToMessageId { get; set; }
+        public virtual int? ReplyToMessageId { get; set; }
 
         /// <inheritdoc/>
         public virtual bool DisableWebPagePreview { get; set; }

@@ -33,7 +33,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Reply
         /// Adds a new button to the menu.
         /// </summary>
         /// <param name="reply">The text for the button to add.</param>
-        public void AddRange(string reply) => Buttons.Add(new ReplyButton(reply));
+        public void Add(string reply) => Buttons.Add(new ReplyButton(reply));
         /// <summary>
         /// Adds a new button to the menu.
         /// </summary>
@@ -48,7 +48,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Reply
         /// Adds several buttons to the menu.
         /// </summary>
         /// <param name="buttons">The list of buttons to add.</param>
-        public void Add(List<IReplyButton> buttons) => Buttons.AddRange(buttons);
+        public void AddRange(List<IReplyButton> buttons) => Buttons.AddRange(buttons);
 
         /// <inheritdoc/>
         protected override List<IReplyButton> GetButtons() => Buttons;

@@ -118,7 +118,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus
             void SaveRow()
             {
                 data.Add(temp);
-                temp.Clear();
+                temp = new();
             }
         }
     }

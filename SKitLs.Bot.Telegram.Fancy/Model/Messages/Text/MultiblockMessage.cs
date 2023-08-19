@@ -3,8 +3,8 @@ using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Model;
 using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using System.Text.RegularExpressions;
-using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using TEnum = Telegram.Bot.Types.Enums;
 
 namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text
 {
@@ -19,9 +19,9 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text
         /// Works only in <see cref="ParseMode.Markdown"/>. Attempt of modifying will result in <see cref="NotImplementedException"/>.
         /// </remarks>
         /// <exception cref="NotImplementedException">Thrown when </exception>
-        public override ParseMode ParseMode
+        public override ParseMode? ParseMode
         {
-            get => ParseMode.Markdown;
+            get => TEnum.ParseMode.Markdown;
             set => throw new NotImplementedException();
         }
 

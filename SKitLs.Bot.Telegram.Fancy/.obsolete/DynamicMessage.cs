@@ -16,12 +16,12 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages
         /// <summary>
         /// Determines message id that current message should reply to.
         /// </summary>
-        public int ReplyToMessageId { get; set; }
+        public int? ReplyToMessageId { get; set; }
 
         /// <summary>
         /// <b>Not Implemented</b>
         /// </summary>
-        public ParseMode ParseMode { get; set; }
+        public ParseMode? ParseMode { get; set; }
 
         /// <summary>
         /// Determines message's menu.

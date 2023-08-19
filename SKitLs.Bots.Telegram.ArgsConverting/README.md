@@ -43,7 +43,7 @@ Key Features:
 
 ### Requirements
 
-- SKitLs.Bots.Telegram.Core 2.1.2 or higher
+- SKitLs.Bots.Telegram.Core 2.3.0 or higher
 - Telegram.Bot 19.0.0 or higher
 
 Before running the project, please ensure that you have the following dependencies installed and properly configured in your development environment.

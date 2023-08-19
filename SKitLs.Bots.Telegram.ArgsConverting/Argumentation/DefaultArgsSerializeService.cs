@@ -7,6 +7,7 @@ using SKitLs.Bots.Telegram.Core.Exceptions.External;
 using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.Core.Model;
 using SKitLs.Bots.Telegram.Core.Model.Building;
+using System;
 using System.Reflection;
 
 namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation
@@ -39,11 +40,13 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation
         private List<ConvertRule> Rules { get; set; }
 
         /// <inheritdoc/>
-        public ConvertRule<TOut> ResolveTypeRule<TOut>() where TOut : notnull
-            => FindRule<TOut>() ?? throw new NotDefinedException(this, typeof(ConvertRule<TOut>), typeof(TOut).Name);
+        public ConvertRule<TOut> ResolveTypeRule<TOut>() where TOut : notnull => (ConvertRule<TOut>)ResolveTypeRule(typeof(TOut));
         /// <inheritdoc/>
-        public ConvertRule<TOut>? FindRule<TOut>() where TOut : notnull
-            => (ConvertRule<TOut>?)Rules.Find(r => r.ResultType == typeof(TOut));
+        public ConvertRule<TOut>? FindRule<TOut>() where TOut : notnull => (ConvertRule<TOut>?)FindRule(typeof(TOut));
+        /// <inheritdoc/>
+        public ConvertRule ResolveTypeRule(Type type) => FindRule(type) ?? throw new NotDefinedException(this, typeof(ConvertRule), type.Name);
+        /// <inheritdoc/>
+        public ConvertRule? FindRule(Type type) => Rules.Find(r => r.ResultType == type);
         /// <inheritdoc/>
         public bool IsDefined<TOut>() where TOut : notnull => FindRule<TOut>() is not null;
 
@@ -161,21 +164,37 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation
                 {
                     PropertyInfo prop = propsLinks[i];
                     Type propType = prop.PropertyType;
-                    dynamic convertRule = Convert.ChangeType(
-                        GetType().GetMethod(nameof(ResolveTypeRule))!
-                        .MakeGenericMethod(propType).Invoke(this, null),
-                        typeof(ConvertRule<>).MakeGenericType(propType))!;
+                    var converter = ResolveTypeRule(propType);
 
-                    var convertRes = convertRule.Converter(args[i]);
+                    var convertRes = converter.Convert(args[i]);
                     if (convertRes.ResultType == ConvertResultType.Ok)
-                        prop.SetValue(instance, convertRes.Value);
-                    else _exceptionMes += $"{convertRes.Message}\n";
+                        prop.SetValue(instance, convertRes.GetValue());
+                    else _exceptionMes += $"{convertRes.ResultMessage}\n";
+
+                    //dynamic convertRule = Convert.ChangeType(
+                    //    GetType().GetMethod(nameof(ResolveTypeRule))!
+                    //    .MakeGenericMethod(propType).Invoke(this, null),
+                    //    typeof(ConvertRule<>).MakeGenericType(propType))!;
+
+                    //var convertRes = convertRule.Converter(args[i]);
+                    //if (convertRes.ResultType == ConvertResultType.Ok)
+                    //    prop.SetValue(instance, convertRes.Value);
+                    //else _exceptionMes += $"{convertRes.Message}\n";
+
+                    //dynamic? result = Convert.ChangeType(GetType().GetMethod(nameof(Unpack))!
+                    //    .MakeGenericMethod(propType).Invoke(this, new[] { args[i] }),
+                    //    typeof(ConvertResult<>).MakeGenericType(propType));
+
+                    //if (result is not null && result.ResultType == ConvertResultType.Ok)
+                    //    prop.SetValue(instance, result.Value);
+                    //else _exceptionMes += $"{result?.Message ?? "Interior exception"}\n";
                 }
 
             return string.IsNullOrEmpty(_exceptionMes)
                 ? ConvertResult<TOut>.OK(instance)
                 : ConvertResult<TOut>.Incorrect(_exceptionMes);
         }
+
         /// <inheritdoc/>
         public string Serialize<TIn>(TIn input, char splitToken = ';') where TIn : notnull
         {

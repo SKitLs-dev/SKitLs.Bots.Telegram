@@ -20,5 +20,7 @@
         {
             ResultType = resultType ?? throw new ArgumentNullException(nameof(resultType));
         }
+
+        public abstract ConvertResult Convert(string input);
     }
 }

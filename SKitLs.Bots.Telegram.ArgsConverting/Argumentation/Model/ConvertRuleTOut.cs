@@ -20,5 +20,7 @@
         {
             Converter = converter;
         }
+
+        public override ConvertResult Convert(string input) => Converter(input);
     }
 }

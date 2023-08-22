@@ -4,6 +4,7 @@ using SKitLs.Bots.Telegram.Core.Model.Building;
 using SKitLs.Bots.Telegram.Core.Model.DeliverySystem;
 using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
+using SKitLs.Bots.Telegram.Core.Model.Services;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Prototype;
 using SKitLs.Bots.Telegram.Core.resources.Settings;
@@ -289,18 +290,25 @@ namespace SKitLs.Bots.Telegram.Core.Model
         {
             if (BotBuilder.DebugSettings.LogUpdates) BotBuilder.DebugSettings.LocalLogger.Log(update);
 
-            long chatId = GetChatId(update, this);
-            ChatType senderChatType = GetChatType(update, this);
-            ChatScanner _handler = senderChatType switch
+            if (update.PreCheckoutQuery is not null)
             {
-                ChatType.Private => PrivateChatUpdateHandler,
-                ChatType.Group => GroupChatUpdateHandler,
-                ChatType.Supergroup => SupergroupChatUpdateHandler,
-                ChatType.Channel => ChannelChatUpdateHandler,
-                _ => null,
-            } ?? throw new BotManagerException("bm.ChatTypeNotSupported", this, Enum.GetName(typeof(ChatType), senderChatType));
-            
-            await _handler.HandleUpdateAsync(new CastedUpdate(_handler, update, chatId));
+                await ResolveService<IPreCheckoutService>().HandlePreCheckoutAsync(update.PreCheckoutQuery);
+            }
+            else
+            {
+                long chatId = GetChatId(update, this);
+                ChatType senderChatType = GetChatType(update, this);
+                ChatScanner _handler = senderChatType switch
+                {
+                    ChatType.Private => PrivateChatUpdateHandler,
+                    ChatType.Group => GroupChatUpdateHandler,
+                    ChatType.Supergroup => SupergroupChatUpdateHandler,
+                    ChatType.Channel => ChannelChatUpdateHandler,
+                    _ => null,
+                } ?? throw new BotManagerException("bm.ChatTypeNotSupported", this, Enum.GetName(typeof(ChatType), senderChatType));
+
+                await _handler.HandleUpdateAsync(new CastedUpdate(_handler, update, chatId));
+            }
         }
 
         /// <summary>

@@ -27,6 +27,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
     /// A delegate representing an asynchronous event of user data change for an <see cref="IBotUser"/>.
     /// </summary>
     /// <param name="user">The user whose data has changed.</param>
+    /// <param name="update">An incoming update.</param>
     /// <returns>An asynchronous task representing the handling of user data change.</returns>
-    public delegate Task UserDataChanged(IBotUser user);
+    public delegate Task UserDataChanged(IBotUser user, ICastedUpdate? update);
 }

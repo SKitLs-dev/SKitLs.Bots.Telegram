@@ -71,7 +71,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         /// To update default "Back" ad "Exit" buttons' labels use <c>"lang.pageNavs.json"</c> settings files.
         /// To update localization keys use <see cref="PNSettings"/> class.
         /// </remarks>
-        public async Task<IMessageMenu> BuildAsync(IBotPage? previous, IBotPage owner, ISignedUpdate update)
+        public async Task<IBuildableContent<IMessageMenu>> BuildAsync(IBotPage? previous, IBotPage owner, ISignedUpdate update)
         {
             var mm = update.Owner.ResolveService<IMenuManager>();
 
@@ -87,7 +87,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
             if (ExitButtonLink is not null)
                 res.Add(update.Owner.ResolveBotString(PNSettings.ExitButtonLocalKey), mm.OpenPageCallback, new(ExitButtonLink, true), true);
 
-            return await res.BuildContentAsync(update);
+            return await Task.FromResult(res);
         }
     }
 }

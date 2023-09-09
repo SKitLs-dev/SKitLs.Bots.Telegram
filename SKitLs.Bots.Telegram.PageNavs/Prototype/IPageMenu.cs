@@ -32,6 +32,6 @@ namespace SKitLs.Bots.Telegram.PageNavs.Prototype
         /// <param name="owner">Current page that owns menu.</param>
         /// <param name="update">An incoming update.</param>
         /// <returns>Built ready-to-use menu.</returns>
-        public Task<IMessageMenu> BuildAsync(IBotPage? previous, IBotPage owner, ISignedUpdate update);
+        public Task<IBuildableContent<IMessageMenu>> BuildAsync(IBotPage? previous, IBotPage owner, ISignedUpdate update);
     }
 }

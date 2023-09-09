@@ -120,6 +120,12 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Inline
             return new InlineMenu(buttons, Serializer) { ColumnsCount = ColumnsCount };
         }
 
+        public InlineMenu SetColumns(int columnCount)
+        {
+            ColumnsCount = columnCount;
+            return this;
+        }
+
         /// <summary>
         /// Combines the interiors of two <see cref="InlineMenu"/> instances.
         /// </summary>

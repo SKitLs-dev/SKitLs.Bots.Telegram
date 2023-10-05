@@ -5,18 +5,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Title>$(AssemblyName)</Title>
-    <Version>1.4.0</Version>
+    <Version>1.4.2</Version>
     <Authors>SKitLs, Sargeras02</Authors>
     <Copyright>Copyright (C) SKitLs 2023</Copyright>
     <PackageProjectUrl>https://github.com/SKitLs-dev/SKitLs.Bots.Telegram.git</PackageProjectUrl>
     <PackageIcon>libIcon_AI.png</PackageIcon>
     <PackageTags>Telegram, Bots, Management, Serialization, Argumenting</PackageTags>
-    <PackageReleaseNotes>(+) ConvertResult Added
-(~) ConvertResult&lt;TOut&gt; : ConvertResult
-
-(~) ConvertResult ConvertRule.Convert(string) Added
-(~) DefaultArgsSerializeService Improved</PackageReleaseNotes>
-    <AssemblyVersion>1.4.0</AssemblyVersion>
+    <PackageReleaseNotes>(~) ArgedCommand.ShouldBeExecuted() bug Fixed</PackageReleaseNotes>
+    <AssemblyVersion>1.4.2</AssemblyVersion>
 	<FileVersion>$(AssemblyVersion)</FileVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -41,7 +37,7 @@ An extension project built upon the SKitLs.Bots.Telegram.Core Framework.</Descri
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.3.0" />
+    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.3.1" />
     <PackageReference Include="Telegram.Bot" Version="19.0.0" />
   </ItemGroup>
 

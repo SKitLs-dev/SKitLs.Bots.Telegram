@@ -6,6 +6,8 @@
   // External
   "exceptionCap.ai.NullPacked": "Null-ошибка упаковки",
   "exceptionMes.ai.NullPacked": "Элемент типа {0} вернул пустую или null-строку при попытке упаковки (Packing). Убедитесь, что метод ToString() действителен или IArgPackable интерфейс определён.",
+  "exceptionCap.ai.ArgedActionNullValue": "Arged Action Null Value",
+  "exceptionMes.ai.ArgedActionNullValue": "Arged action internal argument deserialization returned not-OK. Message: {0}.",
 
   // Inexternal
   "exceptionCap.ai.ConvertNullInput": "Ошибка конвертации: Пустой Ввод",

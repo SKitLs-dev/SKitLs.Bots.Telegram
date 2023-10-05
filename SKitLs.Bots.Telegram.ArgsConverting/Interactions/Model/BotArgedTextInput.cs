@@ -1,6 +1,8 @@
 ﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model;
+using SKitLs.Bots.Telegram.ArgedInteractions.Exceptions;
 using SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Prototype;
+using SKitLs.Bots.Telegram.Core.Exceptions;
 using SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults;
 using SKitLs.Bots.Telegram.Core.Model.Management;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
@@ -65,8 +67,15 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Model
         private async Task MiddleAction(SignedMessageTextUpdate update)
         {
             var argService = update.Owner.ResolveService<IArgsSerializeService>();
-            var args = DeserializeArgs(update, argService).Value;
-            await ArgAction.Invoke(args, update);
+            var args = DeserializeArgs(update, argService);
+            if (args.ResultType == ConvertResultType.Ok)
+            {
+                await ArgAction.Invoke(args.Value, update);
+            }
+            else
+            {
+                throw new ArgedInterException("ArgedActionNullValue", SKTEOriginType.External, this, args.ResultMessage);
+            }
         }
     }
 }

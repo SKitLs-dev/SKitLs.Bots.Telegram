@@ -6,6 +6,8 @@
   // External
   "exceptionCap.ai.NullPacked": "Packing returned null",
   "exceptionMes.ai.NullPacked": "An item of a type {0} returned an empty or a null value on packing attempt. Make sure type's ToString() is valid or implement IArgPackable interface.",
+  "exceptionCap.ai.ArgedActionNullValue": "Arged Action Null Value",
+  "exceptionMes.ai.ArgedActionNullValue": "Arged action internal argument deserialization returned not-OK. Message: {0}.",
 
   // Inexternal
   "exceptionCap.ai.ConvertNullInput": "Convertation error: Null Input",

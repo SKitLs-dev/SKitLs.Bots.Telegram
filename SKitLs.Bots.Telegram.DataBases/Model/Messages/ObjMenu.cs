@@ -19,21 +19,21 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Messages
             ObjInfo = infoArg;
         }
 
-        public async Task<IMessageMenu> BuildAsync(IBotPage? previous, IBotPage owner, ISignedUpdate update)
+        public async Task<IBuildableContent<IMessageMenu>> BuildAsync(IBotPage? previous, IBotPage owner, ISignedUpdate update)
         {
             if (ObjInfo.DataSet.DataType != typeof(T))
                 throw new Exception("ObjMenu => types miss match");
-            var res = new InlineMenu(update.Owner);
+            var result = new InlineMenu(update.Owner);
 
             var ds = (IBotDataSet<T>)ObjInfo.DataSet;
             if (ds.Properties.AllowEdit)
-                res.Add(Owner.EditExistingCallback, ObjInfo);
+                result.Add(Owner.EditExistingCallback, ObjInfo);
             if (ds.Properties.AllowRemove)
-                res.Add(Owner.RemoveExistingCallback, ObjInfo);
-            ds.GetObjectActions().ForEach(action => res.Add(action, new DtoArg<T>(ObjInfo.GetObject<T>(), ds)));
-            res.Add("<< Назад", Owner.OpenDatabaseCallback, ObjInfo.GetPagination());
+                result.Add(Owner.RemoveExistingCallback, ObjInfo);
+            ds.GetObjectActions().ForEach(action => result.Add(action, new DtoArg<T>(ObjInfo.GetObject<T>(), ds)));
+            result.Add("<< Назад", Owner.OpenDatabaseCallback, ObjInfo.GetPagination());
 
-            return await res.BuildContentAsync(update);
+            return await Task.FromResult(result);
         }
     }
 }

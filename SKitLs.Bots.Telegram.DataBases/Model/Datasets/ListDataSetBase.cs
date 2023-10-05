@@ -50,7 +50,7 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Datasets
         public long BotArgId => SetId;
         public virtual void UpdateId(long sid) => SetId = sid;
 
-        public List<T> Data { get; private init; }
+        public List<T> Data { get; private set; }
         public List<IBotProcess> DefinedProcesses { get; } = new();
         public DataSetProperties Properties { get; set; }
         public PaginationInfo Pagination => new(this, 0, Properties.PaginationCount);
@@ -58,10 +58,10 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Datasets
         public ListDataSetBase(string setId, IList<T>? data = null, string? dsLabel = null, Func<ICastedUpdate?, T>? createNew = null, DataSetProperties? properties = null)
         {
             DataSetId = setId;
-            Data = new();
-            data?.ToList().ForEach(async x => await AddAsync(x, null, true));
             CreateNew = createNew;
             Properties = properties ?? new DataSetProperties(dsLabel ?? setId);
+            Data = new();
+            data?.ToList().ForEach(async x => await AddAsync(x, null, true));
         }
 
         public int Count => Data.Count;
@@ -94,9 +94,10 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Datasets
         public async Task AddAsync(T item, ICastedUpdate? trigger) => await AddAsync(item, trigger, false);
         private async Task AddAsync(T item, ICastedUpdate? trigger, bool mute)
         {
-            if (Data.Find(x => x.BotArgId == item.BotArgId) is not null)
+            if (Data.Find(x => x.BotArgId == item.BotArgId) is not null && Properties.EnableAutoIdUpdate)
                 item.UpdateId(Data.FirstId());
             Data.Add(item);
+            Data = Data.OrderBy(x => x.BotArgId).ToList();
             if (ObjectAdded is not null && !mute)
                 await ObjectAdded.Invoke(item, trigger);
         }
@@ -106,6 +107,7 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Datasets
         {
             var item = (T)GetExisting(bid);
             Data.Remove(item);
+            Data = Data.OrderBy(x => x.BotArgId).ToList();
             if (ObjectRemoved is not null)
                 await ObjectRemoved(item, trigger);
         }
@@ -115,6 +117,7 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Datasets
             if (obj is not null)
                 Data.Remove(obj);
             Data.Add(item);
+            Data = Data.OrderBy(x => x.BotArgId).ToList();
             if (ObjectUpdated is not null)
                 await ObjectUpdated(item, trigger);
         }
@@ -141,31 +144,34 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Datasets
 
             if (Properties.AllowAdd)
             {
-                AddProcess ??= new ComplexShotInputProcess<T>(ProcessData(DbActionType.Add), (a, u) => StaticMessage(Settings.AddStartupMessageLK, FillHelper.GetShotLabels(DataType)), When_AddProcessOver)
-                {
-                    ConfirmationMessage = (a, u) => StaticMessage(Settings.AddItConfirmMessageLK, a.BuildingInstance.FullDisplay())
-                };
+                AddProcess ??= new ComplexShotInputProcess<T>(
+                    processData: ProcessData(DbActionType.Add),
+                    startupMessage: async (a, u) => await StaticMessage(Settings.AddStartupMessageLK, FillHelper.GetShotLabels(DataType)),
+                    overByCallback: When_AddProcessOver,
+                    confirmMessage: async (a, u) => await StaticMessage(Settings.AddItConfirmMessageLK, a.BuildingInstance.FullDisplay()));
                 DefinedProcesses.Add(AddProcess);
             }
             if (Properties.AllowEdit)
             {
-                EditProcess ??= new ComplexShotInputProcess<T>(ProcessData(DbActionType.Edit), (a, u) => StaticMessage(Settings.EditStartupMessageLK, a.BuildingInstance.FullDisplay()), When_EditProcessOver)
-                {
-                    ConfirmationMessage = (a, u) => StaticMessage(Settings.AddItConfirmMessageLK, a.BuildingInstance.FullDisplay())
-                };
+                EditProcess ??= new ComplexShotInputProcess<T>(
+                    processData: ProcessData(DbActionType.Edit),
+                    startupMessage: async (a, u) => await StaticMessage(Settings.EditStartupMessageLK, a.BuildingInstance.FullDisplay()),
+                    overByCallback: When_EditProcessOver,
+                    confirmMessage: async (a, u) => await StaticMessage(Settings.AddItConfirmMessageLK, a.BuildingInstance.FullDisplay()));
                 DefinedProcesses.Add(EditProcess);
             }
             if (Properties.AllowRemove)
             {
-                RemoveProcess ??= new TerminatorProcess<T>(ProcessData(DbActionType.Remove), When_RemoveProcessConfirmed)
-                {
-                    ConfirmationMessage = (a, u) => StaticMessage(Settings.RemoveConfirmMessageLK)
-                };
+                RemoveProcess ??= new TerminatorProcess<T>(
+                    processData: ProcessData(DbActionType.Remove),
+                    overByCallback: When_RemoveProcessConfirmed,
+                    confirmMessage: async (a, u) => await StaticMessage(Settings.RemoveConfirmMessageLK));
                 DefinedProcesses.Add(RemoveProcess);
             }
 
             IST ProcessData(DbActionType actionType) => Settings.GetProcessData(this, actionType);
-            IOutputMessage StaticMessage(string key, params string?[] format) => new OutputMessageText(owner.ResolveBotString(key, format));
+            async Task<IOutputMessage> StaticMessage(string key, params string?[] format)
+                => await Task.FromResult(new OutputMessageText(owner.ResolveBotString(key, format)));
         }
 
         public void UpdateProcess(TextInputsProcessBase<T> process, DbActionType actionType)
@@ -216,7 +222,7 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Datasets
             else
                 await ProcessManager.Run(EditProcess, new(args.GetObject<T>()), update).LaunchWith(update);
         }
-        public virtual async Task When_EditProcessOver(TextInputsArguments<T> args, SignedMessageTextUpdate update)
+        public virtual async Task When_EditProcessOver(TextInputsArguments<T> args, SignedCallbackUpdate update)
         {
             var text = ResolveStatus(args.CompleteStatus, DbActionType.Edit);
             if (args.CompleteStatus == ProcessCompleteStatus.Success)

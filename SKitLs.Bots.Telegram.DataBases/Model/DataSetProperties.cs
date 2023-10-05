@@ -16,6 +16,8 @@ namespace SKitLs.Bots.Telegram.DataBases.Model
             set => _mainPageHeader = value;
         }
 
+        public bool EnableAutoIdUpdate { get; set; } = true;
+
         // TODO : Probably add (ISigneUpdate) dependency
         public bool AllowReadRows { get; set; } = true;
         public bool AllowAdd { get; set; } = true;
@@ -30,7 +32,7 @@ namespace SKitLs.Bots.Telegram.DataBases.Model
         {
             DataSetLabel = dataSetLabel ?? throw new ArgumentNullException(nameof(dataSetLabel));
             PaginationCount = paginationCount;
-            MainPageHeader = mainPageHeader;
+            _mainPageHeader = mainPageHeader;
         }
     }
 }

@@ -39,29 +39,29 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Messages
             }
         }
 
-        public async Task<IMessageMenu> BuildAsync(IBotPage? previous, IBotPage owner, ISignedUpdate update)
+        public async Task<IBuildableContent<IMessageMenu>> BuildAsync(IBotPage? previous, IBotPage owner, ISignedUpdate update)
         {
             var mm  = Owner.Owner.ResolveService<IMenuManager>();
             var serializer = Owner.Owner.ResolveService<IArgsSerializeService>();
-            var res = new InlineMenu(serializer)
+            var result = new InlineMenu(serializer)
             {
                 ColumnsCount = 2,
             };
 
-            Data.ForEach(x => res.Add(x.ListLabel(),
+            Data.ForEach(x => result.Add(x.ListLabel(),
                 Owner.OpenObjectCallback.GetSerializedData(new(Paging, x.BotArgId), serializer), true));
 
             if (AllowAdd)
-                res.Add(Owner.AddNewCallback, Paging);
+                result.Add(Owner.AddNewCallback, Paging);
 
             if (Paging.StartIndex > 0)
-                res.Add("<<<", Owner.OpenDatabaseCallback.GetSerializedData(Paging.Prev(), serializer));
+                result.Add("<<<", Owner.OpenDatabaseCallback.GetSerializedData(Paging.Prev(), serializer));
             if (Paging.StartIndex + Paging.Count < SourceSize)
-                res.Add(">>>", Owner.OpenDatabaseCallback.GetSerializedData(Paging.Next(), serializer));
+                result.Add(">>>", Owner.OpenDatabaseCallback.GetSerializedData(Paging.Next(), serializer));
             if (previous is not null)
-                res.Add("<< Назад", mm.BackCallback.GetSerializedData(), true);
-            
-            return await res.BuildContentAsync(update);
+                result.Add("<< Назад", mm.BackCallback.GetSerializedData(), true);
+
+            return await Task.FromResult(result);
         }
     }
 }

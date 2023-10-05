@@ -15,20 +15,20 @@ namespace SKitLs.Bots.Telegram.DataBases.Model.Messages
 
         public DataSetsMenu(IDataManager owner) => Owner = owner;
 
-        public async Task<IMessageMenu> BuildAsync(IBotPage? previous, IBotPage owner, ISignedUpdate update)
+        public async Task<IBuildableContent<IMessageMenu>> BuildAsync(IBotPage? previous, IBotPage owner, ISignedUpdate update)
         {
             var mm = update.Owner.ResolveService<IMenuManager>();
             var serializer = Owner.Owner.ResolveService<IArgsSerializeService>();
-            var res = new InlineMenu();
+            var result = new InlineMenu();
 
             Owner.GetAll()
                 .ToList()
-                .ForEach(x => res.Add(x.ListLabel(), 
+                .ForEach(x => result.Add(x.ListLabel(), 
                 Owner.OpenDatabaseCallback.GetSerializedData(x.Pagination, serializer)));
 
             if (previous is not null)
-                res.Add("<< Назад", mm.BackCallback.GetSerializedData());
-            return await res.BuildContentAsync(update);
+                result.Add("<< Назад", mm.BackCallback.GetSerializedData());
+            return await Task.FromResult(result);
         }
     }
 }

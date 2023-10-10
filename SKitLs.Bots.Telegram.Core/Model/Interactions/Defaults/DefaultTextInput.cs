@@ -2,6 +2,7 @@
 
 namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
 {
+    // TODO : custom ShouldBeExecuted pattern
     // XML-Doc Update
     /// <summary>
     /// Default realization of <see cref="IBotAction"/>&lt;<see cref="SignedMessageTextUpdate"/>&gt;

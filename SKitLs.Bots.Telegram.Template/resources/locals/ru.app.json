@@ -1,0 +1,11 @@
+﻿{
+  "app.startUp": "Hello world!\n\nОткрыть меню: {0}.",
+  "app.clickMeText": "Текст был обновлён.",
+  "app.clickMeText2": "Это 'Join Us' сообщение.",
+
+  "app.mainMenuLabel": "Главное меню",
+  "app.mainMenu": "Это открытое главное меню.\n\nНавигация осуществляется кнопками ниже:",
+
+  "app.subMenuLabel": "Узнать id",
+  "app.subMenu": "Это вторая сраница меню. Контент сгенерирован динамически.\n\nВаш id: {0}"
+}

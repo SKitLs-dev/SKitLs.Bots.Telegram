@@ -1,0 +1,33 @@
+﻿using SKitLs.Bots.Telegram.Core.Model.Management;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
+using SKitLs.Bots.Telegram.Core.Prototype;
+using SKitLs.Bots.Telegram.PageNavs.Prototype;
+using Telegram.Bot;
+
+namespace SKitLs.Bots.Telegram.Template.App
+{
+    internal partial class MainApplicant :
+        IApplicant<IActionManager<SignedMessageTextUpdate>>,
+        IApplicant<IActionManager<SignedCallbackUpdate>>
+    {
+        public void ApplyTo(IActionManager<SignedCallbackUpdate> entity)
+        {
+            EnableCallbacks(entity);
+        }
+
+        public void ApplyTo(IActionManager<SignedMessageTextUpdate> entity)
+        {
+            EnableCommands(entity);
+        }
+
+        internal static async Task OpenMainMenuAsync(ISignedUpdate update)
+        {
+            var mm = update.Owner.ResolveService<IMenuManager>();
+            if (update is SignedCallbackUpdate callback)
+                await update.Owner.Bot.EditMessageReplyMarkupAsync(update.ChatId, callback.TriggerMessageId, null);
+            var page = mm.GetDefined(MainPageId);
+            await mm.PushPageAsync(page, update, true);
+        }
+    }
+}

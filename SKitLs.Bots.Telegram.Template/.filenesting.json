@@ -1,0 +1,19 @@
+﻿{
+  "help": "https://go.microsoft.com/fwlink/?linkid=866610",
+  "root": true,
+
+  "dependentFileProviders": {
+    "add": {
+      "fileToFile": {
+        "add": {
+          "iCallbacks.cs": [ "MainApplicant.cs" ],
+          "iCommands.cs": [ "MainApplicant.cs" ],
+          "iInputs.cs": [ "MainApplicant.cs" ],
+          "iProcesses.cs": [ "MainApplicant.cs" ],
+          "iDataSets.cs": [ "MainApplicant.cs" ],
+          "iMenus.cs": [ "MainApplicant.cs" ]
+        }
+      }
+    }
+  }
+}

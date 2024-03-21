@@ -6,7 +6,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus
     /// <summary>
     /// Represents a wrapper for a custom message menu (reply markup) in a Telegram bot.
     /// <para/>
-    /// <see cref="MenuWrapper"/> serves the purpose of decoupling the logic provided by <see cref="IBuildableMenu"/>
+    /// <see cref="MenuWrapper"/> serves the purpose of decoupling the logic provided by <see cref="IMessageMenu"/>
     /// from the <see cref="IMessageMenu"/> logic.
     /// </summary>
     public class MenuWrapper : IMessageMenu

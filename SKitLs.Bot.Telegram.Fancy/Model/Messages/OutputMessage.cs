@@ -58,6 +58,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages
         {
             ReplyToMessageId = other.ReplyToMessageId;
             Menu = (IBuildableContent<IMessageMenu>?)other.Menu?.Clone();
+            ContentBuilder = other is OutputMessage<TMessage> output ? output.ContentBuilder : null;
             ParseMode = other.ParseMode;
             DisableWebPagePreview = other.DisableWebPagePreview;
             DisableNotification = other.DisableNotification;

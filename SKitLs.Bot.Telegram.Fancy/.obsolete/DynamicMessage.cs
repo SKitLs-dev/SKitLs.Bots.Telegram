@@ -10,7 +10,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages
     /// Represents a dynamic message with flexible content generation based on the provided update.
     /// This class implements both the <see cref="IOutputMessage"/> and <see cref="IDynamicMessage"/> interfaces.
     /// </summary>
-    [Obsolete($"Replaced with {nameof(IBuildableMessage)} since .Core [v2.1]")]
+    [Obsolete($"Replaced with {nameof(IBuildableMessage)} since .Core [v2.1]", true)]
     public class DynamicMessage : IOutputMessage, IDynamicMessage
     {
         /// <summary>
@@ -98,7 +98,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages
         /// <summary>
         /// <b>Not Implemented</b>
         /// </summary>
-        public Task<ITelegramMessage> BuildContentAsync(ICastedUpdate update)
+        public Task<ITelegramMessage> BuildContentAsync(ICastedUpdate? update)
         {
             throw new NotImplementedException();
         }

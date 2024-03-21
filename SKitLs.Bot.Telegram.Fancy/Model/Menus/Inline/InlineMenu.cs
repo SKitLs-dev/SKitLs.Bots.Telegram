@@ -119,7 +119,12 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Inline
                 buttons.Add(button is ICloneable clone ? (IInlineButton)clone.Clone() : button);
             return new InlineMenu(buttons, Serializer) { ColumnsCount = ColumnsCount };
         }
-
+        
+        /// <summary>
+        /// Sets the number of columns for the inline menu.
+        /// </summary>
+        /// <param name="columnCount">The number of columns to set.</param>
+        /// <returns>The current <see cref="InlineMenu"/> instance.</returns>
         public InlineMenu SetColumns(int columnCount)
         {
             ColumnsCount = columnCount;

@@ -7,12 +7,18 @@
     <Description>Offers enhanced methods for sending messages in Telegram bots.
 
 An extension project built upon the SKitLs.Bots.Telegram.Core Framework.</Description>
-    <Version>2.2.1-alpha0</Version>
+    <Version>2.2.1</Version>
     <FileVersion>$(AssemblyVersion)</FileVersion>
-    <PackageReleaseNotes>(+) InlineMenu.SetColumns() Added</PackageReleaseNotes>
+    <PackageReleaseNotes>(~) Fixed: OutputMessage - ctor(IOutputMessage other)
+
+(-) Obsolete: DynamicMessage
+(-) Removed: IFormattableMessage
+
+(~) Updated: XML Documentation
+(~) Updated: License</PackageReleaseNotes>
     <Title>$(AssemblyName)</Title>
     <Authors>SKitLs, Sargeras02</Authors>
-    <Copyright>Copyright (C) SKitLs 2023</Copyright>
+    <Copyright>Copyright (C) 2023-2024, SKitLs</Copyright>
     <PackageProjectUrl>https://github.com/SKitLs-dev/SKitLs.Bots.Telegram.git</PackageProjectUrl>
     <PackageIcon>libIcon_AM.png</PackageIcon>
     <PackageTags>Telegram, Bots, Messaging, Formatting</PackageTags>
@@ -27,7 +33,6 @@ An extension project built upon the SKitLs.Bots.Telegram.Core Framework.</Descri
   <ItemGroup>
     <Compile Include=".obsolete\DynamicMessage.cs" />
     <Compile Include=".obsolete\IDynamicMessage.cs" />
-    <Compile Include=".obsolete\IFormattableMessage.cs" />
     <Compile Include=".obsolete\InlineButtonPair.cs" />
   </ItemGroup>
 
@@ -39,8 +44,8 @@ An extension project built upon the SKitLs.Bots.Telegram.Core Framework.</Descri
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SKitLs.Bots.Telegram.ArgedInteractions" Version="1.4.0" />
-    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.3.0" />
+    <PackageReference Include="SKitLs.Bots.Telegram.ArgedInteractions" Version="1.4.3" />
+    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.4.0" />
     <PackageReference Include="Telegram.Bot" Version="19.0.0" />
   </ItemGroup>
 

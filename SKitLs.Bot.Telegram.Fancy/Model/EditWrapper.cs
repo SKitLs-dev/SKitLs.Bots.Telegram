@@ -1,9 +1,7 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Model;
 using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
-using System.Reflection.Metadata.Ecma335;
 
 namespace SKitLs.Bots.Telegram.AdvancedMessages.Model
 {
@@ -41,6 +39,12 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model
             EditMessageId = editMessageId;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditWrapper"/> class based on a buildable message and a signed callback update.
+        /// </summary>
+        /// <param name="message">The buildable message content.</param>
+        /// <param name="update">The signed callback update.</param>
+        /// <returns>A task that represents the asynchronous operation, containing the constructed <see cref="EditWrapper"/>.</returns>
         public static async Task<EditWrapper> FromBuildable(IBuildableMessage message, SignedCallbackUpdate update) => new(await message.BuildContentAsync(update), update.TriggerMessageId);
 
         /// <inheritdoc/>

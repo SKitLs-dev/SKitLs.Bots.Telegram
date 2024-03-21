@@ -62,7 +62,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers
         /// Returns an 
         /// </summary>
         /// <returns>An empty list, because <see cref="UHBInformer{TUpdate}"/> does not provide methods of executing actions.</returns>
-        public List<IBotAction> GetActionsContent() => new();
+        public List<IBotAction> GetHeldActions() => new();
 
         /// <summary>
         /// Handles <see cref="ICastedUpdate"/> updated, gotten from <see cref="ChatScanner"/>.

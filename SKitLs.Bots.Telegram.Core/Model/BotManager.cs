@@ -29,7 +29,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
     /// </para>
     /// <para>Access this class by Wizard Builder <see cref="BotBuilder"/>.</para>
     /// </summary>
-    public sealed class BotManager : IDebugNamed
+    public sealed partial class BotManager : IDebugNamed
     {
         #region Properties
         /// <summary>
@@ -156,7 +156,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         
         /// <summary>
         /// Provides access to all declared <see cref="IBotAction"/>,
-        /// collected via <see cref="IActionsHolder"/> interface.
+        /// collected via <see cref="IBotActionsHolder"/> interface.
         /// </summary>
         public List<IBotAction> ActionsBasket { get; internal set; }
         /// <summary>
@@ -206,22 +206,22 @@ namespace SKitLs.Bots.Telegram.Core.Model
 
         /// <summary>
         /// Recursively and reflectively collects all declared <see cref="IBotAction"/>
-        /// via <see cref="IActionsHolder"/> interface.
+        /// via <see cref="IBotActionsHolder"/> interface.
         /// </summary>
         internal void CollectActionsBasket()
         {
-            var holders = new List<IActionsHolder>();
+            var holders = new List<IBotActionsHolder>();
             GetType().GetProperties()
-                .Where(x => x.PropertyType.GetInterfaces().Contains(typeof(IActionsHolder)))
+                .Where(x => x.PropertyType.GetInterfaces().Contains(typeof(IBotActionsHolder)))
                 .ToList()
-                .ForEach(holder => holders.Add((holder.GetValue(this) as IActionsHolder)!));
-            Services.Values.Where(x => x is IActionsHolder)
+                .ForEach(holder => holders.Add((holder.GetValue(this) as IBotActionsHolder)!));
+            Services.Values.Where(x => x is IBotActionsHolder)
                 .ToList()
-                .ForEach(service => holders.Add((service as IActionsHolder)!));
+                .ForEach(service => holders.Add((service as IBotActionsHolder)!));
             holders.ForEach(x =>
             {
                 if (x is not null)
-                    ActionsBasket.AddRange(x.GetActionsContent());
+                    ActionsBasket.AddRange(x.GetHeldActions());
             });
         }
 

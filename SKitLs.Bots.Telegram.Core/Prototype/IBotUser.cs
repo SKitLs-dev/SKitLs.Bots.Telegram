@@ -1,13 +1,14 @@
 ﻿namespace SKitLs.Bots.Telegram.Core.Prototype
 {
-    // XML-Doc Update
     /// <summary>
-    /// Represents a general instance of bot user. Can be extended with additional functional.
+    /// Represents a fundamental bot user instance abstraction that can be extended with additional functionality.
     /// </summary>
     public interface IBotUser
     {
         /// <summary>
-        /// User's telegram id. Can be used for sending messages instead of chat's id.
+        /// Gets the Telegram ID of the user.
+        /// <para/>
+        /// Can be used for sending messages instead of the chat's ID.
         /// </summary>
         public long TelegramId { get; }
     }

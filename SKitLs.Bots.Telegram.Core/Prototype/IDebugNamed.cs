@@ -1,13 +1,12 @@
 ﻿namespace SKitLs.Bots.Telegram.Core.Prototype
 {
-    // XML-Doc Update
     /// <summary>
-    /// An interface that provides methods to simplify debugging process.
+    /// An interface that offers methods to streamline the debugging process by providing a debug-friendly name.
     /// </summary>
     public interface IDebugNamed
     {
         /// <summary>
-        /// Name, used for simplifying debugging process.
+        /// Gets a name used to facilitate the debugging process.
         /// </summary>
         public string? DebugName { get; }
     }

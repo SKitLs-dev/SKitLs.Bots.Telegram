@@ -13,7 +13,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Management
     /// <para>
     /// Fourth architecture level, addon for <see cref="IActionManager{TUpdate}"/>
     /// </para>
-    /// <para>Inherits: <see cref="IOwnerCompilable"/>, <see cref="IActionsHolder"/></para>
+    /// <para>Inherits: <see cref="IOwnerCompilable"/>, <see cref="IBotActionsHolder"/></para>
     /// </summary>
     /// <typeparam name="TUpdate">Specific casted update that this manager should work with.</typeparam>
     public interface ILinearActionManager<TUpdate> : IActionManager<TUpdate> where TUpdate : ICastedUpdate

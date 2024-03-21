@@ -50,7 +50,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Management.Defaults
         /// Collects all <see cref="IBotAction"/>s declared in the class.
         /// </summary>
         /// <returns>Collected list of declared actions.</returns>
-        public List<IBotAction> GetActionsContent() => Actions.Cast<IBotAction>().ToList();
+        public List<IBotAction> GetHeldActions() => Actions.Cast<IBotAction>().ToList();
 
         /// <summary>
         /// Safely adds new action to internal storage.

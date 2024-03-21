@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>2.3.2</AssemblyVersion>
+    <AssemblyVersion>2.4.0</AssemblyVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>$(AssemblyName)</Title>
     <Authors>SKitLs, Sargeras02</Authors>
@@ -12,10 +12,34 @@
     <PackageIcon>libIcon.png</PackageIcon>
     <PackageTags>Telegram, Bots, Management, Framework, Core</PackageTags>
     <FileVersion>$(AssemblyVersion)</FileVersion>
-    <PackageReleaseNotes>(~) ChatScanner SignedUpdateHandled requires ISignedUpdate</PackageReleaseNotes>
+    <PackageReleaseNotes>(~) Updated (generic): IUsersManager -&gt; IUsersManager{T}
+(+) Added: interface IUsersManager : IUsersManager&lt;IBotUser&gt;
+
+(~) BotManager is partial now
+(~) Updated (signature): UserDataChanged
+
+(~) Renamed: IActionsHolder -&gt; IBotActionsHolder, GetActionsContent -&gt; GetHeldActions
+including:
+~ UHBInformer
+~ DefaultActionManager
+~ IActionManager
+~ ILinearActionManager
+~ ChatScanner
+~ BotManager
+~ IUpdateHandlerBase{T}
+
+(~) Renamed:
+~ DefaultAnonymMessageTextUpdateHandler -&gt; AnonymMessageTextHandler
+~ DefaultAnonymMessageUpdateHandler -&gt; AnonymMessageBaseHandler
+~ DefaultCallbackHandler -&gt; CallbackHandler
+~ DefaultSignedMessageTextUpdateHandler -&gt; SignedMessageTextHandler
+~ DefaultSignedMessageUpdateHandler -&gt; SignedMessageBaseHandler
+
+(~) XML Documentation Update
+(~) License Update</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Copyright>Copyright (C) SKitLs 2023</Copyright>
+    <Copyright>Copyright (C) 2023-2024, SKitLs</Copyright>
     <Description>The core module of the SKitLs.Bots.Telegram Framework.</Description>
     <Version>$(AssemblyVersion)</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>

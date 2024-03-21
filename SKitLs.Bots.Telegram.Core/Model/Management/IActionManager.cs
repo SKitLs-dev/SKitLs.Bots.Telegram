@@ -14,10 +14,10 @@ namespace SKitLs.Bots.Telegram.Core.Model.Management
     /// Upper: <see cref="UpdateHandlers.IUpdateHandlerBase"/>.
     /// Lower: <see cref="IBotAction"/>.
     /// </para>
-    /// <para>Supports: <see cref="IOwnerCompilable"/>, <see cref="IActionsHolder"/></para>
+    /// <para>Supports: <see cref="IOwnerCompilable"/>, <see cref="IBotActionsHolder"/></para>
     /// </summary>
     /// <typeparam name="TUpdate">Specific casted update that this manager should work with.</typeparam>
-    public interface IActionManager<TUpdate> : IDebugNamed, IOwnerCompilable, IActionsHolder where TUpdate : ICastedUpdate
+    public interface IActionManager<TUpdate> : IDebugNamed, IOwnerCompilable, IBotActionsHolder where TUpdate : ICastedUpdate
     {
         /// <summary>
         /// Safely adds new action to internal storage,

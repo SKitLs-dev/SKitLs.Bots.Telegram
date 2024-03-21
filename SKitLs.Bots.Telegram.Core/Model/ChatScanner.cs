@@ -24,9 +24,9 @@ namespace SKitLs.Bots.Telegram.Core.Model
     /// Upper: <see cref="BotManager"/>.
     /// Lower: <see cref="IUpdateHandlerBase"/>.
     /// </para>
-    /// <para>Supports: <see cref="IOwnerCompilable"/>, <see cref="IActionsHolder"/></para>
+    /// <para>Supports: <see cref="IOwnerCompilable"/>, <see cref="IBotActionsHolder"/></para>
     /// </summary>
-    public sealed class ChatScanner : IDebugNamed, IOwnerCompilable, IActionsHolder
+    public sealed class ChatScanner : IDebugNamed, IOwnerCompilable, IBotActionsHolder
     {
         #region Properties
         private string? _debugName;
@@ -108,10 +108,10 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// Collects all <see cref="IBotAction"/>s declared in the class.
         /// </summary>
         /// <returns>Collected list of declared actions.</returns>
-        public List<IBotAction> GetActionsContent()
+        public List<IBotAction> GetHeldActions()
         {
             var res = new List<IBotAction>();
-            GetDeclaredHandlers().ForEach(x => res.AddRange(x.GetActionsContent()));
+            GetDeclaredHandlers().ForEach(x => res.AddRange(x.GetHeldActions()));
             return res;
         }
 
@@ -131,7 +131,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
             long id = GetSenderId(update.OriginalSource);
             if (UsersManager is not null)
             {
-                if (await UsersManager.IsUserRegisteredAsync(id))
+                if (await UsersManager.CheckIfRegisteredAsync(id))
                     sender = await UsersManager.GetUserByIdAsync(id);
                 else
                     sender = await UsersManager.RegisterNewUserAsync(update);

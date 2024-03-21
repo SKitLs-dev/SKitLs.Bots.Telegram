@@ -11,7 +11,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers
     /// Implemented defaults are stored in <c>Core.Model.UpdateHandlers.Defaults</c> namespace.
     /// </para>
     /// <para>
-    /// Supports inherited <see cref="IOwnerCompilable"/>, <see cref="IActionsHolder"/>
+    /// Supports inherited <see cref="IOwnerCompilable"/>, <see cref="IBotActionsHolder"/>
     /// </para>
     /// </summary>
     /// <typeparam name="TUpdate">Specific casted update that this handler should work with.</typeparam>

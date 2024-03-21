@@ -157,7 +157,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.Building
         /// <param name="debugName">Custom debug name (<see cref="BotManager.DebugName"/>).</param>
         internal ChatScanner Build(string? debugName = null)
         {
-            _chatScanner.DebugName = debugName;
+            _chatScanner.DebugName = debugName ?? nameof(ChatScanner);
             return _chatScanner;
         }
     }

@@ -13,10 +13,10 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers
     /// Lower: <see cref="Management.IActionManager{TUpdate}"/>.
     /// </para>
     /// <para>
-    /// Supports: <see cref="IOwnerCompilable"/>, <see cref="IActionsHolder"/>
+    /// Supports: <see cref="IOwnerCompilable"/>, <see cref="IBotActionsHolder"/>
     /// </para>
     /// </summary>
-    public interface IUpdateHandlerBase : IOwnerCompilable, IActionsHolder
+    public interface IUpdateHandlerBase : IOwnerCompilable, IBotActionsHolder
     {
         /// <summary>
         /// Handles <see cref="ICastedUpdate"/> updated, gotten from <see cref="ChatScanner"/>.

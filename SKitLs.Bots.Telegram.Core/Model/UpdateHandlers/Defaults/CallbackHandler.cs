@@ -15,10 +15,10 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.Defaults
     /// Default realization for <see cref="IUpdateHandlerBase"/>&lt;<see cref="SignedCallbackUpdate"/>&gt;.
     /// Uses a system of <see cref="IActionManager{TUpdate}"/> for handling incoming Callbacks.
     /// <para>
-    /// Inherits: <see cref="IOwnerCompilable"/>, <see cref="IActionsHolder"/>
+    /// Inherits: <see cref="IOwnerCompilable"/>, <see cref="IBotActionsHolder"/>
     /// </para>
     /// </summary>
-    public class DefaultCallbackHandler : IUpdateHandlerBase<SignedCallbackUpdate>
+    public class CallbackHandler : IUpdateHandlerBase<SignedCallbackUpdate>
     {
         private BotManager? _owner;
         /// <summary>
@@ -42,10 +42,10 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.Defaults
         public IActionManager<SignedCallbackUpdate> CallbackManager { get; set; }
 
         /// <summary>
-        /// Creates a new instance of a <see cref="DefaultCallbackHandler"/>
+        /// Creates a new instance of a <see cref="CallbackHandler"/>
         /// with default realization of manager.
         /// </summary>
-        public DefaultCallbackHandler()
+        public CallbackHandler()
         {
             CallbackManager = new DefaultActionManager<SignedCallbackUpdate>();
         }
@@ -54,7 +54,7 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.Defaults
         /// Collects all <see cref="IBotAction"/>s declared in the class.
         /// </summary>
         /// <returns>Collected list of declared actions.</returns>
-        public List<IBotAction> GetActionsContent() => CallbackManager.GetActionsContent();
+        public List<IBotAction> GetHeldActions() => CallbackManager.GetHeldActions();
 
         /// <summary>
         /// Handles <see cref="ICastedUpdate"/> updated, gotten from <see cref="ChatScanner"/>.

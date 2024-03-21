@@ -2,25 +2,23 @@
 using SKitLs.Bots.Telegram.Core.Exceptions.Internal;
 using SKitLs.Bots.Telegram.Core.Model.Building;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
-using SKitLs.Bots.Telegram.Core.Model.Management;
-using SKitLs.Bots.Telegram.Core.Model.Management.Defaults;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.Core.Prototype;
-using SKitLs.Bots.Telegram.Core.resources.Settings;
+using Telegram.Bot.Types.Enums;
 
 namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.Defaults
 {
     // XML-Doc Update
     /// <summary>
-    /// Default realization for <see cref="IUpdateHandlerBase"/>&lt;<see cref="SignedMessageTextUpdate"/>&gt;.
-    /// Uses a system of <see cref="IActionManager{TUpdate}"/> for handling incoming text updates 
-    /// such as: Text input or Commands.
+    /// Default realization for <see cref="IUpdateHandlerBase"/>&lt;<see cref="SignedMessageUpdate"/>&gt;.
+    /// Uses a system of sub-<see cref="IUpdateHandlerBase"/> for different message content such as:
+    /// text, media, voice etc (see <see cref="MessageType"/>).
     /// <para>
-    /// Inherits: <see cref="IOwnerCompilable"/>, <see cref="IActionsHolder"/>
+    /// Inherits: <see cref="IOwnerCompilable"/>, <see cref="IBotActionsHolder"/>
     /// </para>
     /// </summary>
-    public class DefaultSignedMessageTextUpdateHandler : IUpdateHandlerBase<SignedMessageTextUpdate>
+    public class SignedMessageBaseHandler : IUpdateHandlerBase<SignedMessageUpdate>
     {
         private BotManager? _owner;
         /// <summary>
@@ -39,38 +37,30 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.Defaults
         public Action<object, BotManager>? OnCompilation => null;
 
         /// <summary>
-        /// Actions manager used for handling incoming commands.
-        /// <para>
-        /// For commands determination check: <see cref="BotSettings.IsCommand"/>.
-        /// </para>
+        /// Sub-handler used for handling incoming Text Messages.
         /// </summary>
-        public IActionManager<SignedMessageTextUpdate> CommandsManager { get; set; }
-        /// <summary>
-        /// Actions manager used for handling incoming text.
-        /// </summary>
-        public IActionManager<SignedMessageTextUpdate> TextInputManager { get; set; }
+        public IUpdateHandlerBase<SignedMessageTextUpdate>? TextMessageUpdateHandler { get; set; }
 
         /// <summary>
-        /// Creates a new instance of a <see cref="DefaultSignedMessageTextUpdateHandler"/>
-        /// with default realization of managers <see cref="DefaultActionManager{TUpdate}"/>.
+        /// Sub-handler used for handling other incoming messages (PhotoMessage, MediaMessage, etc).
         /// </summary>
-        public DefaultSignedMessageTextUpdateHandler()
+        public IUpdateHandlerBase<SignedMessageUpdate>? RestMessagesUpdateHandler { get; set; }
+
+        /// <summary>
+        /// Creates a new instance of a <see cref="SignedMessageBaseHandler"/>
+        /// with default realization of several sub-handlers.
+        /// </summary>
+        public SignedMessageBaseHandler()
         {
-            CommandsManager = new DefaultActionManager<SignedMessageTextUpdate>();
-            TextInputManager = new DefaultActionManager<SignedMessageTextUpdate>();
+            TextMessageUpdateHandler = new SignedMessageTextHandler();
         }
 
+        
         /// <summary>
         /// Collects all <see cref="IBotAction"/>s declared in the class.
         /// </summary>
         /// <returns>Collected list of declared actions.</returns>
-        public List<IBotAction> GetActionsContent()
-        {
-            var res = new List<IBotAction>();
-            res.AddRange(CommandsManager.GetActionsContent());
-            res.AddRange(TextInputManager.GetActionsContent());
-            return res;
-        }
+        public List<IBotAction> GetHeldActions() => TextMessageUpdateHandler?.GetHeldActions() ?? new();
 
         /// <summary>
         /// Handles <see cref="ICastedUpdate"/> updated, gotten from <see cref="ChatScanner"/>.
@@ -82,35 +72,32 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.Defaults
 
         /// <summary>
         /// Casts common incoming <see cref="ICastedUpdate"/> to the specified
-        /// <see cref="SignedMessageTextUpdate"/> update type.
+        /// <see cref="SignedMessageUpdate"/> update type.
         /// </summary>
         /// <param name="update">Update to handle.</param>
         /// <param name="sender">Sender to sign update.</param>
-        /// <returns>Casted updated oh a type <see cref="SignedMessageTextUpdate"/>.</returns>
-        public SignedMessageTextUpdate CastUpdate(ICastedUpdate update, IBotUser? sender)
+        /// <returns>Casted updated oh a type <see cref="SignedMessageUpdate"/>.</returns>
+        public SignedMessageUpdate CastUpdate(ICastedUpdate update, IBotUser? sender)
         {
             if (sender is null)
                 throw new NullSenderException(this);
-            return new SignedMessageTextUpdate(new SignedMessageUpdate(update, sender));
+            return new(update, sender);
         }
-
+        
         /// <summary>
-        /// Handles custom casted <see cref="SignedMessageTextUpdate"/> updated.
+        /// Handles custom casted <see cref="SignedMessageUpdate"/> updated.
         /// <para>
         /// Cast and pass update via base <see cref="IUpdateHandlerBase.HandleUpdateAsync(ICastedUpdate, IBotUser?)"/>
         /// </para>
         /// </summary>
         /// <param name="update">Update to handle.</param>
-        public async Task HandleUpdateAsync(SignedMessageTextUpdate update)
+        public async Task HandleUpdateAsync(SignedMessageUpdate update)
         {
-            if (update.Owner.Settings.IsCommand(update.Text))
-            {
-                await CommandsManager.ManageUpdateAsync(update);
-            }
-            else
-            {
-                await TextInputManager.ManageUpdateAsync(update);
-            }
+            if (update.Message.Type == MessageType.Text && TextMessageUpdateHandler is not null)
+                await TextMessageUpdateHandler.HandleUpdateAsync(new SignedMessageTextUpdate(update));
+            else if (RestMessagesUpdateHandler is not null)
+                await RestMessagesUpdateHandler.HandleUpdateAsync(update);
+            // Photo Video Voice etc
         }
     }
 }

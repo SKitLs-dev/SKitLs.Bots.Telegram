@@ -1,23 +1,25 @@
 ﻿using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.Core.Model.Building;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
+using SKitLs.Bots.Telegram.Core.Model.Management;
+using SKitLs.Bots.Telegram.Core.Model.Management.Defaults;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonym;
 using SKitLs.Bots.Telegram.Core.Prototype;
-using Telegram.Bot.Types.Enums;
+using SKitLs.Bots.Telegram.Core.resources.Settings;
 
 namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.Defaults
 {
     // XML-Doc Update
     /// <summary>
-    /// Default realization for <see cref="IUpdateHandlerBase"/>&lt;<see cref="AnonymMessageUpdate"/>&gt;.
-    /// Uses a system of sub-<see cref="IUpdateHandlerBase"/> for different message content such as:
-    /// text, media, voice etc (see <see cref="MessageType"/>).
+    /// Default realization for <see cref="IUpdateHandlerBase"/>&lt;<see cref="AnonymMessageTextUpdate"/>&gt;.
+    /// Uses a system of <see cref="IActionManager{TUpdate}"/> for handling incoming text updates 
+    /// such as: Text input or Commands.
     /// <para>
-    /// Inherits: <see cref="IOwnerCompilable"/>, <see cref="IActionsHolder"/>
+    /// Inherits: <see cref="IOwnerCompilable"/>, <see cref="IBotActionsHolder"/>
     /// </para>
     /// </summary>
-    public class DefaultAnonymMessageUpdateHandler : IUpdateHandlerBase<AnonymMessageUpdate>
+    public class AnonymMessageTextHandler : IUpdateHandlerBase<AnonymMessageTextUpdate>
     {
         private BotManager? _owner;
         /// <summary>
@@ -36,29 +38,38 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.Defaults
         public Action<object, BotManager>? OnCompilation => null;
 
         /// <summary>
-        /// Sub-handler used for handling incoming Text Messages.
+        /// Actions manager used for handling incoming commands.
+        /// <para>
+        /// For commands determination check: <see cref="BotSettings.IsCommand"/>.
+        /// </para>
         /// </summary>
-        public IUpdateHandlerBase<AnonymMessageTextUpdate>? TextMessageUpdateHandler { get; set; }
+        public IActionManager<AnonymMessageTextUpdate> CommandsManager { get; set; }
+        /// <summary>
+        /// Actions manager used for handling incoming text.
+        /// </summary>
+        public IActionManager<AnonymMessageTextUpdate> TextInputManager { get; set; }
 
         /// <summary>
-        /// Sub-handler used for handling other incoming messages (PhotoMessage, MediaMessage, etc).
+        /// Creates a new instance of a <see cref="SignedMessageTextHandler"/>
+        /// with default realization of managers <see cref="DefaultActionManager{TUpdate}"/>.
         /// </summary>
-        public IUpdateHandlerBase<AnonymMessageUpdate>? RestMessagesUpdateHandler { get; set; }
-
-        /// <summary>
-        /// Creates a new instance of a <see cref="DefaultAnonymMessageUpdateHandler"/>
-        /// with default realization of several sub-handlers.
-        /// </summary>
-        public DefaultAnonymMessageUpdateHandler()
+        public AnonymMessageTextHandler()
         {
-            TextMessageUpdateHandler = new DefaultAnonymMessageTextUpdateHandler();
+            CommandsManager = new DefaultActionManager<AnonymMessageTextUpdate>();
+            TextInputManager = new DefaultActionManager<AnonymMessageTextUpdate>();
         }
 
         /// <summary>
         /// Collects all <see cref="IBotAction"/>s declared in the class.
         /// </summary>
         /// <returns>Collected list of declared actions.</returns>
-        public List<IBotAction> GetActionsContent() => TextMessageUpdateHandler?.GetActionsContent() ?? new();
+        public List<IBotAction> GetHeldActions()
+        {
+            var res = new List<IBotAction>();
+            res.AddRange(CommandsManager.GetHeldActions());
+            res.AddRange(TextInputManager.GetHeldActions());
+            return res;
+        }
 
         /// <summary>
         /// Handles <see cref="ICastedUpdate"/> updated, gotten from <see cref="ChatScanner"/>.
@@ -70,27 +81,30 @@ namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.Defaults
 
         /// <summary>
         /// Casts common incoming <see cref="ICastedUpdate"/> to the specified
-        /// <see cref="AnonymMessageUpdate"/> update type.
+        /// <see cref="AnonymMessageTextUpdate"/> update type.
         /// </summary>
         /// <param name="update">Update to handle.</param>
         /// <param name="sender">Sender to sign update.</param>
-        /// <returns>Casted updated oh a type <see cref="AnonymMessageUpdate"/>.</returns>
-        public AnonymMessageUpdate CastUpdate(ICastedUpdate update, IBotUser? sender) => new(update);
+        /// <returns>Casted updated oh a type <see cref="AnonymMessageTextUpdate"/>.</returns>
+        public AnonymMessageTextUpdate CastUpdate(ICastedUpdate update, IBotUser? sender) => new(new AnonymMessageUpdate(update));
 
         /// <summary>
-        /// Handles custom casted <see cref="AnonymMessageUpdate"/> updated.
+        /// Handles custom casted <see cref="AnonymMessageTextUpdate"/> updated.
         /// <para>
         /// Cast and pass update via base <see cref="IUpdateHandlerBase.HandleUpdateAsync(ICastedUpdate, IBotUser?)"/>
         /// </para>
         /// </summary>
         /// <param name="update">Update to handle.</param>
-        public async Task HandleUpdateAsync(AnonymMessageUpdate update)
+        public async Task HandleUpdateAsync(AnonymMessageTextUpdate update)
         {
-            if (update.Message.Type == MessageType.Text && TextMessageUpdateHandler is not null)
-                await TextMessageUpdateHandler.HandleUpdateAsync(new AnonymMessageTextUpdate(update));
-            else if (RestMessagesUpdateHandler is not null)
-                await RestMessagesUpdateHandler.HandleUpdateAsync(update);
-            // Photo Video Voice etc
+            if (update.Owner.Settings.IsCommand(update.Text))
+            {
+                await CommandsManager.ManageUpdateAsync(update);
+            }
+            else
+            {
+                await TextInputManager.ManageUpdateAsync(update);
+            }
         }
     }
 }

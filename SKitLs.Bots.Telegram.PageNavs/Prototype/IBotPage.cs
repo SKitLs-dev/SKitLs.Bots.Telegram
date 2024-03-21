@@ -2,6 +2,7 @@
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
 using SKitLs.Bots.Telegram.PageNavs.Model;
 
 namespace SKitLs.Bots.Telegram.PageNavs.Prototype
@@ -14,6 +15,11 @@ namespace SKitLs.Bots.Telegram.PageNavs.Prototype
     /// </summary>
     public interface IBotPage : IArgPackable
     {
+        /// <summary>
+        /// Event that occurs when the page is opened.
+        /// </summary>
+        public event Func<ISignedUpdate, Task>? PageOpened;
+
         /// <summary>
         /// Represents the unique identifier of the page.
         /// </summary>
@@ -30,6 +36,12 @@ namespace SKitLs.Bots.Telegram.PageNavs.Prototype
         /// <param name="update">The incoming update.</param>
         /// <returns>A string representing the navigation label for this page.</returns>
         public string GetLabel(ISignedUpdate update);
+
+        /// <summary>
+        /// Asynchronously notifies subscribers that the page has been opened.
+        /// </summary>
+        /// <param name="update">The signed update containing relevant information.</param>
+        public Task NotifyPageOpenedAsync(ISignedUpdate update);
 
         /// <summary>
         /// Asynchronously converts the page data to a printable <see cref="IOutputMessage"/> based on the incoming <paramref name="update"/>.

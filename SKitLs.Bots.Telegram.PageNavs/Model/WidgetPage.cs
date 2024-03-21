@@ -11,6 +11,9 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
     public sealed class WidgetPage : IBotPage
     {
         /// <inheritdoc/>
+        public event Func<ISignedUpdate, Task>? PageOpened;
+
+        /// <inheritdoc/>
         public string PageId { get; private init; }
 
         /// <summary>
@@ -35,6 +38,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         /// <param name="menu">Page's menu. If <paramref name="menu"/> is <see langword="null"/>,
         /// <see cref="Menu"/> will be set to default <see cref="PageNavMenu"/>.</param>
         public WidgetPage(string pageId, string label, IOutputMessage pageView, IPageMenu? menu = null) : this(pageId, u => label, pageView, menu) { }
+
         /// <summary>
         /// Initializes a new instance of a <see cref="WidgetPage"/> class with specified data.
         /// </summary>
@@ -53,6 +57,21 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
 
         /// <inheritdoc/>
         public string GetLabel(ISignedUpdate update) => LabelBuilder(update);
+
+        /// <inheritdoc/>
+        public async Task NotifyPageOpenedAsync(ISignedUpdate update)
+        {
+            if (PageOpened is not null)
+            {
+                foreach (var handler in PageOpened.GetInvocationList())
+                {
+                    if (handler is Func<ISignedUpdate, Task> asyncHandler)
+                    {
+                        await asyncHandler(update);
+                    }
+                }
+            }
+        }
 
         /// <inheritdoc/>
         public async Task<IOutputMessage> BuildMessageAsync(IBotPage? previous, ISignedUpdate update)

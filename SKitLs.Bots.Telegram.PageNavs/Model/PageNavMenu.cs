@@ -1,4 +1,5 @@
-﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Inline;
+﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Buttons.Inline;
+using SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Inline;
 using SKitLs.Bots.Telegram.AdvancedMessages.Prototype;
 using SKitLs.Bots.Telegram.Core.Model.Interactions;
 using SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults;
@@ -52,10 +53,16 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         /// <summary>
         /// A list of callbacks that should be append to the navigation buttons array.
         /// </summary>
-        public List<LabeledData> Actions { get; } = new();
+        public List<InlineButton> Actions { get; } = new();
+
+        /// <summary>
+        /// Adds a new non-navigation action with the specified <paramref name="actionData"/> to the inline menu.
+        /// </summary>
+        /// <param name="actionData">The labeled data of a callback to add.</param>
+        public void AddAction(InlineButton actionData) => Actions.Add(actionData);
 
         /// <inheritdoc/>
-        public void AddAction(LabeledData actionData) => Actions.Add(actionData);
+        public void AddAction(LabeledData actionData) => AddAction(new InlineButton(actionData.Label, actionData.Data));
 
         /// <summary>
         /// Adds new non-navigation action with a certain <paramref name="action"/> to the inline menu.
@@ -80,7 +87,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
                 ColumnsCount = ColumnsCount,
             };
             PagesLinks.ForEach(page => res.Add(string.Format(IPageMenu.NavigationLabelMask, page.GetLabel(update)), mm.OpenPageCallback, new(page)));
-            Actions.ForEach(act => res.Add(act));
+            Actions.ForEach(button => res.Add(button));
 
             if (previous is not null)
                 res.Add(update.Owner.ResolveBotString(PNSettings.BackButtonLocalKey), mm.BackCallback, true);

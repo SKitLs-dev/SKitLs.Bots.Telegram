@@ -5,13 +5,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Title>$(AssemblyName)</Title>
-    <Version>1.6.0</Version>
+    <Version>1.6.1</Version>
     <Authors>SKtiLs, Sargeras02</Authors>
-    <Copyright>Copyright (C) SKtiLs 2023</Copyright>
+    <Copyright>Copyright (C) 2023-2024, SKtiLs</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <FileVersion>$(AssemblyVersion)</FileVersion>
-    <AssemblyVersion>1.6.0</AssemblyVersion>
-    <PackageReleaseNotes>Up-to-dated to dependencies updates.</PackageReleaseNotes>
+    <AssemblyVersion>1.6.1</AssemblyVersion>
+    <PackageReleaseNotes>(+) Added: IBotPage.PageOpened Async Event
+(~) Upadted: PageNavMenu.Actions (LabeledData -&gt; InlineButton)
+
+(-) Obsolete: MenuNavigatorArg
+(-) Obsolete: StaticPage
+
+(~) Updated: XML Documentation
+(~) Updated: License</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageIcon>libIcon_PN.png</PackageIcon>
@@ -26,6 +33,7 @@ An extension project built upon the SKitLs.Bots.Telegram.Core Framework.</Descri
 
   <ItemGroup>
     <Compile Include=".obsolete\MenuNavigatorArg.cs" />
+    <Compile Include=".obsolete\StaticPage.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,9 +48,9 @@ An extension project built upon the SKitLs.Bots.Telegram.Core Framework.</Descri
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SKitLs.Bots.Telegram.AdvancedMessages" Version="2.2.0" />
-    <PackageReference Include="SKitLs.Bots.Telegram.ArgedInteractions" Version="1.4.1" />
-    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.3.1" />
+    <PackageReference Include="SKitLs.Bots.Telegram.AdvancedMessages" Version="2.2.1" />
+    <PackageReference Include="SKitLs.Bots.Telegram.ArgedInteractions" Version="1.4.3" />
+    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup>

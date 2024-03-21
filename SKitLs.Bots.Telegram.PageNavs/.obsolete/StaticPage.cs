@@ -13,6 +13,9 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
     public sealed class StaticPage : IBotPage
     {
         /// <inheritdoc/>
+        public event Func<ISignedUpdate, Task>? PageOpened;
+
+        /// <inheritdoc/>
         public string PageId { get; private init; }
 
         /// <summary>
@@ -55,6 +58,21 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
             Label = label;
             PageView = pageView;
             Menu = menu ?? new PageNavMenu();
+        }
+
+        /// <inheritdoc/>
+        public async Task NotifyPageOpenedAsync(ISignedUpdate update)
+        {
+            if (PageOpened is not null)
+            {
+                foreach (var handler in PageOpened.GetInvocationList())
+                {
+                    if (handler is Func<ISignedUpdate, Task> asyncHandler)
+                    {
+                        await asyncHandler(update);
+                    }
+                }
+            }
         }
 
         /// <inheritdoc/>

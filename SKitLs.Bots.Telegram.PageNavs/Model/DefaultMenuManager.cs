@@ -22,6 +22,8 @@ using SKitLs.Bots.Telegram.PageNavs.resources.settings;
 
 namespace SKitLs.Bots.Telegram.PageNavs.Model
 {
+    // TODO : when message document - refresh or push can't update. Make parameter @sendNew
+
     /// <summary>
     /// Default implementation of the <see cref="IMenuManager"/> interface, providing methods for inline message navigation.
     /// Utilizes <see cref="PageSessionData"/> to provide a simple navigation data stack-storage for a single message.
@@ -278,6 +280,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
             }
             // Gets session or generates a new one and pushes page to it.
             Push(page, GetSession(update, mesId));
+            await page.NotifyPageOpenedAsync(update);
         }
 
         /// <summary>
@@ -287,7 +290,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.Model
         private void OnReflectiveCompile(object sender, BotManager owner)
         {
             var pageRule = new ConvertRule<IBotPage>(pid => IsDefined(pid)
-                ? ConvertResult<IBotPage>.OK(TryGetDefined(pid)!)
+                ? ConvertResult<IBotPage>.OK(GetDefined(pid)!)
                 : ConvertResult<IBotPage>.Incorrect($"Page with id {pid} is not defined."));
             owner.ResolveService<IArgsSerializeService>().AddRule(pageRule);
         }

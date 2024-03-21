@@ -9,7 +9,7 @@ namespace SKitLs.Bots.Telegram.Stateful.Prototype
     /// based on the user's states.
     /// </summary>
     /// <typeparam name="TUpdate">The type of update that this section works with.</typeparam>
-    public interface IStateSection<TUpdate> : IDebugNamed, IActionsHolder, IEquatable<IStateSection<TUpdate>>, IEnumerable<IBotAction<TUpdate>> where TUpdate : ICastedUpdate
+    public interface IStateSection<TUpdate> : IDebugNamed, IBotActionsHolder, IEquatable<IStateSection<TUpdate>>, IEnumerable<IBotAction<TUpdate>> where TUpdate : ICastedUpdate
     {
         /// <summary>
         /// Determines whether the collected actions should be executed regardless of the user's state.

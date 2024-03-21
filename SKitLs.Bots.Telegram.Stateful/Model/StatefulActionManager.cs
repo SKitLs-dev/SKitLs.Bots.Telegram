@@ -55,10 +55,10 @@ namespace SKitLs.Bots.Telegram.Stateful.Model
         }
 
         /// <inheritdoc/>
-        public List<IBotAction> GetActionsContent()
+        public List<IBotAction> GetHeldActions()
         {
             var res = new List<IBotAction>();
-            ActionSections.ToList().ForEach(x => res.AddRange(x.GetActionsContent()));
+            ActionSections.ToList().ForEach(x => res.AddRange(x.GetHeldActions()));
             return res;
         }
 
@@ -102,8 +102,8 @@ namespace SKitLs.Bots.Telegram.Stateful.Model
                 var intersectedStates = ActionSections
                     .Where(x => !x.EnabledAny)
                     .Where(x => x.GetEnabledStates().Intersect(section.GetEnabledStates()).Any())
-                    .SelectMany(x => x.GetActionsContent());
-                if (intersectedStates.Intersect(section.GetActionsContent()).Any())
+                    .SelectMany(x => x.GetHeldActions());
+                if (intersectedStates.Intersect(section.GetHeldActions()).Any())
                     throw new Exception();
 
                 ActionSections.Add(section);

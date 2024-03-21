@@ -48,7 +48,7 @@ namespace SKitLs.Bots.Telegram.Stateful.Model
         public List<IBotAction<TUpdate>> GetActionsList() => SavedActions;
 
         /// <inheritdoc/>
-        public List<IBotAction> GetActionsContent() => GetActionsList().Cast<IBotAction>().ToList();
+        public List<IBotAction> GetHeldActions() => GetActionsList().Cast<IBotAction>().ToList();
 
         /// <inheritdoc/>
         public void AddSafely(IBotAction<TUpdate> action) => SavedActions.Add(!SavedActions.Contains(action)

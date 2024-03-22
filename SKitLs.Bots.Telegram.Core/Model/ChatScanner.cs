@@ -7,72 +7,76 @@ using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonym;
 using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
+using SKitLs.Bots.Telegram.Core.Model.Users;
 using SKitLs.Bots.Telegram.Core.Prototype;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using TEnum = Telegram.Bot.Types.Enums;
 
 namespace SKitLs.Bots.Telegram.Core.Model
 {
-    // XML-Doc Update
     /// <summary>
-    /// <see cref="ChatScanner"/> used for handling updates in different chats' types (<see cref="TEnum.ChatType"/>)
-    /// such as: Private, Group, Supergroup or Channel.
-    /// Determines how bot should react on different triggers in defined chat type.
-    /// Released in <see cref="BotManager"/>.
-    /// <para>
-    /// Second architecture level.
-    /// Upper: <see cref="BotManager"/>.
-    /// Lower: <see cref="IUpdateHandlerBase"/>.
-    /// </para>
-    /// <para>Supports: <see cref="IOwnerCompilable"/>, <see cref="IBotActionsHolder"/></para>
+    /// Represents a <see cref="ChatScanner"/> used for handling updates in different chat types (<see cref="TEnum.ChatType"/>)
+    /// such as: Private, Group, Channel etc.
+    /// This class determines how the bot should react to different triggers in defined chat types.
+    /// It is released in the context of <see cref="BotManager"/>.
+    /// <para/>
+    /// This class represents the <b>second level</b> of the bot's architecture.
+    /// <list type="number">
+    ///     <item>
+    ///         <term><see cref="BotManager"/></term>
+    ///         <description>Main bot's manager. Receives updates, handles, and delegates them to sub-managers.</description>
+    ///     </item>
+    ///     <item>
+    ///         <b><see cref="ChatScanner"/></b>
+    ///     </item>
+    ///     <item>
+    ///         <term><see cref="IUpdateHandlerBase"/></term>
+    ///         <description>Provides common mechanisms for updates handling.</description>
+    ///     </item>
+    /// </list>
+    /// Supports: <see cref="IDebugNamed"/>, <see cref="IOwnerCompilable"/>, <see cref="IBotActionsHolder"/>
     /// </summary>
-    public sealed class ChatScanner : IDebugNamed, IOwnerCompilable, IBotActionsHolder
+    public sealed class ChatScanner : OwnedObject, IDebugNamed, IBotActionsHolder
     {
-        #region Properties
-        private string? _debugName;
         /// <summary>
-        /// Name, used for simplifying debugging process.
+        /// Event that occurs when an update is received by the <see cref="ChatScanner"/>.
         /// </summary>
+        public event BotInteraction<ICastedUpdate>? UpdateReceived;
+
+        /// <summary>
+        /// Event that occurs when an update is handled by the <see cref="ChatScanner"/>.
+        /// </summary>
+        public event BotInteraction<ICastedUpdate>? UpdateHandled;
+
+        #region Properties
+
+        private string? _debugName;
+        /// <inheritdoc/>
         public string DebugName
         {
-            get => _debugName ?? Enum.GetName(typeof(TEnum.ChatType), ChatType) ?? "Unknown";
+            get => _debugName ?? $"{Enum.GetName(typeof(TEnum.ChatType), ChatType) ?? "Unknown"} {nameof(ChatScanner)}";
             set => _debugName = value;
         }
 
-        private BotManager? _owner;
         /// <summary>
-        /// Instance's owner.
-        /// </summary>
-        public BotManager Owner
-        {
-            get => _owner ?? throw new NullOwnerException(this);
-            set => _owner = value;
-        }
-        /// <summary>
-        /// Specified method that raised during reflective <see cref="IOwnerCompilable.ReflectiveCompile(object, BotManager)"/> compilation.
-        /// Declare it to extend preset functionality.
-        /// Invoked after <see cref="Owner"/> updating, but before recursive update.
-        /// </summary>
-        public Action<object, BotManager>? OnCompilation => null;
-        
-        /// <summary>
-        /// Type of a chat that current scanner is bind to.
+        /// Gets or sets the type of chat that the current scanner is bound to.
         /// </summary>
         public TEnum.ChatType ChatType { get; internal set; }
         #endregion
 
         #region Users Handlers
+
         /// <summary>
-        /// Custom service used to manage authorized users. Can be released with vanilla roles and
-        /// permissions schema. Used to connect internal mechanisms with external DataBases.
-        /// Doesn't have default realization.
+        /// Represents a custom service used to manage authorized users. Can be implemented with vanilla roles and
+        /// permissions schema. Used to connect internal mechanisms with external databases.
+        /// Does not have a default implementation.
         /// </summary>
         public IUsersManager? UsersManager { get; internal set; }
 
         /// <summary>
-        /// Default function used to handle updates and pass <see cref="IBotUser"/> instance to next
-        /// level. Gets Telegram Id as an argument and returns an instance of <see cref="DefaultBotUser"/>
-        /// by default.
+        /// Represents the default function used to handle updates and pass <see cref="IBotUser"/> instance to the next
+        /// levels. Gets Telegram ID as an argument and returns an instance of <see cref="DefaultBotUser"/> by default.
         /// <para>
         /// Used only in case <c><see cref="UsersManager"/> = null</c> or manager's internal problems.
         /// </para>
@@ -82,32 +86,87 @@ namespace SKitLs.Bots.Telegram.Core.Model
 
         // TODO: Make generic via Enum.GetValues() of UpdateType enum.
         #region Update Handlers
+
+        /// <summary>
+        /// Gets or sets the update handler for signed callback updates.
+        /// </summary>
         public IUpdateHandlerBase<SignedCallbackUpdate>? CallbackHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets the update handler for signed message updates.
+        /// </summary>
         public IUpdateHandlerBase<SignedMessageUpdate>? MessageHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets the update handler for edited signed message updates.
+        /// </summary>
         public IUpdateHandlerBase<SignedMessageUpdate>? EditedMessageHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets the update handler for anonymous channel post updates.
+        /// </summary>
         public IUpdateHandlerBase<AnonymMessageUpdate>? ChannelPostHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets the update handler for edited anonymous channel post updates.
+        /// </summary>
         public IUpdateHandlerBase<AnonymMessageUpdate>? EditedChannelPostHandler { get; set; }
 
+        /// <summary>
+        /// Gets or sets the update handler for casted chat join request updates.
+        /// </summary>
         public IUpdateHandlerBase<CastedUpdate>? ChatJoinRequestHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets the update handler for casted chat member updates.
+        /// </summary>
         public IUpdateHandlerBase<CastedUpdate>? ChatMemberHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets the update handler for casted chosen inline result updates.
+        /// </summary>
         public IUpdateHandlerBase<CastedUpdate>? ChosenInlineResultHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets the update handler for casted inline query updates.
+        /// </summary>
         public IUpdateHandlerBase<CastedUpdate>? InlineQueryHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets the update handler for casted my chat member updates.
+        /// </summary>
         public IUpdateHandlerBase<CastedUpdate>? MyChatMemberHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets the update handler for casted poll updates.
+        /// </summary>
         public IUpdateHandlerBase<CastedUpdate>? PollHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets the update handler for casted poll answer updates.
+        /// </summary>
         public IUpdateHandlerBase<CastedUpdate>? PollAnswerHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets the update handler for casted pre-checkout query updates.
+        /// </summary>
         public IUpdateHandlerBase<CastedUpdate>? PreCheckoutQueryHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets the update handler for casted shipping query updates.
+        /// </summary>
         public IUpdateHandlerBase<CastedUpdate>? ShippingQueryHandler { get; set; }
         #endregion
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChatScanner"/> class.
+        /// </summary>
         internal ChatScanner()
         {
-            GetDefaultBotUser = (id) => new DefaultBotUser(id);
+            GetDefaultBotUser = (id) => new DefaultBotUser(id, false, "", "Default Bot User");
         }
-        
-        /// <summary>
-        /// Collects all <see cref="IBotAction"/>s declared in the class.
-        /// </summary>
-        /// <returns>Collected list of declared actions.</returns>
+
+        /// <inheritdoc/>
         public List<IBotAction> GetHeldActions()
         {
             var res = new List<IBotAction>();
@@ -116,19 +175,22 @@ namespace SKitLs.Bots.Telegram.Core.Model
         }
 
         /// <summary>
-        /// Incoming <see cref="ICastedUpdate"/> handler. Verifies or builds sender, casts update
-        /// and subdelegates it to one of specific sub handlers.
-        /// <para>
-        /// Can be useful: <c><seealso cref="GetDeclaredHandlers"/></c>
-        /// </para>
+        /// Handles incoming updates asynchronously. Verifies or builds the sender, casts the update
+        /// and delegates it to one of the specific sub-handlers.
+        /// <para/>
+        /// This method can be useful for obtaining declared handlers.
         /// </summary>
-        /// <param name="update">Incoming update.</param>
-        /// <exception cref="NullSenderException"></exception>
-        /// <exception cref="BotManagerException"></exception>
+        /// <param name="update">The incoming update.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <exception cref="NullSenderException">Thrown when the sender is null.</exception>
+        /// <exception cref="SKTgException">Thrown when there is an error in the bot manager.</exception>
         public async Task HandleUpdateAsync(ICastedUpdate update)
         {
+            if (UpdateReceived is not null)
+                await UpdateReceived.Invoke(update);
+
             IBotUser? sender = null;
-            long id = GetSenderId(update.OriginalSource);
+            var id = TelegramHelper.GetSenderId(update.OriginalSource, this);
             if (UsersManager is not null)
             {
                 if (await UsersManager.CheckIfRegisteredAsync(id))
@@ -136,27 +198,28 @@ namespace SKitLs.Bots.Telegram.Core.Model
                 else
                     sender = await UsersManager.RegisterNewUserAsync(update);
             }
-            else sender = GetDefaultBotUser(id);
+            else
+                sender = GetDefaultBotUser(id);
 
             if (sender is null)
                 throw new NullSenderException(this);
 
             IUpdateHandlerBase? suitHandler = update.Type switch
             {
-                TEnum.UpdateType.CallbackQuery => CallbackHandler,
-                TEnum.UpdateType.ChannelPost => ChannelPostHandler,
-                TEnum.UpdateType.ChatJoinRequest => ChatJoinRequestHandler,
-                TEnum.UpdateType.ChatMember => ChatMemberHandler,
-                TEnum.UpdateType.ChosenInlineResult => ChosenInlineResultHandler,
-                TEnum.UpdateType.EditedChannelPost => EditedChannelPostHandler,
-                TEnum.UpdateType.EditedMessage => EditedMessageHandler,
-                TEnum.UpdateType.InlineQuery => InlineQueryHandler,
-                TEnum.UpdateType.Message => MessageHandler,
-                TEnum.UpdateType.MyChatMember => MyChatMemberHandler,
-                TEnum.UpdateType.Poll => PollHandler,
-                TEnum.UpdateType.PollAnswer => PollAnswerHandler,
-                TEnum.UpdateType.PreCheckoutQuery => PreCheckoutQueryHandler,
-                TEnum.UpdateType.ShippingQuery => ShippingQueryHandler,
+                UpdateType.CallbackQuery => CallbackHandler,
+                UpdateType.ChannelPost => ChannelPostHandler,
+                UpdateType.ChatJoinRequest => ChatJoinRequestHandler,
+                UpdateType.ChatMember => ChatMemberHandler,
+                UpdateType.ChosenInlineResult => ChosenInlineResultHandler,
+                UpdateType.EditedChannelPost => EditedChannelPostHandler,
+                UpdateType.EditedMessage => EditedMessageHandler,
+                UpdateType.InlineQuery => InlineQueryHandler,
+                UpdateType.Message => MessageHandler,
+                UpdateType.MyChatMember => MyChatMemberHandler,
+                UpdateType.Poll => PollHandler,
+                UpdateType.PollAnswer => PollAnswerHandler,
+                UpdateType.PreCheckoutQuery => PreCheckoutQueryHandler,
+                UpdateType.ShippingQuery => ShippingQueryHandler,
                 _ => null
             };
 
@@ -164,93 +227,18 @@ namespace SKitLs.Bots.Telegram.Core.Model
                 throw new SKTgException("cs.NullUpdateHandler", SKTEOriginType.Inexternal, ToString(), Enum.GetName(typeof(TEnum.UpdateType), update.Type));
             
             await suitHandler.HandleUpdateAsync(update, sender);
+
+            if (UpdateHandled is not null)
+                await UpdateHandled(update);
             
             if (sender is not null && UsersManager is not null && UsersManager.SignedUpdateHandled is not null)
                 await UsersManager.SignedUpdateHandled.Invoke(sender, update);
         }
 
         /// <summary>
-        /// Extracts sender's ID from a raw server update or
-        /// throws <see cref="BotManagerException"/> otherwise.
+        /// Collects all defined non-null handlers into a collection.
         /// </summary>
-        /// <param name="update">Original server update.</param>
-        /// <returns>Sender's ID.</returns>
-        /// <exception cref="BotManagerException"></exception>
-        public long GetSenderId(Update update) => TryGetSenderId(update)
-            ?? throw new BotManagerException("cs.UserIdExtractError", this, update.Id.ToString());
-        /// <summary>
-        /// Tries to extract sender's ID from a raw server update.
-        /// </summary>
-        /// <param name="update">Original server update.</param>
-        /// <returns>Nullable sender's ID.</returns>
-        public static long? TryGetSenderId(Update update)
-        {
-            if (update.CallbackQuery != null && update.CallbackQuery.Message != null)
-                return update.CallbackQuery.From?.Id;
-            else if (update.ChannelPost != null)
-                return update.ChannelPost.From?.Id;
-            else if (update.ChatJoinRequest != null)
-                return update.ChatJoinRequest.From?.Id;
-            else if (update.ChatMember != null)
-                return update.ChatMember.From?.Id;
-            else if (update.EditedChannelPost != null)
-                return update.EditedChannelPost.From?.Id;
-            else if (update.EditedMessage != null)
-                return update.EditedMessage.From?.Id;
-            else if (update.Message != null)
-                return update.Message.From?.Id;
-            else if (update.MyChatMember != null)
-                return update.MyChatMember.From?.Id;
-            else return null;
-        }
-
-        /// <summary>
-        /// Extracts sender instance of a type <see cref="User"/> from a raw server update or
-        /// throws <see cref="BotManagerException"/> otherwise.
-        /// </summary>
-        /// <param name="update">Original server update.</param>
-        /// <returns>Not-null instance of a sender.</returns>
-        /// <exception cref="BotManagerException"></exception>
-        public User GetSender(Update update) => GetSender(update, this);
-        /// <summary>
-        /// Extracts sender instance of a type <see cref="User"/> from a raw server update or
-        /// throws <see cref="BotManagerException"/> otherwise.
-        /// </summary>
-        /// <param name="update">Original server update.</param>
-        /// <param name="requester">An object that has requested extraction.</param>
-        /// <returns>Not-null instance of a sender.</returns>
-        /// <exception cref="BotManagerException"></exception>
-        public static User GetSender(Update update, object requester) => TryGetSender(update)
-            ?? throw new BotManagerException("cs.UserExtractError", requester, update.Id.ToString());
-        /// <summary>
-        /// Tries to extract sender instance of a type <see cref="User"/> from a raw server update.
-        /// </summary>
-        /// <param name="update">Original server update.</param>
-        /// <returns>Nullable instance of a sender.</returns>
-        public static User? TryGetSender(Update update)
-        {
-            if (update.CallbackQuery != null && update.CallbackQuery.Message != null)
-                return update.CallbackQuery.From;
-            else if (update.ChannelPost != null)
-                return update.ChannelPost.From;
-            else if (update.ChatJoinRequest != null)
-                return update.ChatJoinRequest.From;
-            else if (update.ChatMember != null)
-                return update.ChatMember.From;
-            else if (update.EditedChannelPost != null)
-                return update.EditedChannelPost.From;
-            else if (update.EditedMessage != null)
-                return update.EditedMessage.From;
-            else if (update.Message != null)
-                return update.Message.From;
-            else if (update.MyChatMember != null)
-                return update.MyChatMember.From;
-            else return null;
-        }
-        /// <summary>
-        /// Collects all defined not null handlers in one collection.
-        /// </summary>
-        /// <returns>Collection of defined handlers.</returns>
+        /// <returns>A collection of defined handlers.</returns>
         public List<IUpdateHandlerBase> GetDeclaredHandlers()
         {
             var res = new List<IUpdateHandlerBase>();
@@ -286,10 +274,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
             return res;
         }
 
-        /// <summary>
-        /// Returns a string that represents current object.
-        /// </summary>
-        /// <returns>A string that represents current object.</returns>
+        /// <inheritdoc/>
         public override string? ToString() => $"{DebugName} ({Owner})";
     }
 }

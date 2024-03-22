@@ -1,14 +1,14 @@
 ﻿namespace SKitLs.Bots.Telegram.Core.Exceptions.Internal
 {
-    // XML-Doc Update
     /// <summary>
-    /// An exception which occurs when attempt to get certain user was failed.
+    /// An exception that occurs when an attempt to retrieve a certain user has failed.
     /// </summary>
     public class NullSenderException : SKTgSignedException
     {
         /// <summary>
-        /// Creates a new instance of <see cref="NullSenderException"/>.
+        /// Initializes a new instance of the <see cref="NullSenderException"/> class with specified data.
         /// </summary>
+        /// <param name="sender">The object that has thrown the exception.</param>
         public NullSenderException(object sender) : base("NullSender", SKTEOriginType.Internal, sender) { }
     }
 }

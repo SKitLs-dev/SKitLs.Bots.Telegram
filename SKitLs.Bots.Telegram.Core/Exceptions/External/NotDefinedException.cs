@@ -1,26 +1,26 @@
 ﻿namespace SKitLs.Bots.Telegram.Core.Exceptions.External
 {
-    // XML-Doc Update
     /// <summary>
-    /// An exception which occurs when trying to resolve an item that does not exist.
+    /// An exception that occurs when trying to resolve an item that does not exist.
     /// </summary>
     public class NotDefinedException : SKTgSignedException
     {
         /// <summary>
-        /// Type of an object which has duplicated id.
+        /// The type of object causing the exception.
         /// </summary>
         public Type TroubleMaker { get; private init; }
+
         /// <summary>
-        /// Additional information.
+        /// Additional information about the exception.
         /// </summary>
         public string Details { get; private init; }
 
         /// <summary>
-        /// Creates a new instance of <see cref="NotDefinedException"/> with specified data.
+        /// Initializes a new instance of the <see cref="NotDefinedException"/> class with specified data.
         /// </summary>
-        /// <param name="sender">The object that has thrown exception.</param>
-        /// <param name="troubleMaker">Type of an object which has duplicated id.</param>
-        /// <param name="details">Additional information.</param>
+        /// <param name="sender">The object that has thrown the exception.</param>
+        /// <param name="troubleMaker">The type of object causing the exception.</param>
+        /// <param name="details">Additional information about the exception.</param>
         public NotDefinedException(object sender, Type troubleMaker, string details)
             : base("ItemNotDefined", SKTEOriginType.External, sender, troubleMaker.Name, details)
         {

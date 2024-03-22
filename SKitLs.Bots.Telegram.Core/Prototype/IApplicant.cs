@@ -11,7 +11,8 @@ namespace SKitLs.Bots.Telegram.Core.Prototype
     public interface IApplicant<T>
     {
         /// <summary>
-        /// Applies the functionality defined in the implementing class to an instance of <paramref name="entity"/>, integrating any necessary data or behavior.
+        /// Applies the functionality defined in the implementing class to an instance of <paramref name="entity"/>,
+        /// integrating any necessary data or behavior.
         /// <para/>
         /// For example, if <see cref="IApplicant{T}"/> is applicable to <see cref="IActionManager{TUpdate}"/>,
         /// use <see cref="IActionManager{TUpdate}.AddSafely(IBotAction{TUpdate})"/> to integrate all <see cref="IBotAction{TUpdate}"/>

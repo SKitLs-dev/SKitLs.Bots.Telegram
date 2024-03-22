@@ -1,21 +1,20 @@
 ﻿namespace SKitLs.Bots.Telegram.Core.Exceptions.External
 {
-    // XML-Doc Update
     /// <summary>
-    /// An exception which occurs when trying to resolve an service that does not exist.
+    /// An exception that occurs when trying to resolve a service that does not exist.
     /// </summary>
     public class ServiceNotDefinedException : SKTgSignedException
     {
         /// <summary>
-        /// Type of a service that was tried to be resolved.
+        /// The type of service that was attempted to be resolved.
         /// </summary>
         public Type ServiceType { get; private init; }
 
         /// <summary>
-        /// Creates a new instance of <see cref="ServiceNotDefinedException"/> with specified data.
+        /// Initializes a new instance of the <see cref="ServiceNotDefinedException"/> class with specified data.
         /// </summary>
-        /// <param name="sender">The object that has thrown exception.</param>
-        /// <param name="serviceType">Type of a service that was tried to be resolved.</param>
+        /// <param name="sender">The object that has thrown the exception.</param>
+        /// <param name="serviceType">The type of service that was attempted to be resolved.</param>
         public ServiceNotDefinedException(object sender, Type serviceType)
             : base("ServiceNotDefined", SKTEOriginType.External, sender, serviceType.Name)
         {

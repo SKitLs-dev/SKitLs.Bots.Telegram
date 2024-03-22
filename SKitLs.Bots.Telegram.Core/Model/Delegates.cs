@@ -1,5 +1,5 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
-using SKitLs.Bots.Telegram.Core.Prototype;
+using SKitLs.Bots.Telegram.Core.Model.Users;
 
 namespace SKitLs.Bots.Telegram.Core.Model
 {

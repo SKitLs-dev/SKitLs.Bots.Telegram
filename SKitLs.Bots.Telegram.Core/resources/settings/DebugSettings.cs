@@ -18,22 +18,20 @@ namespace SKitLs.Bots.Telegram.Core.resources.Settings
 
         /// <summary>
         /// Represents the localization service used for retrieving localized debugging strings.
-        /// <para>
+        /// <para/>
         /// The default localization service is <see cref="DefaultLocalizator"/>.
-        /// </para>
         /// </summary>
         public ILocalizator Localizator { get; private set; }
 
         /// <summary>
         /// Represents the logger service used for logging system messages.
-        /// <para>
+        /// <para/>
         /// The default logger service is <see cref="LocalizedConsoleLogger"/>.
-        /// </para>
         /// </summary>
         public ILocalizedLogger LocalLogger { get; private set; }
 
         /// <summary>
-        /// Creates a new instance of the <see cref="DebugSettings"/> class with specific data.
+        /// Initializes a new instance of the <see cref="DebugSettings"/> class with specific data.
         /// </summary>
         /// <param name="language">The language of the debugging logger.</param>
         /// <param name="path">The path to the folder with localizations.</param>
@@ -48,14 +46,17 @@ namespace SKitLs.Bots.Telegram.Core.resources.Settings
         }
 
         #region Settings
+
         /// <summary>
         /// Determines whether information about incoming updates should be printed.
         /// </summary>
         public bool LogUpdates { get; set; } = true;
+
         /// <summary>
         /// Determines whether information about thrown exceptions should be printed.
         /// </summary>
         public bool LogExceptions { get; set; } = true;
+
         /// <summary>
         /// Determines whether information about exceptions' stack trace should be printed.
         /// </summary>

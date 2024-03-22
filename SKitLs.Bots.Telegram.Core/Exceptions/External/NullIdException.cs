@@ -1,21 +1,20 @@
 ﻿namespace SKitLs.Bots.Telegram.Core.Exceptions.External
 {
-    // XML-Doc Update
     /// <summary>
-    /// An exception which occurs when trying to add an item with null or empty id.
+    /// An exception that occurs when trying to add an item with a null or empty ID.
     /// </summary>
     public class NullIdException : SKTgSignedException
     {
         /// <summary>
-        /// Type of an object which has duplicated id.
+        /// The type of object causing the exception.
         /// </summary>
         public Type TroubleMaker { get; private init; }
 
         /// <summary>
-        /// Creates a new instance of <see cref="NullIdException"/> with specified data.
+        /// Initializes a new instance of the <see cref="NullIdException"/> class with specified data.
         /// </summary>
-        /// <param name="sender">The object that has thrown exception.</param>
-        /// <param name="troubleMaker">Type of an object which has duplicated id.</param>
+        /// <param name="sender">The object that has thrown the exception.</param>
+        /// <param name="troubleMaker">The type of object causing the exception.</param>
         public NullIdException(object sender, Type troubleMaker)
             : base("NullOrEmptyId", SKTEOriginType.External, sender, troubleMaker.Name)
         {

@@ -7,7 +7,9 @@ using Telegram.Bot.Types.Enums;
 
 namespace SKitLs.Bots.Telegram.Core.Model
 {
-    // XML-Doc Update
+    /// <summary>
+    /// Provides extension methods for custom logging related to Telegram updates and exceptions.
+    /// </summary>
     public static class CustomLoggingExtension
     {
         private static string NoTitle => "NoTitle";
@@ -16,6 +18,12 @@ namespace SKitLs.Bots.Telegram.Core.Model
 
         private static string Local(ILocalizedLogger logger, string mesKey, params string?[] format)
             => logger.Localizator.ResolveString(BotBuilder.DebugSettings.DebugLanguage, mesKey, format);
+
+        /// <summary>
+        /// Logs an exception with additional information.
+        /// </summary>
+        /// <param name="logger">The logger instance.</param>
+        /// <param name="exception">The exception to be logged.</param>
         public static void Log(this ILocalizedLogger logger, Exception exception)
         {
             string errorMes = "Exception was thrown: ";
@@ -53,6 +61,13 @@ namespace SKitLs.Bots.Telegram.Core.Model
             if (warn is not null)
                 logger.Warn(warn);
         }
+
+        /// <summary>
+        /// Logs information about an incoming update.
+        /// </summary>
+        /// <param name="logger">The logger instance.</param>
+        /// <param name="update">The update to be logged.</param>
+        /// <param name="warn">Specifies whether to log as a warning.</param>
         public static void Log(this ILocalizedLogger logger, Update update, bool warn = false)
         {
             string sender = string.Empty;

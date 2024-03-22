@@ -2,17 +2,16 @@
 
 namespace SKitLs.Bots.Telegram.Core.Exceptions.Inexternal
 {
-    // XML-Doc Update
     /// <summary>
-    /// An exception which occurs when <see cref="IOwnerCompilable"/> class has not determined its owner
-    /// during reflective compilation.
+    /// An exception that occurs when a class implementing <see cref="IOwnerCompilable"/>
+    /// has not determined its owner during reflective compilation.
     /// </summary>
     public class NullOwnerException : SKTgSignedException
     {
         /// <summary>
-        /// Creates a new instance of <see cref="NullOwnerException"/> with specified data.
+        /// Initializes a new instance of the <see cref="NullOwnerException"/> class with specified data.
         /// </summary>
-        /// <param name="sender">The object that has thrown exception.</param>
+        /// <param name="sender">The object that has thrown the exception.</param>
         public NullOwnerException(object sender) : base("NullOwner", SKTEOriginType.Inexternal, sender) { }
     }
 }

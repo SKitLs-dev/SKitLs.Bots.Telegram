@@ -1,6 +1,6 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.Building;
+﻿using SKitLs.Bots.Telegram.Core.Building;
 
-namespace SKitLs.Bots.Telegram.Core.Model.Services
+namespace SKitLs.Bots.Telegram.Core.Services
 {
     /// <summary>
     /// Represents a base class for bot services.

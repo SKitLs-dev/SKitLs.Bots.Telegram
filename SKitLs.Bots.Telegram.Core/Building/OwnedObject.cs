@@ -1,7 +1,7 @@
 ﻿using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.Core.Model;
 
-namespace SKitLs.Bots.Telegram.Core.Model.Building
+namespace SKitLs.Bots.Telegram.Core.Building
 {
     /// <summary>
     /// Represents an abstract class that serves as a base for objects owned by <see cref="BotManager"/>.

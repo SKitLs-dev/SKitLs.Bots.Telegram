@@ -1,5 +1,5 @@
-﻿using SKitLs.Bots.Telegram.Core.Exceptions;
-using SKitLs.Bots.Telegram.Core.Model.Building;
+﻿using SKitLs.Bots.Telegram.Core.Building;
+using SKitLs.Bots.Telegram.Core.Exceptions;
 using SKitLs.Utils.LocalLoggers.Prototype;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;

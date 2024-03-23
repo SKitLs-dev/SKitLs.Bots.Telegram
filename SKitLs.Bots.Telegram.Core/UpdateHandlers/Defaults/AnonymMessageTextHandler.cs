@@ -1,15 +1,14 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.Building;
-using SKitLs.Bots.Telegram.Core.Model.Interactions;
-using SKitLs.Bots.Telegram.Core.Model.Management;
-using SKitLs.Bots.Telegram.Core.Model.Management.Defaults;
-using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonym;
-using SKitLs.Bots.Telegram.Core.Model.Users;
+﻿using SKitLs.Bots.Telegram.Core.Building;
+using SKitLs.Bots.Telegram.Core.Interactions;
+using SKitLs.Bots.Telegram.Core.Management;
+using SKitLs.Bots.Telegram.Core.Management.Defaults;
 using SKitLs.Bots.Telegram.Core.Prototype;
-using SKitLs.Bots.Telegram.Core.resources.Settings;
+using SKitLs.Bots.Telegram.Core.Settings;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting.Anonym;
+using SKitLs.Bots.Telegram.Core.Users;
 
-namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.Defaults
+namespace SKitLs.Bots.Telegram.Core.UpdateHandlers.Defaults
 {
     /// <summary>
     /// Default implementation of <see cref="IUpdateHandlerBase{TUpdate}"/> for handling anonymous message text updates.

@@ -1,6 +1,6 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+﻿using SKitLs.Bots.Telegram.Core.UpdatesCasting;
 
-namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype
+namespace SKitLs.Bots.Telegram.Core.DeliverySystem.Prototype
 {
     /// <summary>
     /// An interface that defines a message entity that can be dynamically built based on an update.

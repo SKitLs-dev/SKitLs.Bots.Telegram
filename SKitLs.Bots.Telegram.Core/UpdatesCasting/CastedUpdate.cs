@@ -2,7 +2,7 @@
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
-namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting
+namespace SKitLs.Bots.Telegram.Core.UpdatesCasting
 {
     /// <summary>
     /// Default implementation of the <see cref="ICastedUpdate"/> interface.

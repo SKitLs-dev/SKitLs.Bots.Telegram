@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>3.0.0</AssemblyVersion>
+    <AssemblyVersion>3.0.1</AssemblyVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>$(AssemblyName)</Title>
     <Authors>SKitLs, Sargeras02</Authors>
@@ -12,55 +12,10 @@
     <PackageIcon>libIcon.png</PackageIcon>
     <PackageTags>Telegram, Bots, Management, Framework, Core</PackageTags>
     <FileVersion>$(AssemblyVersion)</FileVersion>
-    <PackageReleaseNotes>(!) Users Refactoring WIP, inc:
-+ Extended: IBotUser required prioperties
-~ Updated: DefaultBotUser (due to IBotUser)
-
-(!) Services Refactor, inc:
-+ Added: IBotService
-+ Added: BotServiceBase
-~ Wrapped: ILocalizator as ILocalizatorService / LocalizatorService
-~ Wrapped: ILocalizedLogger as ILocalLoggerService / LocalLoggerService
-
-(!) Interceptors WIP, inc:
-+ Added: IUpdateInterceptor
-+ Added: IPreCheckoutInterceptor
-- Removed: IPreCheckoutService
-
-(!) BotManager
-~ Updated: now is partial
-+ Added: Interceptors internal storage and methods
-+ Added: Interceptors ReflectiveCompile support
-(~) BotBuilder: Appropriate changes made
-
-+ Added: Interceptors supports
-~ Updated: Services requires IBotService now
-- Removed: Telegram unwrap methods to TelegramHelper
-
-(~) ChatScanner
-+ Added: event UpdateReceived
-+ Added: event UpdateHandled
-- Removed: Telegram unwrap methods to TelegramHelper
-
-(+) Added: TelegramHelper
-+ ChatType GetChatType(Update)
-+ ChatType? TryGetChatType(Update)
-+ long GetSenderId(Update)
-+ long? TryGetSenderId(Update)
-+ User GetSender(Update)
-+ User? TryGetSender(Update)
-+ long GetChatId(Update)
-+ long? TryGetChatId(Update)
-+ [Unsafe] List&lt;UpdateType&gt; PrivateUpdates
-+ [Unsafe] List&lt;UpdateType&gt; GroupUpdates
-+ [Unsafe] List&lt;UpdateType&gt; SupergroupUpdates
-+ [Unsafe] List&lt;UpdateType&gt; ChannelUpdates
-
-Rest Updates:
-(+) Added: OwnedObject (as an abstract realization of IOwnerCompilable)
-(~) Renamed: DefaultActionManager&lt;TUpdate&gt; -&gt; LinearActionManager&lt;TUpdate&gt;
-(~) Minor Interior Updates
-(~) Completely Updated: XML Documentation</PackageReleaseNotes>
+    <PackageReleaseNotes>(-) Removed: Obsolete DefaultBotAction(string @base) (use now : base(string, null!))
+(~) Updated: Namespaces Total Rework
+(~) Moved: Settings namespace (-&gt; .Core.Settings)
+(~) Updated: README</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <Copyright>Copyright (C) 2023-2024, SKitLs</Copyright>
@@ -69,12 +24,6 @@ Rest Updates:
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Settings\**" />
-    <EmbeddedResource Remove="Settings\**" />
-    <None Remove="Settings\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Remove="resources\locals\en.core.json" />

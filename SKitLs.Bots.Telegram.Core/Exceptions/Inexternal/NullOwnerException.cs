@@ -1,4 +1,4 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.Building;
+﻿using SKitLs.Bots.Telegram.Core.Building;
 
 namespace SKitLs.Bots.Telegram.Core.Exceptions.Inexternal
 {

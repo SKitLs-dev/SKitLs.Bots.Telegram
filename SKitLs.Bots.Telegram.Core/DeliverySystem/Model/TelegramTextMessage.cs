@@ -1,9 +1,9 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
+﻿using SKitLs.Bots.Telegram.Core.DeliverySystem.Prototype;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using TEnum = Telegram.Bot.Types.Enums;
 
-namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Model
+namespace SKitLs.Bots.Telegram.Core.DeliverySystem.Model
 {
     /// <summary>
     /// Represents the default implementation of <see cref="ITelegramMessage"/> for sending text messages via

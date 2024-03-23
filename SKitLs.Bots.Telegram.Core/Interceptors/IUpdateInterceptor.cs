@@ -1,6 +1,6 @@
 ﻿using Telegram.Bot.Types;
 
-namespace SKitLs.Bots.Telegram.Core.Model.Interceptors
+namespace SKitLs.Bots.Telegram.Core.Interceptors
 {
     /// <summary>
     /// Represents an interface for update interceptors.

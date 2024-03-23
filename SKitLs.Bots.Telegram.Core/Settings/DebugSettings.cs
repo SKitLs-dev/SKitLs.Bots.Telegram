@@ -4,7 +4,7 @@ using SKitLs.Utils.Localizations.Prototype;
 using SKitLs.Utils.LocalLoggers.Model;
 using SKitLs.Utils.LocalLoggers.Prototype;
 
-namespace SKitLs.Bots.Telegram.Core.resources.Settings
+namespace SKitLs.Bots.Telegram.Core.Settings
 {
     /// <summary>
     /// Represents a class that holds global debug assets and settings.

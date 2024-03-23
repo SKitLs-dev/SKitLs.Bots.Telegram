@@ -1,12 +1,12 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model;
-using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonym;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
-using SKitLs.Bots.Telegram.Core.Model.Users;
+using SKitLs.Bots.Telegram.Core.UpdateHandlers;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting.Anonym;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting.Signed;
+using SKitLs.Bots.Telegram.Core.Users;
 using Telegram.Bot.Types.Enums;
 
-namespace SKitLs.Bots.Telegram.Core.Model.Building
+namespace SKitLs.Bots.Telegram.Core.Building
 {
     /// <summary>
     /// Represents the entry point for creating chat handlers. This class serves as a wizard constructor for the <see cref="ChatScanner"/> class.

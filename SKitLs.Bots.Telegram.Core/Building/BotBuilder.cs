@@ -1,12 +1,12 @@
-﻿using SKitLs.Bots.Telegram.Core.Model;
-using SKitLs.Bots.Telegram.Core.Model.DeliverySystem;
-using SKitLs.Bots.Telegram.Core.Model.Interceptors;
-using SKitLs.Bots.Telegram.Core.Model.Services;
-using SKitLs.Bots.Telegram.Core.Model.Services.Defaults;
-using SKitLs.Bots.Telegram.Core.resources.Settings;
+﻿using SKitLs.Bots.Telegram.Core.DeliverySystem;
+using SKitLs.Bots.Telegram.Core.Interceptors;
+using SKitLs.Bots.Telegram.Core.Model;
+using SKitLs.Bots.Telegram.Core.Services;
+using SKitLs.Bots.Telegram.Core.Services.Defaults;
+using SKitLs.Bots.Telegram.Core.Settings;
 using Telegram.Bot.Types.Enums;
 
-namespace SKitLs.Bots.Telegram.Core.Model.Building
+namespace SKitLs.Bots.Telegram.Core.Building
 {
     /// <summary>
     /// Represents the entry point for the bot creation process.

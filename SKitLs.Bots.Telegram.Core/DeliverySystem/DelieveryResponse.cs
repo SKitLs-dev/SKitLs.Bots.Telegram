@@ -1,7 +1,7 @@
 ﻿using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
 
-namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem
+namespace SKitLs.Bots.Telegram.Core.DeliverySystem
 {
     /// <summary>
     /// Represents a response of a delivery service implemented by <see cref="IDeliveryService"/>.

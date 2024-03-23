@@ -1,8 +1,8 @@
-﻿using SKitLs.Bots.Telegram.Core.Model;
-using SKitLs.Bots.Telegram.Core.Model.Management;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+﻿using SKitLs.Bots.Telegram.Core.Management;
+using SKitLs.Bots.Telegram.Core.Model;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting;
 
-namespace SKitLs.Bots.Telegram.Core.Model.Interactions
+namespace SKitLs.Bots.Telegram.Core.Interactions
 {
     /// <summary>
     /// An interface that defines typed bot actions with handling delegates for <typeparamref name="TUpdate"/> via <see cref="BotInteraction{TUpdate}"/>.

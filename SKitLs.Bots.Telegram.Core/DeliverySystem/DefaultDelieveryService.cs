@@ -1,11 +1,11 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Model;
-using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
-using SKitLs.Bots.Telegram.Core.Model.Services;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+﻿using SKitLs.Bots.Telegram.Core.DeliverySystem.Model;
+using SKitLs.Bots.Telegram.Core.DeliverySystem.Prototype;
+using SKitLs.Bots.Telegram.Core.Services;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 
-namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem
+namespace SKitLs.Bots.Telegram.Core.DeliverySystem
 {
     /// <summary>
     /// Represents the default implementation of <see cref="IDeliveryService"/> that handles string messages

@@ -1,10 +1,10 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.Building;
-using SKitLs.Bots.Telegram.Core.Model.Interactions;
-using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+﻿using SKitLs.Bots.Telegram.Core.Building;
+using SKitLs.Bots.Telegram.Core.Interactions;
 using SKitLs.Bots.Telegram.Core.Prototype;
+using SKitLs.Bots.Telegram.Core.UpdateHandlers;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting;
 
-namespace SKitLs.Bots.Telegram.Core.Model.Management
+namespace SKitLs.Bots.Telegram.Core.Management
 {
     /// <summary>
     /// An interface that provides complex logic for handling updates via interactions with <see cref="IBotAction"/>s.

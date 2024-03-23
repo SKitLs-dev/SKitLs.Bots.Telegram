@@ -1,7 +1,7 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model;
-using SKitLs.Bots.Telegram.Core.Model.Users;
+using SKitLs.Bots.Telegram.Core.Users;
 
-namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting
+namespace SKitLs.Bots.Telegram.Core.UpdatesCasting
 {
     /// <summary>
     /// Represents a signed update, indicating an update that contains specific sender information.

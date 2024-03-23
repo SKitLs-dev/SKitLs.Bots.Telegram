@@ -1,4 +1,4 @@
-﻿namespace SKitLs.Bots.Telegram.Core.Model.Users
+﻿namespace SKitLs.Bots.Telegram.Core.Users
 {
     /// <summary>
     /// Represents the default implementation of the <see cref="IBotUser"/> interface, providing basics for proper update handling.

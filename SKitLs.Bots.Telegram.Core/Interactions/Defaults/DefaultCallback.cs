@@ -1,8 +1,7 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model;
-using SKitLs.Bots.Telegram.Core.Model.Interactions;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting.Signed;
 
-namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
+namespace SKitLs.Bots.Telegram.Core.Interactions.Defaults
 {
     /// <summary>
     /// Default implementation of <see cref="IBotAction"/>&lt;<see cref="SignedCallbackUpdate"/>&gt;,
@@ -33,18 +32,6 @@ namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
         /// <exception cref="ArgumentNullException">Thrown when the base name, label, or action is null.</exception>
         public DefaultCallback(string @base, string label, BotInteraction<SignedCallbackUpdate> action)
             : base(@base, action) => Label = label;
-
-        /// <summary>
-        /// UNSAFE. Initializes a new instance of the <see cref="DefaultCallback"/> class with specific data.
-        /// Use this constructor to avoid compiler errors when passing non-static methods
-        /// to the base() constructor for an action.
-        /// <para>Do not forget to override the <see cref="DefaultBotAction{TUpdate}.Action"/> property.</para>
-        /// </summary>
-        /// <param name="base">The base name for the action.</param>
-        /// <param name="label">The label to be displayed.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the base name or label is null.</exception>
-        [Obsolete("Do not forget to override Action property")]
-        protected DefaultCallback(string @base, string label) : base(@base) => Label = label;
 
         /// <inheritdoc/>
         public override bool ShouldBeExecutedOn(SignedCallbackUpdate update) => ActionNameBase == update.Data;

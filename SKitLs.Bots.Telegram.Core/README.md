@@ -1,4 +1,6 @@
-# SKitLs.Bots.Telegram.Core ![Static Badge](https://img.shields.io/badge/Follow%20GitHub%20-%20black?logo=github&link=https%3A%2F%2Fgithub.com%2FSargeras02%2FSKitLs.Bots.Telegram.git) ![GitHub](https://img.shields.io/github/license/SKitLs-dev/SKitLs.Bots.Telegram) ![Nuget](https://img.shields.io/nuget/v/SKitLs.Bots.Telegram.Core) [![CodeFactor](https://www.codefactor.io/repository/github/sargeras02/skitls.bots.telegram/badge)](https://www.codefactor.io/repository/github/sargeras02/skitls.bots.telegram)
+# SKitLs.Bots.Telegram.Core ![Static Badge](https://img.shields.io/badge/Follow%20GitHub%20-%20black?logo=github&link=https%3A%2F%2Fgithub.com%2FSargeras02%2FSKitLs.Bots.Telegram.git) ![GitHub](https://img.shields.io/github/license/SKitLs-dev/SKitLs.Bots.Telegram) ![Nuget](https://img.shields.io/nuget/v/SKitLs.Bots.Telegram.Core) [![CodeFactor](https://www.codefactor.io/repository/github/skitls-dev/skitls.bots.telegram/badge)](https://www.codefactor.io/repository/github/skitls-dev/skitls.bots.telegram)
+
+_README version: 2024.03.23_
 
 The core module of the SKitLs.Bots.Telegram Framework.
 
@@ -23,14 +25,7 @@ to focus on implementing bot logic without the hassle of handling low-level API 
 
 ## Setup
 
-### Requirements
-
-Before running the project, please ensure that you have the following dependencies installed and properly configured in your development environment.
-
-- Telegram.Bot 19.0.0 or higher
-- SKitLs.Utils.Loggers 1.4.1 or higher
-- SKitLs.Utils.Localizations 2.2.1 or higher
-- SKitLs.Utils.LocalLoggers 1.3.1 or higher
+Ensure getting [localization packs](https://github.com/SKitLs-dev/SKitLs.Bots.Telegram/tree/master/locals) (\*.core.\*).
 
 ### Installation
 
@@ -193,7 +188,7 @@ Thank you for considering contributing to our project.
 
 This project is distributed under the terms of the MIT License.
 
-Copyright (C) SKitLs 2023
+Copyright (c) 2023-2024, SKitLs
 
 ## Developer contact
 

@@ -1,9 +1,9 @@
-﻿using SKitLs.Bots.Telegram.Core.Model;
-using SKitLs.Bots.Telegram.Core.Model.DeliverySystem;
-using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.Defaults;
+﻿using SKitLs.Bots.Telegram.Core.DeliverySystem;
+using SKitLs.Bots.Telegram.Core.Model;
+using SKitLs.Bots.Telegram.Core.UpdateHandlers.Defaults;
 using SKitLs.Utils.Localizations.Prototype;
 
-namespace SKitLs.Bots.Telegram.Core.resources.Settings
+namespace SKitLs.Bots.Telegram.Core.Settings
 {
     /// <summary>
     /// Bot's common settings.

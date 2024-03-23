@@ -1,4 +1,4 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.Interactions;
+﻿using SKitLs.Bots.Telegram.Core.Interactions;
 
 namespace SKitLs.Bots.Telegram.Core.Prototype
 {

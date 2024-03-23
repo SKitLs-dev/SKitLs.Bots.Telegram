@@ -1,8 +1,8 @@
-﻿using SKitLs.Bots.Telegram.Core.Model;
-using SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Prototype;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+﻿using SKitLs.Bots.Telegram.Core.DeliverySystem.Prototype;
+using SKitLs.Bots.Telegram.Core.Model;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting;
 
-namespace SKitLs.Bots.Telegram.Core.Model.DeliverySystem.Model
+namespace SKitLs.Bots.Telegram.Core.DeliverySystem.Model
 {
     /// <summary>
     /// Represents a message builder that derives from <see cref="TelegramTextMessage"/> and implements

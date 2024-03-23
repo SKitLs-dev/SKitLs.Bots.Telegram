@@ -1,5 +1,5 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.Interactions;
-using SKitLs.Bots.Telegram.Core.Model.Management;
+﻿using SKitLs.Bots.Telegram.Core.Interactions;
+using SKitLs.Bots.Telegram.Core.Management;
 
 namespace SKitLs.Bots.Telegram.Core.Prototype
 {

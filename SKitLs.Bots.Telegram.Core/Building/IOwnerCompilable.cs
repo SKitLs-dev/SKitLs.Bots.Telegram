@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using SKitLs.Bots.Telegram.Core.Model;
 
-namespace SKitLs.Bots.Telegram.Core.Model.Building
+namespace SKitLs.Bots.Telegram.Core.Building
 {
     /// <summary>
     /// An interface used in the reflective bot compilation process (<see cref="BotManager.ReflectiveCompile"/>).

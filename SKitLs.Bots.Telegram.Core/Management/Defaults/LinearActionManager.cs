@@ -1,11 +1,11 @@
-﻿using SKitLs.Bots.Telegram.Core.Exceptions.External;
+﻿using SKitLs.Bots.Telegram.Core.Building;
+using SKitLs.Bots.Telegram.Core.Exceptions.External;
 using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
-using SKitLs.Bots.Telegram.Core.Model.Building;
-using SKitLs.Bots.Telegram.Core.Model.Interactions;
-using SKitLs.Bots.Telegram.Core.Model.Management;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+using SKitLs.Bots.Telegram.Core.Interactions;
+using SKitLs.Bots.Telegram.Core.Management;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting;
 
-namespace SKitLs.Bots.Telegram.Core.Model.Management.Defaults
+namespace SKitLs.Bots.Telegram.Core.Management.Defaults
 {
     /// <summary>
     /// Default implementation of <see cref="ILinearActionManager{TUpdate}"/>. Provides a simple architecture

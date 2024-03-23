@@ -1,9 +1,8 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.Services;
-using SKitLs.Utils.Localizations.Prototype;
+﻿using SKitLs.Utils.Localizations.Prototype;
 using SKitLs.Utils.LocalLoggers.Prototype;
 using SKitLs.Utils.Loggers.Prototype;
 
-namespace SKitLs.Bots.Telegram.Core.Model.Services.Defaults
+namespace SKitLs.Bots.Telegram.Core.Services.Defaults
 {
     /// <summary>
     /// Represents a service that implements <see cref="IBotService"/> for handling localization-aware logging through <see cref="ILocalizedLogger"/> interface.

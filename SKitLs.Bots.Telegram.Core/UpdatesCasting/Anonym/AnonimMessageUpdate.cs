@@ -1,9 +1,8 @@
 ﻿using SKitLs.Bots.Telegram.Core.Exceptions.Internal;
 using SKitLs.Bots.Telegram.Core.Model;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
 using Telegram.Bot.Types;
 
-namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonym
+namespace SKitLs.Bots.Telegram.Core.UpdatesCasting.Anonym
 {
     /// <summary>
     /// Represents a casted update that corresponds to a default message update and is anonymous.

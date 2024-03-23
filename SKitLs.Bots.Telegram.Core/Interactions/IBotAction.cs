@@ -1,6 +1,6 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.Management;
+﻿using SKitLs.Bots.Telegram.Core.Management;
 
-namespace SKitLs.Bots.Telegram.Core.Model.Interactions
+namespace SKitLs.Bots.Telegram.Core.Interactions
 {
     /// <summary>
     /// Represents an interface that provides a generic definition for bot actions.

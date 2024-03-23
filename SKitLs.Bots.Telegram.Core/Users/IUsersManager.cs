@@ -1,7 +1,7 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting;
 
-namespace SKitLs.Bots.Telegram.Core.Model.Users
+namespace SKitLs.Bots.Telegram.Core.Users
 {
     /// <summary>
     /// Provides methods for advanced manipulation of user data with a default type of <see cref="IBotUser"/>.

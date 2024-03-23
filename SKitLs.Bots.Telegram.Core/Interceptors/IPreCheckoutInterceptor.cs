@@ -1,7 +1,7 @@
-﻿using SKitLs.Bots.Telegram.Core.Model.Building;
+﻿using SKitLs.Bots.Telegram.Core.Building;
 using Telegram.Bot.Types.Payments;
 
-namespace SKitLs.Bots.Telegram.Core.Model.Interceptors
+namespace SKitLs.Bots.Telegram.Core.Interceptors
 {
     /// <summary>
     /// Represents an interface for interceptors handling pre-checkout queries.

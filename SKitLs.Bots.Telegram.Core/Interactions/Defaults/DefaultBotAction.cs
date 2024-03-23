@@ -1,9 +1,8 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model;
-using SKitLs.Bots.Telegram.Core.Model.Interactions;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting;
 using System.Globalization;
 
-namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
+namespace SKitLs.Bots.Telegram.Core.Interactions.Defaults
 {
     /// <summary>
     /// Abstract base class representing a default bot action for processing updates of type <typeparamref name="TUpdate"/>.
@@ -42,21 +41,6 @@ namespace SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults
         {
             ActionNameBase = @base ?? throw new ArgumentNullException(nameof(@base));
             Action = action ?? throw new ArgumentNullException(nameof(action));
-        }
-
-        /// <summary>
-        /// <c>[UNSAFE]</c> Creates a new instance of an abstract <see cref="DefaultBotAction{TUpdate}"/>
-        /// with specific data. Use this constructor to avoid compiler errors when passing non-static methods
-        /// to the base() constructor for an action.
-        /// <para>Do not forget to override the <see cref="Action"/> property.</para>
-        /// </summary>
-        /// <param name="base">Action name base.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the base name is null.</exception>
-        [Obsolete("Do not forget to override Action property")]
-        protected DefaultBotAction(string @base)
-        {
-            ActionNameBase = @base ?? throw new ArgumentNullException(nameof(@base));
-            Action = null!;
         }
 
         /// <inheritdoc/>

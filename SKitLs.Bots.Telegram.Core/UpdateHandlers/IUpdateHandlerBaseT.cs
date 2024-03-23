@@ -1,11 +1,11 @@
-﻿using SKitLs.Bots.Telegram.Core.Model;
-using SKitLs.Bots.Telegram.Core.Model.Building;
-using SKitLs.Bots.Telegram.Core.Model.Management;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
-using SKitLs.Bots.Telegram.Core.Model.Users;
+﻿using SKitLs.Bots.Telegram.Core.Building;
+using SKitLs.Bots.Telegram.Core.Management;
+using SKitLs.Bots.Telegram.Core.Model;
 using SKitLs.Bots.Telegram.Core.Prototype;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting;
+using SKitLs.Bots.Telegram.Core.Users;
 
-namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers
+namespace SKitLs.Bots.Telegram.Core.UpdateHandlers
 {
     /// <summary>
     /// Generic interface defining common mechanisms for handling updates.

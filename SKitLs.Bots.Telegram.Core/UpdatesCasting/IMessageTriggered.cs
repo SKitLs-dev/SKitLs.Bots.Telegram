@@ -1,4 +1,4 @@
-﻿namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting
+﻿namespace SKitLs.Bots.Telegram.Core.UpdatesCasting
 {
     /// <summary>
     /// Represents an update triggered by a message.

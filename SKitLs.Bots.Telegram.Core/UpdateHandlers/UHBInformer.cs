@@ -1,11 +1,11 @@
-﻿using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
+﻿using SKitLs.Bots.Telegram.Core.Building;
+using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.Core.Exceptions.Internal;
-using SKitLs.Bots.Telegram.Core.Model.Building;
-using SKitLs.Bots.Telegram.Core.Model.Interactions;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
-using SKitLs.Bots.Telegram.Core.Model.Users;
+using SKitLs.Bots.Telegram.Core.Interactions;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting;
+using SKitLs.Bots.Telegram.Core.Users;
 
-namespace SKitLs.Bots.Telegram.Core.Model.UpdateHandlers
+namespace SKitLs.Bots.Telegram.Core.UpdateHandlers
 {
     /// <summary>
     /// A default informer class that informs about incoming updates.

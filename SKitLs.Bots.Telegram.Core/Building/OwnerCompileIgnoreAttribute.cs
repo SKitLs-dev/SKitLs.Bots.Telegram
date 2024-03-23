@@ -1,6 +1,6 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model;
 
-namespace SKitLs.Bots.Telegram.Core.Model.Building
+namespace SKitLs.Bots.Telegram.Core.Building
 {
     /// <summary>
     /// Specifies that this property should be ignored during the reflective compilation

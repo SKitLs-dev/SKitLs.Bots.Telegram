@@ -1,11 +1,10 @@
 ﻿using SKitLs.Bots.Telegram.Core.Exceptions.Internal;
 using SKitLs.Bots.Telegram.Core.Model;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Anonym;
-using SKitLs.Bots.Telegram.Core.Model.Users;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting.Anonym;
+using SKitLs.Bots.Telegram.Core.Users;
 using Telegram.Bot.Types;
 
-namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed
+namespace SKitLs.Bots.Telegram.Core.UpdatesCasting.Signed
 {
     /// <summary>
     /// Represents a casted update that represents a default signed message update.

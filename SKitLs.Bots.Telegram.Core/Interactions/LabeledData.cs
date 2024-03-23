@@ -1,4 +1,4 @@
-﻿namespace SKitLs.Bots.Telegram.Core.Model.Interactions
+﻿namespace SKitLs.Bots.Telegram.Core.Interactions
 {
     /// <summary>
     /// Represents a data structure for storing labeled information used in callback interactions.

@@ -2,7 +2,7 @@
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
-namespace SKitLs.Bots.Telegram.Core.Model.UpdatesCasting
+namespace SKitLs.Bots.Telegram.Core.UpdatesCasting
 {
     /// <summary>
     /// Provides basic details of a raw server update. Acts as a wrapper for a raw <see cref="Update"/>.

@@ -1,4 +1,4 @@
-﻿namespace SKitLs.Bots.Telegram.Core.Model.Users
+﻿namespace SKitLs.Bots.Telegram.Core.Users
 {
     /// <summary>
     /// Represents a fundamental bot user instance abstraction that can be extended with additional functionality.

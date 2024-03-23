@@ -1,8 +1,8 @@
 # SKitLs.Bots.Telegram.ArgedInteractions ![Static Badge](https://img.shields.io/badge/Follow%20GitHub%20-%20black?logo=github&link=https%3A%2F%2Fgithub.com%2FSargeras02%2FSKitLs.Bots.Telegram.git) ![GitHub](https://img.shields.io/github/license/Sargeras02/SKitLs.Bots.Telegram) ![Nuget](https://img.shields.io/nuget/v/SKitLs.Bots.Telegram.ArgedInteractions) [![CodeFactor](https://www.codefactor.io/repository/github/skitls-dev/skitls.bots.telegram/badge)](https://www.codefactor.io/repository/github/skitls-dev/skitls.bots.telegram)
 
-*README version: 2024.03.23*
+_README version: 2024.03.23_
 
-An extension project built upon the ![SKitLs.Bots.Telegram.Core Framework](https://github.com/SKitLs-dev/SKitLs.Bots.Telegram).
+An extension project built upon the [SKitLs.Bots.Telegram.Core Framework](https://github.com/SKitLs-dev/SKitLs.Bots.Telegram).
 
 Provides a structured and efficient mechanism for the serialization and deserialization of textual data
 
@@ -43,7 +43,7 @@ Key Features:
 
 ## Setup
 
-Ensure getting ![localization packs](https://github.com/SKitLs-dev/SKitLs.Bots.Telegram/tree/master/locals) (\*.ai.\*).
+Ensure getting [localization packs](https://github.com/SKitLs-dev/SKitLs.Bots.Telegram/tree/master/locals) (\*.ai.\*).
 
 ### Installation
 

@@ -5,32 +5,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Title>$(AssemblyName)</Title>
-    <Version>1.5.0</Version>
+    <Version>1.5.1</Version>
     <Authors>SKitLs, Sargeras02</Authors>
     <Copyright>Copyright (C) 2023-2024, SKitLs</Copyright>
     <PackageProjectUrl>https://github.com/SKitLs-dev/SKitLs.Bots.Telegram.git</PackageProjectUrl>
     <PackageIcon>libIcon_AI.png</PackageIcon>
     <PackageTags>Telegram, Bots, Management, Serialization, Argumenting</PackageTags>
-    <PackageReleaseNotes>(!) ConverterBase release:
-+ Added: ConverterBase : ConvertRule
-+ Added: BoolConverter
-+ Added: DoubleConverter
-+ Added: FloatConverter
-+ Added: IntConverter
-+ Added: LongConverter
-+ Added: StringConverter
-
-Code Updates:
-(~) Updated: IArgsSerializeService now IBotService
-(~) Renamed: DefaultArgsSerializeService -&gt; ArgsSerializeService
-(~) Minor Interior Updates
-
-General Updates:
-(!) Updated: TargetFramework -&gt; Net 8.0
-(~) Moved: Settings namespace (-&gt; .ArgedInteractions.Settings)
-(~) Updated: XML Documentation
-(~) Updated: README</PackageReleaseNotes>
-    <AssemblyVersion>1.5.0</AssemblyVersion>
+    <PackageReleaseNotes>(~) .Core [v3.0.1] namespaces hot fix</PackageReleaseNotes>
+    <AssemblyVersion>1.5.1</AssemblyVersion>
 	<FileVersion>$(AssemblyVersion)</FileVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -55,7 +37,7 @@ An extension project built upon the SKitLs.Bots.Telegram.Core Framework.</Descri
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="3.0.0" />
+    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="3.0.1" />
     <PackageReference Include="Telegram.Bot" Version="19.0.0" />
   </ItemGroup>
 

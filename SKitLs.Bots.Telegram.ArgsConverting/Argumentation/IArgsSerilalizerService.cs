@@ -1,6 +1,5 @@
 ﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model;
-using SKitLs.Bots.Telegram.Core.Model.Building;
-using SKitLs.Bots.Telegram.Core.Model.Services;
+using SKitLs.Bots.Telegram.Core.Services;
 
 namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation
 {

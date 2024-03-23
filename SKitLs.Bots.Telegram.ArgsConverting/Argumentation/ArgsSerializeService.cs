@@ -5,11 +5,7 @@ using SKitLs.Bots.Telegram.ArgedInteractions.Exceptions.External;
 using SKitLs.Bots.Telegram.ArgedInteractions.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.ArgedInteractions.Settings;
 using SKitLs.Bots.Telegram.Core.Exceptions.External;
-using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
-using SKitLs.Bots.Telegram.Core.Model;
-using SKitLs.Bots.Telegram.Core.Model.Building;
-using SKitLs.Bots.Telegram.Core.Model.Services;
-using System;
+using SKitLs.Bots.Telegram.Core.Services;
 using System.Reflection;
 
 namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation

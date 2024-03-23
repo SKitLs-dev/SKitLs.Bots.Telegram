@@ -1,8 +1,8 @@
 ﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Prototype;
-using SKitLs.Bots.Telegram.Core.Model.Interactions;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
+using SKitLs.Bots.Telegram.Core.Interactions;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting;
 
 namespace SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Prototype
 {

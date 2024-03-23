@@ -1,12 +1,11 @@
 ﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model;
-using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Prototype;
 using SKitLs.Bots.Telegram.ArgedInteractions.Exceptions;
 using SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Prototype;
 using SKitLs.Bots.Telegram.Core.Exceptions;
-using SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults;
-using SKitLs.Bots.Telegram.Core.Model.Management;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
+using SKitLs.Bots.Telegram.Core.Interactions.Defaults;
+using SKitLs.Bots.Telegram.Core.Management;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting.Signed;
 
 namespace SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Model
 {

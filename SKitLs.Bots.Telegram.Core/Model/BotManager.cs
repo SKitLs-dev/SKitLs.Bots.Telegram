@@ -37,7 +37,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
     /// </list>
     /// Access this class by Wizard Builder <see cref="BotBuilder"/>.
     /// </summary>
-    public sealed partial class BotManager : IDebugNamed
+    public sealed class BotManager : IDebugNamed
     {
         #region Properties
 
@@ -52,7 +52,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <summary>
         /// Represents a dictionary that maps each <see cref="ChatType"/> to its corresponding <see cref="ChatScanner"/>.
         /// </summary>
-        public Dictionary<ChatType, ChatScanner> ChatHandlers { get; private init; } = new();
+        public Dictionary<ChatType, ChatScanner> ChatHandlers { get; private init; } = [];
 
         /// <summary>
         /// Telegram's bot token.
@@ -194,7 +194,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <param name="token">The Telegram bot token.</param>
         internal BotManager(string token)
         {
-            ActionsBasket = new();
+            ActionsBasket = [];
             Settings = new();
 
             Token = token;

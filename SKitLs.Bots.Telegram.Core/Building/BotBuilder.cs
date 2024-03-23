@@ -63,7 +63,7 @@ namespace SKitLs.Bots.Telegram.Core.Building
         /// </summary>
         /// <param name="designer">The customized <see cref="ChatScanner"/> designer. Set to <see langword="null"/> to use the default.</param>
         /// <returns>The current <see cref="BotBuilder"/> instance.</returns>
-        public BotBuilder EnablePrivates(ChatDesigner? designer = null) => EnableChatsType(ChatType.Private);
+        public BotBuilder EnablePrivates(ChatDesigner? designer = null) => EnableChatsType(ChatType.Private, designer);
 
         /// <summary>
         /// Enables handling of groups. Uses the vanilla <see cref="ChatScanner"/> by default.

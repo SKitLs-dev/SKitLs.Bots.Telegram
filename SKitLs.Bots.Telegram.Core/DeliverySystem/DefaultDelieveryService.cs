@@ -16,39 +16,44 @@ namespace SKitLs.Bots.Telegram.Core.DeliverySystem
         /// <summary>
         /// Provides quick access to the bot client by the entity's owner.
         /// </summary>
-        private ITelegramBotClient Bot => Owner.Bot;
+        protected ITelegramBotClient Bot => Owner.Bot;
 
         /// <inheritdoc/>
-        public bool IsParseSafe(string text, ParseMode parseMode) => parseMode switch
+        public virtual bool IsParseSafe(string text, ParseMode parseMode) => parseMode switch
         {
             ParseMode.Markdown => IDeliveryService.IsMarkdownSafe(text),
             _ => true,
         };
 
         /// <inheritdoc/>
-        public string MakeParseSafe(string text, ParseMode parseMode) => parseMode switch
+        public virtual string MakeParseSafe(string text, ParseMode parseMode) => parseMode switch
         {
             ParseMode.Markdown => IDeliveryService.MakeMarkdownSafe(text),
             _ => text,
         };
 
         /// <inheritdoc/>
-        public async Task<DeliveryResponse> AnswerSenderAsync(string message, ISignedUpdate update, CancellationTokenSource? cts = null)
+        public virtual async Task<DeliveryResponse> AnswerSenderAsync(IBuildableMessage buildable, ISignedUpdate update, CancellationTokenSource? cts = null)
+            => await SendMessageToChatAsync(update.Sender.TelegramId, buildable, update, cts);
+
+        /// <inheritdoc/>
+        public virtual async Task<DeliveryResponse> AnswerSenderAsync(string message, ISignedUpdate update, CancellationTokenSource? cts = null)
             => await SendMessageToChatAsync(update.Sender.TelegramId, message, cts);
 
         /// <inheritdoc/>
-        /// <remarks>
-        /// Automatically builds the content of the <paramref name="message"/> if it is the <see cref="IBuildableMessage"/> one.
-        /// </remarks>
-        public async Task<DeliveryResponse> AnswerSenderAsync(ITelegramMessage message, ISignedUpdate update, CancellationTokenSource? cts = null)
-            => await SendMessageToChatAsync(update.Sender.TelegramId, message is IBuildableMessage buildable ? await buildable.BuildContentAsync(update) : message, cts);
+        public virtual async Task<DeliveryResponse> AnswerSenderAsync(ITelegramMessage message, ISignedUpdate update, CancellationTokenSource? cts = null)
+            => await SendMessageToChatAsync(update.Sender.TelegramId, message, cts);
 
         /// <inheritdoc/>
-        public async Task<DeliveryResponse> SendMessageToChatAsync(long chatId, string message, CancellationTokenSource? cts = null)
+        public virtual async Task<DeliveryResponse> SendMessageToChatAsync(long chatId, IBuildableMessage buildable, ISignedUpdate update, CancellationTokenSource? cts = null)
+            => await SendMessageToChatAsync(chatId, await buildable.BuildContentAsync(update), cts);
+
+        /// <inheritdoc/>
+        public virtual async Task<DeliveryResponse> SendMessageToChatAsync(long chatId, string message, CancellationTokenSource? cts = null)
             => await SendMessageToChatAsync(chatId, new TelegramTextMessage(message), cts);
 
         /// <inheritdoc/>
-        public async Task<DeliveryResponse> SendMessageToChatAsync(long chatId, ITelegramMessage message, CancellationTokenSource? cts = null)
+        public virtual async Task<DeliveryResponse> SendMessageToChatAsync(long chatId, ITelegramMessage message, CancellationTokenSource? cts = null)
         {
             cts ??= new();
             try

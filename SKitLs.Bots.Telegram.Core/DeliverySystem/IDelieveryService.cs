@@ -11,6 +11,15 @@ namespace SKitLs.Bots.Telegram.Core.DeliverySystem
     public partial interface IDeliveryService : IBotService
     {
         /// <summary>
+        /// Asynchronously sends a response to the sender of the update.
+        /// </summary>
+        /// <param name="buildable">The message to be sent.</param>
+        /// <param name="update">The incoming update.</param>
+        /// <param name="cts">The cancellation token source.</param>
+        /// <returns>A task representing the asynchronous operation with a <see cref="DeliveryResponse"/>.</returns>
+        public Task<DeliveryResponse> AnswerSenderAsync(IBuildableMessage buildable, ISignedUpdate update, CancellationTokenSource? cts = null);
+
+        /// <summary>
         /// Asynchronously sends a string message to a certain chat by the update it has raised.
         /// </summary>
         /// <param name="message">The message to be sent.</param>
@@ -27,6 +36,16 @@ namespace SKitLs.Bots.Telegram.Core.DeliverySystem
         /// <param name="cts">The cancellation token source.</param>
         /// <returns>A task representing the asynchronous operation with a <see cref="DeliveryResponse"/>.</returns>
         public Task<DeliveryResponse> AnswerSenderAsync(ITelegramMessage message, ISignedUpdate update, CancellationTokenSource? cts = null);
+
+        /// <summary>
+        /// Asynchronously sends a message to a certain chat by its ID.
+        /// </summary>
+        /// <param name="chatId">The chat ID.</param>
+        /// <param name="buildable">The message to be sent.</param>
+        /// <param name="update">The incoming update.</param>
+        /// <param name="cts">The cancellation token source.</param>
+        /// <returns>A task representing the asynchronous operation with a <see cref="DeliveryResponse"/>.</returns>
+        public Task<DeliveryResponse> SendMessageToChatAsync(long chatId, IBuildableMessage buildable, ISignedUpdate update, CancellationTokenSource? cts = null);
 
         /// <summary>
         /// Asynchronously sends a string message to a certain chat by its ID.

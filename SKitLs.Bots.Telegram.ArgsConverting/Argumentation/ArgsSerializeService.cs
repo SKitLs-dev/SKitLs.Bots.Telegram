@@ -1,12 +1,14 @@
 ﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model;
+using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model.Converters;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Prototype;
 using SKitLs.Bots.Telegram.ArgedInteractions.Exceptions.External;
 using SKitLs.Bots.Telegram.ArgedInteractions.Exceptions.Inexternal;
-using SKitLs.Bots.Telegram.ArgedInteractions.resources.settings;
+using SKitLs.Bots.Telegram.ArgedInteractions.Settings;
 using SKitLs.Bots.Telegram.Core.Exceptions.External;
 using SKitLs.Bots.Telegram.Core.Exceptions.Inexternal;
 using SKitLs.Bots.Telegram.Core.Model;
 using SKitLs.Bots.Telegram.Core.Model.Building;
+using SKitLs.Bots.Telegram.Core.Model.Services;
 using System;
 using System.Reflection;
 
@@ -19,20 +21,8 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation
     /// <seealso cref="ConvertRule{TOut}"/>, <seealso cref="ConvertResult{TOut}"/>
     /// </para>
     /// </summary>
-    public class DefaultArgsSerializeService : IArgsSerializeService
-    {
-        private BotManager? _owner;
-
-        /// <inheritdoc/>
-        public BotManager Owner
-        {
-            get => _owner ?? throw new NullOwnerException(this);
-            set => _owner = value;
-        }
-        
-        /// <inheritdoc/>
-        public Action<object, BotManager>? OnCompilation => null;
-        
+    public class ArgsSerializeService : BotServiceBase, IArgsSerializeService
+    {   
         /// <summary>
         /// Gets or sets the list of <see cref="ConvertRule"/> objects, that holds
         /// converting rules for different types.
@@ -41,83 +31,35 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation
 
         /// <inheritdoc/>
         public ConvertRule<TOut> ResolveTypeRule<TOut>() where TOut : notnull => (ConvertRule<TOut>)ResolveTypeRule(typeof(TOut));
+
         /// <inheritdoc/>
         public ConvertRule<TOut>? FindRule<TOut>() where TOut : notnull => (ConvertRule<TOut>?)FindRule(typeof(TOut));
+        
         /// <inheritdoc/>
         public ConvertRule ResolveTypeRule(Type type) => FindRule(type) ?? throw new NotDefinedException(this, typeof(ConvertRule), type.Name);
+        
         /// <inheritdoc/>
         public ConvertRule? FindRule(Type type) => Rules.Find(r => r.ResultType == type);
+        
         /// <inheritdoc/>
         public bool IsDefined<TOut>() where TOut : notnull => FindRule<TOut>() is not null;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="DefaultArgsSerializeService"/> class
+        /// Initializes a new instance of <see cref="ArgsSerializeService"/> class
         /// with preset conversion rules for <see cref="int"/>, <see cref="long"/>,
         /// <see cref="float"/>, <see cref="double"/>, <see cref="bool"/> and <see cref="string"/>
         /// </summary>
-        public DefaultArgsSerializeService()
+        public ArgsSerializeService()
         {
-            Rules = new()
-            {
-                new ConvertRule<int>(
-                (input) =>
-                {
-                    if (string.IsNullOrEmpty(input))
-                        return ConvertResult<int>.NullInput();
-                    else if (!int.TryParse(input, out int res))
-                        return ConvertResult<int>.Incorrect();
-                    else
-                        return ConvertResult<int>.OK(res);
-                }),
-                new ConvertRule<long>(
-                (input) =>
-                {
-                    if (string.IsNullOrEmpty(input))
-                        return ConvertResult<long>.NullInput();
-                    else if (!long.TryParse(input, out long res))
-                        return ConvertResult<long>.Incorrect();
-                    else
-                        return ConvertResult<long>.OK(res);
-                }),
-                new ConvertRule<float>(
-                (input) =>
-                {
-                    if (string.IsNullOrEmpty(input))
-                        return ConvertResult<float>.NullInput();
-                    else if (!float.TryParse(input, out float res))
-                        return ConvertResult<float>.Incorrect();
-                    else
-                        return ConvertResult<float>.OK(res);
-                }),
-                new ConvertRule<double>(
-                (input) =>
-                {
-                    if (string.IsNullOrEmpty(input))
-                        return ConvertResult<double>.NullInput();
-                    else if (!double.TryParse(input, out double res))
-                        return ConvertResult<double>.Incorrect();
-                    else
-                        return ConvertResult<double>.OK(res);
-                }),
-                new ConvertRule<bool>(
-                (input) =>
-                {
-                    if (string.IsNullOrEmpty(input))
-                        return ConvertResult<bool>.NullInput();
-                    else if (!bool.TryParse(input, out bool res))
-                        return ConvertResult<bool>.Incorrect();
-                    else
-                        return ConvertResult<bool>.OK(res);
-                }),
-                new ConvertRule<string>(
-                (input) =>
-                {
-                    if (string.IsNullOrEmpty(input))
-                        return ConvertResult<string>.NullInput();
-                    else
-                        return ConvertResult<string>.OK(input);
-                })
-            };
+            Rules =
+            [
+                new BoolConverter(),
+                new DoubleConverter(),
+                new FloatConverter(),
+                new IntConverter(),
+                new LongConverter(),
+                new StringConverter(),
+            ];
         }
 
         /// <inheritdoc/>
@@ -142,16 +84,14 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation
         /// <inheritdoc/>
         public ConvertResult<TOut> Deserialize<TOut>(string input, char splitToken = ';') where TOut : notnull, new()
             => DeserializeTo<TOut>(input, new(), splitToken);
+
         /// <inheritdoc/>
         public ConvertResult<TOut> DeserializeTo<TOut>(string input, TOut instance, char splitToken) where TOut : notnull
         {
-            if (input is null) throw new ConvertNullInputException(this);
-            List<string> args = input.Split(splitToken).ToList();
-
-            //ConvertRule<TOut>? rule = ResolveTypeRule<TOut>();
-            //if (rule is null)
-            //    throw new Exception();
-
+            if (input is null)
+                throw new ConvertNullInputException(this);
+            
+            List<string> args = [.. input.Split(splitToken)];
             var propsLinks = typeof(TOut).GetProperties()
                 .Where(x => x.GetCustomAttribute<BotActionArgumentAttribute>() is not null)
                 .ToDictionary(x => x.GetCustomAttribute<BotActionArgumentAttribute>()!.ArgIndex);
@@ -170,24 +110,6 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation
                     if (convertRes.ResultType == ConvertResultType.Ok)
                         prop.SetValue(instance, convertRes.GetValue());
                     else _exceptionMes += $"{convertRes.ResultMessage}\n";
-
-                    //dynamic convertRule = Convert.ChangeType(
-                    //    GetType().GetMethod(nameof(ResolveTypeRule))!
-                    //    .MakeGenericMethod(propType).Invoke(this, null),
-                    //    typeof(ConvertRule<>).MakeGenericType(propType))!;
-
-                    //var convertRes = convertRule.Converter(args[i]);
-                    //if (convertRes.ResultType == ConvertResultType.Ok)
-                    //    prop.SetValue(instance, convertRes.Value);
-                    //else _exceptionMes += $"{convertRes.Message}\n";
-
-                    //dynamic? result = Convert.ChangeType(GetType().GetMethod(nameof(Unpack))!
-                    //    .MakeGenericMethod(propType).Invoke(this, new[] { args[i] }),
-                    //    typeof(ConvertResult<>).MakeGenericType(propType));
-
-                    //if (result is not null && result.ResultType == ConvertResultType.Ok)
-                    //    prop.SetValue(instance, result.Value);
-                    //else _exceptionMes += $"{result?.Message ?? "Interior exception"}\n";
                 }
 
             return string.IsNullOrEmpty(_exceptionMes)
@@ -216,6 +138,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation
 
         /// <inheritdoc/>
         public ConvertResult<TOut> Unpack<TOut>(string input) where TOut : notnull => ResolveTypeRule<TOut>().Converter(input);
+        
         /// <inheritdoc/>
         /// <remarks>
         /// Supports <see cref="IArgPackable"/>.

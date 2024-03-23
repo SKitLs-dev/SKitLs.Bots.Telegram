@@ -50,7 +50,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Model
         /// <param name="label">The string that appears on menu's button, presenting this action.</param>
         /// <param name="action">The executable action that is invoked on trigger.</param>
         /// <param name="splitToken">The specific character used for separating arguments from each other.</param>
-        public BotArgedCallback(string @base, string label, BotArgedInteraction<TArg, SignedCallbackUpdate> action, char splitToken = ';') : base(@base, label)
+        public BotArgedCallback(string @base, string label, BotArgedInteraction<TArg, SignedCallbackUpdate> action, char splitToken = ';') : base(@base, label, null!)
         {
             Action = MiddleAction;
             ArgAction = action;

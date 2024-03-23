@@ -40,7 +40,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Model
         /// <param name="base">The string used to identify this action.</param>
         /// <param name="action">The executable action that is invoked on trigger.</param>
         /// <param name="splitToken">The specific character used for separating arguments from each other.</param>
-        public BotArgedCommand(string @base, BotArgedInteraction<TArg, SignedMessageTextUpdate> action, char splitToken = ' ') : base(@base)
+        public BotArgedCommand(string @base, BotArgedInteraction<TArg, SignedMessageTextUpdate> action, char splitToken = ' ') : base(@base, null!)
         {
             Action = MiddleAction;
             ArgAction = action;

@@ -21,6 +21,7 @@
             Converter = converter;
         }
 
+        /// <inheritdoc/>
         public override ConvertResult Convert(string input) => Converter(input);
     }
 }

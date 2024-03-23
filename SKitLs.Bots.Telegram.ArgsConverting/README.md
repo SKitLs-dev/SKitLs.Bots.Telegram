@@ -1,6 +1,8 @@
-# SKitLs.Bots.Telegram.ArgedInteractions ![Static Badge](https://img.shields.io/badge/Follow%20GitHub%20-%20black?logo=github&link=https%3A%2F%2Fgithub.com%2FSargeras02%2FSKitLs.Bots.Telegram.git) ![GitHub](https://img.shields.io/github/license/Sargeras02/SKitLs.Bots.Telegram) ![Nuget](https://img.shields.io/nuget/v/SKitLs.Bots.Telegram.ArgedInteractions) [![CodeFactor](https://www.codefactor.io/repository/github/sargeras02/skitls.bots.telegram/badge)](https://www.codefactor.io/repository/github/sargeras02/skitls.bots.telegram)
+# SKitLs.Bots.Telegram.ArgedInteractions ![Static Badge](https://img.shields.io/badge/Follow%20GitHub%20-%20black?logo=github&link=https%3A%2F%2Fgithub.com%2FSargeras02%2FSKitLs.Bots.Telegram.git) ![GitHub](https://img.shields.io/github/license/Sargeras02/SKitLs.Bots.Telegram) ![Nuget](https://img.shields.io/nuget/v/SKitLs.Bots.Telegram.ArgedInteractions) [![CodeFactor](https://www.codefactor.io/repository/github/skitls-dev/skitls.bots.telegram/badge)](https://www.codefactor.io/repository/github/skitls-dev/skitls.bots.telegram)
 
-An extension project built upon the SKitLs.Bots.Telegram.Core Framework.
+*README version: 2024.03.23*
+
+An extension project built upon the ![SKitLs.Bots.Telegram.Core Framework](https://github.com/SKitLs-dev/SKitLs.Bots.Telegram).
 
 Provides a structured and efficient mechanism for the serialization and deserialization of textual data
 
@@ -41,12 +43,7 @@ Key Features:
 
 ## Setup
 
-### Requirements
-
-- SKitLs.Bots.Telegram.Core 2.3.0 or higher
-- Telegram.Bot 19.0.0 or higher
-
-Before running the project, please ensure that you have the following dependencies installed and properly configured in your development environment.
+Ensure getting ![localization packs](https://github.com/SKitLs-dev/SKitLs.Bots.Telegram/tree/master/locals) (\*.ai.\*).
 
 ### Installation
 
@@ -87,8 +84,6 @@ Before running the project, please ensure that you have the following dependenci
 Please note that each method may have specific requirements or configurations that need to be followed for successful installation.
 Refer to the project's documentation for any additional steps or considerations.
 
-**Do not forget to download and install appropriate localization pack from GitHub.**
-
 ## Usage
 
 ### Registering Custom Serialization Rule
@@ -107,6 +102,28 @@ argsSerializeService.AddRule<MyCustomDataType>(input =>
     // ... (implementation details)
     return ConvertResult<MyCustomDataType>.Success(customDataInstance);
 });
+```
+
+<-- or (since v1.5.0) -->
+
+```C#
+public class MyCustomDataTypeConverter : ConverterBase<MyCustomDataType>
+{
+    /// <inheritdoc/>
+    public override ConvertResult<MyCustomDataType> Converter(string input)
+    {
+        if (string.IsNullOrEmpty(input))
+            return ConvertResult<MyCustomDataType>.NullInput();
+
+        MyCustomDataType customDataInstance;
+        // Custom logic to convert the string input into MyCustomDataType
+        // ... (implementation details)
+        if (customDataInstance is null)
+            return ConvertResult<MyCustomDataType>.Incorrect();
+        else
+            return ConvertResult<MyCustomDataType>.OK(customDataInstance);
+    }
+}
 ```
 
 ### Creating an Argumented Action (ex. Callback)
@@ -153,7 +170,7 @@ Thank you for considering contributing to our project.
 
 This project is distributed under the terms of the MIT License.
 
-Copyright (C) SKitLs 2023
+Copyright (C) 2023-2024, SKitLs
 
 ## Developer contact
 

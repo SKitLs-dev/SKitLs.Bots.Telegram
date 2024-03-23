@@ -1,5 +1,6 @@
 ﻿using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model;
 using SKitLs.Bots.Telegram.Core.Model.Building;
+using SKitLs.Bots.Telegram.Core.Model.Services;
 
 namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation
 {
@@ -10,7 +11,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation
     /// <seealso cref="ConvertRule{TOut}"/>, <seealso cref="ConvertResult{TOut}"/>
     /// </para>
     /// </summary>
-    public interface IArgsSerializeService : IOwnerCompilable
+    public interface IArgsSerializeService : IBotService
     {
         /// <summary>
         /// Gets the conversion rule <see cref="ConvertResult{TOut}"/> for the specified

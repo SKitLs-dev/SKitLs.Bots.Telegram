@@ -31,6 +31,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model
         /// <param name="resultType">The type of the conversion result.</param>
         /// <param name="message">A message that describes the conversion result.</param>
         public ConvertResult(ConvertResultType resultType, string? message = null) : base(resultType, message) { }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ConvertResult{TOut}"/> class with the specified data.
         /// </summary>
@@ -41,6 +42,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Argumentation.Model
         public ConvertResult(TOut value, ConvertResultType resultType = ConvertResultType.Ok, string? message = null)
             : this(resultType, message) => Value = value ?? throw new ArgumentNullException(nameof(value));
 
+        /// <inheritdoc/>
         public override object GetValue() => Value;
 
         /// <summary>

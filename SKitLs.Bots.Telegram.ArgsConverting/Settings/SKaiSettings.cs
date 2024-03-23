@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace SKitLs.Bots.Telegram.ArgedInteractions.resources.settings
+namespace SKitLs.Bots.Telegram.ArgedInteractions.Settings
 {
     /// <summary>
     /// The <see cref="SKaiSettings"/> class provides settings related to the SKitLs.Bots.Telegram.ArgedInteractions extension.
@@ -12,9 +12,10 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.resources.settings
         /// Default value is "ai".
         /// </summary>
         public static string ExtensionPrefix { get; set; } = "ai";
-        
+
         // TODO: Extract .display
         private static string _argumentsCountMissMatchLK = "display.ArgumentsCountMissMatch";
+
         /// <summary>
         /// Gets or sets the localization key for the "Arguments Count Mismatch" error message.
         /// This key is used to retrieve the corresponding error message string for display.

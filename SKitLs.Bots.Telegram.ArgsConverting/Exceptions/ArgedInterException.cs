@@ -1,4 +1,4 @@
-﻿using SKitLs.Bots.Telegram.ArgedInteractions.resources.settings;
+﻿using SKitLs.Bots.Telegram.ArgedInteractions.Settings;
 using SKitLs.Bots.Telegram.Core.Exceptions;
 
 namespace SKitLs.Bots.Telegram.ArgedInteractions.Exceptions

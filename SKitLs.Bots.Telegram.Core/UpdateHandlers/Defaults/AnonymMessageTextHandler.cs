@@ -33,10 +33,12 @@ namespace SKitLs.Bots.Telegram.Core.UpdateHandlers.Defaults
         /// Initializes a new instance of the <see cref="AnonymMessageTextHandler"/> class
         /// with the default implementation of managers (<see cref="LinearActionManager{TUpdate}"/>).
         /// </summary>
-        public AnonymMessageTextHandler()
+        /// <param name="commandsManager">The action manager used for handling incoming commands.</param>
+        /// <param name="textInputManager">The action manager used for handling incoming text.</param>
+        public AnonymMessageTextHandler(IActionManager<AnonymMessageTextUpdate>? commandsManager = null, IActionManager<AnonymMessageTextUpdate>? textInputManager = null)
         {
-            CommandsManager = new LinearActionManager<AnonymMessageTextUpdate>();
-            TextInputManager = new LinearActionManager<AnonymMessageTextUpdate>();
+            CommandsManager = commandsManager ?? new LinearActionManager<AnonymMessageTextUpdate>();
+            TextInputManager = textInputManager ?? new LinearActionManager<AnonymMessageTextUpdate>();
         }
 
         /// <inheritdoc/>

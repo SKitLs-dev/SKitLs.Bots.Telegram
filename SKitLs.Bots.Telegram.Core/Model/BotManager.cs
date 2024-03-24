@@ -178,14 +178,14 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// collected via <see cref="IBotActionsHolder"/> interface.
         /// </summary>
         public List<IBotAction> ActionsBasket { get; internal set; }
+
         /// <summary>
         /// Tries to find certain <see cref="IBotAction"/> by its id. Otherwise throws an Exception.
         /// </summary>
         /// <param name="actionId"><see cref="IBotAction"/>'s id.</param>
         /// <returns>Declared <see cref="IBotAction"/> or <see cref="NotDefinedException"/> if doesn't exist.</returns>
         /// <exception cref="NotDefinedException"></exception>
-        public IBotAction GetDeclaredAction(string actionId) => ActionsBasket
-            .Find(x => x.ActionId == actionId)
+        public IBotAction GetDeclaredAction(string actionId) => ActionsBasket.Find(x => x.ActionId == actionId)
             ?? throw new NotDefinedException(GetType(), typeof(IBotAction), actionId);
 
         /// <summary>
@@ -220,6 +220,10 @@ namespace SKitLs.Bots.Telegram.Core.Model
                     if (cmpVal is IOwnerCompilable oc)
                         oc.ReflectiveCompile(cmpVal, this);
                 });
+
+            ChatHandlers.Values.Where(x => x is IOwnerCompilable)
+                .ToList()
+                .ForEach(service => (service as IOwnerCompilable)!.ReflectiveCompile(service, this));
 
             Services.Values.Where(x => x is IOwnerCompilable)
                 .ToList()

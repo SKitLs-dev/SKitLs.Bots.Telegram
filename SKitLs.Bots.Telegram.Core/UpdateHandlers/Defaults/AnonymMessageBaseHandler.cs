@@ -30,9 +30,10 @@ namespace SKitLs.Bots.Telegram.Core.UpdateHandlers.Defaults
         /// Initializes a new instance of the <see cref="AnonymMessageBaseHandler"/> class
         /// with the default implementation of several sub-handlers.
         /// </summary>
-        public AnonymMessageBaseHandler()
+        /// <param name="textMessageUpdateHandler">The sub-handler used for handling incoming text messages.</param>
+        public AnonymMessageBaseHandler(IUpdateHandlerBase<AnonymMessageTextUpdate>? textMessageUpdateHandler = null)
         {
-            TextMessageUpdateHandler = new AnonymMessageTextHandler();
+            TextMessageUpdateHandler = textMessageUpdateHandler ?? new AnonymMessageTextHandler();
         }
 
         /// <inheritdoc/>

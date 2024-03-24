@@ -31,9 +31,10 @@ namespace SKitLs.Bots.Telegram.Core.UpdateHandlers.Defaults
         /// Initializes a new instance of the <see cref="SignedMessageBaseHandler"/> class
         /// with default implementations of several sub-handlers.
         /// </summary>
-        public SignedMessageBaseHandler()
+        /// <param name="textMessageUpdateHandler">The sub-handler used for handling incoming text messages.</param>
+        public SignedMessageBaseHandler(IUpdateHandlerBase<SignedMessageTextUpdate>? textMessageUpdateHandler = null)
         {
-            TextMessageUpdateHandler = new SignedMessageTextHandler();
+            TextMessageUpdateHandler = textMessageUpdateHandler ?? new SignedMessageTextHandler();
         }
 
         /// <inheritdoc/>

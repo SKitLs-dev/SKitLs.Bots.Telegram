@@ -34,10 +34,12 @@ namespace SKitLs.Bots.Telegram.Core.UpdateHandlers.Defaults
         /// Initializes a new instance of the <see cref="SignedMessageTextHandler"/> class
         /// with default implementations of action managers (<see cref="LinearActionManager{TUpdate}"/>).
         /// </summary>
-        public SignedMessageTextHandler()
+        /// <param name="commandsManager">The action manager used for handling incoming commands.</param>
+        /// <param name="textInputManager">The action manager used for handling incoming text.</param>
+        public SignedMessageTextHandler(IActionManager<SignedMessageTextUpdate>? commandsManager = null, IActionManager<SignedMessageTextUpdate>? textInputManager = null)
         {
-            CommandsManager = new LinearActionManager<SignedMessageTextUpdate>();
-            TextInputManager = new LinearActionManager<SignedMessageTextUpdate>();
+            CommandsManager = commandsManager ?? new LinearActionManager<SignedMessageTextUpdate>();
+            TextInputManager = textInputManager ?? new LinearActionManager<SignedMessageTextUpdate>();
         }
 
         /// <inheritdoc/>

@@ -27,9 +27,10 @@ namespace SKitLs.Bots.Telegram.Core.UpdateHandlers.Defaults
         /// Initializes a new instance of the <see cref="CallbackHandler"/> class
         /// with the default implementation of the manager.
         /// </summary>
-        public CallbackHandler()
+        /// <param name="callbackManager">The actions manager used for handling incoming callbacks.</param>
+        public CallbackHandler(IActionManager<SignedCallbackUpdate>? callbackManager = null)
         {
-            CallbackManager = new LinearActionManager<SignedCallbackUpdate>();
+            CallbackManager = callbackManager ?? new LinearActionManager<SignedCallbackUpdate>();
         }
 
         /// <inheritdoc/>

@@ -47,15 +47,17 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Menus.Inline
         /// resolving the <see cref="IArgsSerializeService"/> from the specified <see cref="BotManager"/> instance.
         /// </summary>
         /// <param name="executer">The <see cref="BotManager"/> instance, used for resolving services.</param>
+        /// <param name="localize">Optional. Specifies whether the menu should automatically localize its buttons.</param>
         /// <param name="columnsCount">The number of columns in the menu.</param>
-        public InlineMenu(BotManager executer, int columnsCount = 1) : this(executer.ResolveService<IArgsSerializeService>(), columnsCount) { }
+        public InlineMenu(BotManager executer, bool localize = false, int columnsCount = 1) : this(executer.ResolveService<IArgsSerializeService>(), localize, columnsCount) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InlineMenu"/> class with a specified <see cref="IArgsSerializeService"/>.
         /// </summary>
         /// <param name="serializer">The <see cref="IArgsSerializeService"/> instance used for serializing menu buttons.</param>
+        /// <param name="localize">Optional. Specifies whether the menu should automatically localize its buttons.</param>
         /// <param name="columnsCount">The number of columns in the menu.</param>
-        public InlineMenu(IArgsSerializeService serializer, int columnsCount = 1) : base(columnsCount) => Serializer = serializer;
+        public InlineMenu(IArgsSerializeService serializer, bool localize = false, int columnsCount = 1) : base(columnsCount) => Serializer = serializer;
 
         private InlineMenu(List<IBuildableContent<IInlineButton>> buttons, IArgsSerializeService? serializer, int columnsCount) : base(columnsCount)
         {

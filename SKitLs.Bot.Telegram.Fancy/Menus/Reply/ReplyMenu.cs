@@ -27,17 +27,20 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Menus.Reply
         /// </summary>
         /// <param name="localize">Optional. Specifies whether the menu should automatically localize its buttons.</param>
         /// <param name="columnsCount">The number of columns in the menu. Default is <c>1</c>.</param>
-        public ReplyMenu(bool localize = false, int columnsCount = 1) : base(columnsCount)
-        {
-            AutomaticallyLocalize = localize;
-        }
+        public ReplyMenu(bool localize = false, int columnsCount = 1) : this(null, localize, columnsCount)
+        { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplyMenu"/> class with specified buttons.
         /// </summary>
         /// <param name="buttons">The list of buttons to add to the menu.</param>
+        /// <param name="localize">Optional. Specifies whether the menu should automatically localize its buttons.</param>
         /// <param name="columnsCount">The number of columns in the menu. Default is <c>1</c>.</param>
-        public ReplyMenu(List<IBuildableContent<IReplyButton>> buttons, int columnsCount = 1) : base(columnsCount) => Buttons = buttons;
+        public ReplyMenu(List<IBuildableContent<IReplyButton>>? buttons, bool localize = false, int columnsCount = 1) : base(columnsCount)
+        {
+            AutomaticallyLocalize = localize;
+            Buttons = buttons ?? [];
+        }
 
         /// <summary>
         /// Adds a new button to the menu.

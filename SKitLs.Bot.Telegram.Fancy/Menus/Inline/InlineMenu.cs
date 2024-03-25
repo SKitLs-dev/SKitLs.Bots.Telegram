@@ -8,6 +8,7 @@ using SKitLs.Bots.Telegram.Core.Interactions;
 using SKitLs.Bots.Telegram.Core.Interactions.Defaults;
 using SKitLs.Bots.Telegram.Core.Model;
 using SKitLs.Bots.Telegram.Core.UpdatesCasting.Signed;
+using SKitLs.Utils.LocalLoggers.Model;
 using System.Collections;
 
 namespace SKitLs.Bots.Telegram.AdvancedMessages.Menus.Inline
@@ -33,16 +34,6 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Menus.Inline
         public IArgsSerializeService? Serializer { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InlineMenu"/> class with default data.
-        /// </summary>
-        /// <param name="localize">Optional. Specifies whether the menu should automatically localize its buttons.</param>
-        /// <param name="columnsCount">The number of columns in the menu.</param>
-        public InlineMenu(bool localize = false, int columnsCount = 1) : base(columnsCount)
-        {
-            AutomaticallyLocalize = localize;
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="InlineMenu"/> class,
         /// resolving the <see cref="IArgsSerializeService"/> from the specified <see cref="BotManager"/> instance.
         /// </summary>
@@ -57,7 +48,17 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Menus.Inline
         /// <param name="serializer">The <see cref="IArgsSerializeService"/> instance used for serializing menu buttons.</param>
         /// <param name="localize">Optional. Specifies whether the menu should automatically localize its buttons.</param>
         /// <param name="columnsCount">The number of columns in the menu.</param>
-        public InlineMenu(IArgsSerializeService serializer, bool localize = false, int columnsCount = 1) : base(columnsCount) => Serializer = serializer;
+        public InlineMenu(IArgsSerializeService serializer, bool localize = false, int columnsCount = 1) : this(localize, columnsCount) => Serializer = serializer;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InlineMenu"/> class with default data.
+        /// </summary>
+        /// <param name="localize">Optional. Specifies whether the menu should automatically localize its buttons.</param>
+        /// <param name="columnsCount">The number of columns in the menu.</param>
+        public InlineMenu(bool localize = false, int columnsCount = 1) : base(columnsCount)
+        {
+            AutomaticallyLocalize = localize;
+        }
 
         private InlineMenu(List<IBuildableContent<IInlineButton>> buttons, IArgsSerializeService? serializer, int columnsCount) : base(columnsCount)
         {

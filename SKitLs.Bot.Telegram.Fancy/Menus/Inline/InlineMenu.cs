@@ -8,7 +8,6 @@ using SKitLs.Bots.Telegram.Core.Interactions;
 using SKitLs.Bots.Telegram.Core.Interactions.Defaults;
 using SKitLs.Bots.Telegram.Core.Model;
 using SKitLs.Bots.Telegram.Core.UpdatesCasting.Signed;
-using SKitLs.Utils.LocalLoggers.Model;
 using System.Collections;
 
 namespace SKitLs.Bots.Telegram.AdvancedMessages.Menus.Inline

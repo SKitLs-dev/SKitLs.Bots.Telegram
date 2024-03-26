@@ -7,9 +7,15 @@
     <Description>Offers enhanced methods for sending messages in Telegram bots.
 
 An extension project built upon the SKitLs.Bots.Telegram.Core Framework.</Description>
-    <Version>3.0.2</Version>
+    <Version>3.0.3</Version>
     <FileVersion>$(AssemblyVersion)</FileVersion>
-    <PackageReleaseNotes>(~) Fixed: InlineMenu ctor localize</PackageReleaseNotes>
+    <PackageReleaseNotes>(+) Added Extension: ITelegramMessage.Edit()
+(+) Added Extension: Delivery Extensions AnswerAsync() for
++ ITelegramMessage
++ IBuildableMessage
++ IOutputMessage
+(~) Updated: since .Core 3.1.2 Resolving Strings behavior changed
+(~) Minor internal updates</PackageReleaseNotes>
     <Title>$(AssemblyName)</Title>
     <Authors>SKitLs, Sargeras02</Authors>
     <Copyright>Copyright (C) 2023-2024, SKitLs</Copyright>
@@ -17,7 +23,7 @@ An extension project built upon the SKitLs.Bots.Telegram.Core Framework.</Descri
     <PackageIcon>libIcon_AM.png</PackageIcon>
     <PackageTags>Telegram, Bots, Messaging, Formatting</PackageTags>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <AssemblyVersion>3.0.2</AssemblyVersion>
+    <AssemblyVersion>3.0.3</AssemblyVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -32,8 +38,8 @@ An extension project built upon the SKitLs.Bots.Telegram.Core Framework.</Descri
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SKitLs.Bots.Telegram.ArgedInteractions" Version="1.5.2" />
-    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="3.1.1" />
+    <PackageReference Include="SKitLs.Bots.Telegram.ArgedInteractions" Version="1.5.3" />
+    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="3.1.2" />
     <PackageReference Include="Telegram.Bot" Version="19.0.0" />
   </ItemGroup>
 

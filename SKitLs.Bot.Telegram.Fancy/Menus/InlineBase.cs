@@ -19,8 +19,9 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Menus
         /// <exception cref="ArgumentOutOfRangeException">Thrown when attempting to set a value less than 1.</exception>
         public int ColumnsCount
         {
+            // TODO Exception
             get => _columnsCount;
-            set => _columnsCount = value > 0 ? value : throw new ArgumentOutOfRangeException(nameof(ColumnsCount));
+            set => _columnsCount = value > 0 ? value : throw new ArgumentOutOfRangeException($"Prop: {nameof(ColumnsCount)}; Value: {value}");
         }
 
         /// <summary>

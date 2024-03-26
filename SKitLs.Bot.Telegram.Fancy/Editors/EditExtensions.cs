@@ -9,6 +9,22 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Editors
     public static class EditExtensions
     {
         /// <summary>
+        /// Creates a new edit message with the specified content and message ID obtained from the provided update.
+        /// </summary>
+        /// <param name="message">The raw content of the message.</param>
+        /// <param name="update">The update triggering the message.</param>
+        /// <returns>A buildable edit message.</returns>
+        public static IEditWrapper Edit(this ITelegramMessage message, IMessageTriggered update) => new EditWrapper(message, update.TriggerMessageId);
+
+        /// <summary>
+        /// Creates a new edit message with the specified content and message ID.
+        /// </summary>
+        /// <param name="message">The raw content of the message.</param>
+        /// <param name="editMessageId">The ID of the message to edit.</param>
+        /// <returns>A buildable edit message.</returns>
+        public static IEditWrapper Edit(this ITelegramMessage message, int editMessageId) => new EditWrapper(message, editMessageId);
+
+        /// <summary>
         /// Creates a new buildable edit message with the specified raw content and message ID obtained from the provided update.
         /// </summary>
         /// <param name="buildable">The raw content of the message.</param>

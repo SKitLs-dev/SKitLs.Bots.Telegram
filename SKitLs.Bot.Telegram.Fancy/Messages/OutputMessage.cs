@@ -101,7 +101,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Messages
         /// <param name="allowSendingWithoutReply">A value indicating whether to allow sending the message without a reply.</param>
         /// <returns>The current instance with the updated reply settings.</returns>
         public OutputMessage<TMessage> ReplyTo(Message replyToMessage, bool allowSendingWithoutReply = true) => ReplyTo(replyToMessage.MessageId, allowSendingWithoutReply);
-        
+
         /// <summary>
         /// Sets the message to be a reply to a specified message ID.
         /// </summary>

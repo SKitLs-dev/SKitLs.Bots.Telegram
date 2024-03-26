@@ -50,7 +50,7 @@ namespace SKitLs.Bots.Telegram.AdvancedMessages.Model
             var propValue = localizedProperty?.GetValue(result)?.ToString();
             if (update is not null && localizedProperty is not null && propValue is not null)
             {
-                var localized = update.Owner.ResolveBotString(propValue, FormatArgsList);
+                var localized = update.Owner.ResolveBotString(propValue, FormatArgsList) ?? propValue;
                 localizedProperty.SetValue(result, localized);
             }
             return result;

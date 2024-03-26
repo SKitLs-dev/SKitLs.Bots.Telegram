@@ -1,24 +1,46 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Title>$(AssemblyName)</Title>
-    <Version>1.6.1</Version>
+    <Version>2.0.0</Version>
     <Authors>SKtiLs, Sargeras02</Authors>
     <Copyright>Copyright (C) 2023-2024, SKtiLs</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <FileVersion>$(AssemblyVersion)</FileVersion>
     <AssemblyVersion>1.6.1</AssemblyVersion>
-    <PackageReleaseNotes>(+) Added: IBotPage.PageOpened Async Event
-(~) Upadted: PageNavMenu.Actions (LabeledData -&gt; InlineButton)
+    <PackageReleaseNotes>(!) Menu Manager Rework
+MenuManager was splitted into: MenuService + SessionsManager 
+~ Updated: IMenuManager -&gt; IMenuService : IBotService
+~ Updated: MenuManager -&gt; MenuService : BotServiceBase
++ Added: ISessionsManager / SessionsManager (handles sessions management data)
+~ Updated: HandleSessionExpiredAsync moved to static class MenusHelper
++ Added: abstract class PageBase
++ Added: class StaticPage : PageBase (to display static content)
++ Added: abstract class WidgetPageBase : PageBase
+~ Rework: class WidgetPage : WidgetPageBase
++ Added: class LocalizedPage : WidgetPageBase (to display localized text; no implemented formatting)
++ Added: class DynamicLocalPage : LocalizedPage (to display localized text; implemented formatting funcs)
 
-(-) Obsolete: MenuNavigatorArg
-(-) Obsolete: StaticPage
+(!) Pages Rework
+- Removed: IBotPage.Menu
+~ Changed: IBotPage string GetLabel() -&gt; Task&lt;string&gt; BuildLabelAsync()
+~ Changed: IBotPage.BuildMessageAsync() Task&lt;IOutputMessage&gt; -&gt; Task&lt;ITelegramMessage&gt;
 
-(~) Updated: XML Documentation
-(~) Updated: License</PackageReleaseNotes>
+(+) Added: delegates DynamicPageStringTask, DynamicPageStringsTask, DynamicPageMessageTask
+(+) Added: DefaultBackCallback
+(+) Added: DefaultOpenPageCallback
+(-) Removed Obsolete: MenuNavigatorArg
+(-) Removed Obsolete: StaticPage
+(~) Updated: namespaces
+(~) Updated: .Core, .ArgedInteractions, .AdvancedMessages namespaces update
+(~) Updated: XML-Documentation
+(~) Updated: README
+
+(+) Added: PageNavMenu.AutomaticallyLocalize
+NOTE: PageMenus should be reworked in further updates</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageIcon>libIcon_PN.png</PackageIcon>
@@ -32,11 +54,6 @@ An extension project built upon the SKitLs.Bots.Telegram.Core Framework.</Descri
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include=".obsolete\MenuNavigatorArg.cs" />
-    <Compile Include=".obsolete\StaticPage.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Exceptions\" />
   </ItemGroup>
 
@@ -48,9 +65,9 @@ An extension project built upon the SKitLs.Bots.Telegram.Core Framework.</Descri
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SKitLs.Bots.Telegram.AdvancedMessages" Version="2.2.1" />
-    <PackageReference Include="SKitLs.Bots.Telegram.ArgedInteractions" Version="1.4.3" />
-    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.4.0" />
+    <PackageReference Include="SKitLs.Bots.Telegram.AdvancedMessages" Version="3.0.3" />
+    <PackageReference Include="SKitLs.Bots.Telegram.ArgedInteractions" Version="1.5.3" />
+    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="3.1.2" />
   </ItemGroup>
 
   <ItemGroup>

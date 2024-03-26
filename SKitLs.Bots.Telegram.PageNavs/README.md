@@ -1,4 +1,6 @@
-# SKitLs.Bots.Telegram.PageNavs ![Static Badge](https://img.shields.io/badge/Follow%20GitHub%20-%20black?logo=github&link=https%3A%2F%2Fgithub.com%2FSargeras02%2FSKitLs.Bots.Telegram.git) ![GitHub](https://img.shields.io/github/license/Sargeras02/SKitLs.Bots.Telegram) ![Nuget](https://img.shields.io/nuget/v/SKitLs.Bots.Telegram.PageNavs) [![CodeFactor](https://www.codefactor.io/repository/github/sargeras02/skitls.bots.telegram/badge)](https://www.codefactor.io/repository/github/sargeras02/skitls.bots.telegram)
+# SKitLs.Bots.Telegram.PageNavs ![Static Badge](https://img.shields.io/badge/Follow%20GitHub%20-%20black?logo=github&link=https%3A%2F%2Fgithub.com%2FSargeras02%2FSKitLs.Bots.Telegram.git) ![GitHub](https://img.shields.io/github/license/Sargeras02/SKitLs.Bots.Telegram) ![Nuget](https://img.shields.io/nuget/v/SKitLs.Bots.Telegram.PageNavs) [![CodeFactor](https://www.codefactor.io/repository/github/skitls-dev/skitls.bots.telegram/badge)](https://www.codefactor.io/repository/github/skitls-dev/skitls.bots.telegram)
+
+_README version: 2023_
 
 An extension project built upon the SKitLs.Bots.Telegram.Core Framework.
 
@@ -25,13 +27,7 @@ SKitLs.Bots.Telegram.PageNavs library offers a set of tools to create custom men
 
 ## Setup
 
-### Requirements
-
-Before running the project, please ensure that you have the following dependencies installed and properly configured in your development environment.
-
-- SKitLs.Bots.Telegram.Core 2.1.3 or higher
-- SKitLs.Bots.Telegram.ArgedInteraction 1.3.3 or higher
-- SKitLs.Bots.Telegram.AdvancedMessages 2.0.1 or higher
+Ensure getting [localization packs](https://github.com/SKitLs-dev/SKitLs.Bots.Telegram/tree/master/locals) (\*.pn.\*).
 
 ### Installation
 
@@ -71,8 +67,6 @@ Before running the project, please ensure that you have the following dependenci
 
 Please note that each method may have specific requirements or configurations that need to be followed for successful installation.
 Refer to the project's documentation for any additional steps or considerations.
-
-**Do not forget to download and install appropriate localization pack from GitHub.**
 
 ## Usage
 
@@ -138,7 +132,7 @@ Thank you for considering contributing to our project.
 
 This project is distributed under the terms of the MIT License.
 
-Copyright (C) SKitLs 2023
+Copyright (C) 2023-2024, SKitLs
 
 ## Developer contact
 

@@ -1,6 +1,6 @@
-﻿using SKitLs.Bots.Telegram.PageNavs.Prototype;
+﻿using SKitLs.Bots.Telegram.PageNavs.Model;
 
-namespace SKitLs.Bots.Telegram.PageNavs.resources.settings
+namespace SKitLs.Bots.Telegram.PageNavs.Settings
 {
     /// <summary>
     /// Represents special settings class for <c>*.PageNavs</c> project.
@@ -13,17 +13,17 @@ namespace SKitLs.Bots.Telegram.PageNavs.resources.settings
         public static string LibraryKeyPrefix { get; set; } = "pn.";
 
         /// <summary>
-        /// A system callback name, used for <see cref="IMenuManager.OpenPageCallback"/>.
+        /// A system callback name, used for <see cref="IMenuService.OpenPageCallback"/>.
         /// </summary>
         public static string OpenCallBase => "OpenMenuPage";
         /// <summary>
-        /// A system callback name, used for <see cref="IMenuManager.BackCallback"/>.
+        /// A system callback name, used for <see cref="IMenuService.BackCallback"/>.
         /// </summary>
         public static string BackCallBase => "BackMenuPage";
 
         private static string _backButtonLK = "display.BackButton";
         /// <summary>
-        /// A system callback label key, used for <see cref="IMenuManager.BackCallback"/>.
+        /// A system callback label key, used for <see cref="IMenuService.BackCallback"/>.
         /// </summary>
         public static string BackButtonLocalKey
         {
@@ -33,7 +33,7 @@ namespace SKitLs.Bots.Telegram.PageNavs.resources.settings
 
         private static string _exitButtonLK = "display.ExitButton";
         /// <summary>
-        /// A system callback label key, used for <see cref="IMenuManager.OpenPageCallback"/>.
+        /// A system callback label key, used for <see cref="IMenuService.OpenPageCallback"/>.
         /// </summary>
         public static string ExitButtonLocalKey
         {

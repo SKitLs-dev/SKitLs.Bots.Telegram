@@ -30,7 +30,10 @@ namespace SKitLs.Bots.Telegram.Core.Services.Defaults
         public string LocalsPath => Localizator.LocalsPath;
 
         /// <inheritdoc/>
-        public string ResolveString(LangKey lang, string key, params string?[] format) => Localizator.ResolveString(lang, key, format);
+        public string? ResolveString(LangKey lang, string key, params string?[] format) => Localizator.ResolveString(lang, key, format);
+
+        /// <inheritdoc/>
+        public string ResolveStringOrFallback(LangKey lang, string key, params string?[] format) => Localizator.ResolveStringOrFallback(lang, key, format);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalizatorService"/> class with the specified localizator.

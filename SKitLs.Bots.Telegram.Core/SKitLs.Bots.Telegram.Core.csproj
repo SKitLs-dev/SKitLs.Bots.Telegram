@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>3.1.1</AssemblyVersion>
+    <AssemblyVersion>3.1.2</AssemblyVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>$(AssemblyName)</Title>
     <Authors>SKitLs, Sargeras02</Authors>
@@ -12,9 +12,8 @@
     <PackageIcon>libIcon.png</PackageIcon>
     <PackageTags>Telegram, Bots, Management, Framework, Core</PackageTags>
     <FileVersion>$(AssemblyVersion)</FileVersion>
-    <PackageReleaseNotes>(!) Fixed: BotManager luanches Compile() on ChatHandlers (no more NullOwnerException)
-
-(~) Updated: Handlers ctor updates</PackageReleaseNotes>
+    <PackageReleaseNotes>(~) Updated: DefaultBotAction ctor supports null Action
+(~) Updated: Bot Localization does not returns fallback string (since Localization v2.2.2)</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <Copyright>Copyright (C) 2023-2024, SKitLs</Copyright>
@@ -42,7 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SKitLs.Utils.Localizations" Version="2.2.1" />
+    <PackageReference Include="SKitLs.Utils.Localizations" Version="2.2.2" />
     <PackageReference Include="SKitLs.Utils.LocalLoggers" Version="1.3.1" />
     <PackageReference Include="SKitLs.Utils.Loggers" Version="1.4.1" />
     <PackageReference Include="Telegram.Bot" Version="19.0.0" />

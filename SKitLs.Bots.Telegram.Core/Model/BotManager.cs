@@ -153,7 +153,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <param name="key">String's unique key.</param>
         /// <param name="format">The array of strings to format the gotten one.</param>
         /// <returns>Formatted localized text.</returns>
-        public string ResolveBotString(string key, params string?[] format) => Localizator.ResolveString(BotLanguage, key, format);
+        public string? ResolveBotString(string key, params string?[] format) => Localizator.ResolveString(BotLanguage, key, format);
 
         /// <summary>
         /// Gets localized text from <see cref="Localizator"/> using its unique key and <see cref="DebugLanguage"/>.
@@ -161,7 +161,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         /// <param name="key">String's unique key.</param>
         /// <param name="format">The array of strings to format the gotten one.</param>
         /// <returns>Formatted localized text.</returns>
-        public string ResolveDebugString(string key, params string?[] format) => Localizator.ResolveString(DebugLanguage, key, format);
+        public string ResolveDebugString(string key, params string?[] format) => Localizator.ResolveStringOrFallback(DebugLanguage, key, format);
 
         /// <summary>
         /// Logger service used for logging system messages.

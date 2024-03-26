@@ -40,7 +40,7 @@ namespace SKitLs.Bots.Telegram.Core.Interactions.Defaults
         public DefaultBotAction(string @base, BotInteraction<TUpdate> action)
         {
             ActionNameBase = @base ?? throw new ArgumentNullException(nameof(@base));
-            Action = action ?? throw new ArgumentNullException(nameof(action));
+            Action = action;
         }
 
         /// <inheritdoc/>

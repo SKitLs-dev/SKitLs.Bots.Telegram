@@ -17,7 +17,7 @@ namespace SKitLs.Bots.Telegram.Core.Model
         private static int MaxMessageContentLength => 16;
 
         private static string Local(ILocalizedLogger logger, string mesKey, params string?[] format)
-            => logger.Localizator.ResolveString(BotBuilder.DebugSettings.DebugLanguage, mesKey, format);
+            => logger.Localizator.ResolveStringOrFallback(BotBuilder.DebugSettings.DebugLanguage, mesKey, format);
 
         /// <summary>
         /// Logs an exception with additional information.

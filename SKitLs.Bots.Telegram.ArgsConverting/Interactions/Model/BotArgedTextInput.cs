@@ -31,7 +31,7 @@ namespace SKitLs.Bots.Telegram.ArgedInteractions.Interactions.Model
         public char SplitToken { get; set; }
 
         /// <inheritdoc/>
-        public BotArgedInteraction<TArg, SignedMessageTextUpdate> ArgAction { get; set; }
+        public BotArgedInteraction<TArg, SignedMessageTextUpdate> ArgAction { get; protected set; }
 
         /// <summary>
         /// Creates a new instance of the <see cref="BotArgedTextInput{TArg}"/> class with specified data.

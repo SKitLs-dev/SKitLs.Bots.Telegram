@@ -5,14 +5,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Title>$(AssemblyName)</Title>
-    <Version>1.5.2</Version>
+    <Version>1.5.3</Version>
     <Authors>SKitLs, Sargeras02</Authors>
     <Copyright>Copyright (C) 2023-2024, SKitLs</Copyright>
     <PackageProjectUrl>https://github.com/SKitLs-dev/SKitLs.Bots.Telegram.git</PackageProjectUrl>
     <PackageIcon>libIcon_AI.png</PackageIcon>
     <PackageTags>Telegram, Bots, Management, Serialization, Argumenting</PackageTags>
-    <PackageReleaseNotes>(~) Updated: .Core [v3.1.1] ref up-to-dated</PackageReleaseNotes>
-    <AssemblyVersion>1.5.2</AssemblyVersion>
+    <PackageReleaseNotes>(~) Updated: ArgedActions -&gt; protected set
+(~) Updated: .Core 3.1.2 support</PackageReleaseNotes>
+    <AssemblyVersion>1.5.3</AssemblyVersion>
 	<FileVersion>$(AssemblyVersion)</FileVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -37,7 +38,7 @@ An extension project built upon the SKitLs.Bots.Telegram.Core Framework.</Descri
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="3.1.1" />
+    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="3.1.2" />
     <PackageReference Include="Telegram.Bot" Version="19.0.0" />
   </ItemGroup>
 

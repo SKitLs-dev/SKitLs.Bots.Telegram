@@ -1,11 +1,14 @@
 ﻿{
   "app.startUp": "Hello world!\n\nOpen menu: {0}.",
   "app.clickMeText": "This text has been updated.",
+
   "app.clickMeText2": "This is 'Join Us' message.",
+  "app.JoinUsLabel": "Join us!",
+  "app.JoinUsLinkLabel": "🔗 Click Me",
 
   "app.mainMenuLabel": "Main menu",
-  "app.mainMenu": "This is main menu.\n\nUse buttons below to navigate:",
+  "app.mainMenuPage": "This is main menu.\n\nUse buttons below to navigate:",
 
   "app.subMenuLabel": "Get my id",
-  "app.subMenu": "This is sub page. Content is dynamically built.\n\nYour id is: {0}"
+  "app.subMenuPage": "This is sub page. Content is dynamically built.\n\nYour id is: {0}"
 }

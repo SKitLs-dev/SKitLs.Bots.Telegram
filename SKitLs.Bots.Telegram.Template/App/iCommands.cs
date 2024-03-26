@@ -1,9 +1,9 @@
-﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Inline;
-using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text;
-using SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults;
-using SKitLs.Bots.Telegram.Core.Model.Management;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
-using Telegram.Bot;
+﻿using SKitLs.Bots.Telegram.AdvancedMessages.Menus.Inline;
+using SKitLs.Bots.Telegram.AdvancedMessages.Messages.Text;
+using SKitLs.Bots.Telegram.AdvancedMessages.Model;
+using SKitLs.Bots.Telegram.Core.Interactions.Defaults;
+using SKitLs.Bots.Telegram.Core.Management;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting.Signed;
 
 namespace SKitLs.Bots.Telegram.Template.App
 {
@@ -21,21 +21,21 @@ namespace SKitLs.Bots.Telegram.Template.App
         private static DefaultCommand StartCommand => new("start", Do_StartAsync);
         private static async Task Do_StartAsync(SignedMessageTextUpdate update)
         {
-            var text = update.Owner.ResolveBotString("app.startUp", MenuCommand.ToString("C"));
-            var startMessage = new OutputMessageText(text);
-
-            var startMenu = new InlineMenu();
-            startMenu.Add(ClickMeCallback);
-            startMessage.Menu = startMenu;
-
-            await update.Owner.DeliveryService.AnswerSenderAsync(await startMessage.BuildContentAsync(update), update);
+            await new LocalizedTextMessage("app.startUp", MenuCommand.ToString("C"))
+            {
+                Menu = new InlineMenu(true, 2)
+                {
+                    { ClickMeCallback, true },
+                    { ClickMeCallback, false },
+                    { ClickMeCallback, false },
+                }
+            }.AnswerAsync(update);
         }
 
         private static DefaultCommand MenuCommand => new("menu", Do_MenuAsync);
         private static async Task Do_MenuAsync(SignedMessageTextUpdate update)
         {
             await update.Owner.DeliveryService.AnswerSenderAsync("Menu!", update);
-
             await OpenMainMenuAsync(update);
         }
     }

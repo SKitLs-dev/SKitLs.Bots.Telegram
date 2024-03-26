@@ -31,6 +31,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SKitLs.Bots.Telegram.PageNa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SKitLs.Bots.Telegram.BotProcesses", "SKitLs.Bots.Telegram.BotProcesses\SKitLs.Bots.Telegram.BotProcesses.csproj", "{CD7FC7AF-0D0D-45D1-8229-8A0F59A67537}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Processes", "Demo.Processes\Demo.Processes.csproj", "{34B990B4-0C45-4AE1-878A-8D650D8A387B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SKitLs.Bots.Telegram.Template", "SKitLs.Bots.Telegram.Template\SKitLs.Bots.Telegram.Template.csproj", "{DED36670-6F0A-48DE-BAA0-B01C4CC5E99B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +77,14 @@ Global
 		{CD7FC7AF-0D0D-45D1-8229-8A0F59A67537}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD7FC7AF-0D0D-45D1-8229-8A0F59A67537}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD7FC7AF-0D0D-45D1-8229-8A0F59A67537}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34B990B4-0C45-4AE1-878A-8D650D8A387B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34B990B4-0C45-4AE1-878A-8D650D8A387B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34B990B4-0C45-4AE1-878A-8D650D8A387B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34B990B4-0C45-4AE1-878A-8D650D8A387B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DED36670-6F0A-48DE-BAA0-B01C4CC5E99B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DED36670-6F0A-48DE-BAA0-B01C4CC5E99B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DED36670-6F0A-48DE-BAA0-B01C4CC5E99B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DED36670-6F0A-48DE-BAA0-B01C4CC5E99B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

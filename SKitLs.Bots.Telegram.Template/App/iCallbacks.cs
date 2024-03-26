@@ -1,10 +1,11 @@
-﻿using SKitLs.Bots.Telegram.AdvancedMessages.Model;
-using SKitLs.Bots.Telegram.AdvancedMessages.Model.Buttons.Inline;
-using SKitLs.Bots.Telegram.AdvancedMessages.Model.Menus.Inline;
-using SKitLs.Bots.Telegram.AdvancedMessages.Model.Messages.Text;
-using SKitLs.Bots.Telegram.Core.Model.Interactions.Defaults;
-using SKitLs.Bots.Telegram.Core.Model.Management;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
+﻿using SKitLs.Bots.Telegram.AdvancedMessages.Buttons.Inline;
+using SKitLs.Bots.Telegram.AdvancedMessages.Editors;
+using SKitLs.Bots.Telegram.AdvancedMessages.Menus.Inline;
+using SKitLs.Bots.Telegram.AdvancedMessages.Messages.Text;
+using SKitLs.Bots.Telegram.AdvancedMessages.Model;
+using SKitLs.Bots.Telegram.Core.Interactions.Defaults;
+using SKitLs.Bots.Telegram.Core.Management;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting.Signed;
 
 namespace SKitLs.Bots.Telegram.Template.App
 {
@@ -15,23 +16,20 @@ namespace SKitLs.Bots.Telegram.Template.App
             entity.AddSafely(ClickMeCallback);
         }
 
-        public static DefaultCallback ClickMeCallback { get; } = new("ClickMe", "🔗 Click Me", Do_ClickMeAsync);
+        public static DefaultCallback ClickMeCallback { get; } = new("ClickMe", "app.JoinUsLinkLabel", Do_ClickMeAsync);
         private static async Task Do_ClickMeAsync(SignedCallbackUpdate update)
         {
-            // Get localized text
-            var text = update.Owner.ResolveBotString("app.clickMeText");
-            // Edit message-sender text
-            await update.Owner.DeliveryService.AnswerSenderAsync(await EditWrapper.FromBuildable(new OutputMessageText(text), update), update);
+            // Make localized message; set as edit; send
+            await new LocalizedTextMessage("app.clickMeText").Edit(update).AnswerAsync(update);
 
-            // Get localized text
-            var inviteText = update.Owner.ResolveBotString("app.clickMeText2");
-            var inviteMessage = new OutputMessageText(inviteText);
-            
-            var inviteMenu = new InlineMenu(update.Owner);
-            inviteMenu.Add(new UrlButton("Join us!", $"https://github.com/SKitLs-dev/SKitLs.Bots.Telegram"));
-            inviteMessage.Menu = inviteMenu;
-            
-            await update.Owner.DeliveryService.AnswerSenderAsync(await inviteMessage.BuildContentAsync(update), update);
+            // Make localized message
+            await new LocalizedTextMessage("app.clickMeText2")
+            {
+                Menu = new InlineMenu(update.Owner, true, 1)
+                {
+                    Localize.Inline(new UrlButton("app.JoinUsLabel", $"https://github.com/SKitLs-dev/SKitLs.Bots.Telegram"))
+                }
+            }.AnswerAsync(update);
         }
     }
 }

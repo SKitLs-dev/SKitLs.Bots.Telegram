@@ -1,11 +1,11 @@
 ﻿using SKitLs.Bots.Telegram.AdvancedMessages.AdvancedDelivery;
 using SKitLs.Bots.Telegram.ArgedInteractions.Argumentation;
+using SKitLs.Bots.Telegram.Core.Building;
+using SKitLs.Bots.Telegram.Core.Management.Defaults;
 using SKitLs.Bots.Telegram.Core.Model;
-using SKitLs.Bots.Telegram.Core.Model.Building;
-using SKitLs.Bots.Telegram.Core.Model.Management.Defaults;
-using SKitLs.Bots.Telegram.Core.Model.UpdateHandlers.Defaults;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting.Signed;
-using SKitLs.Bots.Telegram.PageNavs.Prototype;
+using SKitLs.Bots.Telegram.Core.UpdateHandlers.Defaults;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting.Signed;
+using SKitLs.Bots.Telegram.PageNavs.Model;
 using SKitLs.Bots.Telegram.Template.App;
 using SKitLs.Bots.Telegram.Template.Services.Model;
 using SKitLs.Bots.Telegram.Template.Services.Prototype;
@@ -21,17 +21,13 @@ namespace SKitLs.Bots.Telegram.Template
             {
                 var applicant = new MainApplicant();
                 var usersManager = new UsersManager();
-
                 var menuManager = applicant.GetMenuManager();
 
                 // Setup Private Messages
                 var privateMessages = new SignedMessageBaseHandler();
-                
+
                 // Setup Commands
-                var privateCommands = new DefaultActionManager<SignedMessageTextUpdate>()
-                {
-                    DebugName = "commands.private",
-                };
+                var privateCommands = new LinearActionManager<SignedMessageTextUpdate>("commands.private");
                 applicant.ApplyTo(privateCommands);
 
                 var privateTexts = new SignedMessageTextHandler
@@ -41,10 +37,7 @@ namespace SKitLs.Bots.Telegram.Template
                 privateMessages.TextMessageUpdateHandler = privateTexts;
 
                 // Setup private callbacks
-                var privateCallbacks = new DefaultActionManager<SignedCallbackUpdate>()
-                {
-                    DebugName = "callbacks.private",
-                };
+                var privateCallbacks = new LinearActionManager<SignedCallbackUpdate>("callbacks.private");
                 // Apply - Main Logic
                 applicant.ApplyTo(privateCallbacks);
                 // Apply - Menu Manager
@@ -61,15 +54,16 @@ namespace SKitLs.Bots.Telegram.Template
                     .UseMessageHandler(privateMessages)
                     .UseCallbackHandler(privateCallbacksHandler);
 
-                var bot = BotBuilder.NewBuilder("your_api_key")
-                    .CustomDelivery(new AdvancedDeliverySystem())
+                // your_api_key
+                var bot = BotBuilder.NewBuilder("1884746031:AAG2De0kmRcogBNO_NyWMU-9E3wxE2MUBrc")
+                    .CustomDelivery(new AdvancedDeliveryService())
                     .EnablePrivates(privates)
                     // Optional: use same chatter / create new one
                     //.EnableGroups(privates)
                     //.EnableSupergroups(groups)
                     
-                    .AddService<IArgsSerializeService>(new DefaultArgsSerializeService())
-                    .AddService<IMenuManager>(menuManager)
+                    .AddService<IArgsSerializeService>(new ArgsSerializeService())
+                    .AddService<IMenuService>(menuManager)
                     .AddService<ICBDemoService>(new CBDemoService_v2("Answer"))
                     //.AddService<ICBDemoService>(new CBDemoService_v1())
                     .Build();

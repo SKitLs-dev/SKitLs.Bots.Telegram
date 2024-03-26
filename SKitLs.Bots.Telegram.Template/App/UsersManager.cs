@@ -1,6 +1,6 @@
 ﻿using SKitLs.Bots.Telegram.Core.Model;
-using SKitLs.Bots.Telegram.Core.Model.UpdatesCasting;
-using SKitLs.Bots.Telegram.Core.Prototype;
+using SKitLs.Bots.Telegram.Core.UpdatesCasting;
+using SKitLs.Bots.Telegram.Core.Users;
 
 namespace SKitLs.Bots.Telegram.Template.App
 {
@@ -16,8 +16,8 @@ namespace SKitLs.Bots.Telegram.Template.App
 
         public async Task<IBotUser?> RegisterNewUserAsync(ICastedUpdate update)
         {
-            var user = ChatScanner.GetSender(update.OriginalSource, this)!;
-            var @new = new DefaultBotUser(user.Id);
+            var user = TelegramHelper.GetSender(update.OriginalSource, this)!;
+            var @new = new DefaultBotUser(user.Id, user.IsPremium.GetValueOrDefault(), user.LanguageCode ?? "en", user.FirstName);
             _users.Add(@new);
             return await Task.FromResult(@new);
         }

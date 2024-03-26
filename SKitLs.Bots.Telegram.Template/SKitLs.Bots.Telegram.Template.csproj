@@ -5,12 +5,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="resources\locals\en.app.json" />
+    <None Remove="resources\locals\en.core.json" />
     <None Remove="resources\locals\en.pn.json" />
     <None Remove="resources\locals\ru.app.json" />
+    <None Remove="resources\locals\ru.core.json" />
     <None Remove="resources\locals\ru.pn.json" />
   </ItemGroup>
 
@@ -30,10 +33,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SKitLs.Bots.Telegram.AdvancedMessages" Version="2.2.1" />
-    <PackageReference Include="SKitLs.Bots.Telegram.ArgedInteractions" Version="1.4.3" />
-    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="2.4.0" />
-    <PackageReference Include="SKitLs.Bots.Telegram.PageNavs" Version="1.6.1" />
+    <Content Include="resources\locals\en.core.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\locals\ru.core.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SKitLs.Bots.Telegram.AdvancedMessages" Version="3.0.3" />
+    <PackageReference Include="SKitLs.Bots.Telegram.ArgedInteractions" Version="1.5.3" />
+    <PackageReference Include="SKitLs.Bots.Telegram.Core" Version="3.1.2" />
+    <PackageReference Include="SKitLs.Bots.Telegram.PageNavs" Version="2.0.0" />
   </ItemGroup>
 
 </Project>
